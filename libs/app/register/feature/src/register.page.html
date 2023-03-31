@@ -50,13 +50,35 @@
           [name]="showPassword ? 'eye-outline' : 'eye-off-outline'"
           slot="end"
           class="ion-align-self-center"
-          (click)="toggleShowPassword()"></ion-icon>
+          (click)="toggleShowPassword('current')"></ion-icon>
       </ion-item>
       <ion-text
-        *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+      *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+      class="ion-padding-start"
+      color="danger">
+      <small>{{ passwordError }}</small>
+    </ion-text>
+      <ion-item>
+        <ion-label position="floating" class="required">Confirm Password</ion-label>
+        <ion-input
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          minlength="6"
+          maxlength="64"
+          placeholder="Confirm password"
+          required="true"
+          autocomplete="password"
+          formControlName="confirmPassword"></ion-input>
+        <ion-icon
+          [name]="showConfirmPassword ? 'eye-outline' : 'eye-off-outline'"
+          slot="end"
+          class="ion-align-self-center"
+          (click)="toggleShowPassword('confirm')"></ion-icon>
+      </ion-item>
+      <ion-text
+        *ngIf="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)"
         class="ion-padding-start"
         color="danger">
-        <small>{{ passwordError }}</small>
+        <small>{{ confirmPasswordError }}</small>
       </ion-text>
     </ion-list>
 
