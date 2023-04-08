@@ -32,12 +32,14 @@
                   src="assets/icons/person.svg"></ion-icon>
               </ion-input>
             </ion-col>
-            <ion-text
-              *ngIf="email?.invalid && (email?.dirty || email?.touched)"
-              class="ion-padding-start"
-              color="danger">
-              <small>{{ emailError }}</small>
-            </ion-text>
+            <ion-col size="12"  class="error-email ">
+              <ion-text
+                *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                class="ion-padding-start"
+                color="danger">
+                <small>{{ emailError }}</small>
+              </ion-text>
+            </ion-col>
             <ion-col
               size="12"
               class="createaccount-input-2 ion-padding-horizontal">
@@ -55,12 +57,14 @@
                   src="assets/icons/lock.svg"></ion-icon>
               </ion-input>
             </ion-col>
-            <ion-text
-              *ngIf="password?.invalid && (password?.dirty || password?.touched)"
-              class="ion-padding-start"
-              color="danger">
-              <small>{{ passwordError }}</small>
-            </ion-text>
+            <ion-col size="12"  class="error-password">
+              <ion-text
+                *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                class="ion-padding-start"
+                color="danger">
+                <small>{{ passwordError }}</small>
+              </ion-text>
+            </ion-col>
             <ion-col
               size="12"
               class="createaccount-input-3 ion-padding-horizontal"
@@ -79,12 +83,14 @@
                   src="assets/icons/lock.svg"></ion-icon>
               </ion-input>
             </ion-col>
-            <ion-text
-              *ngIf="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)"
-              class="ion-padding-start"
-              color="danger">
-              <small>{{ confirmPasswordError }}</small>
-            </ion-text>
+            <ion-col size="12"  class="error-confirm-password">
+              <ion-text
+                *ngIf="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)"
+                class="ion-padding-start"
+                color="danger">
+                <small>{{ confirmPasswordError }}</small>
+              </ion-text>
+            </ion-col>
             <ion-col size="12" class="ion-justify-content-center">
               <ion-button
                 id="create-account-button"

@@ -328,3 +328,21 @@ logo_heading {
 .ion-justify-content-center {
   display: grid;
 }
+
+.error-email {
+  text-align: left;
+  top: 340px;
+  position: absolute;
+}
+
+.error-password {
+  text-align: left;
+  top: 430px;
+  position: absolute;
+}
+
+.error-confirm-password {
+  text-align: left;
+  top: 520px;
+  position: absolute;
+}
