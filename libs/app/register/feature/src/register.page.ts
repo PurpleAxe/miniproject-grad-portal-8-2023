@@ -37,8 +37,8 @@ export class RegisterPage {
     confirmPassword: ['', [Validators.minLength(6), Validators.maxLength(64)]],
   },{ validators: passwordMatchingValidatior });
 
-  showPassword = false;
-  showConfirmPassword = false;
+  // showPassword = false;
+  // showConfirmPassword = false;
 
   get email() {
     return this.registerForm?.get('email');
@@ -96,9 +96,9 @@ export class RegisterPage {
     }
   }
 
-  toggleShowPassword(passwordType: string) {
-    passwordType=='current'? this.showPassword = !this.showPassword: 
-    this.showConfirmPassword = !this.showConfirmPassword; 
-  }
+  // toggleShowPassword(passwordType: string) {
+  //   passwordType=='current'? this.showPassword = !this.showPassword: 
+  //   this.showConfirmPassword = !this.showConfirmPassword; 
+  // }
   
 }

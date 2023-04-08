@@ -1,51 +1,118 @@
-<ion-content [fullscreen]="true"  class="createaccount-container">
-  <ion-grid  class="createaccount-createaccount">
+<ion-content [fullscreen]="true" class="createaccount-container">
+  <ion-grid class="createaccount-createaccount">
     <ion-row class="logo-section">
       <ion-col size="12" class="logo_heading ion-padding-top">
         <img src="assets/logos/TimeHive.jpg" class="timehive-logo" />
-        <ion-col size="12" class="createaccount-heading createaccount-text-large heading_medium ion-padding-top">
+        <ion-col
+          size="12"
+          class="createaccount-heading createaccount-text-large heading_medium ion-padding-top">
           Register for TimeHive
         </ion-col>
       </ion-col>
-      <form (submit)="register()">
+      <form
+        [formGroup]="registerForm"
+        ngxsForm="register.registerForm"
+        (submit)="register()">
         <ion-grid>
           <ion-row>
-            <ion-col size="12" class="createaccount-input-1 ion-padding-horizontal">
-              <ion-input class="createaccount-text08 user_input" type="email" placeholder="Email or username">
-                <ion-icon slot="start" class="ion-padding-horizontal" src="assets/icons/person.svg"></ion-icon>
+            <ion-col
+              size="12"
+              class="createaccount-input-1 ion-padding-horizontal">
+              <ion-input
+                class="createaccount-text08 user_input"
+                type="email"
+                minlength="6"
+                maxlength="64"
+                placeholder="Email or username"
+                required="true"
+                formControlName="email">
+                <ion-icon
+                  slot="start"
+                  class="ion-padding-horizontal"
+                  src="assets/icons/person.svg"></ion-icon>
               </ion-input>
             </ion-col>
-            <ion-col size="12" class="createaccount-input-2 ion-padding-horizontal">
-                <ion-input class="createaccount-text08 user_input" type="Password" placeholder="Password">
-                  <ion-icon slot="start" class="ion-padding-horizontal" src="assets/icons/lock.svg"></ion-icon>
-                </ion-input>
-            </ion-col>
-            <ion-col size="12" class="createaccount-input-3 ion-padding-horizontal" style="transform:none;">
-              <ion-input class="createaccount-text08 user_input" type="Password" placeholder="Confirm Password">
-                <ion-icon slot="start" class="ion-padding-horizontal" src="assets/icons/lock.svg"></ion-icon>
+            <ion-text
+              *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+              class="ion-padding-start"
+              color="danger">
+              <small>{{ emailError }}</small>
+            </ion-text>
+            <ion-col
+              size="12"
+              class="createaccount-input-2 ion-padding-horizontal">
+              <ion-input
+                class="createaccount-text08 user_input"
+                type="password"
+                placeholder="Password"
+                required="true"
+                minlength="6"
+                maxlength="64"
+                formControlName="password">
+                <ion-icon
+                  slot="start"
+                  class="ion-padding-horizontal"
+                  src="assets/icons/lock.svg"></ion-icon>
               </ion-input>
             </ion-col>
-            <ion-col size="12">
-              <ion-button id="create-account-button" color="white">
+            <ion-text
+              *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+              class="ion-padding-start"
+              color="danger">
+              <small>{{ passwordError }}</small>
+            </ion-text>
+            <ion-col
+              size="12"
+              class="createaccount-input-3 ion-padding-horizontal"
+              style="transform: none">
+              <ion-input
+                class="createaccount-text08 user_input"
+                type="password"
+                minlength="6"
+                maxlength="64"
+                placeholder="Confirm password"
+                required="true"
+                formControlName="confirmPassword">
+                <ion-icon
+                  slot="start"
+                  class="ion-padding-horizontal"
+                  src="assets/icons/lock.svg"></ion-icon>
+              </ion-input>
+            </ion-col>
+            <ion-text
+              *ngIf="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)"
+              class="ion-padding-start"
+              color="danger">
+              <small>{{ confirmPasswordError }}</small>
+            </ion-text>
+            <ion-col size="12" class="ion-justify-content-center">
+              <ion-button
+                id="create-account-button"
+                color="white"
+                expand="block"
+                [disabled]="!this.registerForm.valid || (busy$ | async)"
+                type="submit">
+                <ion-spinner *ngIf="busy$ | async"></ion-spinner>
                 <ion-label class="createaccount-text">
                   Create account
                 </ion-label>
               </ion-button>
             </ion-col>
             <ion-col size="12">
-              <ion-button class="back-to-login-button" color="white" routerLink="/login">
+              <ion-button
+                class="back-to-login-button"
+                color="white"
+                routerLink="/login">
                 <ion-label class="createaccount-text04">
                   <span>Go back to login</span>
                 </ion-label>
               </ion-button>
             </ion-col>
           </ion-row>
-         </ion-grid>
+        </ion-grid>
       </form>
     </ion-row>
   </ion-grid>
-
-
 </ion-content>
 
 <ion-footer collapse="condense" class="ion-padding ion-text-center">
