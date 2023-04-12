@@ -1,5 +1,5 @@
 import { ISearch } from '../interfaces';
 
 export class SearchEvent {
-  constructor(public readonly profile: ISearch) {}
+  constructor(public readonly search: ISearch) {}
 }
