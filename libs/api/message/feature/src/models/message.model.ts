@@ -44,7 +44,7 @@ export class Message extends AggregateRoot implements IConversation {
   async createConversation() {
     const document:DocumentReference<IConversation> = await this.repository.getConversationID();
     this.conversationID = document.id;
-    this.apply(new ConversationCreatedEvent(this.toJSON(),document));
+    this.apply(new ConversationCreatedEvent(this.toJSON()));
   }
 
   toJSON(): IConversation {

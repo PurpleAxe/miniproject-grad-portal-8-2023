@@ -43,7 +43,7 @@ export class CreateConversationHandler
     await conversation.createConversation();
     conversation.commit();
 
-    const response: ICreateConversationResponse = {conversation};
+    const response: ICreateConversationResponse = {conversation : conversation.toJSON()};
     return response;
   }
 }

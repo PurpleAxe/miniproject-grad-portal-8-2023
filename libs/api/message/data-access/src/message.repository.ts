@@ -26,11 +26,7 @@ export class MessageRepository {
       .doc(message.conversationID!)
       .update({
 	  messages : admin.firestore.FieldValue.arrayUnion(message.messages!.at(0))
-      }).then((docRef) => {
-	console.log(docRef.writeTime);
-      }).catch((error) => {
-	console.log(error);
-      }); // TODO decide if this should be a different intput usign a specific request for sending single messages using a new interface.
+      }) // TODO decide if this should be a different intput usign a specific request for sending single messages using a new interface.
   }
 
   async deleteMessage(message: IConversation) {
@@ -41,14 +37,18 @@ export class MessageRepository {
       .doc(message.conversationID!)
       .update({
 	  messages : admin.firestore.FieldValue.arrayRemove(message.messages)
-      }).then((docRef) => {
-	console.log(docRef.writeTime);
-      }).catch((error) => {
-	console.log(error);
-      });
+      })
   }
 
   async getConversationID() : Promise<admin.firestore.DocumentReference<IConversation>> {
     return admin.firestore().collection("converstations").doc();
+  }
+
+  async createConversation(conversation: IConversation) {
+    return await admin
+      .firestore()
+      .collection("conversations")
+      .doc(conversation.conversationID!)
+      .set(conversation)
   }
 }
