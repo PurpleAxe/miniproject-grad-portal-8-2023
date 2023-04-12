@@ -1,8 +1,8 @@
-import { SearchModule as SearchDataAccessModule } from '@mp/libs/search/data-access';
+import { SearchModule as SearchDataAccessModule } from '@mp/api/search/data-access';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { SearchSagas } from './search.sagas';
-import { SearchService } from './search.service.ts';
+import { SearchService } from './search.service';
 
 export const CommandHandlers = [];
 export const EventHandlers = [];

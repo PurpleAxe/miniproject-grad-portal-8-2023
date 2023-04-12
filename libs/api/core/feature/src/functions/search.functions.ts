@@ -13,6 +13,7 @@ export const getSearchRequest = functions.https.onCall(
     ): Promise<ISearchResponse> => {
       const app = await NestFactory.createApplicationContext(CoreModule);
       const service = app.get(SearchService);
+      var value = service.getSearchRequest(request);
       return service.getSearchRequest(request);
     }
   );

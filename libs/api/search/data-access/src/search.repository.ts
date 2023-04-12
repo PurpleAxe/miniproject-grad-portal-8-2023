@@ -6,10 +6,18 @@ import * as admin from 'firebase-admin';
 export class SearchRepository {
   //TODO: add your functions here
   async getSearchRequest(search: ISearch) {
-    return await admin
-      .firestore()
-      .collection('users')
-      .doc(search.text)
-      .create(search);
+    const query = await admin
+    .firestore()
+    .collection('users')
+    .where(search.text, "==", search.field);
+
+    query.get().then(querySnapshot => {
+      let docs = querySnapshot.docs;
+      for (let doc of docs) {
+        console.log(`Document found at path: ${doc.ref.path}`);
+      }
+    });
+
+    return []
   }
 }

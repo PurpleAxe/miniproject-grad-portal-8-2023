@@ -1,5 +1,6 @@
 import {
-    SearchCommand
+    SearchCommand,
+    ISearchResponse
 } from '@mp/api/search/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Search } from '../models';
@@ -12,7 +13,13 @@ implements ICommandHandler<SearchCommand>
   async execute(command: SearchCommand) {
     console.log("Hello there");
     console.log(command.request.search.text);
-    const search = this.publisher.mergeObjectContext(new Search(command.request.search.text));
+
+    const search = this.publisher.mergeObjectContext( Search.fromData(command.request.search));
+    const users = search.getSearchRequest();
     search.commit();
+
+    const response: ISearchResponse = {results: []};
+    return response;
   }
+
 }
