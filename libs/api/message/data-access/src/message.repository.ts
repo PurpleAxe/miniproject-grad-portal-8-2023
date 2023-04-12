@@ -40,10 +40,6 @@ export class MessageRepository {
       })
   }
 
-  async getConversationID() : Promise<admin.firestore.DocumentReference<IConversation>> {
-    return admin.firestore().collection("converstations").doc();
-  }
-
   async createConversation(conversation: IConversation) {
     return await admin
       .firestore()

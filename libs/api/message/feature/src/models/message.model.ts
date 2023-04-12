@@ -10,7 +10,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import {randomInt} from 'crypto';
 import {Inject} from '@nestjs/common';
 import {MessageRepository} from '@mp/api/message/data-access';
-import { DocumentReference } from 'firebase-admin/firestore';
+import { randomUUID } from 'crypto';
 
 export class Message extends AggregateRoot implements IConversation {
   @Inject(MessageRepository)
@@ -42,8 +42,7 @@ export class Message extends AggregateRoot implements IConversation {
   }
 
   async createConversation() {
-    const document:DocumentReference<IConversation> = await this.repository.getConversationID();
-    this.conversationID = document.id;
+    this.conversationID = randomUUID() + Date.now();
     this.apply(new ConversationCreatedEvent(this.toJSON()));
   }
 

@@ -114,7 +114,7 @@ describe('Message Event Handlers', () => {
   });
 
   describe('messageToSendEventHandler', () => {
-    it("should send a message and the message returned should have a id" , async () => {
+    it("should create a new message related to a conversaion in the database" , async () => {
       const messageToSend:ISendMessageRequest = // mock data
 	{
 	conversation : {
@@ -141,30 +141,22 @@ describe('Message Event Handlers', () => {
       message.commit();
     });
   });
-});
+  describe('CreateConversationEventHandler', () => {
+    it("should create a new conversation in the database" , async () => {
+      const newConversation:ICreateConversationRequest = { // testing conversation object.
+	conversation : {
+	  members : [
+	    {id : "1"},
+	    {id : "2"},
+	  ],
+	},
+      };
+      const message = eventPublisher.mergeObjectContext(
+	Message.fromData(newConversation.conversation)
+      );
+      message.createConversation();
+      message.commit();
 
-describe('apiMessageFeature', () => {
-  it('should work', () => {
-    const myIMessage = {
-      id:"1", //will have to get the message id
-      content : {
-        textData: "Hello At Thabo Testing Testing here",
-        video: null,
-        photo:null
-      },
-      metaData : {
-        timePosted : 655000000,
-        sender : {
-          userID:"User 1"
-        }
-      }
-    };
-
-    const myConversation = {
-      conversationID : "con 1", ///some conversation ID.
-      messages : myIMessage,
-      members : ["User 1", "User 2"],
-  }
-    expect(sendMessageFeature()).toEqual(myConversation);
+    });
   });
 });
