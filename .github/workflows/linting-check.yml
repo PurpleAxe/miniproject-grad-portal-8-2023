@@ -18,6 +18,11 @@ jobs:
           node-version: "18"
       - run: yarn install --frozen-lockfile
       - run: yarn nx run-many --target=lint
+
+      - name: create env file
+        run: |
+          touch .env
+          echo ${{ secrets.ENVIRONMENT_FILE }} >> .env
       - name: Build App
         run: yarn build:app:dev
 
