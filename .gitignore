@@ -56,5 +56,6 @@ pubsub-debug.log
 
 # Keys
 .keys/*.json
-#Text Files
+
+#text
 *.txt

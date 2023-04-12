@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { httpsCallable, getFunctions } from '@angular/fire/functions';
 import { Timestamp } from 'firebase-admin/firestore';
 //import {ISendMessageResponse} from 'libs/api/message/util/src/responses/send-message.response'
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat',
@@ -14,15 +15,42 @@ export class ChatPageComponent implements OnInit {
   receiver =  "";
   message!: string;
   isLoading = false;
+  currentUserId = 1;
   conversationID = 1;
   chats = [
     { id: 1, sender: 1, message: 'hi' },
     { id: 2, sender: 2, message: 'hey' }
   ];  //some stuff need to be added/changed here. This is mock data
 
-  constructor(/*private route: ActivatedRoute*/) {
-    //
-  }
+  // constructor() {
+  // }
+
+  constructor(private alertController: AlertController) {}
+
+  async onMessagePress(chat: any) {
+    const alert = await this.alertController.create({
+      header: 'Delete Message',
+      message: 'Are you sure you want to delete this message?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            // Perform deletion logic here
+            console.log('Delete clicked');
+          }
+        }
+      ]
+    });
+
+  await alert.present();
+}
 
   ngOnInit() {
     console.log('');
