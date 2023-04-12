@@ -1,0 +1,5 @@
+import { I<%=className%>Request } from '../requests';
+
+export class <%=className%>Command {
+  constructor(public readonly request: I<%=className%>Request) {}
+}

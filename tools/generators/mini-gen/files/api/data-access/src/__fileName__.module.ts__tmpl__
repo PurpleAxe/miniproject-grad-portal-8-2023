@@ -1,0 +1,8 @@
+import { Module } from '@nestjs/common';
+import { <%=className%>Repository } from './<%=fileName%>.repository';
+
+@Module({
+  providers: [<%=className%>Repository],
+  exports: [<%=className%>Repository],
+})
+export class <%=className%>Module {}

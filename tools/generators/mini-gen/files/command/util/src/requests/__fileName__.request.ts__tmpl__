@@ -1,0 +1,7 @@
+//import { UserRecord } from 'firebase-admin/auth';
+
+export interface I<%=className%>Request {
+    //TODO: update
+  //userRecord: UserRecord;
+  replace: string;
+}

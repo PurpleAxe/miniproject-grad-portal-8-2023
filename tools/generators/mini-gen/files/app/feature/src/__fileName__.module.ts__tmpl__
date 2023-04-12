@@ -1,0 +1,17 @@
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
+import { <%=className%>Module as <%=className%>DataAccessModule } from '@mp/app/<%=fileName%>/data-access';
+import { <%=className%>Page } from './<%=fileName%>.page';
+import { <%=className%>Routing } from './<%=fileName%>.routing';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    IonicModule,
+    <%=className%>Routing,
+    <%=className%>DataAccessModule,
+  ],
+  declarations: [<%=className%>Page],
+})
+export class <%=className%>Module {}
