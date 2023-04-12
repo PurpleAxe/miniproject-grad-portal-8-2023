@@ -208,3 +208,10 @@
   white-space: nowrap;
   width: 308px;
 }
+
+.back-icon {
+  font-size: 20px;
+  position: absolute;
+  top:10px;
+  left:16px;
+}
