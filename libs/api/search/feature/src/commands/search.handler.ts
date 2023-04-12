@@ -1,6 +1,6 @@
 import {
     SearchCommand
-} from '@mp/api/profiles/util';
+} from '@mp/api/search/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 
 @CommandHandler(SearchCommand)

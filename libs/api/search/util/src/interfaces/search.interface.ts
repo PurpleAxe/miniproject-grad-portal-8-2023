@@ -1,3 +1,3 @@
 export interface ISearch {
-  id: string;
+  text: string;
 }
