@@ -4,14 +4,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { ChatPageComponent } from './chat.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ChatPageComponent
-  }
+    {
+        path: '',
+        component: ChatPageComponent
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class ChatPageRoutingModule {}
+export class ChatPageRoutingModule { }
