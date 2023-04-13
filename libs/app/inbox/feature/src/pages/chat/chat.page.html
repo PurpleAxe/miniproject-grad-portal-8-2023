@@ -38,7 +38,7 @@
       rows="1"
       placeholder="Send message"
       class="ion-text-center"
-      [(ngModel)]="message">
+      [(ngModel)]="newMessage">
     </ion-textarea>
     <ion-buttons slot="end">
       <ion-fab-button *ngIf="!isLoading" size="small" color="primary" (click)="sendMessage()">

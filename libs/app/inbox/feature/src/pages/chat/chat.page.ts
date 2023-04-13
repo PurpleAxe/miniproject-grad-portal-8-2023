@@ -13,6 +13,7 @@ import { IProfile } from '@mp/api/profiles/util';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPageComponent implements OnInit {
+  name="";
   newMessage!: string;
   isLoading = false;
   currentUserId = 1;
