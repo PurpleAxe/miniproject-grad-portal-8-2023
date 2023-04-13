@@ -4,6 +4,8 @@ import { httpsCallable, getFunctions } from '@angular/fire/functions';
 import { Timestamp } from 'firebase-admin/firestore';
 //import {ISendMessageResponse} from 'libs/api/message/util/src/responses/send-message.response'
 import { AlertController } from '@ionic/angular';
+import { IConversation, IMessage, IMessageMetaData, ISendMessageResponse } from '@mp/api/message/util';
+import { IProfile } from '@mp/api/profiles/util';
 
 @Component({
   selector: 'app-chat',
@@ -11,19 +13,19 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPageComponent implements OnInit {
-  name = 'Sender';
-  receiver =  "";
-  message!: string;
+  newMessage!: string;
   isLoading = false;
   currentUserId = 1;
-  conversationID = 1;
-  chats = [
-    { id: 1, sender: 1, message: 'hi' },
-    { id: 2, sender: 2, message: 'hey' }
-  ];  //some stuff need to be added/changed here. This is mock data
-
-  // constructor() {
-  // }
+  conversationID = "";
+  chats:any = [];  
+  /**
+   *{
+   *   id://id of the message.
+   *   sender: who the message is from.
+   *   message: // content of the message.
+   *   createdAt: // Time Message was created.
+   *} 
+   */
 
   constructor(private alertController: AlertController) {}
 
@@ -60,65 +62,58 @@ export class ChatPageComponent implements OnInit {
   }
 
   async sendMessage() {
-    if (this.message?.trim() == "" || !this.message) {
+    if (this.newMessage?.trim() == "" || !this.newMessage) {
       //If there is a blank message or  a message that is just white space, it is not a valid message so  don't send it
       return;
     }
     this.isLoading = true;
-    let responseData;
     const functions=getFunctions();
-    const sendMsg=httpsCallable(functions,'sendMessage');
+    const sendMsg=httpsCallable<ISendMessageResponse>(functions,'sendMessage');
     const myIMessageContent = {
-      textData: this.message,
+      textData: this.newMessage,
       video: null,
       photo:null
     };
-    const myIProfile = {
-      //userID:this.currentUserId //TODO Fix this
+    const myIProfile : IProfile = {
+      userId:""
     }
-    const myIMessageData = {
+    const myIMessageData: IMessageMetaData = {
       timePosted : Timestamp.now(),
       sender : myIProfile
     }
-    const myIMessage = {
+    const myIMessage:IMessage = {
       id:"", //will have to get the message id
       content : myIMessageContent,
       metaData : myIMessageData
     };
 
-    const myConversation = {
-        conversationID : "", ///some conversation ID.
-        messages : myIMessage,
-        members : [this.currentUserId, this.receiver],
-    }
+    // const myConversation= {
+    //     conversationID : "", ///some conversation ID.
+    //     messages : myIMessage,
+    //     members : [this.currentUserId, this.receiver],
+    // }
 
 
-    sendMsg({conversation:myConversation})
-      .then(results =>{
-        /**
-         * Note: UI/Chat Engineer
-         * Implement logic on how to load chat for both the sender and reciever
-         */
+    sendMsg({message:myIMessage})
+      .then(() =>{
+        this.newMessage =""; //CLear the input field
+        this.isLoading = false; //stop the loader
 
-        this.message = "";//this is to make the textarea where the message was entered blank
-        this.isLoading = false;
-        responseData = results.data;
+        const message={
+          id:this.chats.length,
+          sender:this.currentUserId,
+          message: myIMessage.content.textData,
+          createdAt: myIMessage.metaData.timePosted
+        }
+
+        this.chats.push(message);
       })
       .catch(error => {
-        console.log("error occured");
-        console.log(error);
+        console.log("SEND MESSAGE ERROR: "+error);
       })
   }
 
-  async deleteMessage(){
-    const functions=getFunctions();
-    const deleteMsg=httpsCallable(functions, 'deleteMessage');
-    deleteMsg({/**some message info */})
-      .then(results =>{
-        /**some out put message indicating message was deleted */
-      })
-      .catch(error =>{
-        console.log("DELETE MESSAGE ERROR: "+error);
-      })
+  async deleteMessage(message_id:number){
+    this.chats.splice(message_id,1); //Remove the message from the list of chats.
   }
 }

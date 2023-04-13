@@ -13,7 +13,7 @@
   <ion-list
     lines="none"
     *ngIf="(chats) as chat$">
-    <ion-item-group class="chats-group" *ngFor="let chat of chat$">
+    <ion-item-group class="chats-group" *ngFor="let chat of chats">
       <app-chat-box [chat]="chat" [current_user_id]="currentUserId" (click)="onMessagePress(chat)">
         <!-- Inside app-chat-box component
         <div class="chat-bubble" *ngIf="!chat.deleted"> Add this condition to show/hide the bubble based on deleted flag
