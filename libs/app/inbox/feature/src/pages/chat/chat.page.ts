@@ -89,7 +89,7 @@ export class ChatPageComponent implements OnInit {
     const myConversation = {
         conversationID : "", ///some conversation ID.
         messages : myIMessage,
-        members : [/*this.currentUserId TODO  Fix this*/, this.receiver],
+        members : [this.currentUserId, this.receiver],
     }
 
 
@@ -108,16 +108,6 @@ export class ChatPageComponent implements OnInit {
         console.log("error occured");
         console.log(error);
       })
-    // try {
-    //   let myConversation = {
-    //     conversationID : this.conversationID,
-    //     messages : this.message,
-    //     members : [this.currentUserId, this.chats[1].sender],
-    //   };  //this myConversation object is not correct. Some stuff need to be changed.
-    //   let myRequest = {conversation:myConversation};
-    //   await MessageService.prototype.sendMessage(myRequest);
-    // }
-
   }
 
   async deleteMessage(){

@@ -3,7 +3,9 @@ import {
     IDeleteMessageRequest,
     IDeleteMessageResponse,
     ISendMessageRequest,
-    ISendMessageResponse
+    ISendMessageResponse,
+    ICreateConversationRequest,
+    ICreateConversationResponse
 } from '@mp/api/message/util';
 import { NestFactory } from '@nestjs/core';
 import * as functions from 'firebase-functions';
@@ -16,6 +18,16 @@ export const sendMessage = functions.https.onCall(
         const app = await NestFactory.createApplicationContext(CoreModule);
         const service = app.get(MessageService);
         return service.sendMessage(req);
+    }
+);
+
+export const createConversation = functions.https.onCall(
+    async (
+        req: ICreateConversationRequest
+    ): Promise<ICreateConversationResponse> => {
+        const app = await NestFactory.createApplicationContext(CoreModule);
+        const service = app.get(MessageService);
+        return service.createConversation(req);
     }
 );
 
