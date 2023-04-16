@@ -32,6 +32,8 @@ export class InboxApi {
     return docData(docRef, { idField: 'id' });
   }
 
+  //should we setConversation, setMessage and addMessage to conversation?
+
   async sendMessage(request: ISendMessageRequest) {
     return await httpsCallable<
       ISendMessageRequest,
