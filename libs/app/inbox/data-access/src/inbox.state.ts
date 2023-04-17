@@ -18,6 +18,7 @@ import {
     SetConversation
 } from '@mp/app/inbox/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import produce from 'immer';
 import { InboxApi } from './inbox.api';
 import { IUser } from '@mp/api/users/util';
 
@@ -66,7 +67,6 @@ export class InboxState {
     return state.conversation;
   }
 
-
   @Action(SendMessage)
   async sendMessage(ctx: StateContext<ConversationStateModel>) {
     try {
@@ -86,7 +86,13 @@ export class InboxState {
       };
       const responseRef = await this.inboxApi.sendMessage(request);
       const response=responseRef.data;
-      return ctx.dispatch(new SetConversation(null,response.message));
+      return ctx.setState(
+        produce((draft) => {
+          if (typeof response.message.id === "string" && draft.messageIds) {
+            draft.messageIds.push(response.message.id);
+          }
+        })
+      );
     } catch (error) {
         return ctx.dispatch(new SetError((error as Error).message));
     }
@@ -134,7 +140,13 @@ export class InboxState {
       };
       const responseRef = await this.inboxApi.deleteMessage(request);
       const response = responseRef.data;
-      return ctx.dispatch(new SetConversation(null,response.message));
+      return ctx.setState(
+        produce((draft) => {
+          if (typeof response.message.id === "string" && draft.messageIds) {
+            draft.messageIds=draft.messageIds.filter((item) => item !== response.message.id );
+          }
+        })
+      );
     } catch (error) {
         return ctx.dispatch(new SetError((error as Error).message));
     }
