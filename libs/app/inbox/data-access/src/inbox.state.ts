@@ -19,7 +19,6 @@ import {
 } from '@mp/app/inbox/util';
 import produce from 'immer';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import produce from 'immer';
 import { InboxApi } from './inbox.api';
 import { IUser } from '@mp/api/users/util';
 
