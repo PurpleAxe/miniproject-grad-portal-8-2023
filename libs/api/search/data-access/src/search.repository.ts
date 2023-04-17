@@ -8,7 +8,7 @@ export class SearchRepository {
   async getSearchRequest(search: ISearch) {
     const query = await admin
     .firestore()
-    .collection('users')
+    .collection('profile')
     .where(search.text, "==", search.field);
 
     query.get().then(querySnapshot => {
@@ -18,6 +18,6 @@ export class SearchRepository {
       }
     });
 
-    return []
+    return ["apple"];
   }
 }

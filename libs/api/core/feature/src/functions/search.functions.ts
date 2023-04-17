@@ -14,6 +14,7 @@ export const getSearchRequest = functions.https.onCall(
       const app = await NestFactory.createApplicationContext(CoreModule);
       const service = app.get(SearchService);
       var value = service.getSearchRequest(request);
-      return service.getSearchRequest(request);
+      console.log(value);
+      return value;
     }
   );

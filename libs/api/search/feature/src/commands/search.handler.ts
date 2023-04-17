@@ -7,14 +7,15 @@ import { Search } from '../models';
 
 @CommandHandler(SearchCommand)
 export class CreateSearchHandler
-implements ICommandHandler<SearchCommand>
+implements ICommandHandler<SearchCommand, ISearchResponse>
 {
   constructor(private publisher: EventPublisher) {}
   async execute(command: SearchCommand) {
+    const request = command.request.search;
     console.log("Hello there");
     console.log(command.request.search.text);
 
-    const search = this.publisher.mergeObjectContext( Search.fromData(command.request.search));
+    const search = this.publisher.mergeObjectContext(Search.fromData(request));
     const users = search.getSearchRequest();
     search.commit();
 
