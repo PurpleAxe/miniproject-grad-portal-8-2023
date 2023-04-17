@@ -17,6 +17,7 @@ import {
     DeleteMessage,
     SetConversation
 } from '@mp/app/inbox/util';
+import produce from 'immer';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
 import { InboxApi } from './inbox.api';
@@ -49,7 +50,7 @@ export interface ConversationStateModel {
   name: 'message',
   defaults: {
     message: null,
-    content: null, 
+    content: null,
     metaData: null
   }
 })*/
@@ -114,7 +115,11 @@ export class InboxState {
       };
       const responseRef = await this.inboxApi.createConversation(request);
       const response = responseRef.data;
-      return ctx.dispatch(new SetConversation(response.conversation,null));
+      return ctx.setState(
+        produce((draft) => {
+          draft.conversation = response.conversation;
+        })
+      );
       } catch (error) {
           return ctx.dispatch(new SetError((error as Error).message));
       }

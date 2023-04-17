@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { httpsCallable, getFunctions } from '@angular/fire/functions';
-import { Timestamp } from 'firebase-admin/firestore';
+import { Timestamp } from '@angular/fire/firestore';
 //import {ISendMessageResponse} from 'libs/api/message/util/src/responses/send-message.response'
 import { AlertController } from '@ionic/angular';
 import { IConversation, IMessage, IMessageMetaData, ISendMessageResponse } from '@mp/api/message/util';
 import { IProfile } from '@mp/api/profiles/util';
+import { InboxState } from '@mp/app/inbox/data-access';
+import {Observable} from 'rxjs';
+import {Select, Store} from '@ngxs/store';
+import {SendMessage} from '@mp/app/inbox/util';
 
 @Component({
   selector: 'app-chat',
@@ -13,22 +17,26 @@ import { IProfile } from '@mp/api/profiles/util';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPageComponent implements OnInit {
+  // TODO we should integrate these into the state at some point but not too bad for now
   name="";
   newMessage!: string;
   isLoading = false;
   currentUserId = 1;
-  conversationID = "";
-  chats:any = [];  
+  @Select(InboxState.conversation) conversation$!: Observable<IConversation | null>;
+
   /**
    *{
    *   id://id of the message.
    *   sender: who the message is from.
    *   message: // content of the message.
    *   createdAt: // Time Message was created.
-   *} 
+   *}
    */
 
-  constructor(private alertController: AlertController) {}
+  constructor(
+    private alertController: AlertController,
+    private readonly store: Store
+  ) {}
 
   async onMessagePress(chat: any) {
     const alert = await this.alertController.create({
@@ -67,54 +75,10 @@ export class ChatPageComponent implements OnInit {
       //If there is a blank message or  a message that is just white space, it is not a valid message so  don't send it
       return;
     }
-    this.isLoading = true;
-    const functions=getFunctions();
-    const sendMsg=httpsCallable<ISendMessageResponse>(functions,'sendMessage');
-    const myIMessageContent = {
-      textData: this.newMessage,
-      video: null,
-      photo:null
-    };
-    const myIProfile : IProfile = {
-      userId:""
-    }
-    const myIMessageData: IMessageMetaData = {
-      timePosted : Timestamp.now(),
-      sender : myIProfile
-    }
-    const myIMessage:IMessage = {
-      id:"", //will have to get the message id
-      content : myIMessageContent,
-      metaData : myIMessageData
-    };
-
-    // const myConversation= {
-    //     conversationID : "", ///some conversation ID.
-    //     messages : myIMessage,
-    //     members : [this.currentUserId, this.receiver],
-    // }
-
-
-    sendMsg({message:myIMessage})
-      .then(() =>{
-        this.newMessage =""; //CLear the input field
-        this.isLoading = false; //stop the loader
-
-        const message={
-          id:this.chats.length,
-          sender:this.currentUserId,
-          message: myIMessage.content.textData,
-          createdAt: myIMessage.metaData.timePosted
-        }
-
-        this.chats.push(message);
-      })
-      .catch(error => {
-        console.log("SEND MESSAGE ERROR: "+error);
-      })
+    this.store.dispatch(new SendMessage()); // TODO isloading updates
   }
 
   async deleteMessage(message_id:number){
-    this.chats.splice(message_id,1); //Remove the message from the list of chats.
+    //TODO Remove the message from the list of chats.
   }
 }
