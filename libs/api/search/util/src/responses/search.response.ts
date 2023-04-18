@@ -1,5 +1,5 @@
-import { ISearch } from "../interfaces";
+import { ISearch } from '../interfaces';
 
 export interface ISearchResponse {
-    results: []
-  }
+  search: ISearch;
+}

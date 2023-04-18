@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import {
   AuthGuard,
   redirectLoggedInTo,
-  redirectUnauthorizedTo
+  redirectUnauthorizedTo,
 } from '@angular/fire/auth-guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -34,6 +34,11 @@ const routes: Routes = [
     data: { authGuardPipe: redirectLoggedOut },
     loadChildren: () =>
       import('@mp/app/home/feature').then((m) => m.HomeModule),
+  },
+  {
+    path: 'inbox',
+    loadChildren: () =>
+      import('@mp/app/inbox/feature').then((m) => m.InboxModule),
   },
   {
     path: 'tos',
@@ -89,6 +94,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('@mp/app/login/feature').then((m) => m.LoginModule),
   },
+  {
+    path: 'search',
+    pathMatch: 'full',
+    canActivate: [],
+    data: {},
+    loadChildren: () =>
+      import('@mp/app/search-test/feature').then((m) => m.SearchTestModule),
+  },
   //  { path: 'chat', component: InboxPageComponent },
 ];
 
@@ -98,4 +111,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class CoreRouting { }
+export class CoreRouting {}

@@ -1,1 +1,1 @@
-export * from './search.handler';
+export * from './search-event.handler';

@@ -7,17 +7,18 @@ export class SearchRepository {
   //TODO: add your functions here
   async getSearchRequest(search: ISearch) {
     const query = await admin
-    .firestore()
-    .collection('profile')
-    .where(search.text, "==", search.field);
+      .firestore()
+      .collection('user')
+      // .where(search.text, "==", search.field);
+      .where(search.field, '==', search.keyword);
 
-    query.get().then(querySnapshot => {
-      let docs = querySnapshot.docs;
-      for (let doc of docs) {
+    query.get().then((querySnapshot) => {
+      const docs = querySnapshot.docs;
+      for (const doc of docs) {
         console.log(`Document found at path: ${doc.ref.path}`);
       }
     });
 
-    return ["apple"];
+    return ['apple'];
   }
 }

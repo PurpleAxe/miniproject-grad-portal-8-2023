@@ -1,4 +1,5 @@
 export interface ISearch {
-  text: string;
+  keyword: string;
   field: string;
+  result?: [] | null;
 }
