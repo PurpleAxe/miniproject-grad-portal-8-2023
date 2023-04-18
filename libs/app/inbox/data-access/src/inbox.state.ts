@@ -114,21 +114,20 @@ export class InboxState {
   }
 
   @Action(DeleteMessage)
-  async deleteMessage(ctx: StateContext<InboxStateModel>) {
+  async deleteMessage(ctx: StateContext<ConversationStateModel>, {messageToDelete}:DeleteMessage) {
     try {
-      const inboxState= ctx.getState();
-      const conversationID=inboxState.currentConversation?.conversationID;
-      const members=inboxState.currentConversation?.members;
-      const messages=inboxState.currentConversation?.messages;
-      if (!messages) {
-        return ctx.dispatch(new SetError('No messages exists to delete'));
+      const conversationState= ctx.getState();
+      const conversationID=conversationState.conversation?.conversationID;
+      const members=conversationState.conversation?.members;
+      if (!messageToDelete) {
+        return ctx.dispatch(new SetError('No message to delete has been provided.'));
       }
 
       const request: IDeleteMessageRequest = {
         conversation: {
           conversationID,
           members,
-          messages
+          "messages" : [messageToDelete!]
         }
       };
       const responseRef = await this.inboxApi.deleteMessage(request);

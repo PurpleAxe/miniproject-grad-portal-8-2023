@@ -9,7 +9,7 @@ import { IProfile } from '@mp/api/profiles/util';
 import { InboxState } from '@mp/app/inbox/data-access';
 import {Observable} from 'rxjs';
 import {Select, Store} from '@ngxs/store';
-import {SendMessage} from '@mp/app/inbox/util';
+import {DeleteMessage, SendMessage} from '@mp/app/inbox/util';
 
 @Component({
   selector: 'app-chat',
@@ -24,21 +24,12 @@ export class ChatPageComponent implements OnInit {
   currentUserId = 1;
   @Select(InboxState.conversation) conversation$!: Observable<IConversation | null>;  
 
-  /**
-   *{
-   *   id://id of the message.
-   *   sender: who the message is from.
-   *   message: // content of the message.
-   *   createdAt: // Time Message was created.
-   *}
-   */
-
   constructor(
     private alertController: AlertController,
     private readonly store: Store
   ) {}
 
-  async onMessagePress(chat: any) {
+  async onMessagePress(chat: IMessage) {
     const alert = await this.alertController.create({
       header: 'Delete Message',
       message: 'Are you sure you want to delete this message?',
@@ -55,12 +46,13 @@ export class ChatPageComponent implements OnInit {
           handler: () => {
             // Perform deletion logic here
             console.log('Delete clicked');
+            this.deleteMessage(chat);
           }
         }
       ]
     });
-
   await alert.present();
+
 }
 
   ngOnInit() {
@@ -78,7 +70,8 @@ export class ChatPageComponent implements OnInit {
     this.store.dispatch(new SendMessage()); // TODO isloading updates
   }
 
-  async deleteMessage(message_id:number){
+  async deleteMessage(message:IMessage){
     //TODO Remove the message from the list of chats.
+    this.store.dispatch(new DeleteMessage(message));
   }
 }
