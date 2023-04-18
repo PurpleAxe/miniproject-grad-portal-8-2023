@@ -13,10 +13,10 @@ export class SearchCommandHandler
     console.log(command.request.search.keyword);
 
     const _search = this.publisher.mergeObjectContext(Search.fromData(request));
-    const users = _search.getSearchRequest();
+    _search.getSearchRequest();
     _search.commit();
 
-    const response: ISearchResponse = { search: 'do something' };
+    const response: ISearchResponse = { search: {keyword: 'do something', field: "", result: _search.result} };
     return response;
   }
 }

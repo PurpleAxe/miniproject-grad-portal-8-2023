@@ -19,6 +19,7 @@ export class SearchRepository {
       }
     });
 
-    return ['apple'];
+    var dummy: ISearch = {keyword: "", field: "", result: ["name"]}
+    return dummy
   }
 }
