@@ -36,6 +36,7 @@ testem.log
 .env
 .firebaserc
 .env.prod
+/tools
 
 # System Files
 .DS_Store
