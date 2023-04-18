@@ -1,3 +1,6 @@
 export interface INotifications {
-  id: string;
+  read: boolean | null | undefined;
+  message: string | null | undefined;
+  url: string | null | undefined;
+  id: string | null | undefined;
 }
