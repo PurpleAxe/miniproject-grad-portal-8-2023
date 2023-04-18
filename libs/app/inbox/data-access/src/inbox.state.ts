@@ -114,11 +114,12 @@ export class InboxState {
   }
 
   @Action(DeleteMessage)
-  async deleteMessage(ctx: StateContext<ConversationStateModel>, {messageToDelete}:DeleteMessage) {
+  async deleteMessage(ctx: StateContext<InboxStateModel>, {messageToDelete}:DeleteMessage) {
     try {
-      const conversationState= ctx.getState();
-      const conversationID=conversationState.conversation?.conversationID;
-      const members=conversationState.conversation?.members;
+      const inboxState = ctx.getState();
+      const conversationID=inboxState.currentConversation?.conversationID;
+      const members=inboxState.currentConversation?.members;
+      //const messages=inboxState.currentConversation?.messages;
       if (!messageToDelete) {
         return ctx.dispatch(new SetError('No message to delete has been provided.'));
       }
@@ -127,14 +128,16 @@ export class InboxState {
         conversation: {
           conversationID,
           members,
-          "messages" : [messageToDelete!]
+          "messages" : [messageToDelete!]  //need to query gustav on this
         }
       };
       const responseRef = await this.inboxApi.deleteMessage(request);
       const response = responseRef.data;
       return ctx.setState(
         produce((draft) => {
-          draft.currentConversation=response as IConversation;
+          if (draft.currentConversation?.messages) { //need to query gustav on this
+            draft.currentConversation.messages=draft.currentConversation.messages.filter((item) => item !== response.message );   
+          }
         })
       );
     } catch (error) {
