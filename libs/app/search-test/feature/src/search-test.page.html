@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Toolbar</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar></ion-searchbar>
+  </ion-toolbar>
+  <form (sumbit)="search()">
+    [formGroup]="searchForm"
+    <!-- ngxsForm="search.searchForm"
+    (submit)="search()"> -->
+    <!-- <ion-col class="login-frame4"> -->
+    <ion-input
+      type="email"
+      placeholder="Enter email or username"
+      required="true"
+      autocomplete="email">
+      <!-- <ion-icon
+          slot="start"
+          class="ion-padding-start"
+          src="assets/icons/person.svg"></ion-icon> -->
+    </ion-input>
+    <!-- </ion-col> -->
+    <button type="submit" class="login-button">
+      <span class="login-text labellarge">Search</span>
+    </button>
+  </form>
+  <!-- <ion-textarea
+    autoGrow
+    rows="1"
+    placeholder="Send message"
+    [(ngModel)]="searchText">
+  </ion-textarea>
+
+  <button (click)="search()">
+    <span class="login-text labellarge">Search</span>
+  </button> -->
+</ion-header>
