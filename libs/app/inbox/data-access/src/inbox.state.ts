@@ -15,45 +15,29 @@ import {
     SendMessage,
     CreateConversation,
     DeleteMessage,
-    SetConversation
 } from '@mp/app/inbox/util';
-import produce from 'immer';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import produce from 'immer';
 import { InboxApi } from './inbox.api';
 import { IUser } from '@mp/api/users/util';
 
-
-export interface ConversationStateModel {
-  conversation: IConversation | null;
-  memberIds: string [] | null ;
-  messageIds: string [] | null ;
+export interface InboxStateModel {
+  currentConversation: IConversation | null;
+  conversations: IConversation [] | null;
+  //conversationIds: string | null;
+  //messageIds: string [] | null;
 }
 
-/*export interface MessageStateModel {
-  message: IMessage | null;
-  content: IMessageContent | null ;
-  metaData: IMessageMetaData | null;
-}*/
 
-@State<ConversationStateModel>({
-  name: 'conversation',
+@State<InboxStateModel>({
+  name: 'inbox',
   defaults: {
-    conversation: null,
-    memberIds: null, //get sender's userId?
-    messageIds: null
+    currentConversation: null,
+    conversations: null,
+    //conversationIds: null,
+    //messageIds: null
   }
 })
-
-//should we create a message state and selector?
-/*@State<MessageStateModel>({
-  name: 'message',
-  defaults: {
-    message: null,
-    content: null,
-    metaData: null
-  }
-})*/
-
 
 @Injectable()
 export class InboxState {
@@ -63,17 +47,17 @@ export class InboxState {
   ) {}
 
   @Selector()
-  static conversation(state: ConversationStateModel) {
-    return state.conversation;
+  static conversation(state: InboxStateModel) {
+    return state.currentConversation;
   }
 
   @Action(SendMessage)
-  async sendMessage(ctx: StateContext<ConversationStateModel>) {
+  async sendMessage(ctx: StateContext<InboxStateModel>) {
     try {
-      const conversationState= ctx.getState();
-      const conversationID=conversationState.conversation?.conversationID;
-      const members=conversationState.conversation?.members;
-      const messages=conversationState.conversation?.messages;
+      const inboxState= ctx.getState();
+      const conversationID=inboxState.currentConversation?.conversationID;
+      const members=inboxState.currentConversation?.members;
+      const messages=inboxState.currentConversation?.messages;
       if (!conversationID) {
         this.createConversation(ctx);
       }
@@ -88,9 +72,7 @@ export class InboxState {
       const response=responseRef.data;
       return ctx.setState(
         produce((draft) => {
-          if (typeof response.message.id === "string" && draft.messageIds) {
-            draft.messageIds.push(response.message.id);
-          }
+          draft.currentConversation=response as IConversation;
         })
       );
     } catch (error) {
@@ -99,12 +81,12 @@ export class InboxState {
   }
 
   @Action(CreateConversation)
-  async createConversation(ctx: StateContext<ConversationStateModel>) {
+  async createConversation(ctx: StateContext<InboxStateModel>) {
     try {
-      const conversationState= ctx.getState();
-      const conversationID=conversationState.conversation?.conversationID;
-      const members=conversationState.conversation?.members;
-      const messages=conversationState.conversation?.messages;
+      const inboxState = ctx.getState();
+      const conversationID=inboxState.currentConversation?.conversationID;
+      const members=inboxState.currentConversation?.members;
+      const messages=inboxState.currentConversation?.messages;
       const request: ICreateConversationRequest = {
         conversation: {
           conversationID,
@@ -116,7 +98,14 @@ export class InboxState {
       const response = responseRef.data;
       return ctx.setState(
         produce((draft) => {
-          draft.conversation = response.conversation;
+          if (draft.currentConversation) {
+            if (!draft.conversations) {
+              draft.conversations=[draft.currentConversation];
+            } else {
+              draft.conversations.push(draft.currentConversation);
+            }
+          }
+          draft.currentConversation=response as IConversation;
         })
       );
       } catch (error) {
@@ -125,14 +114,14 @@ export class InboxState {
   }
 
   @Action(DeleteMessage)
-  async deleteMessage(ctx: StateContext<ConversationStateModel>) {
+  async deleteMessage(ctx: StateContext<InboxStateModel>) {
     try {
-      const conversationState= ctx.getState();
-      const conversationID=conversationState.conversation?.conversationID;
-      const members=conversationState.conversation?.members;
-      const messages=conversationState.conversation?.messages;
+      const inboxState= ctx.getState();
+      const conversationID=inboxState.currentConversation?.conversationID;
+      const members=inboxState.currentConversation?.members;
+      const messages=inboxState.currentConversation?.messages;
       if (!messages) {
-        return ctx.dispatch(new SetError('No conversation exists to delete message from'));
+        return ctx.dispatch(new SetError('No messages exists to delete'));
       }
 
       const request: IDeleteMessageRequest = {
@@ -146,9 +135,7 @@ export class InboxState {
       const response = responseRef.data;
       return ctx.setState(
         produce((draft) => {
-          if (typeof response.message.id === "string" && draft.messageIds) {
-            draft.messageIds=draft.messageIds.filter((item) => item !== response.message.id );
-          }
+          draft.currentConversation=response as IConversation;
         })
       );
     } catch (error) {

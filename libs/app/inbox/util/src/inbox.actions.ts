@@ -12,8 +12,3 @@ export class CreateConversation {
 export class DeleteMessage {
   static readonly type = '[Inbox] DeleteMessage';
 }
-
-export class SetConversation {
-  static readonly type = '[Inbox] SetConversation';
-  constructor(public readonly conversation: IConversation | null,public readonly message: IMessage | null) {};
-}
