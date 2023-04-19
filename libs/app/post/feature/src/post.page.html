@@ -1,1 +1,39 @@
-<p>post works!</p>
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Posts</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let post of posts">
+        <ion-label>
+          <h2>{{ post.title }}</h2>
+          <p>{{ post.body }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    
+    <ion-spinner *ngIf="isLoading"></ion-spinner>
+    
+    <div class="error" *ngIf="error">
+      {{ error }}
+    </div>
+    
+    <form (ngSubmit)="createPost()">
+      <ion-item>
+        <ion-label position="floating">Title</ion-label>
+        <ion-input type="text" [(ngModel)]="newPost.title" name="title"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="floating">Body</ion-label>
+        <ion-textarea [(ngModel)]="newPost.body" name="body"></ion-textarea>
+      </ion-item>
+      
+      <div class="button-container">
+        <ion-button type="submit" [disabled]="isLoading">Create Post</ion-button>
+      </div>
+    </form>
+  </ion-content>
+  

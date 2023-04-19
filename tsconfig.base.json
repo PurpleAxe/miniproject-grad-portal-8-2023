@@ -66,6 +66,7 @@
       "@mp/app/forgot/util": ["libs/app/forgot/util/src/index.ts"],
       "@mp/app/home/feature": ["libs/app/home/feature/src/index.ts"],
       "@mp/app/inbox/feature": ["libs/app/inbox/feature/src/index.ts"],
+      "@mp/app/inbox/ui": ["libs/app/inbox/ui/src/index.ts"],
       "@mp/app/login/data-access": ["libs/app/login/data-access/src/index.ts"],
       "@mp/app/login/feature": ["libs/app/login/feature/src/index.ts"],
       "@mp/app/login/util": ["libs/app/login/util/src/index.ts"],
@@ -78,7 +79,9 @@
       "@mp/app/notifications/util": [
         "libs/app/notifications/util/src/index.ts"
       ],
+      "@mp/app/post/data-access": ["libs/app/post/data-access/src/index.ts"],
       "@mp/app/post/feature": ["libs/app/post/feature/src/index.ts"],
+      "@mp/app/post/util": ["libs/app/post/util/src/index.ts"],
       "@mp/app/privacy/feature": ["libs/app/privacy/feature/src/index.ts"],
       "@mp/app/profile/data-access": [
         "libs/app/profile/data-access/src/index.ts"
