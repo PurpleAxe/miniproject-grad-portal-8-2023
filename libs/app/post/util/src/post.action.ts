@@ -1,9 +1,15 @@
 //Post interface Will be imported from the backend
-export interface Post {
+
+export interface Post{
   id?: number;
-  title?: string;
   body?: string;
-}
+  userId?: string;
+  department?:string;
+  challenge?:string;
+  comments?:string[];
+  like?:number;
+  dislike?:number;
+};
 
 // Action interfaces
 export enum PostActionTypes {
@@ -16,40 +22,43 @@ export enum PostActionTypes {
   }
 
 export class FetchPostsRequestAction {
-    static readonly type=PostActionTypes.FETCH_POSTS_REQUEST;
+  static readonly type=PostActionTypes.FETCH_POSTS_REQUEST;
+  constructor(public dir: string) {/**/}
+
 }
   
 export class FetchPostsSuccessAction {
  static readonly type=PostActionTypes.FETCH_POSTS_SUCCESS;
- constructor(payload: Array<Post>) {/**/}
-}
-
-export class FetchPostsFailureAction {
- static readonly type=PostActionTypes.FETCH_POSTS_FAILURE;
- constructor(payload: string) {/**/}
-}
-
-export class CreatePostRequestAction {
- static readonly type=PostActionTypes.CREATE_POST_REQUEST;
+ constructor(public payload: Array<Post>,public dir:string) {/**/}
 }
 
 export class CreatePostSuccessAction {
- static readonly type=PostActionTypes.CREATE_POST_SUCCESS;
- constructor(payload: Post) {/**/}
-}
+  static readonly type=PostActionTypes.CREATE_POST_SUCCESS;
+  constructor(public payload: Post) {/**/}
+ }
 
-export class CreatePostFailureAction {
- static readonly type=PostActionTypes.CREATE_POST_FAILURE;
- constructor(payload: string) {/**/}
-}
+// export class FetchPostsFailureAction {
+//  static readonly type=PostActionTypes.FETCH_POSTS_FAILURE;
+//  constructor(public payload: string) {/**/}
+// }
 
-export type PostAction =
-| FetchPostsRequestAction
-| FetchPostsSuccessAction
-| FetchPostsFailureAction
-| CreatePostRequestAction
-| CreatePostSuccessAction
-| CreatePostFailureAction;
+// export class CreatePostRequestAction {
+//  static readonly type=PostActionTypes.CREATE_POST_REQUEST;
+// }
+
+
+// export class CreatePostFailureAction {
+//  static readonly type=PostActionTypes.CREATE_POST_FAILURE;
+//  constructor(public payload: string) {/**/}
+// }
+
+// export type PostAction =
+// | FetchPostsRequestAction
+// | FetchPostsSuccessAction
+// | FetchPostsFailureAction
+// | CreatePostRequestAction
+// | CreatePostSuccessAction
+// | CreatePostFailureAction;
 
 // import { Component } from '@angular/core';
 
