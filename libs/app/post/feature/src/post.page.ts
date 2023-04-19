@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 interface Post {
@@ -44,3 +45,11 @@ export class PostPageComponent {
 
 
 
+// export class PostPageComponent { 
+
+//   constructor(private router: Router) { }
+  
+//   customCounterFormatter(inputLength: number, maxLength: number) {
+//     return `${maxLength - inputLength} characters remaining`;
+//   }
+// }
