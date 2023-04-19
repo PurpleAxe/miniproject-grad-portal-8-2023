@@ -19,4 +19,16 @@ export class NotificationsSagas {
       )
     );
   };
+
+  @Saga()
+  onMessageSent = (events$: Observable<any>): Observable<ICommand> => {
+    return events$.pipe(
+      ofType(ProfileCreatedEvent),
+      map(
+        (event: ProfileCreatedEvent) =>
+          new createInboxCommand({profile: event.profile})
+      )
+    );
+  };
+
 }

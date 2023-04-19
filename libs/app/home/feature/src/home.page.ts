@@ -4,6 +4,7 @@ import { ProfileState } from '@mp/app/profile/data-access';
 // import { SubscribeToProfile } from '@mp/app/profile/util';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { OnInit, ViewChild } from '@angular/core';
@@ -60,7 +61,7 @@ export class HomePage {
   }
 
   onWillDismiss(event: any) {
-    // 
+    //
   }
 
   cancel() {

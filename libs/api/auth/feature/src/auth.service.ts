@@ -5,6 +5,7 @@ import { UserRecord } from 'firebase-admin/auth';
 
 @Injectable()
 export class AuthService {
+  currentUser: any;
   constructor(private commandBus: CommandBus) {}
 
   onAuthCreate(user: UserRecord) {
