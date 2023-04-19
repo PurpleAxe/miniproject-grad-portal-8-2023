@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { createInboxCommand, createNotificationsCommand } from '../../util/src/commands';
+import {
+  createInboxCommand,
+  createNotificationsCommand,
+} from '@mp/api/notifications/util';
 import { UserCreatedEvent } from '@mp/api/users/util';
-import { INotifications } from '../../util/src/interfaces';
+import { INotifications } from '@mp/api/notifications/util';
 import { ICommand, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';
-import { NotificationsCreatedEvent } from '../../util/src/events';
-import {ProfileCreatedEvent} from '@mp/api/profiles/util';
+import { NotificationsCreatedEvent } from '@mp/api/notifications/util';
+import { ProfileCreatedEvent } from '@mp/api/profiles/util';
 
 @Injectable()
 export class NotificationsSagas {
@@ -15,7 +18,7 @@ export class NotificationsSagas {
       ofType(ProfileCreatedEvent),
       map(
         (event: ProfileCreatedEvent) =>
-          new createInboxCommand({profile: event.profile})
+          new createInboxCommand({ profile: event.profile })
       )
     );
   };
@@ -26,9 +29,8 @@ export class NotificationsSagas {
       ofType(ProfileCreatedEvent),
       map(
         (event: ProfileCreatedEvent) =>
-          new createInboxCommand({profile: event.profile})
+          new createInboxCommand({ profile: event.profile })
       )
     );
   };
-
 }

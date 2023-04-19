@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import {NotificationsCreatedEvent} from 'libs/api/notifications/util/src/events';
-import { NotificationsRepository} from "@mp/api/notifications/data-access";
+import { NotificationsCreatedEvent } from '@mp/api/notifications/util';
+import { NotificationsRepository } from '@mp/api/notifications/data-access';
 
 @EventsHandler(NotificationsCreatedEvent)
 export class NotificationsCreatedEventHandler
