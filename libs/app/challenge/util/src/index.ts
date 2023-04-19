@@ -1,1 +1,1 @@
-export * from './lib/app-challenge-util';
+export * from './test/app-challenge-util';

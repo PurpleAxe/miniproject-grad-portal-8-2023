@@ -6,7 +6,11 @@ interface Post {
   id?: number;
   title?: string;
   body?: string;
+  department?: string;
+  challenge?: string;
 }
+
+
 
 @Component({
   selector: 'app-post',
@@ -15,41 +19,25 @@ interface Post {
 })
 export class PostPageComponent {
   posts:Array<Post>=[];
-  newPost: Post={};
+  newPost:Post={};
   isLoading=false;
   error="";
   // Define the post interface
-  constructor(){
-    this.generate();
-  }
-  
-  generate(){
-    for(let i=0;i<5;i++){
-      this.posts[i]={
-        id:i,
-        title: "POST TITLE"+i,
-        body: "Post body here....Post body here...Post body here..."
-      }
-    }
+  constructor(private router: Router) {
+    //
   }
 
   createPost(){
-    //
-    this.newPost.id=this.posts.length;
+   if(this.newPost.body=="")
+    return;
+  
+    console.log(this.newPost);
     this.posts.push(this.newPost);
-    this.newPost.title="";
-    this.newPost.body="";
+    this.newPost={};
+  }
+
+  
+  customCounterFormatter(inputLength: number, maxLength: number) {
+    return `${maxLength - inputLength} characters remaining`;
   }
 }
-
-
-
-
-// export class PostPageComponent { 
-
-//   constructor(private router: Router) { }
-  
-//   customCounterFormatter(inputLength: number, maxLength: number) {
-//     return `${maxLength - inputLength} characters remaining`;
-//   }
-// }

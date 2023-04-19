@@ -1,1 +1,1 @@
-export * from './lib/app-challenge-data-access';
+export * from './test/app-challenge-data-access';
