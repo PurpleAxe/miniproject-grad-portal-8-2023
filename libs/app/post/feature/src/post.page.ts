@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CreatePostRequestAction } from '@mp/app/post/util';
+import { actionsExecuting, ActionsExecuting } from '@ngxs-labs/actions-executing';
+import { Select,Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
 
 interface Post {
@@ -18,12 +22,16 @@ interface Post {
   styleUrls: ['./post.page.scss'],
 })
 export class PostPageComponent {
+
+  @Select(actionsExecuting([CreatePostRequestAction]))
+  busy$!: Observable<ActionsExecuting>;
+
   posts:Array<Post>=[];
   newPost:Post={};
   isLoading=false;
   error="";
-  // Define the post interface
-  constructor(private router: Router) {
+  
+  constructor(private router: Router, private readonly store: Store) {
     //
   }
 
@@ -32,6 +40,8 @@ export class PostPageComponent {
     return;
   
     console.log(this.newPost);
+
+    this.store.dispatch(new CreatePostRequestAction());
     this.posts.push(this.newPost);
     this.newPost={};
   }
