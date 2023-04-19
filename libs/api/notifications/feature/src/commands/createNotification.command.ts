@@ -4,13 +4,12 @@ import {createNotificationsCommand} from 'libs/api/notifications/util/src/comman
 import {Notifications} from '../models';
 
 @CommandHandler(createNotificationsCommand)
-export class CreateProfileHandler
+export class CreateNotificationHandler
   implements ICommandHandler<createNotificationsCommand>
 {
   constructor(private publisher: EventPublisher) {}
 
   async execute(command: createNotificationsCommand) {
-    console.log(`${CreateProfileHandler.name}`);
 
     const request = command.request;
     // merge context.

@@ -1,4 +1,4 @@
 import { INotificationBox } from "../interfaces";
-export class NotificationsCreatedEvent {
+export class InboxCreatedEvent {
     constructor(public readonly notifications: INotificationBox) {}
 }

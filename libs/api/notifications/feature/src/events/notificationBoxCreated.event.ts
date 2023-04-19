@@ -3,12 +3,12 @@ import {NotificationsCreatedEvent} from 'libs/api/notifications/util/src/events'
 import { NotificationsRepository} from "@mp/api/notifications/data-access";
 
 @EventsHandler(NotificationsCreatedEvent)
-export class NotificationsCreatedEventHandler
+export class NotificationBoxCreatedHandler
   implements IEventHandler<NotificationsCreatedEvent>
 {
   constructor(private readonly repository: NotificationsRepository) {}
 
   async handle(event: NotificationsCreatedEvent) {
-    await this.repository.createNotifications(event.notifications);
+    await this.repository.createInbox(event.notifications);
   }
 }
