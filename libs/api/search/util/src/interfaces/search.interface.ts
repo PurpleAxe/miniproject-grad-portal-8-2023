@@ -1,5 +1,5 @@
 export interface ISearch {
-  keyword: string;
-  field: string;
-  result?: string[] | null;
+  keyword?: string;
+  field?: string;
+  result?: object[] | null | undefined;
 }

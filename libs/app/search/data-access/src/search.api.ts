@@ -17,33 +17,25 @@ export class SearchApi {
     private readonly functions: Functions
   ) {}
 
-  async search1(request: ISearchRequest) {
-    // return collection('User').get().toPromise();
+  // async search1(request: ISearchRequest) {
+  //   // return collection('User').get().toPromise();
 
-    const db = getFirestore();
+  //   const db = getFirestore();
 
-    console.log('--------------------------------------------');
-    const testa = await getDocs(
-      query(collection(db, 'users'), where('email', '==', 'zz@zz.com'))
-    ).then((snap) => snap.docs.map((doc) => doc.data()));
-    console.log('--------------------------------------------');
-    console.log(testa);
-    return testa;
-  }
+  //   console.log('--------------------------------------------');
+  //   const testa = await getDocs(
+  //     query(collection(db, 'users'), where('email', '==', 'zz@zz.com'))
+  //   ).then((snap) => snap.docs.map((doc) => doc.data()));
+  //   console.log('--------------------------------------------');
+  //   console.log(testa);
+  //   return testa;
+  // }
   async search(request: ISearchRequest) {
-    // return collection('User').get().toPromise();
+    console.log('lets go');
+    console.log(request);
     return await httpsCallable<ISearchRequest, ISearchResponse>(
       this.functions,
       'search'
     )(request);
-    // const db = getFirestore();
-
-    // console.log('--------------------------------------------');
-    // const testa = await getDocs(
-    //   query(collection(db, 'users'), where('email', '==', 'zz@zz.com'))
-    // ).then((snap) => snap.docs.map((doc) => doc.data()));
-    // console.log('--------------------------------------------');
-    // console.log(testa);
-    // return testa;
   }
 }

@@ -1,61 +1,110 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
-import { Search } from '@mp/app/search/util';
+import { SearchAction as SearchAction } from '@mp/app/search/util';
 import { SearchApi } from './search.api';
 import { ISearchRequest } from '@mp/api/search/util';
 import { SetError } from '@mp/app/errors/util';
+import { ISearch } from '@mp/api/search/util';
 
 export interface SearchStateModel {
-  searchForm: {
-    model: {
-      field: string;
-      keyword: string;
-      result?: [] | null;
-    };
-    dirty: false;
-    status: string;
-    errors: object;
-  };
+  // searchForm: {
+  //   model: {
+  field: string;
+  keyword: string;
+  // result?: [] | null;
+  searchResults?: [] | null;
 }
+// };
+// dirty: false;
+// status: string;
+// errors: object;
+
 @State<SearchStateModel>({
-  name: 'search',
+  name: 'searchApi',
   defaults: {
-    searchForm: {
-      model: {
-        field: '',
-        keyword: '',
-        result: [],
-      },
-      dirty: false,
-      status: '',
-      errors: {},
-    },
+    // searchForm: {
+    // model: {
+    field: '',
+    keyword: '',
+    // },
+    // dirty: false,
+    // status: '',
+    // errors: {},
+    searchResults: [],
+
+    // },
   },
 })
 @Injectable()
 export class SearchState {
   constructor(
-    private readonly saerchApi: SearchApi // private readonly store: Store
+    private readonly searchApi: SearchApi // private readonly store: Store
   ) {}
-  @Action(Search)
-  async search(ctx: StateContext<SearchStateModel>) {
+  @Action(SearchAction)
+  async search(
+    ctx: StateContext<SearchStateModel>,
+    { field, keyword }: SearchAction
+  ) {
+    console.log('called Search search');
     try {
+      console.log('in try');
       const state = ctx.getState();
-      const field = state.searchForm.model.field;
-      const keyword = state.searchForm.model.keyword;
+      console.log(state, ' state');
       const request: ISearchRequest = {
         search: {
-          field,
           keyword,
+          field,
         },
       };
-      const responseRef = await this.saerchApi.search(request);
+      console.log(request.search.keyword, '@@@@');
+
+      const responseRef = await this.searchApi.search(request);
       const response = responseRef.data;
-      // console.log(responseRef);
-      return ctx;
-      // return ctx.dispatch(new Search(response.search));
+      return ctx.dispatch(response);
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }
   }
 }
+
+//     const state = ctx.getState();
+//     const field = state.searchForm.model.field;
+//     const keyword = state.searchForm.model.keyword;
+//     const request: ISearchRequest = {
+//       search: {
+//         field,
+//         keyword,
+//       },
+//     };
+
+//     const responseRef = await this.searchApi.search(request);
+//     const response = responseRef.data;
+//     return ctx;
+//     // return ctx.dispatch(new Search(response.search));
+//   } catch (error) {
+//     return ctx.dispatch(new SetError((error as Error).message));
+//   }
+// }
+
+// @Action(Search)
+// async search(ctx: StateContext<SearchStateModel>) {
+//   try {
+//     const state = ctx.getState();
+//     const field = state.searchForm.model.field;
+//     const keyword = state.searchForm.model.keyword;
+//     const request: ISearchRequest = {
+//       search: {
+//         field,
+//         keyword,
+//       },
+//     };
+//     const responseRef = await this.saerchApi.search(request);
+//     const response = responseRef.data;
+//     // console.log(responseRef);
+//     return ctx;
+//     // return ctx.dispatch(new Search(response.search));
+//   } catch (error) {
+//     return ctx.dispatch(new SetError((error as Error).message));
+//   }
+// }
+// }

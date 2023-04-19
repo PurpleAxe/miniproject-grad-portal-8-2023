@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { FormBuilder } from '@angular/forms';
-import { Search } from '@mp/app/search-test/util';
+import { SearchTest } from '@mp/app/search-test/util';
 import { ISearch } from '@mp/api/search/util';
+import { actionsExecuting } from '@ngxs-labs/actions-executing';
 
 @Component({
   selector: 'ms-search-test-page',
@@ -10,22 +11,36 @@ import { ISearch } from '@mp/api/search/util';
   styleUrls: ['./search-test.page.scss'],
 })
 export class SearchTestPage {
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly store: Store
-  ) {}
+  // constructor(
+  //   private readonly fb: FormBuilder,
+  //   private readonly store: Store
+  // ) {}
+  // searchForm = this.fb.group({
+  //   keyword: ['', []],
+  //   field: ['', []],
+  // });
+
+  // search() {
+  //   if (this.searchForm.valid) {
+  //     this.store.dispatch(new Search());
+  //   }
+  // }
+  // @Select(actionsExecuting([SearchTest]))
   searchForm = this.fb.group({
     keyword: ['', []],
     field: ['', []],
   });
 
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly store: Store
+  ) {}
   search() {
-    if (this.searchForm.valid) {
-      this.store.dispatch(new Search());
-    }
-  }
-
-  // searchText!: string;
+    // console.log('clicked');
+    // if (this.searchForm.valid) {
+    this.store.dispatch(new SearchTest());
+    // }
+  } // searchText!: string;
   // search() {
   //   // if (this.searchForm.valid) {
   //   this.store.dispatch(new Search('dick'));

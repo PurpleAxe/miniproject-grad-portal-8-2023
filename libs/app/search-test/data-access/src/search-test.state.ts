@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 // import { SearchApi } from '../../../search/data-access/src/search.api';
-import { Search } from '@mp/app/search-test/util';
+import { SearchTest } from '@mp/app/search-test/util';
 import { SetError } from '@mp/app/errors/util';
-import { Search as SearchFeature } from '@mp/app/search/util';
+import { SearchAction as SearchFeature } from '@mp/app/search/util';
 // import { ISearchRequest } from '@mp/api/search/util';
+import { ISearch } from '@mp/api/search/util';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SearchTestStateModel {
@@ -17,6 +18,7 @@ export interface SearchTestStateModel {
     status: string;
     errors: object;
   };
+  searchResults?: [];
 }
 @State<SearchTestStateModel>({
   name: 'search',
@@ -30,6 +32,7 @@ export interface SearchTestStateModel {
       status: '',
       errors: {},
     },
+    searchResults: [],
   },
 })
 @Injectable()
@@ -38,14 +41,16 @@ export class SearchTestState {
   //   private readonly saerchApi: SearchApi,
   //   private readonly store: Store
   // ) {}
-  @Action(Search)
+  @Action(SearchTest)
   async search(ctx: StateContext<SearchTestStateModel>) {
     try {
       const state = ctx.getState();
       const keyword = state.searchForm.model.keyword;
       const field = state.searchForm.model.field;
+      // console.log(keyword, field);
       if (field && keyword) {
-        return ctx.dispatch(new SearchFeature(keyword, field));
+        console.log(field, keyword, '!!!!!!!!!!!!!!!!!!');
+        return ctx.dispatch(new SearchFeature(field, keyword));
       }
       // const request: ISearchRequest = {
       // search: {

@@ -5,7 +5,7 @@ export class Search extends AggregateRoot implements ISearch {
   constructor(
     public keyword: string,
     public field: string,
-    public result?: string[] | null
+    public result?: object[] | null
   ) {
     super();
   }

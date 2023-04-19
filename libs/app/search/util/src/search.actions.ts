@@ -1,11 +1,8 @@
 import { ISearch } from '@mp/api/search/util';
 
-export class Search {
+export class SearchAction {
   static readonly type = '[Search] Search';
-  constructor(
-    public readonly field: string,
-    keyword: string,
-    result?: [] | null
-  ) {}
-  // constructor(public readonly result: ISearch) {}
+  // constructor(public search: ISearch) {}
+
+  constructor(public readonly field: string, public readonly keyword: string) {}
 }
