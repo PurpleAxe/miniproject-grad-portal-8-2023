@@ -2,34 +2,30 @@ import { ISearch } from '@mp/api/search/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { ISearchResponse } from '@mp/api/search/util';
+import { IUser } from '@mp/api/users/util';
 
 @Injectable()
 export class SearchRepository {
   //TODO: add your functions here
   async getSearchRequest(search: ISearch) {
     console.log('getSearchRequest this called');
-    // const SearchResultConverter = {
-    //   toFirestore(post: ISearchResponse): firebase.firestore.DocumentData {
-    //     return { title: post.title, author: post.author };
-    //   },
-    //   fromFirestore(
-    //     snapshot: firebase.firestore.QueryDocumentSnapshot,
-    //     options: firebase.firestore.SnapshotOptions
-    //   ): ISearchResponse {
-    //     const data = snapshot.data(options)!;
-    //     return new ISearchResponse(data.title, data.author);
-    //   },
-    // };
+
+    const SearchResultConverter = {
+      fromFirestore: (snapshot) => {
+        return snapshot.data() as IUser;
+      },
+      toFirestore: (it: IUser) => it,
+    };
 
     const query = await admin
       .firestore()
       .collection('users')
-      // .where(search.text, "==", search.field);
       .where(search.field, '==', search.keyword)
-      // .withConverter()
+      .withConverter<IUser>(SearchResultConverter)
       .get();
-    const responseContent = query.docs.map((doc) => doc.data());
-    console.log(responseContent);
+    // const responseContent = query.docs.map((doc) => doc.data());
+    const responseContent = query.docs.map((doc) => doc.data() as IUser);
+
     // let res = [{ any: 'No data' }];
     // await query.get().then((querySnapshot) => {
     //   const docs = querySnapshot.docs;
@@ -46,8 +42,9 @@ export class SearchRepository {
     const dummy: ISearch = {
       field: search.field,
       keyword: search.keyword,
-      result: responseContent,
+      searchResults: responseContent,
     };
+    console.log('!!!', dummy, '!!!');
     return dummy;
   }
 }

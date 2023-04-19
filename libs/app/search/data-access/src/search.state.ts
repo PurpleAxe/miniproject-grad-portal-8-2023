@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
-import { SearchAction as SearchAction } from '@mp/app/search/util';
+import {
+  SearchAction as SearchOnAPIAction,
+  SearchOnFrontAction,
+} from '@mp/app/search/util';
 import { SearchApi } from './search.api';
 import { ISearchRequest } from '@mp/api/search/util';
 import { SetError } from '@mp/app/errors/util';
@@ -40,10 +43,10 @@ export class SearchState {
   constructor(
     private readonly searchApi: SearchApi // private readonly store: Store
   ) {}
-  @Action(SearchAction)
-  async search(
+  @Action(SearchOnFrontAction)
+  async searchFront(
     ctx: StateContext<SearchStateModel>,
-    { field, keyword }: SearchAction
+    { field, keyword }: SearchOnFrontAction
   ) {
     console.log('called Search search');
     try {
@@ -56,11 +59,37 @@ export class SearchState {
           field,
         },
       };
-      console.log(request.search.keyword, '@@@@');
-
+      console.log(request, ' request');
+      const responseRef = await this.searchApi.searchOnFront(request);
+      // const response = responseRef.data;
+      console.log(responseRef, ' from front checking whats returned');
+      // return ctx.dispatch(new response);
+      return responseRef;
+    } catch (error) {
+      return ctx.dispatch(new SetError((error as Error).message));
+    }
+  }
+  @Action(SearchOnAPIAction)
+  async search(
+    ctx: StateContext<SearchStateModel>,
+    { field, keyword }: SearchOnAPIAction
+  ) {
+    console.log('called Search search');
+    try {
+      console.log('in try');
+      const state = ctx.getState();
+      console.log(state, ' state');
+      const request: ISearchRequest = {
+        search: {
+          keyword,
+          field,
+        },
+      };
       const responseRef = await this.searchApi.search(request);
       const response = responseRef.data;
-      return ctx.dispatch(response);
+      console.log(response, ' from front checking whats returned');
+      // return ctx.dispatch(new response);
+      return response;
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }

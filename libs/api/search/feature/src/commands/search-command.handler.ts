@@ -16,11 +16,12 @@ export class SearchCommandHandler
     _search.getSearchRequest();
     _search.commit();
     console.log('Hello there');
+    console.log('_search', _search);
     const response: ISearchResponse = {
       search: {
         keyword: _search.keyword,
         field: _search.field,
-        result: _search.result,
+        searchResults: _search.searchResults,
       },
     };
     console.log(response, '%%%%%%%%%%%%%%%%%%%');

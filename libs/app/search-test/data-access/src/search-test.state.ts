@@ -3,7 +3,10 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 // import { SearchApi } from '../../../search/data-access/src/search.api';
 import { SearchTest } from '@mp/app/search-test/util';
 import { SetError } from '@mp/app/errors/util';
-import { SearchAction as SearchFeature } from '@mp/app/search/util';
+import {
+  SearchAction as SearchFeatureAPI,
+  SearchOnFrontAction as SearchFeatureFront,
+} from '@mp/app/search/util';
 // import { ISearchRequest } from '@mp/api/search/util';
 import { ISearch } from '@mp/api/search/util';
 
@@ -50,7 +53,7 @@ export class SearchTestState {
       // console.log(keyword, field);
       if (field && keyword) {
         console.log(field, keyword, '!!!!!!!!!!!!!!!!!!');
-        return ctx.dispatch(new SearchFeature(field, keyword));
+        return ctx.dispatch(new SearchFeatureFront(field, keyword));
       }
       // const request: ISearchRequest = {
       // search: {

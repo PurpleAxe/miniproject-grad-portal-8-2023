@@ -5,13 +5,17 @@ export class Search extends AggregateRoot implements ISearch {
   constructor(
     public keyword: string,
     public field: string,
-    public result?: object[] | null
+    public searchResults?: object[] | null
   ) {
     super();
   }
 
   static fromData(search: ISearch): Search {
-    const instance = new Search(search.keyword, search.field, search.result);
+    const instance = new Search(
+      search.keyword,
+      search.field,
+      search.searchResults
+    );
     return instance;
   }
 
@@ -23,7 +27,7 @@ export class Search extends AggregateRoot implements ISearch {
     return {
       keyword: this.keyword,
       field: this.field,
-      result: this.result,
+      searchResults: this.searchResults,
     };
   }
 }

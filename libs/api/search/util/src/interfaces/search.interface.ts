@@ -1,5 +1,7 @@
+import { IUser } from '@mp/api/users/util';
+
 export interface ISearch {
   keyword?: string;
   field?: string;
-  result?: object[] | null | undefined;
+  searchResults?: object[] | IUser[] | null;
 }

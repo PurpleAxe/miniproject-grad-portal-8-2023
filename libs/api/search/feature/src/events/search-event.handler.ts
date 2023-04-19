@@ -7,6 +7,7 @@ export class SearchEventHandler implements IEventHandler<SearchEvent> {
   constructor(private readonly repository: SearchRepository) {}
 
   async handle(event: SearchEvent) {
-    return await this.repository.getSearchRequest(event.search);
+    // return await this.repository.getSearchRequest(event.search);
+    this.repository.getSearchRequest(event.search);
   }
 }
