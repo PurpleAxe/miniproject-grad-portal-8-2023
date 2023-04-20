@@ -1,0 +1,7 @@
+//import { IAuth } from '../interfaces';
+
+export interface I<%=className%>Response {
+      //TODO: update
+//  auth: IAuth;
+      replace: string;
+}

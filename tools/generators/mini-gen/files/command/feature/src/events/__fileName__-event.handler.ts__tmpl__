@@ -1,0 +1,9 @@
+import { <%=className%>Event } from '@mp/api/<%=collectionName.fileName%>/util';
+import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+
+@EventsHandler(<%=className%>Event)
+export class <%=className%>Handler implements IEventHandler<<%=className%>Event> {
+  async handle(event: <%=className%>Event) {
+    console.log(`${<%=className%>Handler.name}`);
+  }
+}

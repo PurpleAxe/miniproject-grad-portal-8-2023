@@ -48,7 +48,6 @@
       "@mp/app/auth/data-access": ["libs/app/auth/data-access/src/index.ts"],
       "@mp/app/auth/feature": ["libs/app/auth/feature/src/index.ts"],
       "@mp/app/auth/util": ["libs/app/auth/util/src/index.ts"],
-      "@mp/app/chat/feature": ["libs/app/chat/feature/src/index.ts"],
       "@mp/app/copyright/ui": ["libs/app/copyright/ui/src/index.ts"],
       "@mp/app/core/feature": ["libs/app/core/feature/src/index.ts"],
       "@mp/app/dashboard/data-access": [
@@ -69,6 +68,7 @@
       "@mp/app/home/feature": ["libs/app/home/feature/src/index.ts"],
       "@mp/app/inbox/data-access": ["libs/app/inbox/data-access/src/index.ts"],
       "@mp/app/inbox/feature": ["libs/app/inbox/feature/src/index.ts"],
+      "@mp/app/inbox/ui": ["libs/app/inbox/ui/src/index.ts"],
       "@mp/app/inbox/util": ["libs/app/inbox/util/src/index.ts"],
       "@mp/app/login/data-access": ["libs/app/login/data-access/src/index.ts"],
       "@mp/app/login/feature": ["libs/app/login/feature/src/index.ts"],

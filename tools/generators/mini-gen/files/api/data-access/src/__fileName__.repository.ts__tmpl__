@@ -1,0 +1,7 @@
+import { I<%=className%> } from '@mp/libs/api/<%=fileName%>/util';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class <%=className%>Repository {
+    //TODO: add your functions here
+}

@@ -13,3 +13,7 @@ export class DeleteMessage {
   static readonly type = '[Inbox] DeleteMessage';
   constructor(public readonly messageToDelete: IMessage | null) {}
 }
+
+export class getUsers {
+  static readonly type = '[Inbox] getUsers';
+}

@@ -1,0 +1,7 @@
+//import { IAuth } from '../interfaces';
+
+export class <%=className%>Event {
+    //TODO: update constructor
+  //constructor(public readonly auth: IAuth) {}
+  constructor(public readonly replace: string) {}
+}
