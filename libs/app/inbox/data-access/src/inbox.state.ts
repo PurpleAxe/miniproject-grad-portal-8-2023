@@ -15,7 +15,7 @@ import {
   SendMessage,
   CreateConversation,
   DeleteMessage,
-  getUsers,
+  GetUsers,
 } from '@mp/app/inbox/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
@@ -25,6 +25,7 @@ import { IUser } from '@mp/api/users/util';
 export interface InboxStateModel {
   currentConversation: IConversation | null;
   conversations: IConversation[] | null;
+  users: IUser[] | null;
   //conversationIds: string | null;
   //messageIds: string [] | null;
 }
@@ -34,6 +35,7 @@ export interface InboxStateModel {
   defaults: {
     currentConversation: null,
     conversations: null,
+    users: null
     //conversationIds: null,
     //messageIds: null
   },
@@ -153,11 +155,31 @@ export class InboxState {
       return ctx.dispatch(new SetError((error as Error).message));
     }
   }
-  @Action(getUsers)
+  
+  @Action(GetUsers)
   async getUsers(ctx: StateContext<InboxStateModel>) {
-    const inboxState = ctx.getState();
+    /*const inboxState = ctx.getState();
+    const users = inboxState.users;
+    if (!users) {
+      return ctx.dispatch(
+        new SetError('no users on app to chat to yet');
+      );
+    }
+    const request: IGetUsersRequest = {
+      userlist: {
+        users:
+      },
+    };
+    const responseRef = await this.inboxApi.getUsers(request);
+    const response = responseRef.data;*/
     console.log('in getUser from inbox.state.ts');
-    const responseRef = this.inboxApi.getUsers();
-    console.log(responseRef);
+    //console.log(responseRef);
+    /*return ctx.setState(
+      produce((draft) => {
+        draft.users = response;
+      })
+    );
+  } catch (error) {
+    return ctx.dispatch(new SetError((error as Error).message));*/
   }
 }

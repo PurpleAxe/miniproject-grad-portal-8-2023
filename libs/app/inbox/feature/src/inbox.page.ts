@@ -3,8 +3,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
-import { Store } from '@ngxs/store';
-import { getUsers } from '@mp/app/inbox/util';
+import { Select, Store } from '@ngxs/store';
+import { InboxState } from '@mp/app/inbox/data-access';
+import { GetUsers } from '@mp/app/inbox/util';
+import { IConversation } from '@mp/api/message/util';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-inbox',
@@ -12,6 +15,8 @@ import { getUsers } from '@mp/app/inbox/util';
   styleUrls: ['./inbox.page.scss'],
 })
 export class InboxPageComponent implements OnInit {
+  @Select(InboxState.conversation) inbox$!: Observable<IConversation | null>;
+  
   @ViewChild('new_chat') modal!: ModalController;
   @ViewChild('popover') popover!: PopoverController;
 
@@ -62,6 +67,7 @@ export class InboxPageComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
     // console.log('');
+    //TODO get all previous conversations on a list and display
   }
 
   logout() {
@@ -74,7 +80,7 @@ export class InboxPageComponent implements OnInit {
 
   newChatModalOpen() {
     this.open_new_chat = true;
-    this.store.dispatch(new getUsers());
+    this.store.dispatch(new GetUsers());
     console.log('done fetching users');
   }
 
@@ -88,11 +94,13 @@ export class InboxPageComponent implements OnInit {
   }
 
   startChat(item: any) {
+    //1. TODO list all users
     console.log('clicked startChat from inbox.page.ts');
   }
 
   getChat(item: any) {
     this.router.navigate(['/', 'inbox', 'chats', item?.id]);
+    //TODO make the conversation the current conversation and display all prev texts
     // this.router.navigate(['/home/inbox']);
   }
 }

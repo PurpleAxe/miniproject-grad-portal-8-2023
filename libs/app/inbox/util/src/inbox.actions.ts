@@ -14,6 +14,6 @@ export class DeleteMessage {
   constructor(public readonly messageToDelete: IMessage | null) {}
 }
 
-export class getUsers {
-  static readonly type = '[Inbox] getUsers';
+export class GetUsers {
+  static readonly type = '[Inbox] GetUsers';
 }
