@@ -43,5 +43,9 @@ export class NotificationsRepository {
         notifications.notificationID)
     });
   }
+
+  async markNotificationAsRead(notificationsBox: INotificationBox) {
+    return;
+  }
   
 }
