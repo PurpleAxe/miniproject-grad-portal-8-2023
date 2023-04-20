@@ -1,4 +1,4 @@
 import { INotificationBox } from "../interfaces";
 export class NotificationsReadEvent {
-    constructor(public readonly notifications: INotificationBox) {}
+    constructor(public readonly notificationBox: INotificationBox) {}
 }

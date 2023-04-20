@@ -1,5 +1,5 @@
-import { INotifications } from "../interfaces";
+import { INotificationBox } from "../interfaces";
 
 export interface IReadNotificationsResponse {
-    notifications : INotifications;
+    notificationBox: INotificationBox;
 }
