@@ -1,6 +1,7 @@
 import { CreatePostSuccessAction, 
     FetchPostsRequestAction, 
     FetchPostsSuccessAction, 
+    Page, 
     Post } from "@mp/app/post/util";
 import { PostApi } from "./post.api";
 import { Injectable } from "@nestjs/common";
@@ -28,28 +29,29 @@ export class PostState{
         
         const results=await this.postApi.createPost(request);
         const response=results.data;
-        this.store.dispatch(new FetchPostsSuccessAction(response,"self"));
+        //this.store.dispatch(new FetchPostsSuccessAction(response,"self"));
+        console.log(response);
     }
 
     @Action(FetchPostsSuccessAction)
-    async fetchPostsSuccess(posts: Post[],dir:string){
+    async fetchPostsSuccess(posts: Post[],dir:string,page:Page){
         if(dir=="self"){
-            //profile.loadPosts(posts);
+            page.loadPosts(posts);
             console.log("You posts");
         }else{
-            //feed.loadPosts(posts);
+            page.loadPosts(posts);
             console.log("Your feed posts");
         }
     }
 
     @Action(FetchPostsRequestAction)
-    async fetchPostsRequest(dir:string){
+    async fetchPostsRequest(dir:string,page:Page){
         let results:any;
         if(dir=="self"){
             results=await this.postApi.ownPosts();
         }else{
             results=await this.postApi.feedPosts();
         }
-        this.store.dispatch(new FetchPostsSuccessAction(results,dir));
+        this.store.dispatch(new FetchPostsSuccessAction(results,dir,page));
     }
 }

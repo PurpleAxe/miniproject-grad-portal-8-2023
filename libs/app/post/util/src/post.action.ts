@@ -1,5 +1,10 @@
 //Post interface Will be imported from the backend
 
+import { FeedPage } from "@mp/app/feed/feature";
+import { ProfilePage } from "@mp/app/profile/feature";
+
+export type Page = FeedPage | ProfilePage;
+
 export interface Post{
   id?: number;
   body?: string;
@@ -23,13 +28,13 @@ export enum PostActionTypes {
 
 export class FetchPostsRequestAction {
   static readonly type=PostActionTypes.FETCH_POSTS_REQUEST;
-  constructor(public dir: string) {/**/}
+  constructor(public dir: string, public page: Page) {/**/}
 
 }
   
 export class FetchPostsSuccessAction {
  static readonly type=PostActionTypes.FETCH_POSTS_SUCCESS;
- constructor(public payload: Array<Post>,public dir:string) {/**/}
+ constructor(public payload: Array<Post>,public dir:string,public page?:Page) {/**/}
 }
 
 export class CreatePostSuccessAction {
