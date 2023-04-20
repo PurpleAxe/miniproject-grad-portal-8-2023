@@ -21,4 +21,27 @@ export class NotificationsRepository {
       .doc(notifications.user.userId)
       .set(notifications);
   }
+
+  async deleteNotificationsProfile(notificationsBox: INotificationBox, notifications: INotifications) {
+      return await admin
+      .firestore()
+      .collection('profiles')
+      .doc(notificationsBox.user.userId)
+      .update({
+        notifications : admin.firestore.FieldValue.arrayRemove(
+          notifications.notificationID)
+      });
+  }
+
+  async deleteNotificationsInbox(notificationsBox: INotificationBox, notifications: INotifications) {
+    return await admin
+    .firestore()
+    .collection('notifications')
+    .doc(notificationsBox.user.userId)
+    .update({
+      notifications : admin.firestore.FieldValue.arrayRemove(
+        notifications.notificationID)
+    });
+  }
+  
 }
