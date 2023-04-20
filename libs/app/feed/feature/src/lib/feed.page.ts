@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { FetchPostsRequestAction, Post } from '@mp/app/post/util';
 import { Store } from '@ngxs/store';
 
 @Component({
@@ -16,7 +15,7 @@ export class FeedPage {
   constructor( private readonly store: Store){
     this.LHome = true;
     this.LDiscovery = false;
-    this.store.dispatch(new FetchPostsRequestAction("feed",this));
+    //this.store.dispatch(new FetchPostsRequestAction("feed"));
   }
   Discoveryt(){
     this.LHome = false;
@@ -29,10 +28,10 @@ export class FeedPage {
     console.log("Home");
     this.LHome = true;
     this.LDiscovery = false;
-    this.store.dispatch(new FetchPostsRequestAction("feed",this));
+    //this.store.dispatch(new FetchPostsRequestAction("feed"));
   }
 
-  loadPosts(posts:Post[]){
+  loadPosts(/*posts:Post[]*/){
     //
   }
 

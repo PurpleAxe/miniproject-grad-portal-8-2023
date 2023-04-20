@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CreatePostSuccessAction } from '@mp/app/post/util';
+import { CreatePostAction } from '@mp/app/post/util';
 import { actionsExecuting, ActionsExecuting } from '@ngxs-labs/actions-executing';
 import { Select,Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -23,7 +23,7 @@ interface Post {
 })
 export class PostPageComponent {
 
-  @Select(actionsExecuting([CreatePostSuccessAction]))
+  @Select(actionsExecuting([CreatePostAction]))
   busy$!: Observable<ActionsExecuting>;
 
   posts:Array<Post>=[];
@@ -41,7 +41,7 @@ export class PostPageComponent {
   
     console.log(this.newPost);
 
-    this.store.dispatch(new CreatePostSuccessAction(this.newPost));
+    this.store.dispatch(new CreatePostAction(this.newPost));
     this.posts.push(this.newPost);
     this.newPost={};
   }

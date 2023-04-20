@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IProfile } from '@mp/api/profiles/util';
-import { Post } from '@mp/app/post/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -13,7 +12,7 @@ import { Observable } from 'rxjs';
 export class ProfilePage {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
 
-  loadPosts(posts:Post[]){
+  loadPosts(/*posts:Post[]*/){
     //
   }
 }
