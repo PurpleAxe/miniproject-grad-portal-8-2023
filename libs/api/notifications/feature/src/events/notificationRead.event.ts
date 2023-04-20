@@ -9,6 +9,6 @@ export class NotificationsReadEventHandler
   constructor(private readonly repository: NotificationsRepository) {}
 
   async handle(event: NotificationsReadEvent) {
-    await this.repository.markNotificationAsRead(event.notificationBox);
+    await this.repository.markNotificationsAsRead(event.notificationBox);
   }
 }

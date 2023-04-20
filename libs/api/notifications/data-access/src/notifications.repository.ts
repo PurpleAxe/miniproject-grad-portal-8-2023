@@ -44,7 +44,7 @@ export class NotificationsRepository {
     });
   }
 
-  async markNotificationAsRead(notificationsBox: INotificationBox) {
+  async markNotificationsAsRead(notificationsBox: INotificationBox) {
     return;
   }
   
