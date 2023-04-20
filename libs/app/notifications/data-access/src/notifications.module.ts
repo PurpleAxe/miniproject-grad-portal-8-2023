@@ -6,4 +6,4 @@ import { NotificationsState } from './notifications.state';
 @NgModule({
     imports: [CommonModule, NgxsModule.forFeature([NotificationsState])],
 })
-export class LoginModule { }
+export class NotificationsModule { }
