@@ -5,7 +5,7 @@ import {EventsHandler, IEventHandler} from "@nestjs/cqrs";
 export class ConversationCreatedHandler
   implements IEventHandler<ConversationCreatedEvent>
   {
-    constructor() {};
+    //constructor() {};
     async handle(event: ConversationCreatedEvent) {
       event.ref.set(event.conversation).then((docRef) => {
 	console.log(docRef.writeTime);

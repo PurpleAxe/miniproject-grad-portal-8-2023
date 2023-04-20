@@ -14,7 +14,7 @@ import {
 
 @Injectable()
 export class MessageService {
-  currentUserID: string = '';
+ // currentUserID: string = '';
   constructor(private readonly commandBus: CommandBus) {
 
   }

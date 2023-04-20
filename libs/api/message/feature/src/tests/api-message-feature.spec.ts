@@ -70,9 +70,9 @@ describe('apiMessageFeature', () => {
     });
   })
   describe('CreateConversation', () => {
-    it("Create A new Conversation between two users" , async () => {
+    /*it("Create A new Conversation between two users" , async () => {
 
-    })
+    })*/
   });
 
 });

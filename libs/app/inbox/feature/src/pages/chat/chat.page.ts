@@ -89,7 +89,7 @@ export class ChatPageComponent implements OnInit {
     const myConversation = {
         conversationID : "", ///some conversation ID.
         messages : myIMessage,
-        members : [/*this.currentUserId TODO  Fix this*/, this.receiver],
+        members : [/*this.currentUserId TODO  Fix this*/this.receiver],
     }
 
 
