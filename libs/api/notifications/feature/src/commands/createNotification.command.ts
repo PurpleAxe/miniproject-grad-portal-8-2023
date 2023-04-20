@@ -1,5 +1,4 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { Timestamp } from 'firebase-admin/firestore';
 import { createNotificationsCommand } from '@mp/api/notifications/util';
 import { Notifications } from '../models';
 
@@ -13,7 +12,7 @@ export class CreateNotificationHandler
     const request = command.request;
     // merge context.
     const profile = this.publisher.mergeObjectContext(
-      Notifications.fromData(request.notifications)
+      Notifications.fromData(request)
     );
 
     profile.sendNotification();
