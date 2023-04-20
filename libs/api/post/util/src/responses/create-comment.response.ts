@@ -1,6 +1,6 @@
 import {IComment} from "../interfaces"
 
-export interface IcommentResponse{
+export interface ICreateCommentResponse {
     comment:IComment
 }
 

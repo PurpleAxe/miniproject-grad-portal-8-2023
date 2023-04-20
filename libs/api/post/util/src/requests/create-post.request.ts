@@ -1,5 +1,5 @@
 import { IPost } from "../interfaces";
 
-export interface IAddPostRes{
+export interface ICreatePostRequest {
     Onpost:IPost;
 }

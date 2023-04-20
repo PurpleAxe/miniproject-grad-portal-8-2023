@@ -1,3 +1,3 @@
-export * from "./IcommentReq"
-export * from "./ILikeandDislikeReq"
-export * from "./IPostReq"
+export * from "./create-comment.request"
+export * from "./create-reaction.request"
+export * from "./create-post.request"

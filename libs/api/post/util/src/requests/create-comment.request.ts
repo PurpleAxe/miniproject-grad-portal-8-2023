@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase-admin/firestore';
 import { IPost } from '../interfaces';
 
-export interface ICommentAddRequest{
+export interface ICreateCommentRequest {
   Onpost: IPost;
   content?: string|null|undefined;
   userID?: string|null|undefined;

@@ -1,6 +1,6 @@
 import { IPost } from '../interfaces';
 
-export interface ILikeandDislikeRes{
+export interface ICreateReactionsResponse {
   Onpost:IPost;
   userID?:string | null |undefined;
 }
