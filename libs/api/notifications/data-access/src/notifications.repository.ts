@@ -43,5 +43,5 @@ export class NotificationsRepository {
         notifications.notificationID)
     });
   }
-  
+
 }
