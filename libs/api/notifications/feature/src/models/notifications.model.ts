@@ -5,6 +5,7 @@ import {
   INotificationBox,
   InboxCreatedEvent,
   NotificationsCreatedEvent,
+  NotificationsReadEvent,
 } from '@mp/api/notifications/util';
 export class Notifications extends AggregateRoot implements INotificationBox {
   constructor(
@@ -20,6 +21,10 @@ export class Notifications extends AggregateRoot implements INotificationBox {
 
   sendNotification() {
     this.apply(new NotificationsCreatedEvent(this.toJSON()));
+  }
+
+  readNotification() {
+    this.apply(new NotificationsReadEvent(this.toJSON()));
   }
 
   createInbox() {
@@ -39,4 +44,5 @@ export class Notifications extends AggregateRoot implements INotificationBox {
     };
     return box;
   }
+  
 }
