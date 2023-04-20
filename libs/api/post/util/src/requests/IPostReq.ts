@@ -1,4 +1,5 @@
+import { IPost } from "../interfaces";
 
 export interface IAddPostReq{
-  content:string;
+    Onpost:IPost;
 }

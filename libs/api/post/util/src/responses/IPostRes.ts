@@ -1,3 +1,5 @@
+import { IPost } from "../interfaces";
+
 export interface IAddPostRes{
-    content:string;
-  }
+    Onpost:IPost;
+}
