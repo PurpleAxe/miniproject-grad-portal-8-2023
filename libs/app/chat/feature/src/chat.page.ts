@@ -17,11 +17,12 @@ import { Select, Store } from '@ngxs/store';
 import { DeleteMessage, SendMessage } from '@mp/app/inbox/util';
 
 @Component({
+  // selector: 'ms-chat-page',
   selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
-export class ChatPageComponent implements OnInit {
+export class ChatPage implements OnInit {
   // TODO we should integrate these into the state at some point but not too bad for now
   name = '';
   newMessage!: string;
