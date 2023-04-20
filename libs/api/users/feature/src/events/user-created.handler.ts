@@ -8,6 +8,7 @@ export class UserCreatedHandler implements IEventHandler<UserCreatedEvent> {
 
   async handle(event: UserCreatedEvent) {
     console.log(`${UserCreatedHandler.name}`);
+    console.log(event.user), ' EVENT';
     await this.repository.createUser(event.user);
   }
 }

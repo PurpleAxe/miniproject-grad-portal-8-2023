@@ -15,4 +15,21 @@ export interface IProfile {
   occupationDetails?: IOccupationDetails | null | undefined;
   status?: ProfileStatus | null | undefined;
   created?: Timestamp | null | undefined;
+  //remove below before merge. this is only for testing purposes TH-0003---Chat
+  banner?: string;
+  userName?: string | null | undefined;
+  location?: string;
+  groups?: string[];
+  description?: string;
+  degree?: string;
+  university?: string;
+  userDepartments?: string[];
+  events?: [];
+  posts?: [];
+  rank?: number;
+  notifications?: [];
+  timeLeft?: number;
+  followers?: [];
+  following?: [];
+  conversationIDs?: [];
 }

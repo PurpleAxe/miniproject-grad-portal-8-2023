@@ -72,8 +72,10 @@ export class InboxPageComponent implements OnInit {
     //
   }
 
-  newChat() {
+  newChatModalOpen() {
     this.open_new_chat = true;
+    this.store.dispatch(new getUsers());
+    console.log('done fetching users');
   }
 
   onWillDismiss(event: any) {
@@ -87,7 +89,6 @@ export class InboxPageComponent implements OnInit {
 
   startChat(item: any) {
     console.log('clicked startChat from inbox.page.ts');
-    this.store.dispatch(new getUsers());
   }
 
   getChat(item: any) {

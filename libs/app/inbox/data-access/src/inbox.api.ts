@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { doc, docData, Firestore } from '@angular/fire/firestore';
+import {
+  doc,
+  docData,
+  Firestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 // import { getAuth } from '@angular/fire/auth';
 import {
@@ -92,5 +100,14 @@ export class InboxApi {
     //     return res.search;
     //   }
     return 'a';
+  }
+  async searchQeury() {
+    // const userDepartments = profile.userDepartments;
+    return await getDocs(
+      query(
+        collection(this.firestore, 'profiles'),
+        where('userDepartments', 'array-contains-any', 'curruserDepartments')
+      )
+    ).then((snap) => snap.docs.map((doc) => doc.data()));
   }
 }

@@ -10,6 +10,7 @@ export class ProfileCreatedHandler
 
   async handle(event: ProfileCreatedEvent) {
     console.log(`${ProfileCreatedHandler.name}`);
+    console.log(event.profile);
     await this.repository.createProfile(event.profile);
   }
 }
