@@ -173,6 +173,7 @@ export class InboxState {
     const responseRef = await this.inboxApi.getUsers(request);
     const response = responseRef.data;*/
     console.log('in getUser from inbox.state.ts');
+    const responseRef = await this.inboxApi.getUsers();
     //console.log(responseRef);
     /*return ctx.setState(
       produce((draft) => {
