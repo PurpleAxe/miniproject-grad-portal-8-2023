@@ -1,4 +1,4 @@
-import { INotifications, INotificationBox } from '@mp/api/notifications/util';
+import { INotifications, INotificationBox, IReadNotificationsResponse } from '@mp/api/notifications/util';
 
 export class Logout {
   static readonly type = '[Notifications] Logout';
@@ -20,7 +20,7 @@ export class DeleteNotification {
 
 export class MarkAsReadNotification {
   static readonly type = '[Notifications] MarkAsReadNotification';
-  constructor(public readonly notification: INotificationBox | null) {}
+  constructor(public readonly notificationResponse: IReadNotificationsResponse | null) {}
 }
 
 export class AddNotification {
@@ -35,3 +35,4 @@ export class CreateNotification {
 export class GetNotifications {
   static readonly type = '[Notifications] GetNotifications'
 }
+
