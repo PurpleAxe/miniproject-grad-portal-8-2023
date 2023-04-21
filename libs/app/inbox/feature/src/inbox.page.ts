@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
-import { GetUserId, GetUsers } from '@mp/app/inbox/util';
+import { GetUserId, GetUsers, Logout } from '@mp/app/inbox/util';
 import { IConversation } from '@mp/api/message/util';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { User } from '@angular/fire/auth';
 import { AuthState } from '@mp/app/auth/data-access';
 import { getCurrentUserId } from '@mp/app/auth/util';
@@ -68,25 +68,14 @@ export class InboxPageComponent implements OnInit {
         'https://cdn.icon-icons.com/icons2/2643/PNG/512/female_woman_person_people_avatar_icon_159366.png',
     },
   ];*/
-  users: { id: number, name: string, photo: string }[] = [];
-  chatRooms: { id: number, name: string, photo: string }[]= [];
+  users: any;
+  chatRooms: { id: number; name: string; photo: string }[] = [];
 
   constructor(private router: Router, private readonly store: Store) {}
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
-    console.log("ngOninit is called");
-    /*this.inbox$.subscribe((inboxState: InboxStateModel | null) => {
-      if (inboxState?.users) {
-        console.log("new user");
-        console.log(inboxState.users);
-        for (let i = 0; i < inboxState.users?.length; i++) {
-          this.users.push(inboxState.users[i]);
-        }
-      }
-    });*/
-    // console.log('');
-    //TODO get all previous conversations on a list and display
+    this.setUserId();
   }
   // ngOnDestroy() {
   //   // this.userList.unsubscribe();
@@ -94,38 +83,43 @@ export class InboxPageComponent implements OnInit {
 
   logout() {
     this.popover.dismiss();
+    this.store.dispatch(new Logout());
   }
 
   onSegmentChanged(event: any) {
     //
   }
 
+  setUserId() {
+    this.store.dispatch(new GetUserId());
+  }
+
   newChatModalOpen() {
     this.open_new_chat = true;
-    // if (!this.userList) {
+    this.users = [];
+    this.store.dispatch(new GetUsers());
+    const users = this.store.select(InboxState.users).subscribe((x) => {
+      this.users = x;
+    });
 
-    // =this.store
-    //   .select(AuthState.user)
-    //   .subscribe((x) => console.log(x.uid, 'zzzzzzzzz'));
-    // let userId;
-    // const uid = this.store.select(AuthState.user).subscribe((x) => {
-    // console.log(x.uid);
-    // });
-    // console.log(userId.uid, 'lllllllllllllllllll');
-    // this.store.pipe()
+    users.unsubscribe();
+    // this.users = users;
+    // setTimeout(() => {
+    //   this.store
+    //     .select(InboxState.users)
+    //     .subscribe((x) => console.log(x, 'zzzzzzzzzzzzzzz'));
+    //   console.log('dd');
+    //   // if (users) users.subscribe((x) => console.log(x, 'zzzzzzzzzzzzzzz'));
 
-    const users = this.store.dispatch(new GetUsers());
-    setTimeout(() => {
-      console.log('dd');
-      /*if (this.inbox$) {
-        console.log("new user");
-        console.log(inboxState.users);
-        for (let i = 0; i < inboxState.users?.length; i++) {
-          this.users.push({ id: i , name: inboxState.users[i] , photo: ""});
-        }
-      }*/
-    },2000);
-    
+    //   /*if (this.inbox$) {
+    //     console.log("new user");
+    //     console.log(inboxState.users);
+    //     for (let i = 0; i < inboxState.users?.length; i++) {
+    //       this.users.push({ id: i , name: inboxState.users[i] , photo: ""});
+    //     }
+    //   }*/
+    // }, 2000);
+
     // console.log(this.store.dispatch(new GetUserId()), '$##@#@#@#@#');
     // this.userList.pipe(tap((x) => console.log(x)));
     // }
@@ -144,8 +138,9 @@ export class InboxPageComponent implements OnInit {
   }
 
   startChat(item: any) {
+    console.log('user clicked ;)');
+    console.log(item); // has selected user {id: , displayName: , photoURL}
     //1. TODO list all users
-    console.log('clicked startChat from inbox.page.ts');
   }
 
   getChat(item: any) {

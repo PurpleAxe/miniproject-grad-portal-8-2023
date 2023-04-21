@@ -20,3 +20,6 @@ export class GetUsers {
 export class GetUserId {
   static readonly type = '[Inbox] GetUserId';
 }
+export class Logout {
+  static readonly type = '[Inbox] Logout';
+}

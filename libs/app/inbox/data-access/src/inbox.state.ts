@@ -1,23 +1,26 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   IConversation,
   ICreateConversationRequest,
 } from '@mp/api/message/util';
-import { IUser } from '@mp/api/users/util';
 import { SetError } from '@mp/app/errors/util';
-import { CreateConversation, GetUserId, GetUsers } from '@mp/app/inbox/util';
+import {
+  CreateConversation,
+  GetUserId,
+  GetUsers,
+  Logout,
+} from '@mp/app/inbox/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
 import { InboxApi } from './inbox.api';
-import { Observable, tap } from 'rxjs';
-import { User } from '@angular/fire/auth';
-import { AuthState } from '@mp/app/auth/data-access';
+import { Logout as AuthLogout } from '@mp/app/auth/util';
+import { AuthState } from '../../../auth/data-access/src/auth.state';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
   conversations: IConversation[] | null;
-  users: { id: number, name: string }[] | null;
-  user: User | undefined | null;
+  users: { id: number; displayName: string; photoURL: string }[] | null;
+  // user: User | undefined | null;
   //conversationIds: string | null;
   //messageIds: string [] | null;
 }
@@ -28,7 +31,7 @@ export interface InboxStateModel {
     currentConversation: null,
     conversations: null,
     users: null,
-    user: null,
+    // user: null,
     //conversationIds: null,
     //messageIds: null
   },
@@ -39,12 +42,16 @@ export class InboxState {
     private readonly inboxApi: InboxApi,
     private readonly store: Store
   ) {}
-  public users!: Observable<User[]>;
+  // public users!: Observable<User[]>;
   public userId!: string | undefined;
-  private item$: any;
+  // private item$: any;
   @Selector()
   static conversation(state: InboxStateModel) {
     return state.currentConversation;
+  }
+  @Selector()
+  static users(state: InboxStateModel) {
+    return state.users;
   }
 
   @Action(CreateConversation)
@@ -78,6 +85,10 @@ export class InboxState {
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }
+  }
+  @Action(Logout)
+  async logout(ctx: StateContext<InboxStateModel>) {
+    return ctx.dispatch(new AuthLogout());
   }
 
   // @Action(DeleteMessage)
@@ -121,13 +132,13 @@ export class InboxState {
   //   }
   // }
   OnDestroy() {
-    this.item$.unsubscribe();
+    // this.item$.unsubscribe();
   }
 
-  /*@Action(GetUserId)
-  async getUserId() {
-    return this.userId;
-  }*/
+  // @Action(GetUserId)
+  // async getUserId() {
+  //   return this.userId;
+  // }
 
   @Action(GetUsers)
   async getUsers(ctx: StateContext<InboxStateModel>) {
@@ -170,25 +181,35 @@ export class InboxState {
     // }
     // if (!this.users) {
     // this.users = await (
-    this.item$ = this.store
+
+    //get userId
+    this.store
       .select(AuthState.user)
       .subscribe((x: any) => (this.userId = x?.uid));
 
     const res = await this.inboxApi.getUsers(this.userId);
-    console.log("anything after me is res");
-    console.log(res);
-    //TODO maybe have to store data to state. coz action in inbox.page.ts doesnt give return value
+
     return ctx.setState(
       produce((draft) => {
-        draft.users=[];
-        for (let i = 0; i < res.length; i++) {
-          draft.users?.push({ id: res[i]['id'], name: res[i]['displayName']});
-          console.log(draft.users[i].name+" was added");
-          console.log("new size: "+draft.users.length);
-        }
+        draft.users = Array.from(
+          res.map(
+            (item) => ({
+              id: item['id'],
+              displayName: item['displayName'],
+              photoURL: item['photoURL'],
+            })
+            // items.map((item) => )
+          )
+
+          // for (let i = 0; i < res.length; i++) {
+          //   draft.users?.push({ id: res[i]['id'], name: res[i]['displayName'] });
+          //   console.log(draft.users[i].name + ' was added');
+          //   console.log('new size: ' + draft.users.length);
+          // }
+        );
       })
     );
-    
+
     // return this.users$;
   }
 }
