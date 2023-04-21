@@ -5,8 +5,8 @@ import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 
 @Injectable()
-export class PostRepository {
-  async Onpost(OnPost: IPost) {
+export class PostsRepository {
+  async Onpost(post: IPost) {
     return await admin
       .firestore()
       .collection('Post')
@@ -16,15 +16,15 @@ export class PostRepository {
         },
         toFirestore: (it: IPost) => it,
       })
-      .doc(OnPost.postID)
+      .doc(post.postId)
       .get();
   }
 
-  async Postfunction(Onpost: IPost) {
+  async createPost(post: IPost) {
     return await admin
       .firestore()
       .collection('Post')
-      .doc(Onpost.postID)
-      .create(Onpost);
+      .doc(post.postId)
+      .create(post);
   }
 }
