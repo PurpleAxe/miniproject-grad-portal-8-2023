@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
-import { InboxState } from '@mp/app/inbox/data-access';
+import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
 import { GetUserId, GetUsers } from '@mp/app/inbox/util';
 import { IConversation } from '@mp/api/message/util';
 import { Observable, tap } from 'rxjs';
@@ -18,7 +18,7 @@ import { getCurrentUserId } from '@mp/app/auth/util';
   styleUrls: ['./inbox.page.scss'],
 })
 export class InboxPageComponent implements OnInit {
-  @Select(InboxState.conversation) inbox$!: Observable<IConversation | null>;
+  @Select(InboxState.conversation) inbox$!: Observable<InboxStateModel | null>;
 
   @ViewChild('new_chat') modal!: ModalController;
   @ViewChild('popover') popover!: PopoverController;
@@ -29,7 +29,7 @@ export class InboxPageComponent implements OnInit {
   userNew$: any;
   placeholderImgUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
 
-  users = [
+  /*users = [
     {
       id: 1,
       name: 'Nikhil',
@@ -67,12 +67,24 @@ export class InboxPageComponent implements OnInit {
       photo:
         'https://cdn.icon-icons.com/icons2/2643/PNG/512/female_woman_person_people_avatar_icon_159366.png',
     },
-  ];
+  ];*/
+  users: { id: number, name: string, photo: string }[] = [];
+  chatRooms: { id: number, name: string, photo: string }[]= [];
 
   constructor(private router: Router, private readonly store: Store) {}
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
+    console.log("ngOninit is called");
+    this.inbox$.subscribe((inboxState: InboxStateModel | null) => {
+      if (inboxState?.users) {
+        console.log("new user");
+        console.log(inboxState.users);
+        for (let i = 0; i < inboxState.users?.length; i++) {
+          this.users.push({ id: i , name: inboxState.users[i] , photo: ""});
+        }
+      }
+    });
     // console.log('');
     //TODO get all previous conversations on a list and display
   }
@@ -102,13 +114,24 @@ export class InboxPageComponent implements OnInit {
     // console.log(userId.uid, 'lllllllllllllllllll');
     // this.store.pipe()
 
-    this.userNew$ = this.store.dispatch(new GetUsers());
+    const users = this.store.dispatch(new GetUsers());
+    setTimeout(() => {
+      console.log('dd');
+      /*if (this.inbox$) {
+        console.log("new user");
+        console.log(inboxState.users);
+        for (let i = 0; i < inboxState.users?.length; i++) {
+          this.users.push({ id: i , name: inboxState.users[i] , photo: ""});
+        }
+      }*/
+    },2000);
+    
     // console.log(this.store.dispatch(new GetUserId()), '$##@#@#@#@#');
     // this.userList.pipe(tap((x) => console.log(x)));
     // }
-    console.log(this.userNew$);
+    /*console.log(this.userNew$);
     this.userNew$.subscribe((x: any) => console.log(x), 'zzzzzzzzzzz');
-    console.log('done fetching users');
+    console.log('done fetching users');*/
   }
 
   onWillDismiss(event: any) {

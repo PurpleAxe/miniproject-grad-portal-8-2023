@@ -11,12 +11,12 @@ import produce from 'immer';
 import { InboxApi } from './inbox.api';
 import { Observable, tap } from 'rxjs';
 import { User } from '@angular/fire/auth';
-import { AuthState } from '../../../auth/data-access/src/auth.state';
+import { AuthState } from '@mp/app/auth/data-access';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
   conversations: IConversation[] | null;
-  users: User[] | null;
+  users: string [] | null;
   user: User | undefined | null;
   //conversationIds: string | null;
   //messageIds: string [] | null;
@@ -124,10 +124,10 @@ export class InboxState {
     this.item$.unsubscribe();
   }
 
-  @Action(GetUserId)
+  /*@Action(GetUserId)
   async getUserId() {
     return this.userId;
-  }
+  }*/
 
   @Action(GetUsers)
   async getUsers(ctx: StateContext<InboxStateModel>) {
@@ -175,8 +175,19 @@ export class InboxState {
       .subscribe((x: any) => (this.userId = x?.uid));
 
     const res = await this.inboxApi.getUsers(this.userId);
+    console.log("anything after me is res");
     //TODO maybe have to store data to state. coz action in inbox.page.ts doesnt give return value
-    return res;
+    return ctx.setState(
+      produce((draft) => {
+        draft.users=[];
+        for (let i = 0; i < res.length; i++) {
+          draft.users?.push(res[i]['displayName']);
+          console.log(res[i]['displayName']+" was added");
+          console.log("new size: "+draft.users.length);
+        }
+      })
+    );
+    
     // return this.users$;
   }
 }
