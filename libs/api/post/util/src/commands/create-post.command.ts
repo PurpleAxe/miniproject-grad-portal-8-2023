@@ -1,6 +1,6 @@
 import {ICreatePostRequest} from "../requests"
 
 export class CreatePostCommand {
-    constructor(public readonly Onpost:ICreatePostRequest)
+    constructor(public readonly request:ICreatePostRequest)
     {}
 }
