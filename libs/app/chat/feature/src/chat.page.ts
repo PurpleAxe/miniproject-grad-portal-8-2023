@@ -1,20 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { httpsCallable, getFunctions } from '@angular/fire/functions';
-import { Timestamp } from '@angular/fire/firestore';
-//import {ISendMessageResponse} from 'libs/api/message/util/src/responses/send-message.response'
 import { AlertController } from '@ionic/angular';
-import {
-  IConversation,
-  IMessage,
-  IMessageMetaData,
-  ISendMessageResponse,
-} from '@mp/api/message/util';
-import { IProfile } from '@mp/api/profiles/util';
+import { IConversation, IMessage } from '@mp/api/message/util';
 import { InboxState } from '@mp/app/inbox/data-access';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { DeleteMessage, SendMessage } from '@mp/app/inbox/util';
+import { DeleteMessage, SendMessage } from '@mp/app/chat/util';
 
 @Component({
   // selector: 'ms-chat-page',

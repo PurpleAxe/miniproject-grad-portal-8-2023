@@ -1,31 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   IConversation,
-  IMessage,
   ICreateConversationRequest,
-  IDeleteMessageRequest,
-  ISendMessageRequest,
-  IMessageContent,
-  IMessageMetaData,
 } from '@mp/api/message/util';
-import { AuthState } from '@mp/app/auth/data-access';
-import { Logout as AuthLogout } from '@mp/app/auth/util';
+import { IUser } from '@mp/api/users/util';
 import { SetError } from '@mp/app/errors/util';
-import {
-  SendMessage,
-  CreateConversation,
-  DeleteMessage,
-  GetUsers,
-} from '@mp/app/inbox/util';
+import { CreateConversation, GetUserId, GetUsers } from '@mp/app/inbox/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
 import { InboxApi } from './inbox.api';
-import { IUser } from '@mp/api/users/util';
+import { Observable, tap } from 'rxjs';
+import { User } from '@angular/fire/auth';
+import { AuthState } from '../../../auth/data-access/src/auth.state';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
   conversations: IConversation[] | null;
-  users: IUser[] | null;
+  users: User[] | null;
+  user: User | undefined | null;
   //conversationIds: string | null;
   //messageIds: string [] | null;
 }
@@ -35,7 +27,8 @@ export interface InboxStateModel {
   defaults: {
     currentConversation: null,
     conversations: null,
-    users: null
+    users: null,
+    user: null,
     //conversationIds: null,
     //messageIds: null
   },
@@ -46,40 +39,12 @@ export class InboxState {
     private readonly inboxApi: InboxApi,
     private readonly store: Store
   ) {}
-
+  public users!: Observable<User[]>;
+  public userId!: string | undefined;
+  private item$: any;
   @Selector()
   static conversation(state: InboxStateModel) {
     return state.currentConversation;
-  }
-
-  @Action(SendMessage)
-  async sendMessage(ctx: StateContext<InboxStateModel>) {
-    try {
-      const inboxState = ctx.getState();
-      const conversationID = inboxState.currentConversation?.conversationID;
-      const members = inboxState.currentConversation?.members;
-      const messages = inboxState.currentConversation?.messages;
-      if (!conversationID) {
-        this.createConversation(ctx);
-      }
-      const request: ISendMessageRequest = {
-        //maybe we need to modify send-message.request.ts so that it refers to IMessage instead of IConversation
-        conversation: {
-          conversationID,
-          members,
-          messages,
-        },
-      };
-      const responseRef = await this.inboxApi.sendMessage(request);
-      const response = responseRef.data;
-      return ctx.setState(
-        produce((draft) => {
-          draft.currentConversation = response as IConversation;
-        })
-      );
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
-    }
   }
 
   @Action(CreateConversation)
@@ -115,47 +80,55 @@ export class InboxState {
     }
   }
 
-  @Action(DeleteMessage)
-  async deleteMessage(
-    ctx: StateContext<InboxStateModel>,
-    { messageToDelete }: DeleteMessage
-  ) {
-    try {
-      const inboxState = ctx.getState();
-      const conversationID = inboxState.currentConversation?.conversationID;
-      const members = inboxState.currentConversation?.members;
-      //const messages=inboxState.currentConversation?.messages;
-      if (!messageToDelete) {
-        return ctx.dispatch(
-          new SetError('No message to delete has been provided.')
-        );
-      }
+  // @Action(DeleteMessage)
+  // async deleteMessage(
+  //   ctx: StateContext<InboxStateModel>,
+  //   { messageToDelete }: DeleteMessage
+  // ) {
+  //   try {
+  //     const inboxState = ctx.getState();
+  //     const conversationID = inboxState.currentConversation?.conversationID;
+  //     const members = inboxState.currentConversation?.members;
+  //     //const messages=inboxState.currentConversation?.messages;
+  //     if (!messageToDelete) {
+  //       return ctx.dispatch(
+  //         new SetError('No message to delete has been provided.')
+  //       );
+  //     }
 
-      const request: IDeleteMessageRequest = {
-        conversation: {
-          conversationID,
-          members,
-          messages: [messageToDelete!], //need to query gustav on this
-        },
-      };
-      const responseRef = await this.inboxApi.deleteMessage(request);
-      const response = responseRef.data;
-      return ctx.setState(
-        produce((draft) => {
-          if (draft.currentConversation?.messages) {
-            //need to query gustav on this
-            draft.currentConversation.messages =
-              draft.currentConversation.messages.filter(
-                (item) => item !== response.message
-              );
-          }
-        })
-      );
-    } catch (error) {
-      return ctx.dispatch(new SetError((error as Error).message));
-    }
+  //     const request: IDeleteMessageRequest = {
+  //       conversation: {
+  //         conversationID,
+  //         members,
+  //         messages: [messageToDelete!], //need to query gustav on this
+  //       },
+  //     };
+  //     const responseRef = await this.inboxApi.deleteMessage(request);
+  //     const response = responseRef.data;
+  //     return ctx.setState(
+  //       produce((draft) => {
+  //         if (draft.currentConversation?.messages) {
+  //           //need to query gustav on this
+  //           draft.currentConversation.messages =
+  //             draft.currentConversation.messages.filter(
+  //               (item) => item !== response.message
+  //             );
+  //         }
+  //       })
+  //     );
+  //   } catch (error) {
+  //     return ctx.dispatch(new SetError((error as Error).message));
+  //   }
+  // }
+  OnDestroy() {
+    this.item$.unsubscribe();
   }
-  
+
+  @Action(GetUserId)
+  async getUserId() {
+    return this.userId;
+  }
+
   @Action(GetUsers)
   async getUsers(ctx: StateContext<InboxStateModel>) {
     /*const inboxState = ctx.getState();
@@ -172,8 +145,8 @@ export class InboxState {
     };
     const responseRef = await this.inboxApi.getUsers(request);
     const response = responseRef.data;*/
-    console.log('in getUser from inbox.state.ts');
-    const responseRef = await this.inboxApi.getUsers();
+    // console.log('in getUser from inbox.state.ts');
+    // const responseRef = await this.inboxApi.getUsers();
     //console.log(responseRef);
     /*return ctx.setState(
       produce((draft) => {
@@ -182,5 +155,28 @@ export class InboxState {
     );
   } catch (error) {
     return ctx.dispatch(new SetError((error as Error).message));*/
+    // if (this.store.select(AuthState.user)) {
+    // let auth;
+    // this.store.select(AuthState.user).pipe(
+    // tap((x) => {
+    // auth = x?.uid;
+    // console.log(x, '!!!!!!!!!!!!!!!');
+    // })
+    // );
+    // console.log(auth, 'aaaaaaaaaaaaaaaaa');
+    //   this.users$ =
+    // if (!InboxState.users) {
+
+    // }
+    // if (!this.users) {
+    // this.users = await (
+    this.item$ = this.store
+      .select(AuthState.user)
+      .subscribe((x: any) => (this.userId = x?.uid));
+
+    const res = await this.inboxApi.getUsers(this.userId);
+    //TODO maybe have to store data to state. coz action in inbox.page.ts doesnt give return value
+    return res;
+    // return this.users$;
   }
 }

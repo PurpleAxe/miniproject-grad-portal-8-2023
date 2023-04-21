@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { OnInit, ViewChild } from '@angular/core';
-
+import { Logout } from '@mp/app/auth/util';
 
 @Component({
   selector: 'ms-home-page',
@@ -37,12 +37,11 @@ export class HomePage {
 
   // constructor(private readonly store: Store) {}
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private readonly store: Store) {}
 
   // ionViewWillEnter() {
   //   this.store.dispatch(new SubscribeToProfile());
   // }
-
 
   ngOnInit() {
     // console.log('');
@@ -50,6 +49,7 @@ export class HomePage {
 
   logout() {
     this.popover.dismiss();
+    this.store.dispatch(new Logout());
   }
 
   onSegmentChanged(event: any) {
@@ -92,6 +92,4 @@ export class HomePage {
   goToPost() {
     this.router.navigate(['/home/post']);
   }
-
-
 }

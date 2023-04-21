@@ -38,16 +38,21 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-      <ion-content color="light" *ngIf="users as user$">
+      <ion-content color="light" *ngIf="userNew$|async">
         <ion-list
           class="ion-margin-top"
           [style.background]="'transparent'"
           lines="none">
           <app-user-list
-            *ngFor="let item of user$"
+            *ngFor="let item of userNew$|keyvalue"
             [item]="item"
             (click)="startChat($event)">
           </app-user-list>
+          <!-- <app-user-list
+            *ngFor="let item of userNew$|keyvalue"
+            [item]="item"
+            (click)="startChat($event)">
+          </app-user-list> -->
         </ion-list>
       </ion-content>
     </ng-template>

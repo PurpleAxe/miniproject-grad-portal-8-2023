@@ -9,9 +9,7 @@ import {
   getDocs,
 } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-// import { getAuth } from '@angular/fire/auth';
 import {
-  IMessage,
   IConversation,
   ICreateConversationRequest,
   ICreateConversationResponse,
@@ -20,7 +18,6 @@ import {
   ISendMessageRequest,
   ISendMessageResponse,
 } from '@mp/api/message/util';
-
 @Injectable()
 export class InboxApi {
   constructor(
@@ -67,12 +64,9 @@ export class InboxApi {
     )(request);
   }
 
-  async getUsers() {
-    console.log('#######################');
+  async getUsers(userId: string | undefined) {
     // const auth = getAuth();
     // const user = auth.currentUser;
-    // console.log(user, '#######################');
-    // return collection('User').get().t
     //   try {
     //     const collectionName = request.search.collectionName;
     //     let field = request.search.field;
@@ -99,15 +93,11 @@ export class InboxApi {
     //     res.search.searchResults = err;
     //     return res.search;
     //   }
-    return 'a';
+    return userId != undefined ? await this.searchQeury(userId) : [];
   }
-  async searchQeury() {
-    // const userDepartments = profile.userDepartments;
+  async searchQeury(userId: string) {
     return await getDocs(
-      query(
-        collection(this.firestore, 'profiles'),
-        where('userDepartments', 'array-contains-any', 'curruserDepartments')
-      )
+      query(collection(this.firestore, 'users'), where('id', '!=', userId)) //TODO: change id to userId according to db document
     ).then((snap) => snap.docs.map((doc) => doc.data()));
   }
 }

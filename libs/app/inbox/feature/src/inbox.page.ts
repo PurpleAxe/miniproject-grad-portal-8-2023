@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { InboxState } from '@mp/app/inbox/data-access';
-import { GetUsers } from '@mp/app/inbox/util';
+import { GetUserId, GetUsers } from '@mp/app/inbox/util';
 import { IConversation } from '@mp/api/message/util';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { User } from '@angular/fire/auth';
+import { AuthState } from '@mp/app/auth/data-access';
+import { getCurrentUserId } from '@mp/app/auth/util';
 
 @Component({
   selector: 'app-inbox',
@@ -16,12 +19,16 @@ import { Observable } from 'rxjs';
 })
 export class InboxPageComponent implements OnInit {
   @Select(InboxState.conversation) inbox$!: Observable<IConversation | null>;
-  
+
   @ViewChild('new_chat') modal!: ModalController;
   @ViewChild('popover') popover!: PopoverController;
 
   segment = 'chats';
   open_new_chat = false;
+  user: any;
+  userNew$: any;
+  placeholderImgUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+
   users = [
     {
       id: 1,
@@ -69,6 +76,9 @@ export class InboxPageComponent implements OnInit {
     // console.log('');
     //TODO get all previous conversations on a list and display
   }
+  // ngOnDestroy() {
+  //   // this.userList.unsubscribe();
+  // }
 
   logout() {
     this.popover.dismiss();
@@ -80,7 +90,24 @@ export class InboxPageComponent implements OnInit {
 
   newChatModalOpen() {
     this.open_new_chat = true;
-    this.store.dispatch(new GetUsers());
+    // if (!this.userList) {
+
+    // =this.store
+    //   .select(AuthState.user)
+    //   .subscribe((x) => console.log(x.uid, 'zzzzzzzzz'));
+    // let userId;
+    // const uid = this.store.select(AuthState.user).subscribe((x) => {
+    // console.log(x.uid);
+    // });
+    // console.log(userId.uid, 'lllllllllllllllllll');
+    // this.store.pipe()
+
+    this.userNew$ = this.store.dispatch(new GetUsers());
+    // console.log(this.store.dispatch(new GetUserId()), '$##@#@#@#@#');
+    // this.userList.pipe(tap((x) => console.log(x)));
+    // }
+    console.log(this.userNew$);
+    this.userNew$.subscribe((x: any) => console.log(x), 'zzzzzzzzzzz');
     console.log('done fetching users');
   }
 

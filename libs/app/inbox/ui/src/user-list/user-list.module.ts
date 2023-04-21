@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 // import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { InboxModule } from '@mp/app/inbox/data-access';
@@ -14,8 +15,9 @@ import { UserListComponent } from './user-list.component';
     IonicModule,
     // NgxSkeletonLoaderModule,
     // NgxsFormPluginModule,
-    // ReactiveFormsModule,
-    InboxModule,
+    ReactiveFormsModule,
+    // UserListComponent,
+    // InboxModule,
   ],
   exports: [UserListComponent],
 })

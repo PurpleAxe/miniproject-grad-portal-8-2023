@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import {
-    ContinueWithGoogle,
-    Login,
-    Logout,
-    Register,
-    SetUser,
-    SubscribeToAuthState
+  ContinueWithGoogle,
+  getCurrentUserId,
+  Login,
+  Logout,
+  Register,
+  SetUser,
+  SubscribeToAuthState,
 } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import { Navigate } from '@ngxs/router-plugin';
@@ -33,7 +34,10 @@ export class AuthState {
   static user(state: AuthStateModel) {
     return state.user;
   }
-
+  // @Selector()
+  // static getUserId(state: AuthStateModel) {
+  //   return state.user;
+  // }
   @Action(SubscribeToAuthState)
   public subscribeToAuthState(ctx: StateContext<AuthStateModel>) {
     return this.authApi.auth$().pipe(

@@ -22,12 +22,14 @@ export class UserListComponent implements OnInit {
   ) {}
   @Input() item: any;
   @Output() onclick: EventEmitter<any> = new EventEmitter();
-
+  placeholderImgUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+  trasnformedItem: any;
   // constructor() // private readonly fb: FormBuilder,
   // private readonly store: Store
   // {}
+  transformedItem: any;
   ngOnInit() {
-    console.log('');
+    console.log(this.item, ' @@@@@@@@@@@@@@');
   }
 
   // redirect() {

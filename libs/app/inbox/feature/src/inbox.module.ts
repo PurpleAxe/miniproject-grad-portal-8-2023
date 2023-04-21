@@ -16,6 +16,7 @@ import { InboxPageRoutingModule } from './inbox-routing.module';
     InboxUiModule,
     InboxPageRoutingModule,
   ],
+  exports: [],
   declarations: [InboxPageComponent],
 })
 export class InboxModule {}
