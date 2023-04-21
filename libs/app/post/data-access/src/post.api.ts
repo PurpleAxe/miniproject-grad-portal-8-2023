@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
+import { IPost } from '@mp/api/post/util';
+import { Timestamp } from 'firebase-admin/firestore';
 // import {
 //     IPost,
 //     ICreatePostRequest,
@@ -32,7 +34,7 @@ export class PostApi {
     // return docData(docRef, { idField: 'id' });
   }
 
-  async createPost(/*request: ICreatePostRequest*/) {
+  async createPost(request: IPost) {
     // return await httpsCallable<
     //   ICreatePostRequest,
     //   ICreatePostResponse
@@ -40,6 +42,8 @@ export class PostApi {
     //   this.functions,
     //   'createPost'
     // )(request);
+    console.log(request);
+   
   }
 
   async fetchPost(/*request: IFetchPostRequest*/) {
@@ -50,6 +54,24 @@ export class PostApi {
     //   this.functions,
     //   'fetchPost'
     // )(request);
+    const  mock={
+      Document:{
+        UserId: "test",
+        Post : [{
+            postId: "test-p1",
+            contents:{
+                post: "new post created",
+                challenge: "test challenge",
+                department: "test department",
+            },
+            likedProfileIds: [],
+            dislikedProfileIds: [],
+            timestamp: Timestamp.now(),
+        }]
+     }
+    }
+
+    return mock;
   }
 
   async sharePost(/*request: ISharePostRequest*/) {
@@ -64,9 +86,5 @@ export class PostApi {
 
   ownPosts(){
     //load  your own posts
-  }
-
-  feedPosts(){
-    //load feed posts
   }
 }

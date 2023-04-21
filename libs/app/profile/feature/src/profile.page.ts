@@ -11,8 +11,4 @@ import { Observable } from 'rxjs';
 })
 export class ProfilePage {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
-
-  loadPosts(/*posts:Post[]*/){
-    //
-  }
 }

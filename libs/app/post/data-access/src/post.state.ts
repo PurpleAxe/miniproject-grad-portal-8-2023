@@ -1,10 +1,30 @@
-import { CreatePostAction, 
-    FetchPostsRequestAction, 
-    FetchPostsSuccessAction, 
-    Post } from "@mp/app/post/util";
+import { CreatePostAction } from "@mp/app/post/util";
 import { PostApi } from "./post.api";
 import { Injectable } from "@nestjs/common";
-import { Action, Store } from "@ngxs/store";
+import { Action, State, StateContext, Store } from "@ngxs/store";
+import { Navigate } from "@ngxs/router-plugin";
+import { IPost } from "@mp/api/post/util";
+
+
+@State<IPost>({
+    name:"Post",
+    defaults:{
+        Document:{
+            UserId: null,
+            Post : [{
+                postId: null,
+                contents:{
+                    post: null,
+                    challenge: null,
+                    department: null,
+                },
+                likedProfileIds: [],
+                dislikedProfileIds: [],
+                timestamp: null,
+            }]
+        }
+    }
+})
 
 @Injectable()
 export class PostState{
@@ -14,43 +34,28 @@ export class PostState{
     ) {}
 
     @Action(CreatePostAction)
-    async createPost(post:Post){
-        const request:Post ={
-            id: post.id,
-            body: post.body,
-            userId: post.userId,
-            department:post.department,
-            challenge:post.challenge,
-            comments:[],
-            like:0,
-            dislike:0
-        };
-        
-        const results=await this.postApi.createPost(/*request*/);
-        //const response=results.data;
-        //this.store.dispatch(new FetchPostsSuccessAction(response,"self"));
-        console.log(results);
-    }
+    async createPost(ctx:StateContext<IPost>,action:CreatePostAction){
 
-    @Action(FetchPostsSuccessAction)
-    async fetchPostsSuccess(posts: Post[],dir:string){
-        if(dir=="self"){
-            //page.loadPosts(posts);
-            console.log("You posts");
-        }else{
-            //page.loadPosts(posts);
-            console.log("Your feed posts");
+        const request:IPost={
+            Document:{
+                UserId: "",
+                Post : [{
+                    postId: "",
+                    contents:{
+                        post: action.payload.body,
+                        challenge: action.payload.challenge,
+                        department: action.payload.department,
+                    },
+                    likedProfileIds: [],
+                    dislikedProfileIds: [],
+                    timestamp: action.payload.timestamp,
+                }]
+            }
         }
-    }
-
-    @Action(FetchPostsRequestAction)
-    async fetchPostsRequest(dir:string){
-        let results:any;
-        if(dir=="self"){
-            results=await this.postApi.ownPosts();
-        }else{
-            results=await this.postApi.feedPosts();
-        }
-        this.store.dispatch(new FetchPostsSuccessAction(results,dir));
+        this.postApi.createPost(request);
+        // const response=await this.postApi.createPost(/*request*/);
+        // const state=ctx.getState();
+        // ctx.setState({...state,response});
+        this.store.dispatch(new Navigate(['Feed']));
     }
 }

@@ -1,2 +1,2 @@
-export * from './lib/feed.module';
-export * from './lib/feed.page';
+export * from './feed.module';
+export * from './feed.page';
