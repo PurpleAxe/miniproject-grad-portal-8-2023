@@ -9,13 +9,14 @@ import { NotificationsApi } from './notifications.api'
 import {
     Logout, SubscribeToNotifications, SetNotifications, MarkAsReadNotification, DeleteNotification
 } from '@mp/app/notifications/util';
+import { IReadNotificationsRequest, IReadNotificationsResponse } from '@mp/api/notifications/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store'
 import { SetError } from '@mp/app/errors/util';
 import produce from 'immer';
 import { tap } from 'rxjs';
 
 export interface NotificationsStateModel {
-    notificationsBox: INotificationBox | null;
+    notificationsBox: INotificationBox | null  |undefined;
     // notifications: INotifications [] | null;
     // notification: null;
     // memberId: null;
@@ -69,27 +70,25 @@ export class NotificationsState {
     }
 
     //ask if cloud functions are going to be used
-    // @Action(MarkAsReadNotification)
-    // async markAsRead(ctx: StateContext<NotificationsStateModel>) {
-    //     try {
-    //         const state = ctx.getState();
-
-    //         const request:IMarkAsReadRequest = {
-    //             notificationsBox: {
-    //                 userId,
-    //             },
-    //         };
+    @Action(MarkAsReadNotification)
+    async markAsRead(ctx: StateContext<NotificationsStateModel>) {
+        try {
+            const state = ctx.getState();
+            const currNotificationsBox = state.notificationsBox;
+            const request:IReadNotificationsRequest = {
+                notificationBox:currNotificationsBox,
+            };
 
 
-    //         const responseRef = await this.notificationsApi.markNotificationsAsRead(request);
-    //         const response = responseRef.data;
-    //         return ctx.dispatch(new SetNotifications(response));
-    //     } catch (error) {
-    //         return ctx.dispatch(new SetError((error as Error).message))
-    //     }
-    // }
+            const responseRef = await this.notificationsApi.markNotificationsAsRead(request);
+            const response = responseRef.data;
+            return ctx.dispatch(new MarkAsReadNotification(response));
+        } catch (error) {
+            return ctx.dispatch(new SetError((error as Error).message))
+        }
+    }
 
-    // @Action(DeleteNotification)
+    // @Action(DeleteNotification) //we will not be deleting notifications
     // deleteNotifications(ctx: StateContext<NotificationsStateModel>, { notification }: DeleteNotification) {
     //         try {
     //         const state = ctx.getState();

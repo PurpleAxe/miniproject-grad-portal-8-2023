@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-import { IConversation } from '@mp/api/message/util';
+import { IReadNotificationsRequest, IReadNotificationsResponse } from '@mp/api/notifications/util';
 import { INotificationBox, INotifications } from '@mp/api/notifications/util';
 
 @Injectable()
@@ -24,18 +24,17 @@ export class NotificationsApi{
         return docData(docRef, { idField: 'id' });
     }
 
-    //confirm if this should be done through a cloud function. Need to make response and request interfaces
-    // async markNotificationsAsRead(request: IMarkAsReadRequest) {
-    //     return await httpsCallable<
-    //         IMarkAsReadRequest,
-    //         IMarkAsReadResponse
-    //     >(
-    //       this.functions,
-    //       'markNotificationsAsRead'
-    //     )(request);
-    //   }
+    async markNotificationsAsRead(request: IReadNotificationsRequest) {
+        return await httpsCallable<
+            IReadNotificationsRequest,
+            IReadNotificationsResponse
+        >(
+          this.functions,
+          'markAsRead'
+        )(request);
+      }
 
-    // async deleteNotifications(request: IDeleteNotificationsRequest) {
+    // async deleteNotifications(request: IDeleteNotificationsRequest) { //we are not going to delete notifications
     //     return await httpsCallable<
     //         IDeleteNotificationsRequest,
     //         IDeleteNotificationsRequest
