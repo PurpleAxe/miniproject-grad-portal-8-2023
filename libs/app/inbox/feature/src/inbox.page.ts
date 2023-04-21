@@ -76,15 +76,15 @@ export class InboxPageComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
     console.log("ngOninit is called");
-    this.inbox$.subscribe((inboxState: InboxStateModel | null) => {
+    /*this.inbox$.subscribe((inboxState: InboxStateModel | null) => {
       if (inboxState?.users) {
         console.log("new user");
         console.log(inboxState.users);
         for (let i = 0; i < inboxState.users?.length; i++) {
-          this.users.push({ id: i , name: inboxState.users[i] , photo: ""});
+          this.users.push(inboxState.users[i]);
         }
       }
-    });
+    });*/
     // console.log('');
     //TODO get all previous conversations on a list and display
   }

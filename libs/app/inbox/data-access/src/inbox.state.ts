@@ -16,7 +16,7 @@ import { AuthState } from '@mp/app/auth/data-access';
 export interface InboxStateModel {
   currentConversation: IConversation | null;
   conversations: IConversation[] | null;
-  users: string [] | null;
+  users: { id: number, name: string }[] | null;
   user: User | undefined | null;
   //conversationIds: string | null;
   //messageIds: string [] | null;
@@ -176,13 +176,14 @@ export class InboxState {
 
     const res = await this.inboxApi.getUsers(this.userId);
     console.log("anything after me is res");
+    console.log(res);
     //TODO maybe have to store data to state. coz action in inbox.page.ts doesnt give return value
     return ctx.setState(
       produce((draft) => {
         draft.users=[];
         for (let i = 0; i < res.length; i++) {
-          draft.users?.push(res[i]['displayName']);
-          console.log(res[i]['displayName']+" was added");
+          draft.users?.push({ id: res[i]['id'], name: res[i]['displayName']});
+          console.log(draft.users[i].name+" was added");
           console.log("new size: "+draft.users.length);
         }
       })
