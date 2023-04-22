@@ -1,7 +1,7 @@
-/**
- * @jest-environment node
- */
-import {ConversationCreatedEvent, CreateConversationCommand, ICreateConversationRequest, ICreateConversationResponse, ISendMessageResponse, SendMessageCommand} from "@mp/api/message/util";
+/*
+*  @jest-environment node
+*/
+import {CreateConversationCommand, ICreateConversationRequest, ISendMessageResponse, SendMessageCommand} from "@mp/api/message/util";
 import {ISendMessageRequest} from "@mp/api/message/util";
 import { CreateConversationHandler, SendMessageHandler } from '../commands';
 import { MessageModule } from "../message.module";
@@ -77,7 +77,6 @@ describe('Message Command Handlers', () => {
       await firebase.firestore().collection("users").doc("1").set({
 	id : "1"
       })
-
       await firebase.firestore().collection("users").doc("2").set({
 	id : "2"
       })

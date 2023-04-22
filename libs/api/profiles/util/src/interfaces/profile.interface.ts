@@ -15,4 +15,6 @@ export interface IProfile {
   occupationDetails?: IOccupationDetails | null | undefined;
   status?: ProfileStatus | null | undefined;
   created?: Timestamp | null | undefined;
+  likedPosts?: string[] | null | undefined;
+  dislikedPosts?: string[] | null | undefined;
 }

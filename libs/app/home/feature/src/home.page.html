@@ -101,15 +101,30 @@
 
 <ion-footer>
   <ion-segment color="primary" value="homeButton">
-    <ion-segment-button value="homeButton" (click)="goToDash()">
+    <ion-segment-button value="homeButton" (click)="goToFeed()">
       <ion-icon name="home-outline"></ion-icon>
     </ion-segment-button>
     <ion-segment-button value="searchButton" (click)="goToSearch()">
       <ion-icon name="search-outline"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="addButton" (click)="goToPost()">
+
+
+    <ion-segment-button id="popover-button" value="addButton">
       <ion-icon name="duplicate-outline"></ion-icon>
     </ion-segment-button>
+    <ion-popover trigger="popover-button" [dismissOnSelect]="true">
+      <ng-template>
+        <ion-content>
+          <ion-list>
+            <ion-item [button]="true" [detail]="false" (click)="goToPost()">Create a Post</ion-item>
+            <ion-item [button]="true" [detail]="false" (click)="goToChallenge()">Create a Challenge</ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+
+
+
     <ion-segment-button value="notiButton" (click)="goToNotifications()">
       <ion-icon name="notifications-outline"></ion-icon>
     </ion-segment-button>

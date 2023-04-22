@@ -22,7 +22,7 @@ export class ChatPageComponent implements OnInit {
   newMessage!: string;
   isLoading = false;
   currentUserId = 1;
-  @Select(InboxState.conversation) conversation$!: Observable<IConversation | null>;  
+  @Select(InboxState.conversation) conversation$!: Observable<IConversation | null>;
 
   constructor(
     private alertController: AlertController,
