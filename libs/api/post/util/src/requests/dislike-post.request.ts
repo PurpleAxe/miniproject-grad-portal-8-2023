@@ -1,8 +1,6 @@
-
-
 import { IPost } from '../interfaces';
 
-export interface ICreateReactionRequest {
-  Onpost:IPost;
+export interface IDislikePostRequest {
+  post:IPost;
   userID?:string | null |undefined;
 }

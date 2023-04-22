@@ -35,11 +35,6 @@ export class PostsRepository {
       .collection("post")
       .where("postId", "==", comment.postID).get();
 
-    if ((await postRef).docs.length == 0) {
-      console.log("Invalid post ID")
-      throw Error("Invalid Comment ID");
-    }
-
     const docRef = admin
       .firestore()
       .collection("comments")
@@ -58,8 +53,46 @@ export class PostsRepository {
       .update({
       comments : admin.firestore.FieldValue.arrayUnion(commentToInsert.commentID)
     })
-
-
     return (await docRef.get()).data() as IComment;
+  }
+
+  async likePost(post:IPost) {
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .doc(post.postId)
+      .update({
+        likes : admin.firestore.FieldValue.increment(1)
+      })
+  }
+
+  async removeLike(post:IPost) {
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .doc(post.postId)
+      .update({
+        likes : admin.firestore.FieldValue.increment(-1)
+      })
+  }
+
+  async dislikePost(post:IPost) {
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .doc(post.postId)
+      .update({
+        dislikes : admin.firestore.FieldValue.increment(1)
+      })
+  }
+
+  async removeDislike(post:IPost) {
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .doc(post.postId)
+      .update({
+        dislikes : admin.firestore.FieldValue.increment(-1)
+      })
   }
 }

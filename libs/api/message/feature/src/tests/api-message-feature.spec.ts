@@ -1,3 +1,6 @@
+/*
+*  @jest-environment node
+*/
 import {ISendMessageResponse, SendMessageCommand} from "@mp/api/message/util";
 import {ISendMessageRequest} from "@mp/api/message/util";
 import { SendMessageHandler } from '../commands';
