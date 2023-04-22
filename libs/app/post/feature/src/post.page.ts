@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Timestamp } from 'firebase-admin/firestore';
-import { Select,Store } from '@ngxs/store';
-// import { CreatePost} from '@mp/app/post/util';
+import { Select, Store } from '@ngxs/store';
+import {MyPayload} from  '@mp/app/post/util';
+
+import { CreatePost} from '@mp/app/post/util';
+import { firestore } from 'firebase-admin';
+
 
 @Component({
   selector: 'app-post',
@@ -16,7 +19,7 @@ export class PostPageComponent {
   challenge="";
   department="";
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private readonly store: Store) { }
   
   customCounterFormatter(inputLength: number, maxLength: number) {
     return `${maxLength - inputLength} characters remaining`;
@@ -28,16 +31,15 @@ export class PostPageComponent {
       return; //should challenge and department be optional?
 
     console.log("Post");
-    this.router.navigate(['/home/feed']); //need to change to profileone day
+    console.log(this.body);
 
-  //   const timestamp = Timestamp.now();
+    const payload:MyPayload={
+      body: this.body,
+      department:this.department,
+      challenge:this.challenge,
+    }
+    this.store.dispatch(new CreatePost(payload));
 
-  //   const payload={
-  //     body: this.body,
-  //     department:this.department,
-  //     challenge:this.challenge,
-  //     timestamp:timestamp
-  //   }
-  //   this.store.dispatch(new CreatePost(payload));
+    this.router.navigate(['/home/feed']); //need to change to profile one day
   }
 }
