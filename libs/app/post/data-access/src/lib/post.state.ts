@@ -5,7 +5,7 @@ import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
 import {Timestamp} from "firebase-admin/firestore";
 import { 
-    PostLike
+    CreatePost
  } from '@mp/app/post/util';
 
 
@@ -53,39 +53,17 @@ export interface PostStateModel{
     }
 })
 
-// export interface PostStateModel{
-//     post:{
-//       model:{
-//         users: any[] | null;
-//       };
-//       dirty: false;
-//       status: string;
-//       errors: object;
-//     }
-//   }
-  
-//   @State<PostStateModel>({
-//       name: 'post',
-//       defaults: {
-//         post:{
-//           model:{
-//             users: null,
-//           },
-//           dirty: false,
-//           status: '',
-//           errors: {}
-//         }
-//       }
+
 @Injectable()
 export class PostState {
 
-  @Action(PostLike)
-  async PostLike(ctx: StateContext<PostStateModel>, {payload}: PostLike) {
-    //catches like
-    ctx.patchState({
-      
-    });
-  }
+    @Action(CreatePost)
+    async CreatePost(ctx: StateContext<PostStateModel>, {payload}: CreatePost) {
+      //catches like
+      ctx.patchState({
+        
+      });
+    }
 
   @Selector()
   static post(state: PostStateModel) 
