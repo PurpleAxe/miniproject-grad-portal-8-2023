@@ -78,17 +78,9 @@ export class InboxPageComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
     this.setUserId();
-    console.log("hooray!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     this.store.dispatch(new SubscribeToInbox());
+    console.log("inbox should be printed after this");
     console.log(this.inbox$);
-    console.log("hooray!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  }
-
-  ionViewWillEnter() {
-    console.log("hooray!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    this.store.dispatch(new SubscribeToInbox());
-    console.log(this.inbox$);
-    console.log("hooray!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   }
 
   // ngOnDestroy() {
