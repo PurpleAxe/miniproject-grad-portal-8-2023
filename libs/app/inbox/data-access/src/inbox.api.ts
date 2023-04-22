@@ -29,14 +29,15 @@ export class InboxApi {
     const docRef = doc(
       this.firestore,
       `inbox/${id}`
-    ).withConverter<IConversation []>({
+    ).withConverter<IConversation>({
       fromFirestore: (snapshot) => {
-        return snapshot.data() as IConversation [];
+        return snapshot.data() as IConversation;
       },
-      toFirestore: (it: IConversation []) => it,
+      toFirestore: (it: IConversation) => it,
     });
     return docData(docRef, { idField: 'id' });
   }
+
 
   //should we setConversation, setMessage and addMessage to conversation?
   //how about we go to empty chatroom and conversation is actually created when user send the first message?
@@ -63,6 +64,15 @@ export class InboxApi {
       'deleteMessage'
     )(request);
   }*/
+
+  async getConversation(userId: string | undefined) {
+    return userId != undefined ? await this.conversationQuery(userId): [];
+  }
+  async conversationQuery(userId: string) {
+    return await getDocs(
+      query(collection(this.firestore, 'conversations') , where('participants', 'array-contains', userId)) //TODO: change id to userId according to db document
+    ).then((snap) => snap.docs.map((doc) => doc.data()));
+  }
 
   async getUsers(userId: string | undefined) {
     // const auth = getAuth();

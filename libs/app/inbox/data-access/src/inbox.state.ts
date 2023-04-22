@@ -6,11 +6,12 @@ import {
 import { SetError } from '@mp/app/errors/util';
 import {
   CreateConversation,
-  SubscribeToInbox,
+  GetConversation,
+  //SubscribeToInbox,
   GetUserId,
   GetUsers,
   Logout,
-  SetInbox,
+  //SetInbox,
 } from '@mp/app/inbox/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
@@ -22,6 +23,7 @@ import { tap } from 'rxjs';
 export interface InboxStateModel {
   currentConversation: IConversation | null;
   conversations: IConversation[] | null;
+  conversation: { conversationId: string , messages: string [] , participants: string [] }[] | null;
   users: { id: number; displayName: string; photoURL: string }[] | null;
   // user: User | undefined | null;
   //conversationIds: string | null;
@@ -33,6 +35,7 @@ export interface InboxStateModel {
   defaults: {
     currentConversation: null,
     conversations: null,
+    conversation: null,
     users: null,
     // user: null,
     //conversationIds: null,
@@ -52,16 +55,24 @@ export class InboxState {
   static conversations(state: InboxStateModel) {
     return state.conversations;
   }
+
+  @Selector()
+  static conversation(state: InboxStateModel) {
+    return state.conversation;
+  }
+
   @Selector()
   static users(state: InboxStateModel) {
     return state.users;
   }
 
-  @Action(SetInbox)
-  setConversation(ctx: StateContext<InboxStateModel>, { conversations }: SetInbox) {
+  /*@Action(SetInbox)
+  setConversation(ctx: StateContext<InboxStateModel>, { conversation }: SetInbox) {
     return ctx.setState(
       produce((draft) => {
-        draft.conversations = conversations;
+        if (conversation) {
+          draft.conversations?.push(conversation);
+        }
       })
     );
   }
@@ -73,8 +84,8 @@ export class InboxState {
 
     return this.inboxApi
       .inbox$(user.uid)
-      .pipe(tap((conversations: IConversation []) => ctx.dispatch(new SetInbox(conversations))));
-  }
+      .pipe(tap((conversation: IConversation) => ctx.dispatch(new SetInbox(conversation))));
+  }*/
 
   @Action(CreateConversation) //createconversation only called to add new conversation
   async createConversation(ctx: StateContext<InboxStateModel>) {
@@ -92,6 +103,7 @@ export class InboxState {
       };
       const responseRef = await this.inboxApi.createConversation(request);
       const response = responseRef.data;
+      //ctx.dispatch(new SetInbox(response.conversation));
       return ctx.setState(
         produce((draft) => {
           if (draft.currentConversation) {
@@ -101,7 +113,7 @@ export class InboxState {
               draft.conversations.push(draft.currentConversation);
             }
           }
-          draft.currentConversation = response as IConversation;
+          draft.currentConversation = response as IConversation; 
         })
       );
     } catch (error) {
@@ -161,6 +173,31 @@ export class InboxState {
   // async getUserId() {
   //   return this.userId;
   // }
+  @Action(GetConversation)
+  async getConversation(ctx: StateContext<InboxStateModel>) {
+    this.store
+      .select(AuthState.user)
+      .subscribe((x: any) => (this.userId = x?.uid));
+
+    const res = await this.inboxApi.getConversation(this.userId);
+
+    return ctx.setState(
+      produce((draft) => {
+        draft.conversation = Array.from(
+          res.map(
+            (item) => ({
+              conversationId : item['conversationId'],
+              messages: item['messages'],
+              participants: item['participants'],
+            })
+            // items.map((item) => )
+          )
+        );
+      })
+    );
+
+    // return this.users$;
+  }
 
   @Action(GetUsers)
   async getUsers(ctx: StateContext<InboxStateModel>) {

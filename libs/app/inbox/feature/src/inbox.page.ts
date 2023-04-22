@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
-import { CreateConversation, GetUserId, GetUsers, Logout } from '@mp/app/inbox/util';
+import { CreateConversation, GetConversation, GetUserId, GetUsers, Logout } from '@mp/app/inbox/util';
 import { IConversation } from '@mp/api/message/util';
 import { Observable, tap, map } from 'rxjs';
 import { User } from '@angular/fire/auth';
@@ -69,8 +69,9 @@ export class InboxPageComponent implements OnInit {
     },
   ];*/
   users: any;
-  //chatRooms: any;
-  chatRooms: { id1: number; id2: number ; name: string; photo: string }[] = [];
+  chatRoomstub: any;
+  chatRoom: any;
+  chatRooms: { conversationId: string; messages: string[]; participants: string[] }[] = [];
 
   constructor(private router: Router, private readonly store: Store) {}
 
@@ -142,7 +143,30 @@ export class InboxPageComponent implements OnInit {
 
   startChat(item: any) {
     console.log('user clicked ;)');
-    /*this.store.dispatch(new CreateConversation());
+    this.store.dispatch(new GetConversation());
+    const conversation = this.store.select(InboxState.conversation).subscribe((x) => {
+      if (x) {
+        this.chatRooms=x;
+      }
+      console.log("define chatRooms");
+    });
+    console.log("should print conversations app user is in");
+    console.log(this.chatRooms.map(room => room.participants));
+    let noConversation=true;
+    for (let i = 0; i < this.chatRooms.length; i++) {
+      if (item.id==this.chatRooms[i].participants[0]||item.id==this.chatRooms[i].participants[1]) {
+        this.chatRoom=this.chatRooms[i];
+        noConversation=false;
+        break;
+      }
+    }
+    if (noConversation) {
+      this.chatRoom=null;
+      //create a new chatroom to store to firebase
+    }
+    console.log("should print conversation clicked user and current user is in");
+    console.log(this.chatRoom);
+    /*this.store.dispatch(new CreateConversation())
     const conversations = this.store.select(InboxState.conversation).subscribe((x) => {
       if (x) {
         this.chatRooms.push({ id1: x[0].members.id; id2:  ; name:  ; photo: null });
