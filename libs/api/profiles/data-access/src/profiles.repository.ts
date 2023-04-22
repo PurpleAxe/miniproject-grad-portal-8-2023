@@ -55,4 +55,21 @@ export class ProfilesRepository {
       .collection("dislikedPosts")
       .doc(post).delete();
   }
+  async likeListAdd(profile:string, post:string) {
+    admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("likedPosts")
+      .doc(post).create({});
+  }
+
+  async likeListRemove(profile:string, post:string) {
+    admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("dislikedPosts")
+      .doc(post).delete();
+  }
 }

@@ -111,4 +111,21 @@ export class ProfilesSagas {
       )
     );
   };
+
+  @Saga()
+  onPostLiked = (
+    events$: Observable<any>
+  ): Observable<IEvent> => {
+    return events$.pipe(
+      ofType(PostLikedEvent),
+      map(
+        (event: PostLikedEvent) =>
+          new ProfileLikedPostUpdatedEvent(
+            event.user,
+            event.Onpost.postId
+          )
+      )
+    );
+  };
+
 }
