@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
-import { CreateConversation, GetConversation, GetUserId, GetUsers, Logout } from '@mp/app/inbox/util';
+import { CreateConversation, GetConversation, GetUserId, GetUsers, Logout, SubscribeToInbox } from '@mp/app/inbox/util';
 import { IConversation } from '@mp/api/message/util';
 import { Observable, tap, map } from 'rxjs';
 import { User } from '@angular/fire/auth';
@@ -78,8 +78,18 @@ export class InboxPageComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
     this.setUserId();
+    console.log("hooray!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    this.store.dispatch(new SubscribeToInbox());
+    console.log(this.inbox$);
+    console.log("hooray!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   }
 
+  ionViewWillEnter() {
+    console.log("hooray!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    this.store.dispatch(new SubscribeToInbox());
+    console.log(this.inbox$);
+    console.log("hooray!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  }
 
   // ngOnDestroy() {
   //   // this.userList.unsubscribe();
@@ -163,6 +173,10 @@ export class InboxPageComponent implements OnInit {
     if (noConversation) {
       this.chatRoom=null;
       //create a new chatroom to store to firebase
+      this.store.dispatch(new CreateConversation());
+      const newConversation = this.store.select(InboxState.currentConversation).subscribe((x) => {
+        this.chatRoom = x;
+      });
     }
     console.log("should print conversation clicked user and current user is in");
     console.log(this.chatRoom);

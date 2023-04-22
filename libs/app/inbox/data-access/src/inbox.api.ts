@@ -7,6 +7,7 @@ import {
   query,
   where,
   getDocs,
+  addDoc,
 } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import {
@@ -25,15 +26,15 @@ export class InboxApi {
     private readonly functions: Functions
   ) {}
 
-  inbox$(id: string) {
+  inbox$() {
     const docRef = doc(
       this.firestore,
-      `inbox/${id}`
-    ).withConverter<IConversation>({
+      `conversations`
+    ).withConverter<IConversation []>({
       fromFirestore: (snapshot) => {
-        return snapshot.data() as IConversation;
+        return snapshot.data() as IConversation [];
       },
-      toFirestore: (it: IConversation) => it,
+      toFirestore: (it: IConversation []) => it,
     });
     return docData(docRef, { idField: 'id' });
   }
@@ -63,6 +64,21 @@ export class InboxApi {
       this.functions,
       'deleteMessage'
     )(request);
+  }*/
+
+  /*async function createConversation(messages, members) {
+    try {
+      const newConversationRef = collection(this.firestore, 'conversations');
+      const newConversation = await addDoc(newConversationRef, {
+        conversationId: newConversationRef.id,
+        messages,
+        members,
+      });
+      console.log('Conversation document created with ID: ', newConversation.id);
+      return newConversation;
+    } catch (error) {
+      console.error('Error creating conversation document: ', error);
+    }
   }*/
 
   async getConversation(userId: string | undefined) {

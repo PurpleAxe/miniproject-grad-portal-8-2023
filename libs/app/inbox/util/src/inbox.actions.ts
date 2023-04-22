@@ -8,19 +8,19 @@ export class CreateConversation { //item is a user to speak to
   static readonly type = '[Inbox] CreateConversation';
 }
 
-/*export class SetInbox {
+export class SetInbox {
   static readonly type = '[Profile] SetInbox';
-  constructor(public readonly conversation: IConversation | null) {}
-}*/
+  constructor(public readonly conversations: IConversation [] | null) {}
+}
 
 // export class DeleteMessage {
 //   static readonly type = '[Inbox] DeleteMessage';
 //   constructor(public readonly messageToDelete: IMessage | null) {}
 // }
 
-/*export class SubscribeToInbox {
+export class SubscribeToInbox {
   static readonly type = '[Inbox] SubscribeToInbox';
-}*/
+}
 
 export class GetUsers {
   static readonly type = '[Inbox] GetUsers';

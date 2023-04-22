@@ -11,6 +11,8 @@ import {
   GetUserId,
   GetUsers,
   Logout,
+  SetInbox,
+  SubscribeToInbox,
   //SetInbox,
 } from '@mp/app/inbox/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
@@ -57,6 +59,11 @@ export class InboxState {
   }
 
   @Selector()
+  static currentConversation(state: InboxStateModel) {
+    return state.currentConversation;
+  }
+
+  @Selector()
   static conversation(state: InboxStateModel) {
     return state.conversation;
   }
@@ -66,12 +73,12 @@ export class InboxState {
     return state.users;
   }
 
-  /*@Action(SetInbox)
-  setConversation(ctx: StateContext<InboxStateModel>, { conversation }: SetInbox) {
+  @Action(SetInbox)
+  setConversation(ctx: StateContext<InboxStateModel>, { conversations }: SetInbox) {
     return ctx.setState(
       produce((draft) => {
-        if (conversation) {
-          draft.conversations?.push(conversation);
+        if (conversations) {
+          draft.conversations = conversations;
         }
       })
     );
@@ -83,9 +90,9 @@ export class InboxState {
     if (!user) return ctx.dispatch(new SetError('User not logged in'));
 
     return this.inboxApi
-      .inbox$(user.uid)
-      .pipe(tap((conversation: IConversation) => ctx.dispatch(new SetInbox(conversation))));
-  }*/
+      .inbox$()
+      .pipe(tap((conversations: IConversation [] ) => ctx.dispatch(new SetInbox(conversations))));
+  }
 
   @Action(CreateConversation) //createconversation only called to add new conversation
   async createConversation(ctx: StateContext<InboxStateModel>) {
