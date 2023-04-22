@@ -13,6 +13,7 @@ import {
 import {
   PostLikedEvent,
   PostDislikedEvent,
+  PostDislikeRemovedEvent,
 } from '@mp/api/post/util';
 import { UserCreatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
@@ -106,7 +107,25 @@ export class ProfilesSagas {
         (event: PostDislikedEvent) =>
           new ProfileDislikedPostsUpdatedEvent(
             event.user,
-            event.Onpost.postId
+            event.Onpost.postId,
+            false
+          )
+      )
+    );
+  };
+
+  @Saga()
+  onPostDislikedRemoved = (
+    events$: Observable<any>
+  ): Observable<IEvent> => {
+    return events$.pipe(
+      ofType(PostDislikeRemovedEvent),
+      map(
+        (event: PostDislikeRemovedEvent) =>
+          new ProfileDislikedPostsUpdatedEvent(
+            event.user,
+            event.Onpost.postId,
+            true
           )
       )
     );
@@ -122,7 +141,8 @@ export class ProfilesSagas {
         (event: PostLikedEvent) =>
           new ProfileLikedPostUpdatedEvent(
             event.user,
-            event.Onpost.postId
+            event.Onpost.postId,
+            false
           )
       )
     );
