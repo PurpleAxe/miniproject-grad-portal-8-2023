@@ -10,17 +10,21 @@
         </ion-toolbar>
     </ion-header>
     <ion-content color="light">
-        <ion-grid class="Notification-content">
-            <ion-row>
-                <ion-col *ngFor="let notification of notifications.inbox; index as i;" class="notification-container" size="11.55">
-                    <img src="assets/logos/TimeHive.jpg" class="notification-logo" />
-                    <ion-title class="notification-heading">TimeHive</ion-title>
-                    <ion-text class="notification-time">3m</ion-text>
-                    <img src="assets/icons/notification-orange.svg" class="notification-icon" />
-                    <ion-label class="notification-text">{{notification.message}}</ion-label>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
+        <ion-list>
+            <ion-item *ngFor="let notification of notifications.inbox; index as i;" detail="true" href="http://{{notification.url}}">
+                <ion-avatar slot="start">
+                    <img [src]="notifications.user.accountDetails?.photoURL"/>
+                </ion-avatar>
+                <ion-label>
+                    <h1>{{notifications.user.userId}}</h1>
+                    <p>{{notification.message}}</p>  
+                </ion-label>   
+                <ion-label slot="end" class="ion-padding-right">
+                    <ion-icon class="notification-icon ion-padding-bottom" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>
+                    <ion-text class="time" color="medium">3m</ion-text>
+                </ion-label>   
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ng-container>
 <ng-template #loading>
