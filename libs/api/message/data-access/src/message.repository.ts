@@ -47,9 +47,4 @@ export class MessageRepository {
       .doc(conversation.conversationID!)
       .set(conversation)
   }
-
-  async getProfilesCollection() {
-    const snapshot = await admin.firestore().collection('profiles').get()
-    return snapshot.docs.map(doc => doc.data());
-  }
 }

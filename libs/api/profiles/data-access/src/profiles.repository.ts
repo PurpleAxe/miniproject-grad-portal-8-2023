@@ -38,4 +38,9 @@ export class ProfilesRepository {
       .doc(profile.userId)
       .set(profile, { merge: true });
   }
+
+  async getProfilesCollection() {
+    const snapshot = await admin.firestore().collection('profiles').get()
+    return snapshot.docs.map(doc => doc.data());
+  }
 }
