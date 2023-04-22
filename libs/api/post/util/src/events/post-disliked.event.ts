@@ -1,5 +1,5 @@
 import { IPost } from "../interfaces";
 
-export class ReactionUpdatedEvent {
+export class PostDislikedEvent {
     constructor(public readonly Onpost: IPost) {}
 }

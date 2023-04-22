@@ -58,8 +58,16 @@ export class PostsRepository {
       .update({
       comments : admin.firestore.FieldValue.arrayUnion(commentToInsert.commentID)
     })
-
-
     return (await docRef.get()).data() as IComment;
+  }
+
+  async likePost(post:IPost) {
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .doc(post.postId)
+      .update({
+        likes : admin.firestore.FieldValue.increment(1)
+      })
   }
 }
