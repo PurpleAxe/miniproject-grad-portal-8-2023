@@ -65,4 +65,34 @@ export class PostsRepository {
         likes : admin.firestore.FieldValue.increment(1)
       })
   }
+
+  async removeLike(post:IPost) {
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .doc(post.postId)
+      .update({
+        likes : admin.firestore.FieldValue.increment(-1)
+      })
+  }
+
+  async dislikePost(post:IPost) {
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .doc(post.postId)
+      .update({
+        dislikes : admin.firestore.FieldValue.increment(1)
+      })
+  }
+
+  async removeDislike(post:IPost) {
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .doc(post.postId)
+      .update({
+        dislikes : admin.firestore.FieldValue.increment(-1)
+      })
+  }
 }
