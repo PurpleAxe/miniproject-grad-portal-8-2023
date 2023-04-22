@@ -1,0 +1,43 @@
+
+<ion-card>
+  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+  <ion-card-header>
+    <ion-card-title>Challenges</ion-card-title>
+    <ion-card-subtitle>Link your post to one of the departments and give a time reward for completing the challenge.</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-label position="floating">Add to a Department</ion-label>
+      <ion-input fill="outline" placeholder="#Department"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Add a Time Reward in Seconds</ion-label>
+      <ion-input fill="outline" placeholder="20s"></ion-input>
+    </ion-item>
+
+  
+    
+  </ion-card-content>
+</ion-card>
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Add a Post</ion-card-title>
+    <ion-card-subtitle>What's Happening?</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-textarea rows="9" maxlength="180"></ion-textarea>
+    </ion-item>    
+  </ion-card-content>
+</ion-card>
+
+<ion-fab slot="fixed" horizontal="end" vertical="bottom">
+  <ion-button>
+    Post
+    <ion-icon slot="end" name="paper-plane"></ion-icon>
+  </ion-button>
+</ion-fab>

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import {
-    AuthGuard,
-    redirectLoggedInTo,
-    redirectUnauthorizedTo
+  AuthGuard,
+  redirectLoggedInTo,
+  redirectUnauthorizedTo
 } from '@angular/fire/auth-guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -44,6 +44,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('@mp/app/privacy/feature').then((m) => m.PrivacyModule),
   },
+  {
+    path: 'settings',
+    loadChildren: () =>
+      import('@mp/app/settings/feature').then((m) => m.SettingsModule),
+  },
   // {
   //   path: 'verify',
   //   pathMatch: 'full',
@@ -84,6 +89,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('@mp/app/login/feature').then((m) => m.LoginModule),
   },
+  //  { path: 'chat', component: InboxPageComponent },
 ];
 
 @NgModule({
@@ -92,4 +98,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class CoreRouting {}
+export class CoreRouting { }

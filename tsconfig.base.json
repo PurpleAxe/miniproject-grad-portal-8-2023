@@ -32,6 +32,9 @@
       ],
       "@mp/api/history/feature": ["libs/api/history/feature/src/index.ts"],
       "@mp/api/history/util": ["libs/api/history/util/src/index.ts"],
+      "@mp/api/post/data-access": ["libs/api/post/data-access/src/index.ts"],
+      "@mp/api/post/feature": ["libs/api/post/feature/src/index.ts"],
+      "@mp/api/post/util": ["libs/api/post/util/src/index.ts"],
       "@mp/api/profiles/data-access": [
         "libs/api/profiles/data-access/src/index.ts"
       ],
@@ -43,6 +46,12 @@
       "@mp/app/auth/data-access": ["libs/app/auth/data-access/src/index.ts"],
       "@mp/app/auth/feature": ["libs/app/auth/feature/src/index.ts"],
       "@mp/app/auth/util": ["libs/app/auth/util/src/index.ts"],
+      "@mp/app/challenge/data-access": [
+        "libs/app/challenge/data-access/src/index.ts"
+      ],
+      "@mp/app/challenge/feature": ["libs/app/challenge/feature/src/index.ts"],
+      "@mp/app/challenge/util": ["libs/app/challenge/util/src/index.ts"],
+      "@mp/app/chat/feature": ["libs/app/chat/feature/src/index.ts"],
       "@mp/app/copyright/ui": ["libs/app/copyright/ui/src/index.ts"],
       "@mp/app/core/feature": ["libs/app/core/feature/src/index.ts"],
       "@mp/app/dashboard/data-access": [
@@ -55,16 +64,35 @@
       ],
       "@mp/app/errors/feature": ["libs/app/errors/feature/src/index.ts"],
       "@mp/app/errors/util": ["libs/app/errors/util/src/index.ts"],
+      "@mp/app/feed/feature": ["libs/app/feed/feature/src/index.ts"],
+      "@mp/app/feed/ui": ["libs/app/feed/ui/src/index.ts"],
       "@mp/app/forgot/data-access": [
         "libs/app/forgot/data-access/src/index.ts"
       ],
       "@mp/app/forgot/feature": ["libs/app/forgot/feature/src/index.ts"],
       "@mp/app/forgot/util": ["libs/app/forgot/util/src/index.ts"],
       "@mp/app/home/feature": ["libs/app/home/feature/src/index.ts"],
+      "@mp/app/inbox/feature": ["libs/app/inbox/feature/src/index.ts"],
       "@mp/app/login/data-access": ["libs/app/login/data-access/src/index.ts"],
       "@mp/app/login/feature": ["libs/app/login/feature/src/index.ts"],
       "@mp/app/login/util": ["libs/app/login/util/src/index.ts"],
+      "@mp/app/notifications/data-access": [
+        "libs/app/notifications/data-access/src/index.ts"
+      ],
+      "@mp/app/notifications/feature": [
+        "libs/app/notifications/feature/src/index.ts"
+      ],
       "@mp/app/post/data-access": ["libs/app/post/data-access/src/index.ts"],
+      "@mp/app/notifications/util": [
+        "libs/app/notifications/util/src/index.ts"
+      ],
+      "@mp/app/post/feature": ["libs/app/post/feature/src/index.ts"],
+      "@mp/app/post/pages/posts/feature": [
+        "libs/app/post/pages/posts/feature/src/index.ts"
+      ],
+      "@mp/app/post/src/pages/posts/data-access": [
+        "libs/app/post/src/pages/posts/data-access/src/index.ts"
+      ],
       "@mp/app/post/util": ["libs/app/post/util/src/index.ts"],
       "@mp/app/privacy/feature": ["libs/app/privacy/feature/src/index.ts"],
       "@mp/app/profile/data-access": [
@@ -81,6 +109,8 @@
       "@mp/app/reset/data-access": ["libs/app/reset/data-access/src/index.ts"],
       "@mp/app/reset/feature": ["libs/app/reset/feature/src/index.ts"],
       "@mp/app/reset/util": ["libs/app/reset/util/src/index.ts"],
+      "@mp/app/search/feature": ["libs/app/search/feature/src/index.ts"],
+      "@mp/app/settings/feature": ["libs/app/settings/feature/src/index.ts"],
       "@mp/app/tos/feature": ["libs/app/tos/feature/src/index.ts"],
       "@mp/app/updates/data-access": [
         "libs/app/updates/data-access/src/index.ts"

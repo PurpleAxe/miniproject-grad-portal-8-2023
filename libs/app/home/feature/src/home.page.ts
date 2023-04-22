@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { SubscribeToProfile } from '@mp/app/profile/util';
-import { Select, Store } from '@ngxs/store';
+import { Select} from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { ModalController, PopoverController } from '@ionic/angular';
+import { ViewChild } from '@angular/core';
+
 
 @Component({
   selector: 'ms-home-page',
@@ -12,10 +15,44 @@ import { Observable } from 'rxjs';
 })
 export class HomePage {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  @ViewChild('new_chat') modal!: ModalController;
+  @ViewChild('popover') popover!: PopoverController;
 
-  constructor(private readonly store: Store) {}
 
-  ionViewWillEnter() {
-    this.store.dispatch(new SubscribeToProfile());
+  constructor(private router: Router) { }
+
+
+  ngOnInit() {
+    // console.log('');
   }
+
+  logout() {
+    this.popover.dismiss();
+  }
+
+  goToSearch() {
+    this.router.navigate(['/home/search']);
+  }
+
+  goToChat() {
+    this.router.navigate(['/home/inbox']);
+  }
+
+  goToFeed() {
+    this.router.navigate(['/home/feed']);
+  }
+
+  goToNotifications() {
+    this.router.navigate(['/home/notifications']);
+  }
+
+  goToPost() {
+    this.router.navigate(['/home/post']);
+  }
+
+  goToChallenge() {
+    this.router.navigate(['/home/challenge']);
+  }
+
+
 }
