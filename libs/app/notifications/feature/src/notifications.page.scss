@@ -39,14 +39,6 @@ ion-buttons {
     padding: 10px;
 }
 
-.notification-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: auto;
-    padding: 10px;
-}
-
 .notification-heading {
     position: absolute;
     top: 0;
@@ -88,4 +80,10 @@ ion-buttons {
 ion-grid {
     height: 50%;
     display: grid;
+}
+
+.notification-icon {
+    display: block;
+    height: 16px;
+    width: 16px;
 }

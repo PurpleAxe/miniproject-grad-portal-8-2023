@@ -20,8 +20,11 @@
                     <p>{{notification.message}}</p>  
                 </ion-label>   
                 <ion-label slot="end" class="ion-padding-right">
-                    <ion-icon class="notification-icon ion-padding-bottom" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>
+                    <ion-icon  *ngIf="notification.read; else elseBlock" class="notification-icon ion-padding-bottom" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>
                     <ion-text class="time" color="medium">3m</ion-text>
+                    <ng-template #elseBlock>
+                        <ion-icon #elseBlock class="notification-icon ion-padding-bottom" color="dark" src="assets/icons/notification-black.svg"></ion-icon>
+                    </ng-template>
                 </ion-label>   
             </ion-item>
         </ion-list>
