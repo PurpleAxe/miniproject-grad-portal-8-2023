@@ -9,16 +9,35 @@ import { Select, Store } from '@ngxs/store';
   templateUrl: './notifications.page.html',
   styleUrls: ['./notifications.page.scss'],
 })
-export class NotificationsPageComponent {
+export class NotificationsPageComponent{
   @Select(NotificationsState.notificationBox) notifications$!: Observable<INotificationBox | null>;
 
-  constructor(
-    private alertController: AlertController,
-    private readonly store: Store
-  ) { }
+  // segment = 'notifications';
+  // // notificationBox = null;
+  // notifications = [
+  //   { read:true,
+  //     message:"testing",
+  //     url:"localhost:4200/home/motifications",
+  //     notificationID:"mockdata1," },
+  //   { read:false,
+  //     message:"testing 2",
+  //     url:"localhost:4200/home/motifications",
+  //     notificationID:"mockdata2" }
+  // ];
 
-  ngOnInit() {
-    console.log(this.notifications$);
-  }
+  // constructor(
+  //   private alertController: AlertController,
+  //   private readonly store: Store
+  // ) { }
+
+  // ngOnInit() {
+  //   console.log(5);
+  //   console.log(this.notifications);
+  //   console.log(NotificationsState.notificationBox);
+  //   // this.notifications=NotificationsState.notificationBoxInbox();
+  //   // this.notificationBox=NotificationsState.notificationBox;
+    
+  //   // this.notifications=NotificationsState.notificationBox.inbox;
+  // }
 }
 
