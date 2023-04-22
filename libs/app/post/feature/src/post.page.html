@@ -1,1 +1,41 @@
-<p>post works!</p>
+
+<ion-card>
+  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+  <ion-card-header>
+    <ion-card-title>Add Your Tags</ion-card-title>
+    <ion-card-subtitle>Link your post to one of the departments, or as a response to a challenge.</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-label position="floating">Add to a Department</ion-label>
+      <ion-input fill="outline" placeholder="#Department" [(ngModel)]="department"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Add to a Challenge</ion-label>
+      <ion-input fill="outline" placeholder="#Challenge" [(ngModel)]="challenge"></ion-input>
+    </ion-item>
+    
+  </ion-card-content>
+</ion-card>
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Add a Post</ion-card-title>
+    <ion-card-subtitle>What's Happening?</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-textarea rows="9" maxlength="180" [(ngModel)]="body"></ion-textarea>
+    </ion-item>    
+  </ion-card-content>
+</ion-card>
+
+<ion-fab slot="fixed" horizontal="end" vertical="bottom">
+  <ion-button (click)="uploadPost()">
+    Post
+    <ion-icon slot="end" name="paper-plane"></ion-icon>
+  </ion-button>
+</ion-fab>
