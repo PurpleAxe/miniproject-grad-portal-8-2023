@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
-import { GetUserId, GetUsers, Logout } from '@mp/app/inbox/util';
+import { CreateConversation, GetUserId, GetUsers, Logout } from '@mp/app/inbox/util';
 import { IConversation } from '@mp/api/message/util';
 import { Observable, tap, map } from 'rxjs';
 import { User } from '@angular/fire/auth';
@@ -18,7 +18,7 @@ import { getCurrentUserId } from '@mp/app/auth/util';
   styleUrls: ['./inbox.page.scss'],
 })
 export class InboxPageComponent implements OnInit {
-  @Select(InboxState.conversation) inbox$!: Observable<InboxStateModel | null>;
+  @Select(InboxState.conversations) inbox$!: Observable<InboxStateModel | null>;
 
   @ViewChild('new_chat') modal!: ModalController;
   @ViewChild('popover') popover!: PopoverController;
@@ -69,7 +69,8 @@ export class InboxPageComponent implements OnInit {
     },
   ];*/
   users: any;
-  chatRooms: { id: number; name: string; photo: string }[] = [];
+  //chatRooms: any;
+  chatRooms: { id1: number; id2: number ; name: string; photo: string }[] = [];
 
   constructor(private router: Router, private readonly store: Store) {}
 
@@ -77,6 +78,8 @@ export class InboxPageComponent implements OnInit {
   ngOnInit() {
     this.setUserId();
   }
+
+
   // ngOnDestroy() {
   //   // this.userList.unsubscribe();
   // }
@@ -139,6 +142,23 @@ export class InboxPageComponent implements OnInit {
 
   startChat(item: any) {
     console.log('user clicked ;)');
+    /*this.store.dispatch(new CreateConversation());
+    const conversations = this.store.select(InboxState.conversation).subscribe((x) => {
+      if (x) {
+        this.chatRooms.push({ id1: x[0].members.id; id2:  ; name:  ; photo: null });
+      }
+      
+    });*/
+    /*if (this.chatRooms) {
+      for (let i = 0; i < this.chatRooms.length; i++) {
+        if (this.chatRooms[i]) {
+          
+        }
+        
+      }
+    }*/
+    
+    //this.router.navigate(['/chats']);
     console.log(item); // has selected user {id: , displayName: , photoURL}
     //1. TODO list all users
   }

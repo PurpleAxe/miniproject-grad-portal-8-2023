@@ -19,6 +19,8 @@ import {
   ISendMessageResponse,
 } from '@mp/api/message/util';
 
+
+
 @Injectable()
 export class ChatApi {
   constructor(
@@ -54,13 +56,45 @@ export class ChatApi {
       'deleteMessage'
     )(request);
   }
-  // async searchQeury() {
-  //   // const userDepartments = profile.userDepartments;
-  //   return await getDocs(
-  //     query(
-  //       collection(this.firestore, 'profiles'),
-  //       where('userDepartments', 'array-contains-any', 'curruserDepartments')
-  //     )
-  //   ).then((snap) => snap.docs.map((doc) => doc.data()));
-  // }
+
+  /*async getMessages(userId: string | undefined) {
+    // const auth = getAuth();
+    // const user = auth.currentUser;
+    //   try {
+    //     const collectionName = request.search.collectionName;
+    //     let field = request.search.field;
+    //     const keyword = request.search.keyword;
+
+    //     if (collectionName && keyword) {
+    //       if (field.length > 0) {
+    //         field = this.getFieldName(field);
+    //         const queryResult = await this.searchQeury(
+    //           collectionName,
+    //           keyword,
+    //           field
+    //         );
+    //         res.search.searchResults = queryResult;
+    //         return res.search;
+    //       } else {
+    //         throw new Error('filed is empty');
+    //       }
+    //     } else {
+    //       throw new Error('collection name or keyword not set');
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //     res.search.searchResults = err;
+    //     return res.search;
+    //   }
+    return userId != undefined ? await this.searchQeury(userId) : [];
+  }
+   async searchQeury() {
+     // const userDepartments = profile.userDepartments;
+     return await getDocs(
+       query(
+         collection(this.firestore, 'profiles'),
+         where('userDepartments', 'array-contains-any', 'curruserDepartments')
+       )
+     ).then((snap) => snap.docs.map((doc) => doc.data()));
+   }*/
 }

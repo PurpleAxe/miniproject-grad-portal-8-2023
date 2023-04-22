@@ -25,27 +25,27 @@ export class InboxApi {
     private readonly functions: Functions
   ) {}
 
-  conversation$(id: string) {
+  inbox$(id: string) {
     const docRef = doc(
       this.firestore,
-      `conversations/${id}`
-    ).withConverter<IConversation>({
+      `inbox/${id}`
+    ).withConverter<IConversation []>({
       fromFirestore: (snapshot) => {
-        return snapshot.data() as IConversation;
+        return snapshot.data() as IConversation [];
       },
-      toFirestore: (it: IConversation) => it,
+      toFirestore: (it: IConversation []) => it,
     });
     return docData(docRef, { idField: 'id' });
   }
 
   //should we setConversation, setMessage and addMessage to conversation?
   //how about we go to empty chatroom and conversation is actually created when user send the first message?
-  async sendMessage(request: ISendMessageRequest) {
+  /*async sendMessage(request: ISendMessageRequest) {
     return await httpsCallable<ISendMessageRequest, ISendMessageResponse>(
       this.functions,
       'sendMessage'
     )(request);
-  }
+  }*/
 
   async createConversation(request: ICreateConversationRequest) {
     return await httpsCallable<
@@ -57,12 +57,12 @@ export class InboxApi {
     )(request);
   }
 
-  async deleteMessage(request: IDeleteMessageRequest) {
+  /*async deleteMessage(request: IDeleteMessageRequest) {
     return await httpsCallable<IDeleteMessageRequest, IDeleteMessageResponse>(
       this.functions,
       'deleteMessage'
     )(request);
-  }
+  }*/
 
   async getUsers(userId: string | undefined) {
     // const auth = getAuth();

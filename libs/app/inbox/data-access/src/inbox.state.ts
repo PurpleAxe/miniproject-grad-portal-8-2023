@@ -6,15 +6,18 @@ import {
 import { SetError } from '@mp/app/errors/util';
 import {
   CreateConversation,
+  SubscribeToInbox,
   GetUserId,
   GetUsers,
   Logout,
+  SetInbox,
 } from '@mp/app/inbox/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
 import { InboxApi } from './inbox.api';
 import { Logout as AuthLogout } from '@mp/app/auth/util';
-import { AuthState } from '../../../auth/data-access/src/auth.state';
+import { AuthState } from '@mp/app/auth/data-access';
+import { tap } from 'rxjs';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
@@ -46,15 +49,34 @@ export class InboxState {
   public userId!: string | undefined;
   // private item$: any;
   @Selector()
-  static conversation(state: InboxStateModel) {
-    return state.currentConversation;
+  static conversations(state: InboxStateModel) {
+    return state.conversations;
   }
   @Selector()
   static users(state: InboxStateModel) {
     return state.users;
   }
 
-  @Action(CreateConversation)
+  @Action(SetInbox)
+  setConversation(ctx: StateContext<InboxStateModel>, { conversations }: SetInbox) {
+    return ctx.setState(
+      produce((draft) => {
+        draft.conversations = conversations;
+      })
+    );
+  }
+
+  @Action(SubscribeToInbox)
+  subscribeToInbox(ctx: StateContext<InboxStateModel>) {
+    const user = this.store.selectSnapshot(AuthState.user);
+    if (!user) return ctx.dispatch(new SetError('User not logged in'));
+
+    return this.inboxApi
+      .inbox$(user.uid)
+      .pipe(tap((conversations: IConversation []) => ctx.dispatch(new SetInbox(conversations))));
+  }
+
+  @Action(CreateConversation) //createconversation only called to add new conversation
   async createConversation(ctx: StateContext<InboxStateModel>) {
     try {
       const inboxState = ctx.getState();
