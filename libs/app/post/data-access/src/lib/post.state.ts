@@ -3,67 +3,93 @@ import { Register as AuthRegister } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
+import {Timestamp} from "firebase-admin/firestore";
 import { 
-    SwipeAccept,
-    SwipeReject,
-    FilterCards
+    PostLike
  } from '@mp/app/post/util';
 
+
 export interface PostStateModel{
-  post:{
-    model:{
-      users: any[] | null;
+    Document:{
+        UserId: string | null;
+        Post : [{
+            postId: string | null;
+            contents:{
+                post: string | null;
+                challenge: string | null;
+                department: string | null;
+            };
+            likedProfileIds: string[];
+            dislikedProfileIds: string[];
+            timestamp: Timestamp | null;
+        }]
     };
     dirty: false;
     status: string;
     errors: object;
   }
-}
+
 
 @State<PostStateModel>({
-    name: 'post',
-    defaults: {
-      post:{
-        model:{
-          users: null,
+    name:"Post",
+    defaults:{
+        Document:{
+            UserId: null,
+            Post : [{
+                postId: null,
+                contents:{
+                    post: null,
+                    challenge: null,
+                    department: null,
+                },
+                likedProfileIds: [],
+                dislikedProfileIds: [],
+                timestamp: null,
+            }]
         },
         dirty: false,
         status: '',
-        errors: {}
-      }
+        errors: {},
     }
 })
+
+// export interface PostStateModel{
+//     post:{
+//       model:{
+//         users: any[] | null;
+//       };
+//       dirty: false;
+//       status: string;
+//       errors: object;
+//     }
+//   }
+  
+//   @State<PostStateModel>({
+//       name: 'post',
+//       defaults: {
+//         post:{
+//           model:{
+//             users: null,
+//           },
+//           dirty: false,
+//           status: '',
+//           errors: {}
+//         }
+//       }
 @Injectable()
 export class PostState {
 
-  @Action(SwipeAccept)
-  async SwipeAccept(ctx: StateContext<PostStateModel>, {payload}: SwipeAccept) {
-    //Works and catches Chat id
+  @Action(PostLike)
+  async PostLike(ctx: StateContext<PostStateModel>, {payload}: PostLike) {
+    //catches like
     ctx.patchState({
       
     });
   }
-
-  @Action(SwipeReject)
-  async SwipeReject(ctx: StateContext<PostStateModel>, {payload}: SwipeReject) {
-    //Works and catches Chat id and outGoingMessage
-    ctx.patchState({
-      
-    });
-  }
-
-  @Action(FilterCards)
-  async FilterCards(ctx: StateContext<PostStateModel>, {payload}: FilterCards) {
-    //Works and catches Chat id and time
-    ctx.patchState({
-      
-    });
-  }
-
 
   @Selector()
   static post(state: PostStateModel) 
   {
-    return state.post.model;
+    return state.Document;
   }
 }
