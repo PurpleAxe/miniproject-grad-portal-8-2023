@@ -35,11 +35,6 @@ export class PostsRepository {
       .collection("post")
       .where("postId", "==", comment.postID).get();
 
-    if ((await postRef).docs.length == 0) {
-      console.log("Invalid post ID")
-      throw Error("Invalid Comment ID");
-    }
-
     const docRef = admin
       .firestore()
       .collection("comments")

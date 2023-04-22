@@ -37,4 +37,22 @@ export class ProfilesRepository {
       .doc(profile.userId)
       .set(profile, { merge: true });
   }
+
+  async dislikeListAdd(profile:string, post:string) {
+    admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("dislikedPosts")
+      .doc(post).create({});
+  }
+
+  async dislikeListRemove(profile:string, post:string) {
+    admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("dislikedPosts")
+      .doc(post).delete();
+  }
 }

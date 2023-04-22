@@ -5,11 +5,18 @@ import {
     CreateProfileCommand,
     OccupationDetailsUpdatedEvent,
     PersonalDetailsUpdatedEvent,
-    UpdateProfileStatusCommand
+    UpdateProfileStatusCommand,
+    ProfileLikedPostUpdatedEvent,
+    ProfileDislikedPostsUpdatedEvent,
 } from '@mp/api/profiles/util';
+
+import {
+  PostLikedEvent,
+  PostDislikedEvent,
+} from '@mp/api/post/util';
 import { UserCreatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
-import { ICommand, ofType, Saga } from '@nestjs/cqrs';
+import { ICommand, IEvent, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';
 
 @Injectable()
@@ -86,6 +93,21 @@ export class ProfilesSagas {
       map(
         (event: OccupationDetailsUpdatedEvent) =>
           new UpdateProfileStatusCommand({ profile: event.profile })
+      )
+    );
+  };
+  @Saga()
+  onPostDisliked = (
+    events$: Observable<any>
+  ): Observable<IEvent> => {
+    return events$.pipe(
+      ofType(PostDislikedEvent),
+      map(
+        (event: PostDislikedEvent) =>
+          new ProfileDislikedPostsUpdatedEvent(
+            event.user,
+            event.Onpost.postId
+          )
       )
     );
   };

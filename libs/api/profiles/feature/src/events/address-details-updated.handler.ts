@@ -1,4 +1,5 @@
 import { ProfilesRepository } from '@mp/api/profiles/data-access';
+
 import { AddressDetailsUpdatedEvent } from '@mp/api/profiles/util';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
