@@ -6,7 +6,7 @@ import {
   IDeleteMessageRequest,
   ISendMessageRequest,
 } from '@mp/api/message/util';
-import { ChatApi } from '@mp/app/chat/data-access';
+import { ChatApi } from './chat.api';
 import produce from 'immer';
 import { SetError } from '@mp/app/errors/util';
 
@@ -17,7 +17,10 @@ export interface ChatStateModel {
 
 //TODO: update action and state model
 @State<ChatStateModel>({
-  name: 'replace me',
+  name: 'chat',
+  defaults: {
+    currentConversation: null,
+  },
 })
 @Injectable()
 export class ChatState {

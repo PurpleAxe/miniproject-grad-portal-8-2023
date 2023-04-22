@@ -25,7 +25,9 @@ const routes: Routes = [
       {
         path: 'notifications',
         loadChildren: () =>
-          import('@mp/app/notifications/feature').then((m) => m.NotificationsModule),
+          import('@mp/app/notifications/feature').then(
+            (m) => m.NotificationsModule
+          ),
       },
       {
         path: 'post',
@@ -55,4 +57,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomeRouting { }
+export class HomeRouting {}

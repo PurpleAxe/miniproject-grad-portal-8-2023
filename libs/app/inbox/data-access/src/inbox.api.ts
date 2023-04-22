@@ -39,7 +39,7 @@ export class InboxApi {
   }
 
   //should we setConversation, setMessage and addMessage to conversation?
-
+  //how about we go to empty chatroom and conversation is actually created when user send the first message?
   async sendMessage(request: ISendMessageRequest) {
     return await httpsCallable<ISendMessageRequest, ISendMessageResponse>(
       this.functions,

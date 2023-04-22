@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AuthModule } from '@mp/app/auth/data-access';
 import { NgxsModule } from '@ngxs/store';
 import { ChatState } from './chat.state';
-import { ChatApi } from '@mp/app/chat/data-access';
+import { ChatApi } from './chat.api';
 
 @NgModule({
   imports: [CommonModule, NgxsModule.forFeature([ChatState]), AuthModule],
