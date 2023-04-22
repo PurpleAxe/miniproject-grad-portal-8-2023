@@ -3,13 +3,14 @@ import { IReactions } from '@mp/api/post/util';
 import { IPost } from '@mp/api/post/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
+import { DocumentReference } from 'firebase-admin/firestore';
 
 @Injectable()
 export class PostsRepository {
   async Onpost(post: IPost) {
     return await admin
       .firestore()
-      .collection('Post')
+      .collection('post')
       .withConverter<IPost>({
         fromFirestore: (snapshot) => {
           return snapshot.data() as IPost;
@@ -23,8 +24,42 @@ export class PostsRepository {
   async createPost(post: IPost) {
     return await admin
       .firestore()
-      .collection('Post')
+      .collection('post')
       .doc(post.postId)
       .create(post);
+  }
+
+  async postComment(comment : IComment):Promise<IComment>{
+    const postRef = admin
+      .firestore()
+      .collection("post")
+      .where("postId", "==", comment.postID).get();
+
+    if ((await postRef).docs.length == 0) {
+      console.log("Invalid post ID")
+      throw Error("Invalid Comment ID");
+    }
+
+    const docRef = admin
+      .firestore()
+      .collection("comments")
+      .doc();
+    const commentToInsert : IComment = {
+      userID : comment.userID,
+      text : comment.text,
+      timestamp : admin.firestore.Timestamp.now(),
+      commentID : docRef.id,
+      postID : comment.postID
+    }
+    docRef.create(commentToInsert);
+
+    (await postRef).docs
+      .at(0)?.ref
+      .update({
+      comments : admin.firestore.FieldValue.arrayUnion(commentToInsert.commentID)
+    })
+
+
+    return (await docRef.get()).data() as IComment;
   }
 }
