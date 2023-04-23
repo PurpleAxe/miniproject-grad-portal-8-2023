@@ -16,6 +16,7 @@ import {
 
 import {MessageSagas} from './message.sagas';
 import {MessageService} from './message.service';
+import {ProfilesModule} from '@mp/api/profiles/feature';
 
 export const CommandHandlers = [
   SendMessageHandler,
@@ -30,7 +31,7 @@ export const EventHandlers = [
 ]
 
 @Module({
-  imports: [CqrsModule, MessageDataAccessModule, UsersModule],
+  imports: [CqrsModule, MessageDataAccessModule, UsersModule, ProfilesModule],
   providers : [
     MessageService,
     ...CommandHandlers,
