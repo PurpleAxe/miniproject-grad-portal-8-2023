@@ -7,6 +7,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { EventPublisher } from '@nestjs/cqrs';
 import { UsersRepository } from '@mp/api/users/data-access';
 import { Message } from '../models';
+import {log} from 'console';
 
 @CommandHandler(CreateConversationCommand)
 export class CreateConversationHandler
@@ -59,6 +60,7 @@ export class CreateConversationHandler
     const response: ICreateConversationResponse = {
       conversation: conversation.toJSON(),
     };
+    log(response);
     return response;
   }
 }

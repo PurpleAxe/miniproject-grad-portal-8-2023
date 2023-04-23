@@ -56,6 +56,7 @@ export class Message extends AggregateRoot implements IConversation {
     };
     this.messages ? (conversation.messages = this.messages) : undefined;
     this.members ? (conversation.members = this.members) : undefined;
+    this.membersID ? (conversation.membersID = this.membersID) : undefined;
     return conversation;
   }
 }
