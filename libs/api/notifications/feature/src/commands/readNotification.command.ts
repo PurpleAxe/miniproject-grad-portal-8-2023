@@ -6,8 +6,15 @@ import {
 import { Notifications } from '../models';
 
 @CommandHandler(ReadNotificationsCommand)
-export class CreateInboxHandler implements ICommandHandler<ReadNotificationsCommand> {
-  constructor(private publisher: EventPublisher) {}
+export class ReadNotificationsHandler 
+  implements 
+    ICommandHandler<
+    ReadNotificationsCommand, 
+    IReadNotificationsResponse
+    > 
+{
+  constructor(
+    private publisher: EventPublisher) {}
 
   async execute(command: ReadNotificationsCommand) {
     const request = command.request;
