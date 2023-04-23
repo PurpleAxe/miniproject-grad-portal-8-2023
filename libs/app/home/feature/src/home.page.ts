@@ -1,10 +1,11 @@
 import { Component, Renderer2 } from '@angular/core';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { Select} from '@ngxs/store';
+import { Select, Store} from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { Logout } from '@mp/app/auth/util';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class HomePage {
   iconColor: any;
   timestr : any;
 
-  constructor(private router: Router, private renderer: Renderer2, private menuCtrl?: MenuController) {
+  constructor(private router: Router, private renderer: Renderer2,private readonly store: Store, private menuCtrl?: MenuController) {
 
   }
 
@@ -93,6 +94,7 @@ export class HomePage {
 
   logout() {
     // this.popover.dismiss();
+    this.store.dispatch(new Logout());
   }
 
   goToSearch() {
