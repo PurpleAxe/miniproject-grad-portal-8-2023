@@ -4,21 +4,12 @@ import { Timestamp } from "firebase-admin/firestore";
 
 // export type Page = FeedPage | ProfilePage;
 
-<<<<<<< Updated upstream
-export interface Post{
-  body: string;
-  department:string;
-  challenge:string;
-  timestamp:Timestamp;
-};
-=======
  export interface MyPayload {
      body: string;
      department:string;
      challenge:string;
      timestamp?:Timestamp;
    }
->>>>>>> Stashed changes
 
 // Action interfaces
 export enum PostActionTypes {
@@ -38,14 +29,14 @@ export class CreatePostsFailureAction {
   
 export class CreatePostsSuccessAction {
  static readonly type=PostActionTypes.FETCH_POSTS_SUCCESS;
- constructor(public payload: Array<Post>,public dir:string) {/**/}
+ constructor(public payload: Array<MyPayload>,public dir:string) {/**/}
 }
 
 
 
 export class CreatePostAction {
   static readonly type=PostActionTypes.CREATE_POST_SUCCESS;
-  constructor(public payload: Post) {/**/}
+  constructor(public payload: MyPayload) {/**/}
  }
 
 

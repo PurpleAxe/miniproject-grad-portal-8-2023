@@ -1,21 +1,11 @@
 import { Timestamp } from 'firebase-admin/firestore';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-<<<<<<< Updated upstream
 import { CreatePostAction} from '@mp/app/post/util';
 import { actionsExecuting, ActionsExecuting } from '@ngxs-labs/actions-executing';
 import { Select,Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-
-
-
-
-=======
-import { Select, Store } from '@ngxs/store';
 import {MyPayload} from  '@mp/app/post/util';
-import { CreatePostAction} from '@mp/app/post/util';
-import { Timestamp } from 'firebase-admin/firestore';
->>>>>>> Stashed changes
 
 
 @Component({
@@ -55,8 +45,6 @@ export class PostPageComponent {
   customCounterFormatter(inputLength: number, maxLength: number) {
     return `${maxLength - inputLength} characters remaining`;
   }
-<<<<<<< Updated upstream
-=======
 
   uploadPost(){
 
@@ -78,5 +66,4 @@ export class PostPageComponent {
 
     this.router.navigate(['/home/feed']); //need to change to profile one day
   }
->>>>>>> Stashed changes
 }

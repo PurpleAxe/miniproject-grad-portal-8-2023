@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-import { Timestamp } from "firebase-admin/firestore";
-=======
 import { Timestamp } from 'firebase-admin/firestore';
->>>>>>> Stashed changes
 
 export interface IFeed{
     Post:{
@@ -20,10 +16,6 @@ export interface IFeed{
         }
     }
 }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 
 export class FetchHomeFeedAction{
     static readonly type ="[Feed] fetch home feed";
