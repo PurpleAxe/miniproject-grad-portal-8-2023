@@ -12,14 +12,14 @@ export class FeedPage {
   LHome!: boolean;
   LDiscovery!: boolean;
 
-  constructor(){
+  constructor(private router: Router){
     this.LHome = true;
     this.LDiscovery = false;
   }
   Discoveryt(){
     this.LHome = false;
     this.LDiscovery = true;
-    console.log("Discover");
+    console.log("Discovery");
   }
 
   homet(){
@@ -27,5 +27,33 @@ export class FeedPage {
     this.LHome = true;
     this.LDiscovery = false;
   }
+
+  // goToLeaderboard(){
+  //   // this.router.navigate(['/home/profile']);
+  // }
+
+  // checkFollowing(){
+  //   // this.router.navigate(['/home/profile']);
+  // }
+
+  // checkFollowers(){
+  //   // this.router.navigate(['/home/profile']);
+  // }
+
+  // logout(){
+  //   // this.router.navigate(['/home/profile']);
+  // }
+
+  // goToMyProfile(){
+  //   this.router.navigate(['/home/userprofile']);
+  // }
+
+  // goToProfile(){
+  //   this.router.navigate(['/home/profile']);
+  // }
+
+  // goToSettings(){
+  //   this.router.navigate(['/home/settings']);
+  // }
 
 }

@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { Select} from '@ngxs/store';
 import { Observable } from 'rxjs';
 
 import { Router } from '@angular/router';
-import { ModalController, PopoverController } from '@ionic/angular';
-import { ViewChild } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 
 
 @Component({
@@ -16,19 +15,22 @@ import { ViewChild } from '@angular/core';
 })
 export class HomePage {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
-  @ViewChild('new_chat') modal!: ModalController;
-  @ViewChild('popover') popover!: PopoverController;
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private renderer: Renderer2, private menuCtrl?: MenuController) {}
 
 
   ngOnInit() {
-    // console.log('');
+    const colorTheme = localStorage.getItem('color-theme');
+  
+    if (colorTheme) {
+      this.renderer.setAttribute(document.body, 'color-theme', colorTheme);
+    }
   }
 
+
   logout() {
-    this.popover.dismiss();
+    // this.popover.dismiss();
   }
 
   goToSearch() {
@@ -53,6 +55,38 @@ export class HomePage {
 
   goToChallenge() {
     this.router.navigate(['/home/challenge']);
+  }
+
+  goToSettings() {
+    if (this.menuCtrl) {
+      this.menuCtrl.close();
+  }
+    this.router.navigate(['/home/settings']);
+  }
+
+  goToProfile() {
+    if (this.menuCtrl) {
+      this.menuCtrl.close();
+  }
+    this.router.navigate(['/home/profile']);
+  }
+
+  checkFollowers() {
+    // this.router.navigate(['/home/challenge']);
+  }
+  checkFollowing() {
+    // this.router.navigate(['/home/challenge']);
+  }
+
+  goToLeaderboard() {
+    // this.router.navigate(['/home/challenge']);
+  }
+
+  goToMyProfile() {
+    if (this.menuCtrl) {
+      this.menuCtrl.close();
+  }
+    this.router.navigate(['/home/userprofile']);
   }
 
 
