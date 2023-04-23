@@ -53,7 +53,7 @@ export class PostState {
 
     @Action(CreatePost)
     async CreatePost(ctx: StateContext<PostStateModel>, {payload}: CreatePost) {
-      console.log("post.state:" + payload);
+      console.log("post.state:" + payload.challenge);
       ctx.patchState({
         
       });

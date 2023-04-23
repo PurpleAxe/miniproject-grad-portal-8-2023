@@ -1,3 +1,3 @@
-export * from './lib/post.module';
-export * from './lib/post.state'
+export * from './post.module';
+export * from './post.state';
 
