@@ -37,11 +37,14 @@
         </div>
       </ion-button>
 
-      <div style="display: flex; border-radius: 24px; border: 1px solid black; padding: 10px; background-color: var(--ion-color-warning-shade); margin-top: 15px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);" class="ion-text-center">
-        <div id="hrs" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">12 hrs</div>
-        <div id="mins" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">23 mins</div>
-        <div id="seconds" style="flex: 1; text-align: center; color: black;">36 s</div>
+
+
+      <div id="timer" style="display: flex; border-radius: 24px; border: 1px solid black; padding: 10px; background-color: var(--ion-color-warning-shade); margin-top: 15px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);" class="ion-text-center">
+        <div id="hours"  style="flex: 1; text-align: center; border-right: 1px solid black; color: black;"></div>
+        <div id="minutes"  style="flex: 1; text-align: center; border-right: 1px solid black; color: black;"></div>
+        <div id="ses" style="flex: 1; text-align: center; color: black;"></div>
       </div>
+      
       
     </ion-card-content>
   </ion-card>
@@ -108,7 +111,7 @@
 </ion-card>
 
 
-<ion-card>
+<ion-card id="profilePosts" style="display: block;">
   <ion-item>
     <ion-avatar slot="start" style="width: 70px; height: auto;">
       <img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
@@ -151,3 +154,10 @@
 </ion-card-content>
 </ion-card>
 
+<ion-content id="privateProfile" class="ion-padding" style="display: none;">
+  <div class="ion-text-center">
+    <ion-icon name="lock-closed-outline" size="large" color="primary"></ion-icon>
+    <h3>This page is private.</h3>
+    <p>Follow this user to see their content.</p>
+  </div>
+</ion-content>

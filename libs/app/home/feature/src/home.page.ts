@@ -15,15 +15,78 @@ import { MenuController } from '@ionic/angular';
 export class HomePage {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
 
+  iconColor: any;
+  timestr : any;
 
-  constructor(private router: Router, private renderer: Renderer2, private menuCtrl?: MenuController) {}
+  constructor(private router: Router, private renderer: Renderer2, private menuCtrl?: MenuController) {
 
+  }
+
+  
 
   ngOnInit() {
     const colorTheme = localStorage.getItem('color-theme');
   
     if (colorTheme) {
       this.renderer.setAttribute(document.body, 'color-theme', colorTheme);
+    }
+
+    const activityStatusValue = localStorage.getItem('activityStatus');
+
+
+    if (activityStatusValue === 'true') {
+      this.iconColor = 'tertiary';
+    } else {
+      this.iconColor = 'danger';
+    }
+
+    this.timestr = localStorage.getItem('time')
+    this.decreaseTime();
+  }
+
+  
+
+  decreaseTime(): void {
+  setTimeout(() => {
+    let time = parseInt(localStorage.getItem('time') || '0', 10);
+    time--;
+    localStorage.setItem('time', time.toString());
+
+    // console.log(time);
+
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = Math.floor(time % 60);
+    const hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
+    const minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
+    const secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
+
+    const HElement = document.getElementById('hoursM');
+    if (HElement) {
+      HElement.textContent = `${hoursString}`;
+    }
+
+    const MElement = document.getElementById('minutesM');
+    if (MElement) {
+      MElement.textContent = `${minutesString}`;
+    }
+
+    const SElement = document.getElementById('sesM');
+    if (SElement) {
+      SElement.textContent = `${secondsString}`;
+    }
+
+    this.decreaseTime();
+  }, 1000);
+}
+
+  checkStatus(){
+    console.log('checkStatus');
+    const activityStatusValue = localStorage.getItem('activityStatus');
+    if (activityStatusValue === 'true') {
+      this.iconColor = 'tertiary';
+    } else {
+      this.iconColor = 'danger';
     }
   }
 
