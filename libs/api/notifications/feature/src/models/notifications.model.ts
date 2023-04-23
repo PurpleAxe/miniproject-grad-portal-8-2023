@@ -32,7 +32,7 @@ export class Notifications extends AggregateRoot implements INotificationBox {
       read: false,
       message: 'Welcome to TimeHive',
       url: null,
-      notificationID: null,
+      notificationID: "1",
     });
     this.apply(new InboxCreatedEvent(this.toJSON()));
   }
@@ -44,5 +44,5 @@ export class Notifications extends AggregateRoot implements INotificationBox {
     };
     return box;
   }
-  
+
 }

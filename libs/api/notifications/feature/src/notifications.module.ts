@@ -2,17 +2,20 @@ import { NotificationsModule as NotificationsDataAccessModule } from '@mp/api/no
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import {
-  InboxCreatedEvent,
-  NotificationsCreatedEvent,
-  NotificationsReadEvent
-} from '@mp/api/notifications/util';
-import { CreateNotificationHandler, ReadNotificationsHandler } from './commands';
-import { CreateInboxHandler } from './commands/createNotificationBox.command';
+  CreateNotificationHandler,
+  ReadNotificationsHandler,
+  CreateInboxHandler
+} from './commands';
 import { NotificationsSagas } from './notifications.sagas';
 import { NotificationsService } from './notifications.service';
+import {
+  NotificationsCreatedEventHandler,
+  NotificationBoxCreatedHandler,
+  NotificationsReadEventHandler
+} from './events';
 
 export const CommandHandlers = [CreateNotificationHandler, CreateInboxHandler, ReadNotificationsHandler];
-export const EventHandlers = [NotificationsCreatedEvent, InboxCreatedEvent, NotificationsReadEvent];
+export const EventHandlers = [NotificationsCreatedEventHandler, NotificationBoxCreatedHandler, NotificationsReadEventHandler];
 
 @Module({
   imports: [CqrsModule, NotificationsDataAccessModule],

@@ -9,8 +9,8 @@ import { Notifications } from '../models';
 @CommandHandler(createInboxCommand)
 export class CreateInboxHandler implements ICommandHandler<createInboxCommand> {
   constructor(private publisher: EventPublisher) {}
-
   async execute(command: createInboxCommand) {
+    console.log(CreateInboxHandler.name)
     const request = command.request;
     // merge context.
     const newInbox: INotifications[] = [];
