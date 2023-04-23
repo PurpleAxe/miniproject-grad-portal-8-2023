@@ -7,7 +7,7 @@ import {
   query,
   where,
   getDocs,
-  addDoc,
+  addDoc
 } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import {
@@ -26,10 +26,10 @@ export class InboxApi {
     private readonly functions: Functions
   ) {}
 
-  inbox$() {
+  inbox$(userId: string) {
     const docRef = doc(
       this.firestore,
-      `conversations`
+      `conversations/hHCuAaqg0wf6E310cosD`
     ).withConverter<IConversation []>({
       fromFirestore: (snapshot) => {
         return snapshot.data() as IConversation [];
@@ -38,6 +38,25 @@ export class InboxApi {
     });
     return docData(docRef, { idField: 'id' });
   }
+
+  /*async inbox$(userId: string): Promise<IConversation[]> {
+    const query = this.firestore.collection<IConversation>('conversations').where('participants', 'array-contains', userId);
+    const querySnapshot = await query.get();
+    const conversations = querySnapshot.docs.map((doc) => doc.data() as IConversation);
+    return conversations;
+  }*/
+
+  /*inbox$(userId: string): Observable<IConversation[]> {
+    const collectionRef = this.firestore.collection<IConversation>('conversations', (ref: QueryFn) => {
+      return ref.where('userId', '==', userId);
+    });
+
+    return collectionRef.get().pipe(
+      map((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => doc.data() as IConversation);
+      })
+    );
+  }*/
 
 
   //should we setConversation, setMessage and addMessage to conversation?

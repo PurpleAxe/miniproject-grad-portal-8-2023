@@ -21,12 +21,14 @@ import { InboxApi } from './inbox.api';
 import { Logout as AuthLogout } from '@mp/app/auth/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { tap } from 'rxjs';
+import { IProfile } from '@mp/api/profiles/util';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
   conversations: IConversation[] | null;
   conversation: { conversationId: string , messages: string [] , participants: string [] }[] | null;
   users: { id: number; displayName: string; photoURL: string }[] | null;
+  //appUser: IProfile;
   // user: User | undefined | null;
   //conversationIds: string | null;
   //messageIds: string [] | null;
@@ -39,6 +41,7 @@ export interface InboxStateModel {
     conversations: null,
     conversation: null,
     users: null,
+    //appUser: null,
     // user: null,
     //conversationIds: null,
     //messageIds: null
@@ -78,6 +81,8 @@ export class InboxState {
     return ctx.setState(
       produce((draft) => {
         if (conversations) {
+          console.log("conversations plz!!!!!!!!!!!!");
+          console.log(conversations);
           draft.conversations = conversations;
         }
       })
@@ -90,7 +95,7 @@ export class InboxState {
     if (!user) return ctx.dispatch(new SetError('User not logged in'));
 
     return this.inboxApi
-      .inbox$()
+      .inbox$(user.uid)
       .pipe(tap((conversations: IConversation [] ) => ctx.dispatch(new SetInbox(conversations))));
   }
 
