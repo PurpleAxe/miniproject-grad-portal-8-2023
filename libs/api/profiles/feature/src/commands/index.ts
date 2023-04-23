@@ -5,3 +5,4 @@ export * from './update-contact-details.handler';
 export * from './update-occupation-details.handler';
 export * from './update-personal-details.handler';
 export * from './update-profile-status.handler';
+export * from './add-conversation-to-profile.handler';

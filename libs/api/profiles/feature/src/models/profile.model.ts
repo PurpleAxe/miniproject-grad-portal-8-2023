@@ -2,6 +2,7 @@ import {
   AccountDetailsUpdatedEvent,
   AddressDetailsUpdatedEvent,
   ContactDetailsUpdatedEvent,
+  ConversationAddedEvent,
   IAccountDetails,
   IAddressDetails,
   IContactDetails,
@@ -42,7 +43,7 @@ export class Profile extends AggregateRoot implements IProfile {
     public timeLeft?: number,
     public followers?: [],
     public following?: [],
-    public conversationIDs?: []
+    public conversationIDs?: string[]
   ) {
     super();
   }
@@ -123,6 +124,10 @@ export class Profile extends AggregateRoot implements IProfile {
       ? occupationDetails.occupation
       : this.occupationDetails.occupation;
     this.apply(new OccupationDetailsUpdatedEvent(this.toJSON()));
+  }
+
+  updateConversationList() {
+    this.apply(new ConversationAddedEvent(this.toJSON()));
   }
 
   updateAccountDetails(accountDetails: IAccountDetails) {

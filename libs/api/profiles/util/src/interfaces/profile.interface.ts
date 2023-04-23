@@ -15,7 +15,7 @@ export interface IProfile {
   occupationDetails?: IOccupationDetails | null | undefined;
   status?: ProfileStatus | null | undefined;
   created?: Timestamp | null | undefined;
-  //remove below before merge. this is only for testing purposes TH-0003---Chat
+  // Do not remove
   banner?: string;
   userName?: string | null | undefined;
   location?: string;
@@ -31,5 +31,5 @@ export interface IProfile {
   timeLeft?: number;
   followers?: [];
   following?: [];
-  conversationIDs?: [];
+  conversationIDs?: string[];
 }

@@ -2,6 +2,7 @@ import { ProfilesModule as ProfilesDataAccessModule } from '@mp/api/profiles/dat
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import {
+  AddConversationToProfileHandler,
     CreateProfileHandler,
     UpdateAccountDetailsHandler,
     UpdateAddressDetailsHandler,
@@ -14,6 +15,7 @@ import {
     AccountDetailsUpdatedHandler,
     AddressDetailsUpdatedHandler,
     ContactDetailsUpdatedHandler,
+    ConversationAddedHandler,
     OccupationDetailsUpdatedHandler,
     PersonalDetailsUpdatedHandler,
     ProfileCreatedHandler,
@@ -29,6 +31,7 @@ export const CommandHandlers = [
   UpdateOccupationDetailsHandler,
   UpdateAccountDetailsHandler,
   UpdateProfileStatusHandler,
+  AddConversationToProfileHandler,
 ];
 export const EventHandlers = [
   ProfileCreatedHandler,
@@ -38,6 +41,7 @@ export const EventHandlers = [
   OccupationDetailsUpdatedHandler,
   AccountDetailsUpdatedHandler,
   ProfileStatusUpdatedHandler,
+  ConversationAddedHandler,
 ];
 
 @Module({

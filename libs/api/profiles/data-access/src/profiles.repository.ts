@@ -43,4 +43,14 @@ export class ProfilesRepository {
     const snapshot = await admin.firestore().collection('profiles').get()
     return snapshot.docs.map(doc => doc.data());
   }
+
+  async updateConversationList(profile: IProfile) {
+    return await admin
+      .firestore()
+      .collection('profiles')
+      .doc(profile.userId)
+      .update({
+        conversationIDs : admin.firestore.FieldValue.arrayUnion(profile.conversationIDs?.at(0))
+      });
+  }
 }

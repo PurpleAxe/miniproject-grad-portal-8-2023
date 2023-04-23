@@ -1,5 +1,6 @@
 import {
     AccountDetailsUpdatedEvent,
+    AddConversationToProfileCommand,
     AddressDetailsUpdatedEvent,
     ContactDetailsUpdatedEvent,
     CreateProfileCommand,
@@ -7,6 +8,9 @@ import {
     PersonalDetailsUpdatedEvent,
     UpdateProfileStatusCommand
 } from '@mp/api/profiles/util';
+import {
+  ConversationCreatedEvent
+} from "@mp/api/message/util";
 import { UserCreatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
 import { ICommand, ofType, Saga } from '@nestjs/cqrs';
@@ -86,6 +90,19 @@ export class ProfilesSagas {
       map(
         (event: OccupationDetailsUpdatedEvent) =>
           new UpdateProfileStatusCommand({ profile: event.profile })
+      )
+    );
+  };
+
+  @Saga()
+  onConversationCreated = (
+    events$: Observable<any>
+  ): Observable<ICommand> => {
+    return events$.pipe(
+      ofType(ConversationCreatedEvent),
+      map(
+        (event: ConversationCreatedEvent) =>
+          new AddConversationToProfileCommand(event.conversation)
       )
     );
   };
