@@ -1,0 +1,12 @@
+import { <%=className%>Command } from '@mp/api/<%=collectionName.fileName%>/util';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+
+@CommandHandler(<%=className%>Command)
+export class <%=className%>Handler implements ICommandHandler<<%=className%>Command> {
+  constructor(private publisher: EventPublisher) {}
+
+ //TODO: function here
+ async execute(command: <%=className%>Command) {
+  console.log('replace plz');
+ }
+}

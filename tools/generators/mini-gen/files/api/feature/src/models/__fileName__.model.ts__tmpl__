@@ -1,0 +1,10 @@
+import { AggregateRoot } from '@nestjs/cqrs';
+
+export class <%=className%> extends AggregateRoot implements I<%=className%> {
+  constructor(
+  ) {
+    super();
+  }
+
+  
+}

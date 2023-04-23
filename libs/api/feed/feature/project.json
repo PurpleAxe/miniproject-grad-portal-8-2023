@@ -9,8 +9,9 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/api/feed/feature",
-        "main": "libs/api/feed/feature/src/index.ts",
         "tsConfig": "libs/api/feed/feature/tsconfig.lib.json",
+        "packageJson": "libs/api/feed/feature/package.json",
+        "main": "libs/api/feed/feature/src/index.ts",
         "assets": ["libs/api/feed/feature/*.md"]
       }
     },

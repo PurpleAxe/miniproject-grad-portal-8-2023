@@ -1,0 +1,15 @@
+import { <%=className%>Module as <%=className%>DataAccessModule } from '@mp/libs/<%=fileName%>/data-access';
+import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+import { <%=className%>Sagas } from './<%=fileName%>.sagas';
+import { <%=className%>Service } from './<%=fileName%>.service.ts';
+
+export const CommandHandlers = [];
+export const EventHandlers = [];
+
+@Module({
+  imports: [CqrsModule, <%=className%>DataAccessModule],
+  providers: [<%=className%>Service, ...CommandHandlers, ...EventHandlers, <%=className%>Sagas],
+  exports: [<%=className%>Service],
+})
+export class <%=className%>Module {}

@@ -9,8 +9,9 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/api/feed/data-access",
-        "main": "libs/api/feed/data-access/src/index.ts",
         "tsConfig": "libs/api/feed/data-access/tsconfig.lib.json",
+        "packageJson": "libs/api/feed/data-access/package.json",
+        "main": "libs/api/feed/data-access/src/index.ts",
         "assets": ["libs/api/feed/data-access/*.md"]
       }
     },
