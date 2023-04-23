@@ -1,4 +1,5 @@
 import { IConversation } from '@mp/api/message/util';
+import { IUser } from '@mp/api/users/util';
 
 // export class SendMessage {
 //   static readonly type = '[Inbox] SendMessage';
@@ -7,6 +8,7 @@ import { IConversation } from '@mp/api/message/util';
 export class CreateConversation {
   //item is a user to speak to
   static readonly type = '[Inbox] CreateConversation';
+  constructor(public readonly member: IUser [] | null) {}
 }
 
 export class SetInbox {
@@ -21,6 +23,11 @@ export class SetInbox {
 
 export class SubscribeToInbox {
   static readonly type = '[Inbox] SubscribeToInbox';
+}
+
+export class GetMembers {
+  static readonly type = '[Inbox] GetMembers';
+  constructor(public readonly clickedUser:  | null) {}
 }
 
 export class GetUsers {

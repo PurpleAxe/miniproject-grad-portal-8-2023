@@ -274,6 +274,7 @@ export class Profile extends AggregateRoot implements IProfile {
       occupationDetails: this.occupationDetails,
       status: this.status,
       created: this.created,
+      conversationIDs: this.conversationIDs,
     };
   }
 }

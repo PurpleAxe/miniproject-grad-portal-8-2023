@@ -22,6 +22,7 @@ import { Logout as AuthLogout } from '@mp/app/auth/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { tap } from 'rxjs';
 import { IProfile } from '@mp/api/profiles/util';
+import { IUser } from '@mp/api/users/util';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
@@ -30,8 +31,7 @@ export interface InboxStateModel {
     | { conversationId: string; messages: string[]; participants: string[] }[]
     | null;
   users: { id: number; displayName: string; photoURL: string }[] | null;
-  members: { id: number; displayName: string; photoURL: string }[] | null;
-
+  members: IUser[] | null;
   //appUser: IProfile;
   // user: User | undefined | null;
   //conversationIds: string | null;
@@ -46,7 +46,7 @@ export interface InboxStateModel {
     conversation: null,
     users: null,
     members: null,
-    //appUser: null,
+    //appUser: null
     // user: null,
     //conversationIds: null,
     //messageIds: null
@@ -77,13 +77,18 @@ export class InboxState {
   }
 
   @Selector()
-  static users(state: InboxStateModel) {
-    return state.users;
-  }
-  @Selector()
   static members(state: InboxStateModel) {
     return state.members;
   }
+
+  @Selector()
+  static users(state: InboxStateModel) {
+    return state.users;
+  }
+  // @Selector()
+  // static members(state: InboxStateModel) {
+  //   return state.members;
+  // }
 
   @Action(SetInbox)
   // setConversation(
@@ -125,12 +130,33 @@ export class InboxState {
   }
 
   @Action(CreateConversation) //createconversation only called to add new conversation
-  async createConversation(ctx: StateContext<InboxStateModel>) {
+  async createConversation(
+    ctx: StateContext<InboxStateModel>,
+    { member }: CreateConversation
+  ) {
     try {
       const inboxState = ctx.getState();
       const conversationID = inboxState.currentConversation?.conversationID;
-      const members = inboxState.currentConversation?.members;
+      const members = member;
+      console.log('i gave you what you want @createconvos');
+      console.log(members);
       const messages = inboxState.currentConversation?.messages;
+      if (conversationID) {
+        console.log('conversationID');
+      } else if (messages) {
+        console.log('messages');
+      } else if (!members) {
+        console.log('members');
+      } else if (members) {
+        if (members.length <= 1) {
+          console.log('members length');
+        } else {
+          console.log('no error from above');
+        }
+      } else {
+        console.log('no error from above');
+      }
+      console.log('does this even work');
       const request: ICreateConversationRequest = {
         conversation: {
           conversationID,

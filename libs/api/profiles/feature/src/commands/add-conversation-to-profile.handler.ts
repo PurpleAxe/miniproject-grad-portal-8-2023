@@ -18,7 +18,7 @@ export class AddConversationToProfileHandler
 
     const request = command.request;
     for (let i = 0, len = request.members!.length; i < len; i++) {
-      const id:string = request.members!.at(0)!.id!;
+      const id:string = request.members!.at(i)!.id!;
       const conversation:string  = request.conversationID!;
       const toAdd:IProfile ={
           "userId" : id,
