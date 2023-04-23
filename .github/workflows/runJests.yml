@@ -26,9 +26,10 @@ jobs:
       - run: yarn install --frozen-lockfile
 #       - run: firebase emulators:exec --project timehive-29588 'npx jest'
       - run: yarn test:ci
-      
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
       
