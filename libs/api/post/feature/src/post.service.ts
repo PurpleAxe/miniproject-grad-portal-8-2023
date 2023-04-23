@@ -8,6 +8,9 @@ import {
   LikePostCommand,
   CreatePostCommand,
   DislikePostCommand,
+  ICreateCommentRequest,
+  ICreateCommentResponse,
+  CreateCommentCommand,
 } from '@mp/api/post/util';
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -41,5 +44,15 @@ export class PostService {
       DislikePostCommand,
       IDislikePostResponse
     >(new DislikePostCommand(request));
+  }
+
+  async commentOnPost(
+    request: ICreateCommentRequest
+  ): Promise<ICreateCommentResponse>{
+    return await this.commandBus.execute<
+    CreateCommentCommand,
+    ICreateCommentResponse
+    >(new CreateCommentCommand(request));
+
   }
 }
