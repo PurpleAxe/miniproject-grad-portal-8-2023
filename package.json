@@ -27,6 +27,7 @@
     "generate:pwa:assets:icons": "pwa-asset-generator apps/app/src/assets/logos/schadre-logo-only.png apps/app/src/assets/pwa --favicon --icon-only --padding \"20px\" --mstile --maskable --manifest apps/app/src/manifest.webmanifest",
     "generate:pwa:assets:splashes": "pwa-asset-generator apps/app/src/assets/logos/schadre-logo-only.png apps/app/src/assets/pwa --favicon --splash-only --padding \"150px\" --mstile --maskable --manifest apps/app/src/manifest.webmanifest",
     "host:app": "http-server dist/apps/app",
+    "test:ci": "ng run-many --target=test --all --parallel --coverage --coverageReporters=lcov && node ./tools/coverageMerger.js",
     "start:everything": "$TERMINAL yarn start:api:dev & $TERMINAL yarn start:app:dev & $TERMINAL yarn start:emulators & ",
     "start:everything:windows": "start cmd /k \"yarn start:api:dev\" & start cmd /k \"yarn start:emulators\" & start cmd /k \"yarn start:app:dev\""
   },
@@ -108,6 +109,7 @@
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
+    "glob": "^10.2.2",
     "http-server": "^14.1.1",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
