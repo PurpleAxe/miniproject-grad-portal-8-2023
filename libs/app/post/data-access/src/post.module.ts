@@ -3,11 +3,10 @@ import { NgModule } from '@angular/core';
 import { AuthModule } from '@mp/app/auth/data-access';
 import { NgxsModule } from '@ngxs/store';
 import { PostState } from './post.state';
-// import { ProfileState } from './profile.state';
-// import { ProfilesApi } from './profiles.api';
+import { PostApi } from './post.api';
 
 @NgModule({
   imports: [CommonModule, NgxsModule.forFeature([PostState]), AuthModule],
-  providers: [/*ProfilesApi*/],
+  providers: [PostApi],
 })
 export class PostModule {}
