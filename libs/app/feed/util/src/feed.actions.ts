@@ -6,7 +6,7 @@ export class LoadFeed{
 export class LikePost{
     static readonly type = '[Feed] LikePost';
     constructor(public payload: { postId: string }) {
-        console.log("post.actions:" + payload.postId);
+        console.log("post.actions: Like postId:s" + payload.postId);
     }
 }
 
@@ -17,7 +17,9 @@ export class RemoveLike{
 
 export class DislikePost{
     static readonly type = '[Feed] DislikePost';
-    constructor(public payload: { uid: string }) {}
+    constructor(public payload: { postId: string }) {
+        console.log("post.actions Dislike postId:" + payload.postId);
+    }
 }
 
 export class RemoveDislike{

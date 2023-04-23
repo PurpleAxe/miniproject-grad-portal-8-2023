@@ -5,7 +5,8 @@ import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector, Store } from '@ngxs/store';
 import { 
     LoadFeed,
-    LikePost
+    LikePost,
+    DislikePost
  } from '@mp/app/feed/util';
 //  import { FeedApi } from './feed.api';
 
@@ -59,6 +60,14 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
         
       });
   }
+
+  @Action(DislikePost)
+  async DislikePost(ctx: StateContext<FeedStateModel>, {payload}: DislikePost) {
+    console.log("PostId dislike (state):" + payload.postId);
+    ctx.patchState({
+      
+    });
+}
 
 
 
