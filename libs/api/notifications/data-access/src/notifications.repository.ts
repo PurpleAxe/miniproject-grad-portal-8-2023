@@ -1,4 +1,4 @@
-import { INotificationBox, INotifications } from '@mp/api/notifications/util';
+import { INotificationBox } from '@mp/api/notifications/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { get } from 'http';
@@ -23,53 +23,45 @@ export class NotificationsRepository {
       .set(notifications);
   }
 
-  async deleteNotificationsProfile(notificationsBox: INotificationBox, notifications: INotifications) {
-      return await admin
-      .firestore()
-      .collection('profiles')
-      .doc(notificationsBox.user.userId)
-      .update({
-        notifications : admin.firestore.FieldValue.arrayRemove(
-          notifications.notificationID)
-      });
-  }
+  // async deleteNotificationsProfile(notifications: INotificationBox, notifications: INotifications) {
+  //     return await admin
+  //     .firestore()
+  //     .collection('profiles')
+  //     .doc(notifications.user.userId)
+  //     .update({
+  //       notifications : admin.firestore.FieldValue.arrayRemove(
+  //         notifications.notificationID)
+  //     });
+  // }
 
-  async deleteNotificationsInbox(notificationsBox: INotificationBox, notifications: INotifications) {
+  // async deleteNotificationsInbox(notifications: INotificationBox, notifications: INotifications) {
+  //   return await admin
+  //   .firestore()
+  //   .collection('notifications')
+  //   .doc(notifications.user.userId)
+  //   .update({
+  //     notifications : admin.firestore.FieldValue.arrayRemove(
+  //       notifications.notificationID)
+  //   });
+  // }
+
+  async markNotificationsAsRead(notifications: INotificationBox) {
+    const doc = await admin
+    .firestore()
+    .collection("notifications")
+    .doc(notifications.user.userId)
+    .get()
+
+    var oldInbox = doc.data().inbox;
+    for(var old of oldInbox)
+      for(var current of notifications.inbox)
+        if(old.notificationID == current.notificationID)
+          old.read = true;
+
     return await admin
     .firestore()
     .collection('notifications')
-    .doc(notificationsBox.user.userId)
-    .update({
-      notifications : admin.firestore.FieldValue.arrayRemove(
-        notifications.notificationID)
-    });
+    .doc(notifications.user.userId)
+    .set({user: doc.data().user, inbox: oldInbox});
   }
-
-  async markNotificationsAsRead(notificationsBox: INotificationBox) {
-    return await admin
-    .firestore()
-    .collection("notifications")
-    .doc(notificationsBox.user.userId)
-    .get().then((doc) => {
-    if (doc.exists) {
-      var oldNotificationsBox = doc.data();
-      for(var oldNotifications of oldNotificationsBox.inbox)
-        for(var notifications of notificationsBox.inbox)
-          if(oldNotifications.notificationID == notifications.notificationID)
-            oldNotifications.read = true
-      
-      admin
-      .firestore()
-      .collection('notifications')
-      .doc(oldNotificationsBox.user.userId)
-      .set(oldNotificationsBox);
-
-    } else {
-        console.log("No such document!");
-    }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
-  }
-  
 }
