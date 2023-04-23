@@ -48,7 +48,7 @@ export class LikePostHandler
         post.likePost(likingUserID!);
       }
       post.commit();
-      const response: ILikePostResponse = {"Onpost" : post.toJSON()};
+      const response: ILikePostResponse = {"post" : post.toJSON()};
       return response;
   }
 
