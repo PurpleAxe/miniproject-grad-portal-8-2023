@@ -17,15 +17,15 @@
                 </ion-avatar>
                 <ion-label>
                     <h1>{{notifications.user.userId}}</h1>
-                    <p>{{notification.message}}</p>  
-                </ion-label>   
+                    <p>{{notification.message}}</p>
+                </ion-label>
                 <ion-label slot="end" class="ion-padding-right">
                     <ion-icon  *ngIf="notification.read; else elseBlock" class="notification-icon ion-padding-bottom" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>
                     <ion-text class="time" color="medium">3m</ion-text>
                     <ng-template #elseBlock>
                         <ion-icon #elseBlock class="notification-icon ion-padding-bottom" color="dark" src="assets/icons/notification-black.svg"></ion-icon>
                     </ng-template>
-                </ion-label>   
+                </ion-label>
             </ion-item>
         </ion-list>
     </ion-content>
@@ -34,13 +34,13 @@
     <ion-content color="light">
         <ion-grid class="ion-align-items-center">
             <ion-row class="ion-text-center ion-padding-top" >
-                <ion-col size="12">        
+                <ion-col size="12">
                     <ion-icon name="notifications-off-outline" class="no-notification-icon"></ion-icon>
                 </ion-col>
-                <ion-col size="12" style="margin-bottom: 64px;">     
+                <ion-col size="12" style="margin-bottom: 64px;">
                     <ion-text style="font-size:24px;">No notifications</ion-text>
                 </ion-col>
-                <ion-col size="12">        
+                <ion-col size="12">
                     <ion-button [routerLink]="['/', 'home', 'feed']" expand ="block">Go back to Home</ion-button>
                 </ion-col>
             </ion-row>
