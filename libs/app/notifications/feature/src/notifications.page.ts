@@ -4,12 +4,14 @@ import { INotificationBox, INotifications } from '@mp/api/notifications/util';
 import { NotificationsState } from '@mp/app/notifications/data-access';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
+import { SubscribeToNotifications } from '@mp/app/notifications/util';
+import {NotificationsModule} from '@mp/app/notifications/data-access'
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.page.html',
   styleUrls: ['./notifications.page.scss'],
 })
-export class NotificationsPageComponent{
+export class NotificationsPageComponent implements OnInit{
   @Select(NotificationsState.notificationBox) notifications$!: Observable<INotificationBox | null>;
 
   // segment = 'notifications';
@@ -25,10 +27,10 @@ export class NotificationsPageComponent{
   //     notificationID:"mockdata2" }
   // ];
 
-  // constructor(
-  //   private alertController: AlertController,
-  //   private readonly store: Store
-  // ) { }
+  constructor(
+    private alertController: AlertController,
+    private readonly store: Store
+  ) { }
 
   // ngOnInit() {
   //   console.log(5);
@@ -39,5 +41,11 @@ export class NotificationsPageComponent{
     
   //   // this.notifications=NotificationsState.notificationBox.inbox;
   // }
+  ngOnInit() {
+    // this.setUserId();
+    this.store.dispatch(new SubscribeToNotifications());
+    console.log("notifications should be printed after this");
+    console.log(this.notifications$);
+  }
 }
 

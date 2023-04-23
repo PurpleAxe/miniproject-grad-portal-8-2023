@@ -52,6 +52,7 @@ export class NotificationsState {
 
     @Action(SubscribeToNotifications)
     subscribeToNotifications(ctx: StateContext<NotificationsStateModel>) {
+        console.log("In subscribeToNotifications function");
         const user = this.store.selectSnapshot(AuthState.user);
         if (!user) return ctx.dispatch(new SetError('User not set'));
 
