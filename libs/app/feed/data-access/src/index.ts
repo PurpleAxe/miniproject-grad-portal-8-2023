@@ -1,1 +1,1 @@
-export * from './lib/app-feed-data-access';
+export * from './feed.state';
