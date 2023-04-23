@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-var IgnorePlugin = require('webpack').IgnorePlugin;
 
 function getClientEnvironment(configuration) {
   // Grab NODE_ENV and NX_* environment variables and prepare them to be
@@ -42,32 +41,5 @@ module.exports = (config, options, context) => {
       child_process: false,
     },
   };
-
-
-  config.plugins = [
-    ...config.plugins,
-    new IgnorePlugin({
-      checkResource(resource) {
-        const lazyImports = [
-          '@nestjs/microservices',
-          '@nestjs/platform-express',
-          'cache-manager',
-          'class-validator',
-          'class-transformer',
-          'request',
-        ];
-        if (!lazyImports.includes(resource)) {
-          return false;
-        }
-        try {
-          require.resolve(resource);
-        } catch (err) {
-          return true;
-        }
-        return false;
-      },
-    }),
-  ];
-
   return config;
 };

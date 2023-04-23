@@ -3,9 +3,8 @@ import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import {MyPayload} from  '@mp/app/post/util';
 
-import { CreatePostAction} from '@mp/app/post/util';
+import { CreatePost} from '@mp/app/post/util';
 import { firestore } from 'firebase-admin';
-import { Timestamp } from 'firebase-admin/firestore';
 
 
 @Component({
@@ -38,11 +37,9 @@ export class PostPageComponent {
       body: this.body,
       department:this.department,
       challenge:this.challenge,
-      timestamp:Timestamp.now()
     }
-    console.log("post dispatched");
-     this.store.dispatch(new CreatePostAction(payload));
+    this.store.dispatch(new CreatePost(payload));
 
-    // this.router.navigate(['/home/feed']); //need to change to profile one day
+    this.router.navigate(['/home/feed']); //need to change to profile one day
   }
 }
