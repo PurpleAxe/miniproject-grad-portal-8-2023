@@ -33,6 +33,8 @@ export class CardComponent {
       this.dislikeNum--;
     }
     if (this.isLiked){
+      this.isLiked = !this.isLiked;
+      this.likeNum--;
       return;
     }
     this.isLiked = !this.isLiked;
@@ -56,6 +58,8 @@ export class CardComponent {
       this.likeNum--;
     }
     if (this.isDisliked){
+      this.isDisliked = !this.isDisliked;
+      this.dislikeNum--;
       return;
     }
     this.isDisliked = !this.isDisliked;
