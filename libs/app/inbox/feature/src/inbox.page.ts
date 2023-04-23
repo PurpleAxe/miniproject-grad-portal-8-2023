@@ -5,7 +5,14 @@ import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
-import { CreateConversation, GetConversation, GetUserId, GetUsers, Logout, SubscribeToInbox } from '@mp/app/inbox/util';
+import {
+  CreateConversation,
+  GetConversation,
+  GetUserId,
+  GetUsers,
+  Logout,
+  SubscribeToInbox,
+} from '@mp/app/inbox/util';
 import { IConversation } from '@mp/api/message/util';
 import { Observable, tap, map } from 'rxjs';
 import { User } from '@angular/fire/auth';
@@ -69,23 +76,54 @@ export class InboxPageComponent implements OnInit {
     },
   ];*/
   users: any;
+  conversations: any;
+  userSubscribtion: any;
+  conversationSubscribtion: any;
+
   chatRoomstub: any;
   chatRoom: any;
-  chatRooms: { conversationId: string; messages: string[]; participants: string[] }[] = [];
+  chatRooms: {
+    conversationId: string;
+    messages: string[];
+    participants: string[];
+  }[] = [];
 
   constructor(private router: Router, private readonly store: Store) {}
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
+    console.log('initializing');
+    this.getUsers();
+    this.getConversation();
+  }
+  getUsers() {
+    this.store.dispatch(new GetUsers());
+    this.userSubscribtion = this.store
+      .select(InboxState.users)
+      .subscribe((x) => {
+        this.users = x;
+      });
+  }
+  getConversation() {
     this.setUserId();
-    this.store.dispatch(new SubscribeToInbox());
-    console.log("inbox should be printed after this");
-    console.log(this.inbox$);
+    const a = this.store.dispatch(new SubscribeToInbox());
+    console.log(a, 'pqpqpqpsssssssssssssss');
+    this.conversationSubscribtion = this.store
+      .select(InboxState.conversations)
+      .subscribe((x) => {
+        this.conversations = x;
+        console.log(this.conversations, 'zzzzzzzzzzzzzzzz');
+      });
+  }
+  setUserId() {
+    this.store.dispatch(new GetUserId());
   }
 
-  // ngOnDestroy() {
-  //   // this.userList.unsubscribe();
-  // }
+  OnDestroy() {
+    console.log('onDestroy called : inbox.page.ts');
+    this.userSubscribtion.unsubscribe();
+    this.conversationSubscribtion.unsubscribe();
+  }
 
   logout() {
     this.popover.dismiss();
@@ -96,42 +134,8 @@ export class InboxPageComponent implements OnInit {
     //
   }
 
-  setUserId() {
-    this.store.dispatch(new GetUserId());
-  }
-
   newChatModalOpen() {
     this.open_new_chat = true;
-    this.users = [];
-    this.store.dispatch(new GetUsers());
-    const users = this.store.select(InboxState.users).subscribe((x) => {
-      this.users = x;
-    });
-
-    users.unsubscribe();
-    // this.users = users;
-    // setTimeout(() => {
-    //   this.store
-    //     .select(InboxState.users)
-    //     .subscribe((x) => console.log(x, 'zzzzzzzzzzzzzzz'));
-    //   console.log('dd');
-    //   // if (users) users.subscribe((x) => console.log(x, 'zzzzzzzzzzzzzzz'));
-
-    //   /*if (this.inbox$) {
-    //     console.log("new user");
-    //     console.log(inboxState.users);
-    //     for (let i = 0; i < inboxState.users?.length; i++) {
-    //       this.users.push({ id: i , name: inboxState.users[i] , photo: ""});
-    //     }
-    //   }*/
-    // }, 2000);
-
-    // console.log(this.store.dispatch(new GetUserId()), '$##@#@#@#@#');
-    // this.userList.pipe(tap((x) => console.log(x)));
-    // }
-    /*console.log(this.userNew$);
-    this.userNew$.subscribe((x: any) => console.log(x), 'zzzzzzzzzzz');
-    console.log('done fetching users');*/
   }
 
   onWillDismiss(event: any) {
@@ -145,32 +149,41 @@ export class InboxPageComponent implements OnInit {
 
   startChat(item: any) {
     console.log('user clicked ;)');
-    this.store.dispatch(new GetConversation());
-    const conversation = this.store.select(InboxState.conversation).subscribe((x) => {
-      if (x) {
-        this.chatRooms=x;
-      }
-      console.log("define chatRooms");
-    });
-    console.log("should print conversations app user is in");
-    console.log(this.chatRooms.map(room => room.participants));
-    let noConversation=true;
+    // this.store.dispatch(new GetConversation());
+    const conversation = this.store
+      .select(InboxState.conversation)
+      .subscribe((x) => {
+        if (x) {
+          this.chatRooms = x;
+        }
+        console.log('define chatRooms');
+      });
+    console.log('should print conversations app user is in');
+    console.log(this.chatRooms.map((room) => room.participants));
+    let noConversation = true;
     for (let i = 0; i < this.chatRooms.length; i++) {
-      if (item.id==this.chatRooms[i].participants[0]||item.id==this.chatRooms[i].participants[1]) {
-        this.chatRoom=this.chatRooms[i];
-        noConversation=false;
+      if (
+        item.id == this.chatRooms[i].participants[0] ||
+        item.id == this.chatRooms[i].participants[1]
+      ) {
+        this.chatRoom = this.chatRooms[i];
+        noConversation = false;
         break;
       }
     }
     if (noConversation) {
-      this.chatRoom=null;
+      this.chatRoom = null;
       //create a new chatroom to store to firebase
       this.store.dispatch(new CreateConversation());
-      const newConversation = this.store.select(InboxState.currentConversation).subscribe((x) => {
-        this.chatRoom = x;
-      });
+      const newConversation = this.store
+        .select(InboxState.currentConversation)
+        .subscribe((x) => {
+          this.chatRoom = x;
+        });
     }
-    console.log("should print conversation clicked user and current user is in");
+    console.log(
+      'should print conversation clicked user and current user is in'
+    );
     console.log(this.chatRoom);
     /*this.store.dispatch(new CreateConversation())
     const conversations = this.store.select(InboxState.conversation).subscribe((x) => {
@@ -187,7 +200,7 @@ export class InboxPageComponent implements OnInit {
         
       }
     }*/
-    
+
     //this.router.navigate(['/chats']);
     console.log(item); // has selected user {id: , displayName: , photoURL}
     //1. TODO list all users

@@ -4,13 +4,14 @@ import { IConversation } from '@mp/api/message/util';
 //   static readonly type = '[Inbox] SendMessage';
 // }
 
-export class CreateConversation { //item is a user to speak to 
+export class CreateConversation {
+  //item is a user to speak to
   static readonly type = '[Inbox] CreateConversation';
 }
 
 export class SetInbox {
   static readonly type = '[Profile] SetInbox';
-  constructor(public readonly conversations: IConversation [] | null) {}
+  constructor(public readonly conversations: IConversation[] | null) {}
 }
 
 // export class DeleteMessage {
@@ -37,3 +38,6 @@ export class GetUserId {
 export class Logout {
   static readonly type = '[Inbox] Logout';
 }
+// export class setConvoMem {
+//   static readonly type = '[Inbox] setConvoMem';
+// }

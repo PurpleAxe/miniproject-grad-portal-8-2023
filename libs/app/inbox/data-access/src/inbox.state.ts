@@ -25,9 +25,13 @@ import { IProfile } from '@mp/api/profiles/util';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
-  conversations: IConversation[] | null;
-  conversation: { conversationId: string , messages: string [] , participants: string [] }[] | null;
+  conversations: any;
+  conversation:
+    | { conversationId: string; messages: string[]; participants: string[] }[]
+    | null;
   users: { id: number; displayName: string; photoURL: string }[] | null;
+  members: { id: number; displayName: string; photoURL: string }[] | null;
+
   //appUser: IProfile;
   // user: User | undefined | null;
   //conversationIds: string | null;
@@ -41,6 +45,7 @@ export interface InboxStateModel {
     conversations: null,
     conversation: null,
     users: null,
+    members: null,
     //appUser: null,
     // user: null,
     //conversationIds: null,
@@ -75,28 +80,48 @@ export class InboxState {
   static users(state: InboxStateModel) {
     return state.users;
   }
+  @Selector()
+  static members(state: InboxStateModel) {
+    return state.members;
+  }
 
   @Action(SetInbox)
-  setConversation(ctx: StateContext<InboxStateModel>, { conversations }: SetInbox) {
-    return ctx.setState(
-      produce((draft) => {
-        if (conversations) {
-          console.log("conversations plz!!!!!!!!!!!!");
-          console.log(conversations);
-          draft.conversations = conversations;
-        }
-      })
-    );
+  // setConversation(
+  //   ctx: StateContext<InboxStateModel>,
+  //   { conversations }: SetInbox
+  // ) {
+  //   return ctx.setState(
+  //     produce((draft) => {
+  //       if (conversations) {
+  //         console.log('conversations plz!!!!!!!!!!!!');
+  //         console.log(conversations);
+  //         draft.conversations = conversations;
+  //       }
+  //     })
+  //   );
+  // }
+  @Action(GetUserId)
+  async getUserId() {
+    if (!this.userId) {
+      this.store
+        .select(AuthState.user)
+        .subscribe((x: any) => (this.userId = x?.uid));
+    }
   }
 
   @Action(SubscribeToInbox)
-  subscribeToInbox(ctx: StateContext<InboxStateModel>) {
-    const user = this.store.selectSnapshot(AuthState.user);
-    if (!user) return ctx.dispatch(new SetError('User not logged in'));
-
-    return this.inboxApi
-      .inbox$(user.uid)
-      .pipe(tap((conversations: IConversation [] ) => ctx.dispatch(new SetInbox(conversations))));
+  async subscribeToInbox(ctx: StateContext<InboxStateModel>) {
+    await this.getUserId();
+    await this.inboxApi.inbox(this.userId);
+    const bb = this.inboxApi.getConversationObs();
+    bb.subscribe((x) => {
+      ctx.setState(
+        produce((draft) => {
+          draft.conversations = x;
+        })
+      );
+    });
+    return bb;
   }
 
   @Action(CreateConversation) //createconversation only called to add new conversation
@@ -125,7 +150,7 @@ export class InboxState {
               draft.conversations.push(draft.currentConversation);
             }
           }
-          draft.currentConversation = response as IConversation; 
+          draft.currentConversation = response as IConversation;
         })
       );
     } catch (error) {
@@ -185,31 +210,32 @@ export class InboxState {
   // async getUserId() {
   //   return this.userId;
   // }
-  @Action(GetConversation)
-  async getConversation(ctx: StateContext<InboxStateModel>) {
-    this.store
-      .select(AuthState.user)
-      .subscribe((x: any) => (this.userId = x?.uid));
+  // @Action(GetConversation)
+  // async getConversation(ctx: StateContext<InboxStateModel>) {
+  //   this.store
+  //     .select(AuthState.user)
+  //     .subscribe((x: any) => (this.userId = x?.uid));
 
-    const res = await this.inboxApi.getConversation(this.userId);
+  //   const res = await this.inboxApi.getConversation(this.userId);
+  //   console.log(res, 'aaaaaaaaaaaaaaaaaaaaaaa');
 
-    return ctx.setState(
-      produce((draft) => {
-        draft.conversation = Array.from(
-          res.map(
-            (item) => ({
-              conversationId : item['conversationId'],
-              messages: item['messages'],
-              participants: item['participants'],
-            })
-            // items.map((item) => )
-          )
-        );
-      })
-    );
+  //   return ctx.setState(
+  //     produce((draft) => {
+  //       draft.conversations = Array.from(
+  //         res.map(
+  //           (item) => ({
+  //             conversationId: item['conversationId'],
+  //             messages: item['messages'],
+  //             participants: item['participants'],
+  //           })
+  //           // items.map((item) => )
+  //         )
+  //       );
+  //     })
+  //   );
 
-    // return this.users$;
-  }
+  //   // return this.users$;
+  // }
 
   @Action(GetUsers)
   async getUsers(ctx: StateContext<InboxStateModel>) {
@@ -283,4 +309,35 @@ export class InboxState {
 
     // return this.users$;
   }
+  // , { email, password }: Login
+  // @Action(setConvoMem)
+  // async setConvoMem(ctx: StateContext<InboxStateModel>) {
+  //   // this.store
+  //   //   .select(AuthState.user)
+  //   //   .subscribe((x: any) => (this.userId = x?.uid));
+
+  //   console.log(ctx.getState().conversations, 'kkkkkkkkkkkkkkkkkkk');
+  //   const res = await this.inboxApi.getMembersId(ctx.getState().conversations);
+
+  //   return ctx.setState(
+  //     produce((draft) => {
+  //       draft.members = Array.from(
+  //         res.map(
+  //           (item) => ({
+  //             id: item['id'],
+  //             displayName: item['displayName'],
+  //             photoURL: item['photoURL'],
+  //           })
+  //           // items.map((item) => )
+  //         )
+
+  //         // for (let i = 0; i < res.length; i++) {
+  //         //   draft.users?.push({ id: res[i]['id'], name: res[i]['displayName'] });
+  //         //   console.log(draft.users[i].name + ' was added');
+  //         //   console.log('new size: ' + draft.users.length);
+  //         // }
+  //       );
+  //     })
+  //   );
+  // }
 }
