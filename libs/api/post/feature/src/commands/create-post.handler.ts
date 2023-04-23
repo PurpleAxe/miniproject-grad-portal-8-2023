@@ -11,17 +11,16 @@ export class CreatePostHandler
     constructor(private publisher: EventPublisher) {}
 
     async execute(command: CreatePostCommand) {
-        const request = command.request;
-        const userId = request.post.userId;
-        const postId = request.post.postId;
-        const likes = request.post.likes;
-        const dislikes = request.post.dislikes;
-        const comments = request.post.comments;
-        const message = request.post.message;
+      const request = command.request;
+      const userId = request.post.userId;
+      const likes = 1;
+      const dislikes = 0;
+      const comments = request.post.comments;
+      const message = request.post.message;
 
 
       const data: IPost = {
-        postId,
+        postId:null,
         userId,
         likes,
         dislikes,
@@ -32,7 +31,7 @@ export class CreatePostHandler
 
       const post = this.publisher.mergeObjectContext(PostModel.fromData(data));
 
-      post.create();
+      post.createPost();
       post.commit();
   }
 

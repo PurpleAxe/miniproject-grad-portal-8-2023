@@ -2,7 +2,7 @@ import { Timestamp } from "firebase-admin/firestore";
 import { IComment } from "./comment.interface"
 
 export interface IPost{
-    postId: string;
+    postId: string |null | undefined;
     userId: string;
     likes?: number | null | undefined;
     dislikes?: number | null | undefined;

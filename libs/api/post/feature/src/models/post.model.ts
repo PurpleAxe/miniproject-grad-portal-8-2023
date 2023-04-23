@@ -1,11 +1,12 @@
 import {IComment, IPost, PostCreatedEvent} from "@mp/api/post/util";
 import {AggregateRoot} from "@nestjs/cqrs";
 import {Timestamp} from "firebase-admin/lib/firestore";
-import {IProfile} from "@mp/api/profiles/util";
+import {UsersRepository} from "@mp/api/users/data-access";
 
 export class PostModel extends AggregateRoot implements IPost {
+  private readonly repository : UsersRepository = new UsersRepository();
   constructor(
-    public postId: string,
+    public postId: string | null | undefined,
     public userId: string,
     public likes?: number | null | undefined,
     public dislikes?: number | null | undefined,
@@ -29,8 +30,11 @@ export class PostModel extends AggregateRoot implements IPost {
     return instance;
   }
 
-  create(){
-        this.apply(new PostCreatedEvent(this.toJSON()));
+  async createPost(){
+    if ((await this.repository.doesUserExist({"id" :this.userId}))) {
+      throw Error("User attempting to make a post does not exist");
+    }
+    this.apply(new PostCreatedEvent(this.toJSON()));
   }
 
   toJSON(): IPost {
