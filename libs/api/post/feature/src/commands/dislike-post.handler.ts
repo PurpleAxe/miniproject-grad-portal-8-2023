@@ -48,8 +48,7 @@ export class DislikePostHandler
         post.dislikePost(likingUserID!);
       }
       post.commit();
-      const response: IDislikePostResponse = {"Onpost" : post.toJSON()};
+      const response: IDislikePostResponse = {"post" : post.toJSON()};
       return response;
   }
-
 }
