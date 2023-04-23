@@ -34,20 +34,20 @@
         <ion-row>
             <ion-col size="3">
                 <ion-button fill="clear" (click)="Like()">
-                    <ion-icon name="thumbs-up-outline"></ion-icon>
-                    <ion-label> 12</ion-label>
+                    <ion-icon name="thumbs-up-outline" [ngStyle]="{ color: isLiked ? 'orange' : 'black' }"></ion-icon>
+                    <ion-label >{{ likeNum }}</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="3">
                 <ion-button fill="clear" (click)="Dislike()">
-                    <ion-icon name="thumbs-down-outline" ></ion-icon>
-                    <ion-label> 1</ion-label>
+                    <ion-icon name="thumbs-down-outline" [ngStyle]="{ color: isDisliked ? 'orange' : 'black' }"></ion-icon>
+                    <ion-label> {{ dislikeNum }}</ion-label>
                   </ion-button>
             </ion-col>
             <ion-col size="3">
                 <ion-button fill="clear" (click)="Comment()">
                     <ion-icon name="chatbubble-outline" ></ion-icon>
-                    <ion-label> 2</ion-label>
+                    <ion-label> {{ commentNum }}</ion-label>
                   </ion-button>
             </ion-col>
             <ion-col size="3">
