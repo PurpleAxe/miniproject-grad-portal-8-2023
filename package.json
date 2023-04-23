@@ -27,7 +27,7 @@
     "generate:pwa:assets:icons": "pwa-asset-generator apps/app/src/assets/logos/schadre-logo-only.png apps/app/src/assets/pwa --favicon --icon-only --padding \"20px\" --mstile --maskable --manifest apps/app/src/manifest.webmanifest",
     "generate:pwa:assets:splashes": "pwa-asset-generator apps/app/src/assets/logos/schadre-logo-only.png apps/app/src/assets/pwa --favicon --splash-only --padding \"150px\" --mstile --maskable --manifest apps/app/src/manifest.webmanifest",
     "host:app": "http-server dist/apps/app",
-    "test:ci": "ng run-many --target=test --all --parallel --coverage --coverageReporters=lcov && node ./tools/coverageMerger.js",
+    "test:ci": "yarn nx run-many --target=test --all --parallel --coverage --coverageReporters=lcov && node ./tools/coverageMerger.js",
     "start:everything": "$TERMINAL yarn start:api:dev & $TERMINAL yarn start:app:dev & $TERMINAL yarn start:emulators & ",
     "start:everything:windows": "start cmd /k \"yarn start:api:dev\" & start cmd /k \"yarn start:emulators\" & start cmd /k \"yarn start:app:dev\""
   },
