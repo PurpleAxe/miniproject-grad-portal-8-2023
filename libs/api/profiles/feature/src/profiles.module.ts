@@ -17,8 +17,10 @@ import {
     OccupationDetailsUpdatedHandler,
     PersonalDetailsUpdatedHandler,
     ProfileCreatedHandler,
+    ProfileDislikedPostHandler,
     ProfileStatusUpdatedHandler
 } from './events';
+import {ProfileLikedPostUpdatedHandler} from './events/profile-liked-posts-updated.handler';
 import { ProfilesSagas } from './profiles.sagas';
 import { ProfilesService } from './profiles.service';
 export const CommandHandlers = [
@@ -38,6 +40,9 @@ export const EventHandlers = [
   OccupationDetailsUpdatedHandler,
   AccountDetailsUpdatedHandler,
   ProfileStatusUpdatedHandler,
+  ProfileLikedPostUpdatedHandler,
+  ProfileDislikedPostHandler,
+
 ];
 
 @Module({
