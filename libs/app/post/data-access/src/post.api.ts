@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-import { IPost } from '@mp/api/post/util';
+import { IIPost } from '@mp/api/post/util';
 import { Timestamp } from 'firebase-admin/firestore';
 // import {
 //     IPost,
@@ -34,7 +34,7 @@ export class PostApi {
     // return docData(docRef, { idField: 'id' });
   }
 
-  async createPost(request: IPost) {
+  async createPost(request: IIPost) {
     // return await httpsCallable<
     //   ICreatePostRequest,
     //   ICreatePostResponse

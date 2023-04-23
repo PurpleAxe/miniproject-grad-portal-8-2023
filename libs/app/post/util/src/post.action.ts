@@ -4,12 +4,21 @@ import { Timestamp } from "firebase-admin/firestore";
 
 // export type Page = FeedPage | ProfilePage;
 
+<<<<<<< Updated upstream
 export interface Post{
   body: string;
   department:string;
   challenge:string;
   timestamp:Timestamp;
 };
+=======
+ export interface MyPayload {
+     body: string;
+     department:string;
+     challenge:string;
+     timestamp?:Timestamp;
+   }
+>>>>>>> Stashed changes
 
 // Action interfaces
 export enum PostActionTypes {

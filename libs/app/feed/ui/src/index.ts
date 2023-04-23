@@ -1,2 +1,2 @@
-export * from './lib/feed.module';
-export * from './lib/card';
+export * from './feed.module';
+export * from './card';

@@ -23,7 +23,7 @@ export class FeedPage implements OnInit{
   }
 
   ngOnInit(){
-    this.homet();
+    //this.homet();
   }
 
   Discoveryt(){
