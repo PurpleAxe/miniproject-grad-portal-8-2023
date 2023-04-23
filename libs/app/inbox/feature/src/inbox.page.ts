@@ -121,8 +121,8 @@ export class InboxPageComponent implements OnInit {
   }
   getConversation() {
     this.setUserId();
-    const a = this.store.dispatch(new SubscribeToInbox());
-    console.log(a, 'pqpqpqpsssssssssssssss');
+    this.store.dispatch(new SubscribeToInbox());
+    // console.log(a, 'pqpqpqpsssssssssssssss');
     this.conversationSubscribtion = this.store
       .select(InboxState.conversations)
       .subscribe((x) => {
@@ -188,17 +188,26 @@ export class InboxPageComponent implements OnInit {
     }
     if (noConversation) {
       this.chatRoom = null;
+      let displayName = '';
+      let photoURL = '';
       this.store
         .select(AuthState.user)
-        .subscribe((x: any) => ((this.user = x?.uid), (this.email = x?.email)));
+        .subscribe(
+          (x: any) => (
+            (this.user = x?.uid),
+            (this.email = x?.email),
+            (displayName = x?.displayName),
+            (photoURL = x?.photoURL)
+          )
+        );
       //get members action
       //
       //create a new chatroom to store to firebase
       const member1: IUser = {
         id: this.user,
         email: this.email,
-        displayName: '',
-        photoURL: '',
+        displayName: displayName,
+        photoURL: photoURL,
         phoneNumber: '',
         customClaims: null,
         created: null,
@@ -210,7 +219,7 @@ export class InboxPageComponent implements OnInit {
       this.member2.photoURL = item.photoURL;
       this.member2.phoneNumber = item.phoneNumber;
       this.member2.customClaims = item.customClaims;
-      this.member2.created = item.created;
+      this.member2.created = null;
 
       member1.id = this.user;
       console.log('give me two users');

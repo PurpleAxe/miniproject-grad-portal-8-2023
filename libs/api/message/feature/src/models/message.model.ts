@@ -1,24 +1,25 @@
 import {
-    MessageSentEvent,
-    MessageDeletedEvent,
-    IMessage,
-		ConversationCreatedEvent,
+  MessageSentEvent,
+  MessageDeletedEvent,
+  IMessage,
+  ConversationCreatedEvent,
 } from '@mp/api/message/util';
-import {IUser} from '@mp/api/users/util';
+import { IUser } from '@mp/api/users/util';
 import { IConversation } from '@mp/api/message/util';
 import { AggregateRoot } from '@nestjs/cqrs';
-import {randomInt} from 'crypto';
-import {Inject} from '@nestjs/common';
-import {MessageRepository} from '@mp/api/message/data-access';
+import { randomInt } from 'crypto';
+import { Inject } from '@nestjs/common';
+import { MessageRepository } from '@mp/api/message/data-access';
 import { randomUUID } from 'crypto';
 
 export class Message extends AggregateRoot implements IConversation {
   @Inject(MessageRepository)
-  private readonly repository : MessageRepository = new MessageRepository();
+  private readonly repository: MessageRepository = new MessageRepository();
   constructor(
-    public conversationID? : string | null | undefined,
-    public messages? : IMessage[] | null | undefined, //just to avoid build errors
-    public members? : IUser[] | null | undefined, // TODO remove undefined for authentication purpouses
+    public conversationID?: string | null | undefined,
+    public messages?: IMessage[] | null | undefined, //just to avoid build errors
+    public members?: IUser[] | null | undefined, // TODO remove undefined for authentication purpouses
+    public membersID?: string[]
   ) {
     super();
   }
@@ -28,12 +29,15 @@ export class Message extends AggregateRoot implements IConversation {
       message.conversationID,
       message.messages,
       message.members,
+      message.membersID
     );
     return instance;
   }
 
   sendMessage() {
-    this.messages!.at(0)!.id = (this.messages!.at(0)!.metaData.timePosted.seconds + randomInt(10000)).toString();
+    this.messages!.at(0)!.id = (
+      this.messages!.at(0)!.metaData.timePosted.seconds + randomInt(10000)
+    ).toString();
     this.apply(new MessageSentEvent(this.toJSON()));
   }
 
@@ -48,10 +52,10 @@ export class Message extends AggregateRoot implements IConversation {
 
   toJSON(): IConversation {
     const conversation: IConversation = {
-      conversationID : this.conversationID,
-    }
-    this.messages ? conversation.messages = this.messages : undefined;
-    this.members ? conversation.members = this.members : undefined;
+      conversationID: this.conversationID,
+    };
+    this.messages ? (conversation.messages = this.messages) : undefined;
+    this.members ? (conversation.members = this.members) : undefined;
     return conversation;
   }
 }
