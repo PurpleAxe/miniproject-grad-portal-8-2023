@@ -1,6 +1,6 @@
 import {IComment, IPost, PostCreatedEvent, PostDislikedEvent, PostDislikeRemovedEvent, PostLikedEvent, PostLikeRemovedEvent} from "@mp/api/post/util";
 import {AggregateRoot} from "@nestjs/cqrs";
-import {Timestamp} from "firebase-admin/lib/firestore";
+import {Timestamp} from "firebase-admin/firestore";
 import {UsersRepository} from "@mp/api/users/data-access";
 import {randomUUID} from "crypto";
 
@@ -40,18 +40,22 @@ export class PostModel extends AggregateRoot implements IPost {
   }
 
   async likePost(user:string) {
+    this.likes = this.likes! + 1;
     this.apply(new PostLikedEvent(this.toJSON(),user));
   }
 
   async likePostRemoved(user:string) {
+    this.likes = this.likes! - 1;
     this.apply(new PostLikeRemovedEvent(this.toJSON(),user));
   }
 
   async dislikePost(user:string) {
+    this.likes = this.dislikes! + 1;
     this.apply(new PostDislikedEvent(this.toJSON(),user));
   }
 
   async dislikePostRemoved(user:string) {
+    this.likes = this.dislikes! - 1;
     this.apply(new PostDislikeRemovedEvent(this.toJSON(),user));
   }
 

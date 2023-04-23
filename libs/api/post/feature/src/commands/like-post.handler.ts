@@ -1,5 +1,5 @@
 import {PostsRepository} from "@mp/api/post/data-access";
-import { LikePostCommand } from "@mp/api/post/util";
+import { ILikePostResponse, LikePostCommand } from "@mp/api/post/util";
 import { IPost } from '@mp/api/post/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { PostModel } from "../models";
@@ -7,7 +7,7 @@ import {ProfilesRepository } from "@mp/api/profiles/data-access";
 
 @CommandHandler(LikePostCommand)
 export class LikePostHandler
-  implements ICommandHandler<LikePostCommand>
+  implements ICommandHandler<LikePostCommand,ILikePostResponse>
 {
     constructor(
       private publisher: EventPublisher,
@@ -48,6 +48,8 @@ export class LikePostHandler
         post.likePost(likingUserID!);
       }
       post.commit();
+      const response: ILikePostResponse = {"Onpost" : post.toJSON()};
+      return response;
   }
 
 }

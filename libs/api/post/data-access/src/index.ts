@@ -1,2 +1,2 @@
-export * from './posts.repository'
-export * from './post.module'
+export * from './posts.repository';
+export * from './post.module';

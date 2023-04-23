@@ -1,5 +1,5 @@
 import {PostsRepository} from "@mp/api/post/data-access";
-import { DislikePostCommand } from "@mp/api/post/util";
+import { DislikePostCommand, IDislikePostResponse } from "@mp/api/post/util";
 import { IPost } from '@mp/api/post/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { PostModel } from "../models";
@@ -7,7 +7,7 @@ import {ProfilesRepository } from "@mp/api/profiles/data-access";
 
 @CommandHandler(DislikePostCommand)
 export class DislikePostHandler
-  implements ICommandHandler<DislikePostCommand>
+  implements ICommandHandler<DislikePostCommand,IDislikePostResponse>
 {
     constructor(
       private publisher: EventPublisher,
@@ -48,6 +48,8 @@ export class DislikePostHandler
         post.dislikePost(likingUserID!);
       }
       post.commit();
+      const response: IDislikePostResponse = {"Onpost" : post.toJSON()};
+      return response;
   }
 
 }
