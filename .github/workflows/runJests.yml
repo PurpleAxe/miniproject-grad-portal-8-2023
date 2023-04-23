@@ -20,11 +20,12 @@ jobs:
           touch .env
           echo ${{secrets.ENV_FILE}} >> .env
           
-      - name: Install Firebase
-        run: yarn global add firebase-tools
+#       - name: Install Firebase
+#         run: yarn global add firebase-tools
         
       - run: yarn install --frozen-lockfile
-      - run: firebase emulators:exec --project timehive-29588 'npx jest'
+#       - run: firebase emulators:exec --project timehive-29588 'npx jest'
+      - run: npx jest
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
       
