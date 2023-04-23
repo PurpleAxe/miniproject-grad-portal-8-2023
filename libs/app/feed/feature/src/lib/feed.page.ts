@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./feed.page.scss'],
 })
 export class FeedPage {
-  contentArr: string[] = ["Card1", "Card2"];
+  contentArr: string[] = ["PostId1", "PostId2", "PostId3"];
   LHome!: boolean;
   LDiscovery!: boolean;
 
@@ -19,7 +19,9 @@ export class FeedPage {
   Discoveryt(){
     this.LHome = false;
     this.LDiscovery = true;
-    console.log("Discovery");
+    console.log("Discover");
+    this.contentArr.push("the_element");
+
   }
 
   homet(){
@@ -28,32 +30,6 @@ export class FeedPage {
     this.LDiscovery = false;
   }
 
-  // goToLeaderboard(){
-  //   // this.router.navigate(['/home/profile']);
-  // }
-
-  // checkFollowing(){
-  //   // this.router.navigate(['/home/profile']);
-  // }
-
-  // checkFollowers(){
-  //   // this.router.navigate(['/home/profile']);
-  // }
-
-  // logout(){
-  //   // this.router.navigate(['/home/profile']);
-  // }
-
-  // goToMyProfile(){
-  //   this.router.navigate(['/home/userprofile']);
-  // }
-
-  // goToProfile(){
-  //   this.router.navigate(['/home/profile']);
-  // }
-
-  // goToSettings(){
-  //   this.router.navigate(['/home/settings']);
-  // }
+  
 
 }
