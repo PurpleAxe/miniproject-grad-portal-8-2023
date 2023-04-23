@@ -22,12 +22,14 @@ import { Logout as AuthLogout } from '@mp/app/auth/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { tap } from 'rxjs';
 import { IProfile } from '@mp/api/profiles/util';
+import { IUser } from '@mp/api/users/util';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
   conversations: IConversation[] | null;
   conversation: { conversationId: string , messages: string [] , participants: string [] }[] | null;
   users: { id: number; displayName: string; photoURL: string }[] | null;
+  members: IUser[] | null;
   //appUser: IProfile;
   // user: User | undefined | null;
   //conversationIds: string | null;
@@ -41,7 +43,8 @@ export interface InboxStateModel {
     conversations: null,
     conversation: null,
     users: null,
-    //appUser: null,
+    members: null,
+    //appUser: null
     // user: null,
     //conversationIds: null,
     //messageIds: null
@@ -69,6 +72,11 @@ export class InboxState {
   @Selector()
   static conversation(state: InboxStateModel) {
     return state.conversation;
+  }
+
+  @Selector()
+  static members(state: InboxStateModel) {
+    return state.members;
   }
 
   @Selector()
@@ -100,12 +108,30 @@ export class InboxState {
   }
 
   @Action(CreateConversation) //createconversation only called to add new conversation
-  async createConversation(ctx: StateContext<InboxStateModel>) {
+  async createConversation(ctx: StateContext<InboxStateModel>, { member }: CreateConversation) {
     try {
       const inboxState = ctx.getState();
       const conversationID = inboxState.currentConversation?.conversationID;
-      const members = inboxState.currentConversation?.members;
+      const members = member;
+      console.log("i gave you what you want @createconvos");
+      console.log(members);
       const messages = inboxState.currentConversation?.messages;
+      if (conversationID) {
+        console.log("conversationID");
+      } else if (messages) {
+        console.log("messages");
+      } else if (!members) {
+        console.log("members");
+      } else if (members) {
+        if (members.length<=1) {
+          console.log("members length");
+        } else {
+          console.log("no error from above");
+        }
+      } else {
+        console.log("no error from above");
+      }
+      console.log("does this even work");
       const request: ICreateConversationRequest = {
         conversation: {
           conversationID,
@@ -180,18 +206,15 @@ export class InboxState {
   OnDestroy() {
     // this.item$.unsubscribe();
   }
+  
 
-  // @Action(GetUserId)
-  // async getUserId() {
-  //   return this.userId;
-  // }
-  @Action(GetConversation)
-  async getConversation(ctx: StateContext<InboxStateModel>) {
+  /*@Action(GetMembers)
+  async getMembers(ctx: StateContext<InboxStateModel>) {
     this.store
       .select(AuthState.user)
       .subscribe((x: any) => (this.userId = x?.uid));
 
-    const res = await this.inboxApi.getConversation(this.userId);
+    const res = await this.inboxApi.getMembers(this.userId);
 
     return ctx.setState(
       produce((draft) => {
@@ -206,10 +229,13 @@ export class InboxState {
           )
         );
       })
-    );
+    );*/
 
-    // return this.users$;
-  }
+  // @Action(GetUserId)
+  // async getUserId() {
+  //   return this.userId;
+  // }
+  
 
   @Action(GetUsers)
   async getUsers(ctx: StateContext<InboxStateModel>) {
