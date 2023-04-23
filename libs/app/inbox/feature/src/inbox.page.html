@@ -2,8 +2,10 @@
   <ion-list *ngIf="segment === 'chats' && (conversations) as rooms">
     <ion-list-header class="ion-padding-bottom"> Messages </ion-list-header>
 
-    <ion-item
-      *ngFor="let item of conversations"
+
+
+      <ion-item
+      *ngFor="let item of rooms"
       (click)="getChat(item)"
       [detail]="true">
       <ng-container *ngIf="(item.participants&& item.participants.length>0)">
@@ -17,37 +19,31 @@
           </p>
         </ion-label>
         <ion-text slot="end" color="medium">10:02 am</ion-text>
-      </ng-container>
-    </ion-item>
-  </ion-list>
+        </ng-container>
+      </ion-item>
 
-  <ion-fab slot="fixed" horizontal="end" vertical="bottom">
-    <ion-fab-button (click)="newChatModalOpen()">
-      <ion-icon name="chatbubbles"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    </ion-list>
 
-  <ion-modal
-    #new_chat
-    [isOpen]="open_new_chat"
-    (willDismiss)="onWillDismiss($event)">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar color="primary">
-          <ion-title>New Chat</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="cancel()">Cancel</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content color="light" *ngIf="users">
-        <!-- <ion-content color="light" *ngIf="users|async"> -->
-        <ion-list
-          class="ion-margin-top"
-          [style.background]="'transparent'"
-          lines="none">
-          <app-user-list
-            *ngFor="let item of users"
+    <ion-fab style="position:fixed;" horizontal="end" vertical="bottom">
+      <ion-fab-button (click)="newChatModalOpen()">
+        <ion-icon name="chatbubbles"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-modal #new_chat [isOpen]="open_new_chat" (willDismiss)="onWillDismiss($event)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>New Chat</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="cancel()">Cancel</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content color="light" *ngIf="users as user$">
+          <ion-list class="ion-margin-top" [style.background]="'transparent'" lines="none">
+            <app-user-list
+            *ngFor="let item of user$"
             [item]="item"
             (onUserPicked)="startChat($event)">
           </app-user-list>

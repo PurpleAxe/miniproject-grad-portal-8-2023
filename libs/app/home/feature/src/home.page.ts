@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-// import { SubscribeToProfile } from '@mp/app/profile/util';
-import { Select, Store } from '@ngxs/store';
+import { Select, Store} from '@ngxs/store';
 import { Observable } from 'rxjs';
 
 import { Router } from '@angular/router';
-import { ModalController, PopoverController } from '@ionic/angular';
-import { OnInit, ViewChild } from '@angular/core';
-import { Logout } from '@mp/app/auth/util';
+
+import { MenuController } from '@ionic/angular';
+import {Logout} from '@mp/app/auth/util';
+
 
 @Component({
   selector: 'ms-home-page',
@@ -17,60 +17,22 @@ import { Logout } from '@mp/app/auth/util';
 })
 export class HomePage {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
-  @ViewChild('new_chat') modal!: ModalController;
-  @ViewChild('popover') popover!: PopoverController;
 
-  segment = 'chats';
-  open_new_chat = false;
 
-  // users = [
-  //   { id: 1, name: 'Nikhil', photo: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' },
-  //   { id: 2, name: 'Serah', photo: 'https://i.pinimg.com/564x/a6/58/32/a65832155622ac173337874f02b218fb.jpg' },
-  //   { id: 3, name: 'Jess', photo: 'https://cdn.icon-icons.com/icons2/2643/PNG/512/female_woman_person_people_avatar_icon_159366.png' }
-  // ];
-
-  // chatRooms = [
-  //   { id: 1, name: 'Nikhil', photo: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' },
-  //   { id: 2, name: 'Serah', photo: 'https://i.pinimg.com/564x/a6/58/32/a65832155622ac173337874f02b218fb.jpg' },
-  //   { id: 3, name: 'Jess', photo: 'https://cdn.icon-icons.com/icons2/2643/PNG/512/female_woman_person_people_avatar_icon_159366.png' }
-  // ];
-
-  // constructor(private readonly store: Store) {}
-
-  constructor(private router: Router, private readonly store: Store) {}
-
-  // ionViewWillEnter() {
-  //   this.store.dispatch(new SubscribeToProfile());
-  // }
+  constructor(private router: Router, private renderer: Renderer2, private readonly store: Store, private menuCtrl?: MenuController) {}
 
   ngOnInit() {
-    // console.log('');
+    const colorTheme = localStorage.getItem('color-theme');
+
+    if (colorTheme) {
+      this.renderer.setAttribute(document.body, 'color-theme', colorTheme);
+    }
   }
+
 
   logout() {
-    this.popover.dismiss();
+    // this.popover.dismiss();
     this.store.dispatch(new Logout());
-  }
-
-  onSegmentChanged(event: any) {
-    //
-  }
-
-  newChat() {
-    this.open_new_chat = true;
-  }
-
-  onWillDismiss(event: any) {
-    //
-  }
-
-  cancel() {
-    this.modal.dismiss();
-    this.open_new_chat = false;
-  }
-
-  startChat(item: any) {
-    //
   }
 
   goToSearch() {
@@ -81,8 +43,8 @@ export class HomePage {
     this.router.navigate(['/home/inbox']);
   }
 
-  goToDash() {
-    this.router.navigate(['/home/dashboard']);
+  goToFeed() {
+    this.router.navigate(['/home/feed']);
   }
 
   goToNotifications() {
@@ -92,4 +54,42 @@ export class HomePage {
   goToPost() {
     this.router.navigate(['/home/post']);
   }
+
+  goToChallenge() {
+    this.router.navigate(['/home/challenge']);
+  }
+
+  goToSettings() {
+    if (this.menuCtrl) {
+      this.menuCtrl.close();
+  }
+    this.router.navigate(['/home/settings']);
+  }
+
+  goToProfile() {
+    if (this.menuCtrl) {
+      this.menuCtrl.close();
+  }
+    this.router.navigate(['/home/profile']);
+  }
+
+  checkFollowers() {
+    // this.router.navigate(['/home/challenge']);
+  }
+  checkFollowing() {
+    // this.router.navigate(['/home/challenge']);
+  }
+
+  goToLeaderboard() {
+    // this.router.navigate(['/home/challenge']);
+  }
+
+  goToMyProfile() {
+    if (this.menuCtrl) {
+      this.menuCtrl.close();
+  }
+    this.router.navigate(['/home/userprofile']);
+  }
+
+
 }
