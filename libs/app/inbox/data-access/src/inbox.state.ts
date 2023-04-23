@@ -156,12 +156,16 @@ export class InboxState {
       } else {
         console.log('no error from above');
       }
+      console.log(members);
       console.log('does this even work');
+      const membersID = [members![0].id, members![1].id];
+      console.log(membersID, 'members ID');
       const request: ICreateConversationRequest = {
         conversation: {
           conversationID,
           members,
           messages,
+          membersID,
         },
       };
       const responseRef = await this.inboxApi.createConversation(request);

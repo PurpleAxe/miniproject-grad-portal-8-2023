@@ -1,8 +1,12 @@
-import {CreateConversationCommand, IConversation, ICreateConversationResponse} from "@mp/api/message/util";
-import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
-import { EventPublisher } from "@nestjs/cqrs";
-import { UsersRepository } from "@mp/api/users/data-access";
-import { Message } from "../models";
+import {
+  CreateConversationCommand,
+  IConversation,
+  ICreateConversationResponse,
+} from '@mp/api/message/util';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { EventPublisher } from '@nestjs/cqrs';
+import { UsersRepository } from '@mp/api/users/data-access';
+import { Message } from '../models';
 
 @CommandHandler(CreateConversationCommand)
 export class CreateConversationHandler
@@ -10,34 +14,40 @@ export class CreateConversationHandler
     ICommandHandler<CreateConversationCommand, ICreateConversationResponse>
 {
   constructor(
-    private readonly eventBus : EventPublisher,
-    private readonly repository : UsersRepository,
-  ) {};
+    private readonly eventBus: EventPublisher,
+    private readonly repository: UsersRepository
+  ) {}
 
-  async execute(command: CreateConversationCommand): Promise<ICreateConversationResponse> {
+  async execute(
+    command: CreateConversationCommand
+  ): Promise<ICreateConversationResponse> {
     const request = command.request.conversation;
 
     // Checks
     if (request.conversationID) {
-      throw new Error("Cannot create a conversation with existing ConversationID");
+      throw new Error(
+        'Cannot create a conversation with existing ConversationID'
+      );
     }
     if (request.messages) {
-      throw new Error("Cannot Create a conversation with pre-existing messages");
+      throw new Error(
+        'Cannot Create a conversation with pre-existing messages'
+      );
     }
     if (!request.members) {
-      throw new Error("Cannot Create a conversation with no participants");
+      throw new Error('Cannot Create a conversation with no participants');
     }
     if (request.members?.length <= 1) {
-      throw new Error("Cannot Create a conversation with only one member");
+      throw new Error('Cannot Create a conversation with only one member');
     }
-    for (let member of request.members) {
+    for (const member of request.members) {
       this.repository.doesUserExist(member).then((value) => {
-        if (value) {
-          throw new Error("Requested User does not exist");
+        if (!value) {
+          throw new Error('Requested User does not exist');
         }
-      })
+      });
     }
-    console.log("Passed user validation");
+    console.log('Passed user validation');
 
     // Checks finnished
     const conversation = this.eventBus.mergeObjectContext(
@@ -46,7 +56,9 @@ export class CreateConversationHandler
     await conversation.createConversation();
     conversation.commit();
 
-    const response: ICreateConversationResponse = {conversation : conversation.toJSON()};
+    const response: ICreateConversationResponse = {
+      conversation: conversation.toJSON(),
+    };
     return response;
   }
 }

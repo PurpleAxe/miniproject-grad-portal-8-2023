@@ -67,7 +67,7 @@ export class InboxApi {
     // if (userId) {
     const queryConversationList = query(
       collection(this.firestore, 'conversations'),
-      where('participants', 'array-contains-any', [userId])
+      where('members', 'array-contains', { id: userId })
     ); //TODO: change id to userId according to db document,//TODO change this to query Profile/conversationIDs
     // console.log('inbox$', 'aaaaaaaaaaaaaaaaaa');
     this.conversations$ = new Observable<any>((observer) => {
@@ -90,10 +90,10 @@ export class InboxApi {
             //   id: userId,
             // };
             const conversation = {
-              conversationId: change.doc.data()['conversationId'],
+              conversationID: change.doc.data()['conversationID'],
               messages: change.doc.data()['messages'],
               // participants: [member, me],
-              participants: change.doc.data()['participants'],
+              members: change.doc.data()['members'],
             };
             console.log(conversation, 'cccccccccccccccccccccc');
             return conversation;
