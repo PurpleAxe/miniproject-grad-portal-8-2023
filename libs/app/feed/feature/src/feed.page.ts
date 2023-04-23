@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { FeedState, IFeed} from '@mp/app/feed/data-access';
-import { FetchHomeFeedAction, FetchDiscoveryFeedAction } from '@mp/app/feed/util';
+import { FetchHomeFeedAction, FetchDiscoveryFeedAction} from '@mp/app/feed/util';
 import { Component, OnInit } from '@angular/core';
 //import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -19,11 +19,11 @@ export class FeedPage implements OnInit{
   constructor( private readonly store: Store){
     this.LHome = true;
     this.LDiscovery = false;
-    //this.store.dispatch(new FetchPostsRequestAction("feed"));
+    this.store.dispatch(new FetchHomeFeedAction());
   }
 
   ngOnInit(){
-    //this.homet();
+    this.homet();
   }
 
   Discoveryt(){

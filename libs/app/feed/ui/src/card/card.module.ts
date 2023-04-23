@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { CardComponent } from './card.component';
 
 @NgModule({
-    declarations: [],
+    declarations: [CardComponent],
     imports: [
         CommonModule,
         IonicModule,

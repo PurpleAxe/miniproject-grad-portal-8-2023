@@ -53,7 +53,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/home/feed',
+    redirectTo: '/home/dashboard',
   },
 ];
 

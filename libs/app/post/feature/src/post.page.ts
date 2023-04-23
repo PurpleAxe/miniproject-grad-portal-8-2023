@@ -30,13 +30,12 @@ export class PostPageComponent {
     
     if(this.body=="")
       return;
-    const timestamp = Timestamp.now();
+    
 
     const payload={
       body: this.body,
       department:this.department,
       challenge:this.challenge,
-      timestamp:timestamp
     }
     this.store.dispatch(new CreatePostAction(payload));
   }

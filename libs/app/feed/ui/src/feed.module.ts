@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { CardComponent, CardModule } from './card';
+import { CardModule } from './card';
 
 @NgModule({
   imports: [
@@ -9,7 +9,6 @@ import { CardComponent, CardModule } from './card';
     IonicModule,
     CardModule,
   ],
-  declarations: [],
   exports: [CardModule]
 })
 export class FeedModule {}
