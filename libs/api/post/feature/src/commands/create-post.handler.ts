@@ -1,4 +1,4 @@
-import { CreatePostCommand } from "@mp/api/post/util";
+import { CreatePostCommand, ICreatePostResponse } from "@mp/api/post/util";
 import { IPost } from '@mp/api/post/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
@@ -6,7 +6,7 @@ import { PostModel } from "../models";
 
 @CommandHandler(CreatePostCommand)
 export class CreatePostHandler
-  implements ICommandHandler<CreatePostCommand>
+  implements ICommandHandler<CreatePostCommand,ICreatePostResponse>
 {
     constructor(private publisher: EventPublisher) {}
 
@@ -33,6 +33,8 @@ export class CreatePostHandler
 
       post.createPost();
       post.commit();
+      const response: ICreatePostResponse = {"Onpost" : post.toJSON()};
+      return response;
   }
 
 }

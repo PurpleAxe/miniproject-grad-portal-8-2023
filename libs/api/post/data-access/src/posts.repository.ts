@@ -1,13 +1,11 @@
 import { IComment } from '@mp/api/post/util';
-import { IReactions } from '@mp/api/post/util';
 import { IPost } from '@mp/api/post/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
-import { DocumentReference } from 'firebase-admin/firestore';
 
 @Injectable()
 export class PostsRepository {
-  async Onpost(post: IPost) {
+  async getPost(post: IPost) {
     return await admin
       .firestore()
       .collection('post')
@@ -17,7 +15,7 @@ export class PostsRepository {
         },
         toFirestore: (it: IPost) => it,
       })
-      .doc(post.postId)
+      .doc(post.postId!)
       .get();
   }
 
@@ -25,7 +23,7 @@ export class PostsRepository {
     return await admin
       .firestore()
       .collection('post')
-      .doc(post.postId)
+      .doc(post.postId!)
       .create(post);
   }
 
@@ -60,7 +58,7 @@ export class PostsRepository {
     const postRef = admin
       .firestore()
       .collection("post")
-      .doc(post.postId)
+      .doc(post.postId!)
       .update({
         likes : admin.firestore.FieldValue.increment(1)
       })
@@ -70,7 +68,7 @@ export class PostsRepository {
     const postRef = admin
       .firestore()
       .collection("post")
-      .doc(post.postId)
+      .doc(post.postId!)
       .update({
         likes : admin.firestore.FieldValue.increment(-1)
       })
@@ -80,7 +78,7 @@ export class PostsRepository {
     const postRef = admin
       .firestore()
       .collection("post")
-      .doc(post.postId)
+      .doc(post.postId!)
       .update({
         dislikes : admin.firestore.FieldValue.increment(1)
       })
@@ -90,7 +88,7 @@ export class PostsRepository {
     const postRef = admin
       .firestore()
       .collection("post")
-      .doc(post.postId)
+      .doc(post.postId!)
       .update({
         dislikes : admin.firestore.FieldValue.increment(-1)
       })

@@ -1,7 +1,8 @@
-import {IComment, IPost, PostCreatedEvent} from "@mp/api/post/util";
+import {IComment, IPost, PostCreatedEvent, PostDislikedEvent, PostDislikeRemovedEvent, PostLikedEvent, PostLikeRemovedEvent} from "@mp/api/post/util";
 import {AggregateRoot} from "@nestjs/cqrs";
 import {Timestamp} from "firebase-admin/lib/firestore";
 import {UsersRepository} from "@mp/api/users/data-access";
+import {randomUUID} from "crypto";
 
 export class PostModel extends AggregateRoot implements IPost {
   private readonly repository : UsersRepository = new UsersRepository();
@@ -31,10 +32,27 @@ export class PostModel extends AggregateRoot implements IPost {
   }
 
   async createPost(){
-    if ((await this.repository.doesUserExist({"id" :this.userId}))) {
+    if (!(await this.repository.doesUserExist({"id" :this.userId}))) {
       throw Error("User attempting to make a post does not exist");
     }
+    this.postId = Timestamp.now().nanoseconds + randomUUID();
     this.apply(new PostCreatedEvent(this.toJSON()));
+  }
+
+  async likePost(user:string) {
+    this.apply(new PostLikedEvent(this.toJSON(),user));
+  }
+
+  async likePostRemoved(user:string) {
+    this.apply(new PostLikeRemovedEvent(this.toJSON(),user));
+  }
+
+  async dislikePost(user:string) {
+    this.apply(new PostDislikedEvent(this.toJSON(),user));
+  }
+
+  async dislikePostRemoved(user:string) {
+    this.apply(new PostDislikeRemovedEvent(this.toJSON(),user));
   }
 
   toJSON(): IPost {
