@@ -1,0 +1,33 @@
+export class LoadFeed{
+    static readonly type = '[Feed] LoadFeed';
+    constructor(public payload: { uid: string }) {}
+}
+
+export class LikePost{
+    static readonly type = '[Feed] LikePost';
+    constructor(public payload: { postId: string }) {
+        console.log("post.actions: Like postId:s" + payload.postId);
+    }
+}
+
+export class RemoveLike{
+    static readonly type = '[Feed] RemoveLike';
+    constructor(public payload: { uid: string }) {}
+}
+
+export class DislikePost{
+    static readonly type = '[Feed] DislikePost';
+    constructor(public payload: { postId: string }) {
+        console.log("post.actions Dislike postId:" + payload.postId);
+    }
+}
+
+export class RemoveDislike{
+    static readonly type = '[Feed] RemoveDislike';
+    constructor(public payload: { uid: string }) {}
+}
+
+export class PostComment{
+    static readonly type = '[Feed] PostComment';
+    constructor(public payload: { uid: string }) {}
+}

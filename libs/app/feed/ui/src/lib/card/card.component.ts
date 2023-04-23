@@ -1,4 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { LikePost} from '@mp/app/feed/util';
+import { DislikePost} from '@mp/app/feed/util';
+import { Router } from '@angular/router';
+import { Select, Store } from '@ngxs/store';
 
 @Component({
   selector: 'card',
@@ -7,6 +11,9 @@ import { Component, Input } from '@angular/core';
 })
 export class CardComponent {
   @Input() content!: any;
+  constructor(private router: Router, private readonly store: Store) { }
+
+  postId = "POST ID"; //would I store the postId here so I know what post was liked?
 
   likeNum = 0;
   dislikeNum = 0;
@@ -17,28 +24,52 @@ export class CardComponent {
 
   Like(){
     if (this.isDisliked){
+      //remove dislike
+      const payload={
+        postId: this.postId,
+      }
+      this.store.dispatch(new LikePost(payload));
       this.isDisliked = !this.isDisliked;
       this.dislikeNum--;
     }
-    if (this.likeNum > 0){
+    if (this.isLiked){
+      this.isLiked = !this.isLiked;
+      this.likeNum--;
       return;
     }
     this.isLiked = !this.isLiked;
     this.likeNum++;
-    console.log("Like button" + this.likeNum);
+    //add like
+    const payload={
+      postId: this.postId,
+    }
+    this.store.dispatch(new DislikePost(payload));
+    console.log("Like button: " + this.likeNum);
 
   }
   Dislike(){
     if (this.isLiked){
+      //remove like
+      const payload={
+        postId: this.postId,
+      }
+      this.store.dispatch(new LikePost(payload));
       this.isLiked = !this.isLiked;
       this.likeNum--;
     }
-    if (this.dislikeNum > 0){
+    if (this.isDisliked){
+      this.isDisliked = !this.isDisliked;
+      this.dislikeNum--;
       return;
     }
     this.isDisliked = !this.isDisliked;
     this.dislikeNum++;
-    console.log("Dislike button" + this.likeNum);
+    //add dislike
+    const payload={
+      postId: this.postId,
+    }
+    this.store.dispatch(new DislikePost(payload));
+    console.log("Dislike button: " + this.likeNum);
   }
   Comment(){
     console.log("Comment button");
