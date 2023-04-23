@@ -11,8 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: yarn install --frozen-lockfile && yarn build:app:dev && yarn build:api:dev
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      
+      - name: Make ENV
+        run: |
+          touch .env
+          echo ${{secrets.ENV_FILE}} >> .env
+          
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile 
+        
+      - name: Build APP
+        run: yarn build:app:dev
+     
+      - name: Deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TIMEHIVE_29588 }}'
