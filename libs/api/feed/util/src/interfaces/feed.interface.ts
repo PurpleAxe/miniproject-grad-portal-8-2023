@@ -1,7 +1,8 @@
 import { Timestamp } from "firebase-admin/firestore";
+import { IPost } from "@mp/api/post/util";
 
 export interface IFeed {
-  id: string;
+  posts: IPost[];
 }
 
 export interface IIFeed{ ///for front end don't mind it service engineer ;)
