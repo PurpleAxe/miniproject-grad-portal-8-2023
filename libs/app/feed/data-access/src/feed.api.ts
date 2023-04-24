@@ -109,36 +109,7 @@ export class FeedApi {
             const MockFeedPosts:IIFeed[]=new Array<IIFeed>(p1,p2);
         return MockFeedPosts;
     }
-}
 
-// {Post:{
-//     UserId: "test",
-//     Post : {
-//         postId: "test-p1",
-//         contents:{
-//             post: "new post created",
-//             challenge: "test challenge",
-//             department: "test department",
-//         },
-//         likedProfileIds: [],
-//         dislikedProfileIds: [],
-//         timestamp: Timestamp.now(),
-//     }
-// }},
-// {Post:{
-//     UserId: "test-2",
-//     Post : {
-//     postId: "test-2-p1",
-//     contents:{
-//         post: "new post created",
-//         challenge: "test-1 challenge",
-//         department: "test-1 department",
-//     },
-//     likedProfileIds: [],
-//     dislikedProfileIds: [],
-//     timestamp: Timestamp.now(),
-//     }
-// }}
   post$(id: string) {
     const docRef = doc(
       this.firestore,
