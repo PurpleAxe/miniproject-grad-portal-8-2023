@@ -9,4 +9,4 @@ import { FeedApi } from './feed.api';
   imports: [CommonModule, NgxsModule, AuthModule],
   providers: [FeedApi],
 })
-export class FFeedModule {}
+export class FeedModule {}

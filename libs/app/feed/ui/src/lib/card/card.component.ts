@@ -30,7 +30,7 @@ export class CardComponent {
     }
     if (this.isDisliked){
       //remove dislike
-      this.store.dispatch(new LikePost(payload));
+      this.store.dispatch(new DislikePost(payload));
       this.isDisliked = !this.isDisliked;
       this.dislikeNum--;
     }
@@ -43,7 +43,7 @@ export class CardComponent {
     this.likeNum++;
     //add like
 
-    this.store.dispatch(new DislikePost(payload));
+    this.store.dispatch(new LikePost(payload));
     console.log("Like button: " + this.likeNum);
 
   }
