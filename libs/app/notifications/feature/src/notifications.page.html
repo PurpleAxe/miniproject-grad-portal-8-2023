@@ -13,17 +13,29 @@
         <ion-list>
             <ion-item *ngFor="let notification of notifications.inbox; index as i;" detail="true" routerLink="{{notification.url}}">
                 <ion-avatar slot="start">
-                    <img [src]="notifications.user.accountDetails?.photoURL"/>
+                    <img *ngIf="notifications.user.accountDetails?.photoURL; else noProfilePic" [src]="notifications.user.accountDetails?.photoURL"/>
+                    <ng-template #noProfilePic>
+                        <img src="assets/logos/logo-transp.png"/>                    
+                    </ng-template>
                 </ion-avatar>
                 <ion-label>
                     <h1>{{notifications.user.userId}}</h1>
                     <p>{{notification.message}}</p>
                 </ion-label>
-                <ion-label slot="end" class="ion-padding-right">
-                    <ion-icon *ngIf="notification.read; else elseBlock" class="notification-icon ion-padding-bottom" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>
-                    <ion-text *ngIf="notification.notificationTime;" class="time" color="medium">{{notification.notificationTime}}</ion-text>
-                    <ng-template #elseBlock>
-                        <ion-icon #elseBlock class="notification-icon ion-padding-bottom" color="dark" src="assets/icons/notification-black.svg"></ion-icon>
+                <ion-label class="read-icon-time ion-text-end ion-padding-right" text-right>
+                    <ng-container *ngIf="notification.notificationTime; else noTime">
+                        <ion-icon *ngIf="notification.read; else elseBlock" class="notification-icon" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>                    
+                        <ion-text class="time ion-text-end ion-padding-top" color="medium">{{notification.notificationTime}}</ion-text>
+                        <ng-template #elseBlock>
+                            <ion-icon text-right class="notification-icon ion-text-end" style="margin:0px;" color="dark" src="assets/icons/notification-grey.svg"></ion-icon>
+                        </ng-template>
+                    </ng-container>                    
+
+                    <ng-template #noTime>
+                        <ion-icon *ngIf="notification.read; else elseBlock" class="notification-icon ion-padding-bottom" style="margin-bottom: 5px;" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>                    
+                        <ng-template #elseBlock>
+                            <ion-icon text-right class="notification-icon ion-padding-bottom" style="margin-bottom: 5px;" color="dark" src="assets/icons/notification-grey.svg"></ion-icon>
+                        </ng-template>
                     </ng-template>
                 </ion-label>
             </ion-item>
