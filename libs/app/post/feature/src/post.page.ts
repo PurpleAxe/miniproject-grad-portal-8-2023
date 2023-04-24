@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
 import {MyPayload} from  '@mp/app/post/util';
-
 import { CreatePost} from '@mp/app/post/util';
-import { firestore } from 'firebase-admin';
+import { Select, Store } from '@ngxs/store';
+//import { firestore } from 'firebase-admin';
+
+
 
 
 @Component({
@@ -30,9 +31,8 @@ export class PostPageComponent {
     if(this.body=="")
       return; //should challenge and department be optional?
 
-    console.log("Post");
-    console.log(this.body);
 
+      
     const payload:MyPayload={
       body: this.body,
       department:this.department,
@@ -40,6 +40,6 @@ export class PostPageComponent {
     }
     this.store.dispatch(new CreatePost(payload));
 
-    this.router.navigate(['/home/feed']); //need to change to profile one day
+    this.router.navigate(['/home/userprofile']); //need to change to profile one day
   }
 }

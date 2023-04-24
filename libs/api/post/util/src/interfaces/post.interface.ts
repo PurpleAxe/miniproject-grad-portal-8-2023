@@ -10,3 +10,20 @@ export interface IPost{
     comments?: IComment[] | null | undefined;
     created?: Timestamp | null | undefined;
 }
+
+export interface IIPost{
+    Document:{
+        UserId: string | null;
+        Post : [{
+            postId: string | null;
+            contents:{
+                post: string | null;
+                challenge: string | null;
+                department: string | null;
+            };
+            likedProfileIds: string[];
+            dislikedProfileIds: string[];
+            timestamp?: Timestamp | null;
+        }]
+    }
+  }

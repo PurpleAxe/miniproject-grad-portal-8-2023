@@ -4,6 +4,7 @@ export interface MyPayload {
     body: string;
     department:string;
     challenge:string;
+    timestamp?:Timestamp;
   }
 
 export class CreatePost{
@@ -12,3 +13,8 @@ export class CreatePost{
         console.log("post.actions:" + payload.body);
     }
 } 
+
+
+export class GetUserID {
+    static readonly type = '[Post] Get UserID';
+  }

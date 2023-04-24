@@ -3,11 +3,10 @@ import { NgModule } from '@angular/core';
 import { AuthModule } from '@mp/app/auth/data-access';
 import { NgxsModule } from '@ngxs/store';
 import { FeedState } from './feed.state';
-// import { ProfileState } from './profile.state';
-// import { ProfilesApi } from './profiles.api';
+import { FeedApi } from './feed.api';
 
 @NgModule({
-  imports: [CommonModule, NgxsModule.forFeature([FeedState]), AuthModule],
-  providers: [/*ProfilesApi*/],
+  imports: [CommonModule, NgxsModule, AuthModule],
+  providers: [FeedApi],
 })
-export class FeedModule {}
+export class FFeedModule {}

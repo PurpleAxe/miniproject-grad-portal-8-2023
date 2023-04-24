@@ -4,11 +4,21 @@ import { SetError } from '@mp/app/errors/util';
 import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector, Store } from '@ngxs/store';
 import { 
-    LoadFeed,
+    /*LoadFeed,*/
     LikePost,
-    DislikePost
+    DislikePost,
+    FetchHomeFeed,
+    FetchDiscoveryFeed,
  } from '@mp/app/feed/util';
+import { IIFeed } from '@mp/api/feed/util';
+import { FeedApi } from './feed.api';
+import { IIPost } from '@mp/api/post/util';
 //  import { FeedApi } from './feed.api';
+
+
+
+  
+
 
 export interface FeedStateModel{
 
@@ -19,7 +29,8 @@ export interface FeedStateModel{
     dirty: false;
     status: string;
     errors: object;
-  }
+  },
+  feedPosts: IIFeed[];      /*****ADDED FEED POST FIELD ON THE STATE MODEL INTERFACE*****/
 }
 
 @State<FeedStateModel>({
@@ -32,7 +43,8 @@ export interface FeedStateModel{
         dirty: false,
         status: '',
         errors: {}
-      }
+      },
+      feedPosts: [],   /*****ADDED FEED POST FIELD ON THE STATE MODEL*****/
     }
 })
 @Injectable()
@@ -41,17 +53,18 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
 
 
     constructor( //what does this do?
-    //   private readonly profileApi: FeedApi,
+      //private readonly feedApi: FeedApi,
       private readonly store: Store
     ) {}
 
-  @Action(LoadFeed)//dont know how
-  async LoadFeed(ctx: StateContext<FeedStateModel>, {payload}: LoadFeed) {
+  // @Action(LoadFeed)//dont know how
+  // async LoadFeed(ctx: StateContext<FeedStateModel>, {payload}: LoadFeed) {
     
-    ctx.patchState({
+  //   ctx.patchState({
       
-    });
-    }
+  //   });
+
+  //   }
 
     @Action(LikePost)
     async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
@@ -78,4 +91,35 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
   {
     return state.feed.model;
   }
+
+
+  /***********SELECTOR FOR FEED POSTS**********/
+  @Selector()
+    static getFeedPosts(FeedStateModel:FeedStateModel){ 
+        return FeedStateModel.feedPosts;
+    }
+
+
+
+    /*************FETCH HOME FEED*************/
+  @Action(FetchHomeFeed)//dont know how
+  async FetchHomeFeed(ctx: StateContext<FeedStateModel>) {
+    // const response = await this.feedApi.fetchHomeFeed();
+    // const state=ctx.getState()
+    // ctx.setState({...state,
+    //   feedPosts:response
+    // });
+
+    }
+
+
+       /*************FETCH DISCOVERY FEED*************/
+  @Action(FetchDiscoveryFeed)//dont know how
+  async FetchDiscoveryFeed(ctx: StateContext<FeedStateModel>) {
+    // const response = await this.feedApi.fetchDiscoveryFeed();
+    // ctx.patchState({
+    //   feedPosts:response
+    // });
+
+    }
 }

@@ -1,2 +1,2 @@
 export * from './post.actions';
-export * from './app-post-util';
+export * from './test/app-post-util';

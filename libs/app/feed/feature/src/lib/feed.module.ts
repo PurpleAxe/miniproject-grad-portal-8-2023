@@ -6,7 +6,6 @@ import { FeedRouting } from './feed.routing';
 import { CardComponent, FeedModule as CardModule } from '@mp/app/feed/ui';
 import { NgxsModule } from '@ngxs/store';
 import { FeedState } from '@mp/app/feed/data-access';
-//import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
   imports: [CommonModule, IonicModule, FeedRouting, CardModule, NgxsModule.forFeature([FeedState])],
