@@ -31,7 +31,7 @@ import { IIPost } from "@mp/api/post/util";
     defaults:{
         Document:{
             UserId: "",
-            Post : [{
+            Post : {
                 postId: null,
                 contents:{
                     post: null,
@@ -41,7 +41,7 @@ import { IIPost } from "@mp/api/post/util";
                 likedProfileIds: [],
                 dislikedProfileIds: [],
                 timestamp: null,
-            }]
+            }
         }
     }
 })
@@ -61,7 +61,7 @@ export class PostState{
         const request:IIPost={
             Document:{
                 UserId: this.userId,
-                Post : [{
+                Post : {
                     postId: "",
                     contents:{
                         post: payload.body,
@@ -71,7 +71,7 @@ export class PostState{
                     likedProfileIds: [],
                     dislikedProfileIds: [],
                     timestamp: payload.timestamp,
-                }]
+                }
             }
         }
         // await this.postApi.createPost(request);

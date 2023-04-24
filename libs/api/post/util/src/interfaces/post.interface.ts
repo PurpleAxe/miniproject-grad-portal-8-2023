@@ -11,10 +11,13 @@ export interface IPost{
     created?: Timestamp | null | undefined;
 }
 
-export interface IIPost{
+
+
+/***********THE STATE************/
+export interface IIPost{   
     Document:{
         UserId: string | null;
-        Post : [{
+        Post : {
             postId: string | null;
             contents:{
                 post: string | null;
@@ -24,6 +27,6 @@ export interface IIPost{
             likedProfileIds: string[];
             dislikedProfileIds: string[];
             timestamp?: Timestamp | null;
-        }]
+        }
     }
   }
