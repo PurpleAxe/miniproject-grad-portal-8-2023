@@ -5,7 +5,7 @@ import { ChatPage } from './chat.page';
 const routes: Routes = [
   //TODO: update routes
   {
-    path: '',
+    path: 'chats',
     pathMatch: 'full',
     component: ChatPage,
   },

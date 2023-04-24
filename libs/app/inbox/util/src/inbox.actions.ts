@@ -11,6 +11,11 @@ export class CreateConversation {
   constructor(public readonly member: IUser [] | null) {}
 }
 
+export class SetcurrentConversation {
+  static readonly type = '[Inbox] SetcurrentConversation';
+  constructor(public readonly currentConversation: IConversation | null) {}
+}
+
 export class SetInbox {
   static readonly type = '[Profile] SetInbox';
   constructor(public readonly conversations: IConversation[] | null) {}

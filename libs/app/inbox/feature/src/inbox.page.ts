@@ -11,6 +11,7 @@ import {
   GetUserId,
   GetUsers,
   Logout,
+  SetcurrentConversation,
   SubscribeToInbox,
 } from '@mp/app/inbox/util';
 import { IConversation } from '@mp/api/message/util';
@@ -20,6 +21,7 @@ import { AuthState } from '@mp/app/auth/data-access';
 import { getCurrentUserId } from '@mp/app/auth/util';
 import { IUser } from '@mp/api/users/util';
 import { isUidIdentifier } from 'firebase-admin/lib/auth/identifier';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-inbox',
@@ -29,6 +31,8 @@ import { isUidIdentifier } from 'firebase-admin/lib/auth/identifier';
 export class InboxPageComponent implements OnInit {
   @Select(InboxState.conversations)
   inboxconversations$!: Observable<InboxStateModel | null>;
+  @Select(InboxState.currentConversation)
+  currentConversation$!: Observable<InboxStateModel | null>;
   @Select(InboxState.members)
   inboxmembers$!: Observable<InboxStateModel | null>;
   @ViewChild('new_chat') modal!: ModalController;
@@ -89,8 +93,9 @@ export class InboxPageComponent implements OnInit {
   chatRoom: any;
   chatRooms: {
     conversationId: string;
+    members: string[];
     messages: string[];
-    participants: string[];
+    membersID: string[];
   }[] = [];
 
   member2: IUser = {
@@ -168,9 +173,10 @@ export class InboxPageComponent implements OnInit {
 
   startChat(item: IUser) {
     console.log('user clicked ;)');
+    console.log(item);
     // this.store.dispatch(new GetConversation());
     const conversation = this.store
-      .select(InboxState.conversation)
+      .select(InboxState.conversations)
       .subscribe((x) => {
         if (x) {
           this.chatRooms = x;
@@ -178,15 +184,17 @@ export class InboxPageComponent implements OnInit {
         console.log('define chatRooms');
       });
     console.log('should print conversations app user is in');
-    console.log(this.chatRooms.map((room) => room.participants));
+    //console.log(this.chatRooms.map((room) => room.participants));
+    console.log(this.chatRooms);
     let noConversation = true;
     for (let i = 0; i < this.chatRooms.length; i++) {
       if (
-        item.id == this.chatRooms[i].participants[0] ||
-        item.id == this.chatRooms[i].participants[1]
+        item.id == this.chatRooms[i].membersID[0] ||
+        item.id == this.chatRooms[i].membersID[1]
       ) {
         this.chatRoom = this.chatRooms[i];
         noConversation = false;
+        console.log("found the conversation!!!!!!!!!!!!!!");
         break;
       }
     }
@@ -240,6 +248,12 @@ export class InboxPageComponent implements OnInit {
       'should print conversation clicked user and current user is in'
     );
     console.log(this.chatRoom);
+    this.store.dispatch(new SetcurrentConversation(this.chatRoom));
+    this.router.navigate(['/', 'home' , 'inbox' , 'chats', this.chatRoom.conversationID]);
+    /*this.store.select(InboxState.currentConversation).subscribe((x) => {
+      console.log("should print current conversation");
+      console.log(x);
+    });*/
     /*this.store.dispatch(new CreateConversation())
     const conversations = this.store.select(InboxState.conversation).subscribe((x) => {
       if (x) {
@@ -262,7 +276,10 @@ export class InboxPageComponent implements OnInit {
   }
 
   getChat(item: any) {
-    this.router.navigate(['/', 'inbox', 'chats', item?.id]);
+    this.chatRoom=item;
+    this.store.dispatch(new SetcurrentConversation(this.chatRoom));
+    this.router.navigate(['/', 'home' , 'inbox' , 'chats', this.chatRoom.conversationID]);
+    //this.router.navigate(['/', 'inbox', 'chats', item?.id]);
     //TODO make the conversation the current conversation and display all prev texts
     // this.router.navigate(['/home/inbox']);
   }

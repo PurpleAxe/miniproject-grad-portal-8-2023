@@ -12,6 +12,7 @@ import {
   GetUsers,
   Logout,
   SetInbox,
+  SetcurrentConversation,
   SubscribeToInbox,
   //SetInbox,
 } from '@mp/app/inbox/util';
@@ -142,6 +143,14 @@ export class InboxState {
     // return bb;
   }
 
+  @Action(SetcurrentConversation) //createconversation only called to add new conversation
+  async setcurrentConversation( ctx: StateContext<InboxStateModel>, { currentConversation }: SetcurrentConversation) {
+      return ctx.setState(
+        produce((draft) => {
+            draft.currentConversation = currentConversation;
+        }))
+    };
+
   @Action(CreateConversation) //createconversation only called to add new conversation
   async createConversation(
     ctx: StateContext<InboxStateModel>,
@@ -196,6 +205,10 @@ export class InboxState {
       //       draft.currentConversation = response as IConversation;
       //     })
       //   );
+      ctx.setState(
+        produce((draft) => { 
+          draft.currentConversation = response as IConversation;
+        }));
       return response;
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
