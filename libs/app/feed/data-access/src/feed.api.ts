@@ -24,10 +24,6 @@ export class FeedApi {
     private readonly functions: Functions
   ) {}
 
-  async hello(){
-    console.log("hello");
-  }
-
     async fetchHomeFeed(/*request: IFetchPostRequest*/) {
         // return await httpsCallable<
         //   IFetchPostRequest,
@@ -36,12 +32,12 @@ export class FeedApi {
         //   this.functions,
         //   'fetchHomePost'
         // )(request);
-        const p1 : IIFeed={Post:{
+        const p1 : IIFeed={
             UserId: "test",
             Post : {
                 postId: "test-p1",
                 contents:{
-                    post: "new post created",
+                    text: "new post created",
                     challenge: "test challenge",
                     department: "test department",
                 },
@@ -49,13 +45,13 @@ export class FeedApi {
                 dislikedProfileIds: [],
                 timestamp: Timestamp.now(),
             }
-        }};
-        const p2:IIFeed={Post:{
+        };
+        const p2:IIFeed={
             UserId: "test-2",
             Post : {
             postId: "test-2-p1",
             contents:{
-                post: "new post created",
+                text: "new post created",
                 challenge: "test-1 challenge",
                 department: "test-1 department",
             },
@@ -63,7 +59,7 @@ export class FeedApi {
             dislikedProfileIds: [],
             //timestamp: Timestamp.now(),
             }
-        }}
+        }
         const MockFeedPosts:IIFeed[]=new Array<IIFeed>(p1,p2);
     return MockFeedPosts;
     }
@@ -78,12 +74,12 @@ export class FeedApi {
         //   'fetchDiscoveryPost'
         // )(request);
         
-            const p1 : IIFeed={Post:{
+            const p1 : IIFeed={
                 UserId: "test",
                 Post : {
                     postId: "test-p1",
                     contents:{
-                        post: "new post created",
+                        text: "new post created",
                         challenge: "test challenge",
                         department: "test department",
                     },
@@ -91,13 +87,13 @@ export class FeedApi {
                     dislikedProfileIds: [],
                     timestamp: Timestamp.now(),
                 }
-            }};
-            const p2:IIFeed={Post:{
+            };
+            const p2:IIFeed={
                 UserId: "test-2",
                 Post : {
                 postId: "test-2-p1",
                 contents:{
-                    post: "new post created",
+                    text: "new post created",
                     challenge: "test-1 challenge",
                     department: "test-1 department",
                 },
@@ -105,7 +101,7 @@ export class FeedApi {
                 dislikedProfileIds: [],
                 //timestamp: Timestamp.now(),
                 }
-            }}
+            }
             const MockFeedPosts:IIFeed[]=new Array<IIFeed>(p1,p2);
         return MockFeedPosts;
     }

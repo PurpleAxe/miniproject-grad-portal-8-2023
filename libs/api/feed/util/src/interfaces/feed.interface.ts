@@ -5,18 +5,16 @@ export interface IFeed {
 }
 
 export interface IIFeed{ ///for front end don't mind it service engineer ;)
-  Post:{
-      UserId: string | null;
+      UserId: string;
       Post : {
-          postId: string | null;
+          postId: string;
           contents:{
-              post: string | null;
-              challenge: string | null;
-              department: string | null;
+              text: string;
+              challenge: string;
+              department: string;
           },
-          likedProfileIds: [];
-          dislikedProfileIds: [];
-          timestamp?: Timestamp | null;
+          likedProfileIds: string[];
+          dislikedProfileIds: string[];
+          timestamp?: Timestamp | string;
       }
-  }
 }

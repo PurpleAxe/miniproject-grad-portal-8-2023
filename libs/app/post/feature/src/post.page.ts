@@ -40,6 +40,6 @@ export class PostPageComponent {
     }
     this.store.dispatch(new CreatePost(payload));
 
-    this.router.navigate(['/home/userprofile']); //need to change to profile one day
+    //this.router.navigate(['/home/userprofile']); //need to change to profile one day
   }
 }

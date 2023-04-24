@@ -14,6 +14,7 @@ import { IIFeed } from '@mp/api/feed/util';
 import { FeedApi } from './feed.api';
 import { IIPost } from '@mp/api/post/util';
 import {IPost, ILikePostResponse} from '@mp/api/post/util';
+import { Timestamp } from 'firebase-admin/firestore';
 
 
 // export interface IFeed{
@@ -141,10 +142,10 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
   @Action(FetchHomeFeed)//dont know how
   async FetchHomeFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchHomeFeed();
-    // const state=ctx.getState()
-    // ctx.setState({...state,
-    //   feedPosts:response
-    // });
+    const response=this.getMock();
+      ctx.patchState({
+        feedPosts:response
+      });
 
     }
 
@@ -153,9 +154,44 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
   @Action(FetchDiscoveryFeed)//dont know how
   async FetchDiscoveryFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchDiscoveryFeed();
-    // ctx.patchState({
-    //   feedPosts:response
-    // });
+      const response=this.getMock();
+      ctx.patchState({
+        feedPosts:response
+      });
 
+    }
+
+
+    getMock(){
+      const p1 : IIFeed={
+        UserId: "test",
+        Post : {
+            postId: "test-p1",
+            contents:{
+                text: "new post created",
+                challenge: "test challenge",
+                department: "test department",
+            },
+            likedProfileIds: ["id-1","id-2","id-3","id-1","id-1","id-1","id-1","id-2","id-3","id-1","id-1","id-1"],
+            dislikedProfileIds: ["id-1","id-2","id-3","id-1","id-1","id-1"],
+            //timestamp: Timestamp.now(),
+        }
+      };
+      const p2:IIFeed={
+          UserId: "test-2",
+          Post : {
+          postId: "test-2-p1",
+          contents:{
+              text: "new post created",
+              challenge: "test-1 challenge",
+              department: "test-1 department",
+          },
+          likedProfileIds: ["id-1","id-2","id-3","id-1","id-1","id-1","id-1","id-2","id-3","id-1","id-1","id-1","id-1","id-2","id-3","id-1","id-1","id-1"],
+          dislikedProfileIds: ["id-1"],
+          //timestamp: Timestamp.now(),
+          }
+      }
+      const MockFeedPosts:IIFeed[]=new Array<IIFeed>(p1,p2);
+      return MockFeedPosts;
     }
 }

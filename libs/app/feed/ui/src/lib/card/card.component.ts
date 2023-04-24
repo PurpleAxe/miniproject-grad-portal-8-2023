@@ -11,13 +11,19 @@ import { Select, Store } from '@ngxs/store';
 })
 export class CardComponent {
   @Input() content!: any;
+  @Input() text!: string;
+  @Input() profileUrl!:string;
+  @Input() date!:any;
+  @Input() userName!:string;
+
+
   constructor(private router: Router, private readonly store: Store) { }
 
-  postId = "POST ID"; //would I store the postId here so I know what post was liked?
+  @Input() postId = "POST ID"; //would I store the postId here so I know what post was liked?
   userId = "USER ID";
 
-  likeNum = 0;
-  dislikeNum = 0;
+  @Input() likeNum = 0;
+  @Input() dislikeNum = 0;
   isLiked = false;
   isDisliked = false;
 
