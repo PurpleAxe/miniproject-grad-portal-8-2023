@@ -1,11 +1,13 @@
-import { FeedModule as FeedDataAccessModule } from '@mp/libs/feed/data-access';
+import { FeedModule as FeedDataAccessModule } from '@mp/api/feed/data-access';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { FeedSagas } from './feed.sagas';
-import { FeedService } from './feed.service.ts';
+import { FeedService } from './feed.service';
+import { GetFeedHandler } from './commands';
+import { GetFeedEventHandler } from './events';
 
-export const CommandHandlers = [];
-export const EventHandlers = [];
+export const CommandHandlers = [GetFeedHandler];
+export const EventHandlers = [GetFeedEventHandler];
 
 @Module({
   imports: [CqrsModule, FeedDataAccessModule],
