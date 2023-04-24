@@ -10,43 +10,10 @@ import {
     FetchHomeFeed,
     FetchDiscoveryFeed,
  } from '@mp/app/feed/util';
-import { IIFeed } from '@mp/api/feed/util';
 import { FeedApi } from './feed.api';
-import { IIPost } from '@mp/api/post/util';
 import {IPost, ILikePostResponse} from '@mp/api/post/util';
 import { Timestamp } from 'firebase-admin/firestore';
-
-
-// export interface IFeed{
-//     Post:{
-//         UserId: string | null;
-//         Post : {
-//             postId: string | null;
-//             contents:{
-//                 post: string | null;
-//                 challenge: string | null;
-//                 department: string | null;
-//             },
-//             likedProfileIds: [];
-//             dislikedProfileIds: [];
-//             comments: [];
-//             // timestamp: Timestamp | null;
-//         }
-//     }
-// }
-
-// export interface IFeedStateModel{
-//     feedPosts: IFeed[];
-// }
-
-// @State<IFeedStateModel>({
-
-// })
-
-
-
-  
-
+import { IIFeed } from '@mp/api/feed/util';
 
 export interface FeedStateModel{
 
@@ -81,7 +48,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
 
 
     constructor( //what does this do?
-      // private readonly feedApi: FeedApi,
+      private readonly feedApi: FeedApi,
       private readonly store: Store
     ) {}
 
@@ -109,7 +76,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
         post:myPost
       }
       console.log("PostId (state):" + payload.postId);
-      // this.profileApi.LikePost(myLikePostResponse);
+      this.feedApi.LikePost(myLikePostResponse);
       ctx.patchState({
         
       });

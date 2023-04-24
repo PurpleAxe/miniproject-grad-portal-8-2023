@@ -15,6 +15,6 @@ export class CreatePost{
 } 
 
 
-export class GetUserID {
-    static readonly type = '[Post] Get UserID';
-  }
+// export class GetUserID {
+//     static readonly type = '[Post] Get UserID';
+//   }
