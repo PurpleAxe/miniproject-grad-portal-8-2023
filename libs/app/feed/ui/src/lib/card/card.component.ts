@@ -14,6 +14,7 @@ export class CardComponent {
   constructor(private router: Router, private readonly store: Store) { }
 
   postId = "POST ID"; //would I store the postId here so I know what post was liked?
+  userId = "USER ID";
 
   likeNum = 0;
   dislikeNum = 0;
@@ -23,11 +24,12 @@ export class CardComponent {
   commentNum = 0;
 
   Like(){
+    const payload={
+      postId: this.postId,
+      userId: this.userId
+    }
     if (this.isDisliked){
       //remove dislike
-      const payload={
-        postId: this.postId,
-      }
       this.store.dispatch(new LikePost(payload));
       this.isDisliked = !this.isDisliked;
       this.dislikeNum--;
@@ -40,19 +42,19 @@ export class CardComponent {
     this.isLiked = !this.isLiked;
     this.likeNum++;
     //add like
-    const payload={
-      postId: this.postId,
-    }
+
     this.store.dispatch(new DislikePost(payload));
     console.log("Like button: " + this.likeNum);
 
   }
   Dislike(){
+    const payload={
+      postId: this.postId,
+      userId: this.userId
+    }
     if (this.isLiked){
       //remove like
-      const payload={
-        postId: this.postId,
-      }
+
       this.store.dispatch(new LikePost(payload));
       this.isLiked = !this.isLiked;
       this.likeNum--;
@@ -65,9 +67,7 @@ export class CardComponent {
     this.isDisliked = !this.isDisliked;
     this.dislikeNum++;
     //add dislike
-    const payload={
-      postId: this.postId,
-    }
+
     this.store.dispatch(new DislikePost(payload));
     console.log("Dislike button: " + this.likeNum);
   }

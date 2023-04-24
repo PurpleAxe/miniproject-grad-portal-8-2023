@@ -13,7 +13,34 @@ import {
 import { IIFeed } from '@mp/api/feed/util';
 import { FeedApi } from './feed.api';
 import { IIPost } from '@mp/api/post/util';
-//  import { FeedApi } from './feed.api';
+import {IPost, ILikePostResponse} from '@mp/api/post/util';
+
+
+// export interface IFeed{
+//     Post:{
+//         UserId: string | null;
+//         Post : {
+//             postId: string | null;
+//             contents:{
+//                 post: string | null;
+//                 challenge: string | null;
+//                 department: string | null;
+//             },
+//             likedProfileIds: [];
+//             dislikedProfileIds: [];
+//             comments: [];
+//             // timestamp: Timestamp | null;
+//         }
+//     }
+// }
+
+// export interface IFeedStateModel{
+//     feedPosts: IFeed[];
+// }
+
+// @State<IFeedStateModel>({
+
+// })
 
 
 
@@ -53,7 +80,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
 
 
     constructor( //what does this do?
-      //private readonly feedApi: FeedApi,
+      // private readonly feedApi: FeedApi,
       private readonly store: Store
     ) {}
 
@@ -68,7 +95,20 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
 
     @Action(LikePost)
     async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
+      const myPost: IPost = {//delete
+        postId: '1234',
+        userId: 'user123',
+        likes: 10,
+        dislikes: 2,
+        message: 'This is a post message',
+        comments: [],
+        created: null
+      };
+      const myLikePostResponse: ILikePostResponse ={
+        post:myPost
+      }
       console.log("PostId (state):" + payload.postId);
+      // this.profileApi.LikePost(myLikePostResponse);
       ctx.patchState({
         
       });
@@ -81,10 +121,6 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
       
     });
 }
-
-
-
-
 
   @Selector()
   static messages(state: FeedStateModel) 

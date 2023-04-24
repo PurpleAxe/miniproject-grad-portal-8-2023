@@ -1,6 +1,6 @@
 import { IPost } from '../interfaces';
 
 export interface ILikePostResponse {
-  Onpost:IPost;
+  post:IPost;
   userID?:string | null |undefined;
 }

@@ -8,7 +8,10 @@ import { IIFeed } from '@mp/api/feed/util';
 
 export class LikePost{
     static readonly type = '[Feed] LikePost';
-    constructor(public payload: { postId: string }) {
+    constructor(public payload: { 
+        postId: string; 
+        userId: string;
+    }) {
         console.log("post.actions: Like postId:s" + payload.postId);
     }
 }
@@ -20,7 +23,10 @@ export class RemoveLike{
 
 export class DislikePost{
     static readonly type = '[Feed] DislikePost';
-    constructor(public payload: { postId: string }) {
+    constructor(public payload: { 
+        postId: string; 
+        userId: string;
+    }) {
         console.log("post.actions Dislike postId:" + payload.postId);
     }
 }
