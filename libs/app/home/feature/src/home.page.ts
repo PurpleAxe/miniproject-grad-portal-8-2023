@@ -51,6 +51,7 @@ export class HomePage {
   setTimeout(() => {
     let time = parseInt(localStorage.getItem('time') || '0', 10);
     time--;
+    time++;
     localStorage.setItem('time', time.toString());
 
     // console.log(time);
