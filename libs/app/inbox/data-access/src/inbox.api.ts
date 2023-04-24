@@ -21,6 +21,8 @@ import {
   ISendMessageRequest,
   ISendMessageResponse,
 } from '@mp/api/message/util';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs';
 import { Observable } from 'rxjs';
 import { GetConversation } from '../../util/src/inbox.actions';
 @Injectable()
@@ -62,64 +64,123 @@ export class InboxApi {
   //   console.log(conversation, 'qqqqqqqqqqqqqqq');
   //   return conversation;
   // }
-
-  async inbox(userId: string | undefined) {
+  swap(src: any, subject: string | undefined): any {
+    const res = src;
+    if (res[0]['id'] !== subject) {
+      const temp = res[0];
+      res[0] = res[1];
+      res[1] = temp;
+    }
+    return res;
+  }
+  async inbox(userId: string | undefined, observer: Subject<any>) {
     // if (userId) {
     const queryConversationList = query(
       collection(this.firestore, 'conversations'),
-      where('members', 'array-contains', { id: userId })
+      where('membersID', 'array-contains-any', [userId])
     ); //TODO: change id to userId according to db document,//TODO change this to query Profile/conversationIDs
-    // console.log('inbox$', 'aaaaaaaaaaaaaaaaaa');
-    this.conversations$ = new Observable<any>((observer) => {
-      onSnapshot(queryConversationList, (snapshot) => {
-        observer.next(
-          snapshot.docChanges().map((change) => {
-            // const members = change.doc.data()['participants'];
-            // const otherMemberId = members.find((m: any) => {
-            //   return m.id !== userId;
-            // });
-            // const docRef = doc(this.firestore, 'users', otherMemberId);
-            // const docSnap = await getDoc(docRef);
-            // const data = docSnap.data();
-            // const member = {
-            //   id: data == undefined ? null : data['id'],
-            //   photoURL: data == undefined ? null : data['photoURL'],
-            //   displayName: data == undefined ? null : data['displayName'],
-            // };
-            // const me = {
-            //   id: userId,
-            // };
-            const conversation = {
-              conversationID: change.doc.data()['conversationID'],
-              messages: change.doc.data()['messages'],
-              // participants: [member, me],
-              members: change.doc.data()['members'],
-            };
-            console.log(conversation, 'cccccccccccccccccccccc');
-            return conversation;
-            // });
-          })
-        );
 
-        // snapshot
-        // );
-      });
+    // this.conversations$ = new Observable<any>((observer) => {
+    // this.conversations$ = new Observable<any>((observer) => {
+    onSnapshot(queryConversationList, (snapshot) => {
+      // let tmp;
+      // const unsubscribe = this.conversations$.subscribe((x: any) => {
+      //   tmp = x;
+      // });
+
+      // console.log(tmp);
+      // unsubscribe.ubsubscribe();
+      observer.next(
+        snapshot.docChanges().map((change) => {
+          // if (change.type === 'added') {
+          // console.log(this.conversations$);
+          console.log('added conversation');
+          const members = this.swap(change.doc.data()['members'], userId);
+          const membersID = this.swap(change.doc.data()['membersID'], userId);
+
+          const conversation = {
+            conversationID: change.doc.data()['conversationID'],
+            messages: change.doc.data()['messages'],
+            members: members,
+            membersID: membersID,
+          };
+          return conversation;
+          // this.conversations$.pipe(
+          //   tap((x: any) => {
+          //     console.log(x, 'xxxxxxxxxxxxxxxxxxxx');
+          //     x.push(conversation);
+          //   })
+          // );
+
+          // return conversation;
+          // this.conversations$.push(conversation);
+          // } else if (change.type === 'removed') {
+          //   console.log('removed conversation');
+
+          //   this.conversations$.pipe(
+          //     tap((x: any) => {
+          //       x.splice(
+          //         x.findIndex(
+          //           (item: any) =>
+          //             item.conversationID ===
+          //             change.doc.data()['conversationID']
+          //         ),
+          //         1
+          //       );
+          //     })
+          //   );
+
+          //   // return this.conversations$;
+          // } else {
+          //   console.log('updated conversation');
+          //   const ind = this.conversations$.findIndex(
+          //     (item: any) =>
+          //       item.conversationID === change.doc.data()['conversationID']
+          //   );
+
+          //   const members = this.swap(change.doc.data()['members'], userId);
+          //   const membersID = this.swap(
+          //     change.doc.data()['membersID'],
+          //     userId
+          //   );
+
+          //   const conversation = {
+          //     conversationID: change.doc.data()['conversationID'],
+          //     messages: change.doc.data()['messages'],
+          //     members: members,
+          //     membersID: membersID,
+          //   };
+          //   this.conversations$.pipe(
+          //     tap((x: any) => {
+          //       this.conversations$[ind] = conversation;
+          //     })
+          //   );
+
+          // return conversation;
+          // }
+          // return this.conversations$;
+        })
+      );
+
+      // snapshot
+      // );
     });
-    // }
-    // const empty$ = [];
-    // return empty$;
-
-    // const docRef = doc(
-    //   this.firestore,
-    //   `conversations/hHCuAaqg0wf6E310cosD`
-    // ).withConverter<IConversation[]>({
-    //   fromFirestore: (snapshot) => {
-    //     return snapshot.data() as IConversation[];
-    //   },
-    //   toFirestore: (it: IConversation[]) => it,
-    // });
-    // return docData(docRef, { idField: 'id' });
   }
+  // );
+  // }
+  // const empty$ = [];
+  // return empty$;
+
+  // const docRef = doc(
+  //   this.firestore,
+  //   `conversations/hHCuAaqg0wf6E310cosD`
+  // ).withConverter<IConversation[]>({
+  //   fromFirestore: (snapshot) => {
+  //     return snapshot.data() as IConversation[];
+  //   },
+  //   toFirestore: (it: IConversation[]) => it,
+  // });
+  // return docData(docRef, { idField: 'id' });
 
   /*async inbox$(userId: string): Promise<IConversation[]> {
     const query = this.firestore.collection<IConversation>('conversations').where('participants', 'array-contains', userId);

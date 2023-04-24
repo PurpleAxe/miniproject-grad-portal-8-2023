@@ -23,6 +23,7 @@ import { AuthState } from '@mp/app/auth/data-access';
 import { tap } from 'rxjs';
 import { IProfile } from '@mp/api/profiles/util';
 import { IUser } from '@mp/api/users/util';
+import { Subject } from 'rxjs';
 
 export interface InboxStateModel {
   currentConversation: IConversation | null;
@@ -60,6 +61,7 @@ export class InboxState {
   ) {}
   // public users!: Observable<User[]>;
   public userId!: string | undefined;
+  public conversations$ = new Subject();
   // private item$: any;
   @Selector()
   static conversations(state: InboxStateModel) {
@@ -117,16 +119,27 @@ export class InboxState {
   @Action(SubscribeToInbox)
   async subscribeToInbox(ctx: StateContext<InboxStateModel>) {
     await this.getUserId();
-    await this.inboxApi.inbox(this.userId);
-    const bb = this.inboxApi.getConversationObs();
-    bb.subscribe((x) => {
+    // await this.inboxApi.inbox(this.userId);
+    await this.inboxApi.inbox(this.userId, this.conversations$);
+    // const bb = this.inboxApi.getConversationObs();
+    // bb.subscribe((x) => {
+    ctx.setState(
+      produce((draft) => {
+        draft.conversations = [];
+      })
+    );
+    this.conversations$.subscribe((x: any) => {
       ctx.setState(
         produce((draft) => {
-          draft.conversations = x;
+          if (x.length > 1) {
+            draft.conversations = x;
+          } else {
+            draft.conversations.push(x[0]);
+          }
         })
       );
     });
-    return bb;
+    // return bb;
   }
 
   @Action(CreateConversation) //createconversation only called to add new conversation
@@ -138,28 +151,28 @@ export class InboxState {
       const inboxState = ctx.getState();
       const conversationID = inboxState.currentConversation?.conversationID;
       const members = member;
-      console.log('i gave you what you want @createconvos');
-      console.log(members);
+      // console.log('i gave you what you want @createconvos');
+      // console.log(members);
       const messages = inboxState.currentConversation?.messages;
-      if (conversationID) {
-        console.log('conversationID');
-      } else if (messages) {
-        console.log('messages');
-      } else if (!members) {
-        console.log('members');
-      } else if (members) {
-        if (members.length <= 1) {
-          console.log('members length');
-        } else {
-          console.log('no error from above');
-        }
-      } else {
-        console.log('no error from above');
-      }
-      console.log(members);
-      console.log('does this even work');
+      // if (conversationID) {
+      //   console.log('conversationID');
+      // } else if (messages) {
+      //   console.log('messages');
+      // } else if (!members) {
+      //   console.log('members');
+      // } else if (members) {
+      //   if (members.length <= 1) {
+      //     console.log('members length');
+      //   } else {
+      //     console.log('no error from above');
+      //   }
+      // } else {
+      //   console.log('no error from above');
+      // }
+      // console.log(members);
+      // console.log('does this even work');
       const membersID = [members![0].id, members![1].id];
-      console.log(membersID, 'members ID');
+      // console.log(membersID, 'members ID');
       const request: ICreateConversationRequest = {
         conversation: {
           conversationID,
@@ -171,18 +184,19 @@ export class InboxState {
       const responseRef = await this.inboxApi.createConversation(request);
       const response = responseRef.data;
       //ctx.dispatch(new SetInbox(response.conversation));
-      return ctx.setState(
-        produce((draft) => {
-          if (draft.currentConversation) {
-            if (!draft.conversations) {
-              draft.conversations = [draft.currentConversation];
-            } else {
-              draft.conversations.push(draft.currentConversation);
-            }
-          }
-          draft.currentConversation = response as IConversation;
-        })
-      );
+      //   return ctx.setState(
+      //     produce((draft) => {
+      //       if (draft.currentConversation) {
+      //         if (!draft.conversations) {
+      //           draft.conversations = [draft.currentConversation];
+      //         } else {
+      //           draft.conversations.push(draft.currentConversation);
+      //         }
+      //       }
+      //       draft.currentConversation = response as IConversation;
+      //     })
+      //   );
+      return response;
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }

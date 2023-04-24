@@ -7,7 +7,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { EventPublisher } from '@nestjs/cqrs';
 import { UsersRepository } from '@mp/api/users/data-access';
 import { Message } from '../models';
-import {log} from 'console';
+import { log } from 'console';
 
 @CommandHandler(CreateConversationCommand)
 export class CreateConversationHandler

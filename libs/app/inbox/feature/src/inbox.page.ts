@@ -122,13 +122,17 @@ export class InboxPageComponent implements OnInit {
   getConversation() {
     this.setUserId();
     this.store.dispatch(new SubscribeToInbox());
-    // console.log(a, 'pqpqpqpsssssssssssssss');
-    this.conversationSubscribtion = this.store
-      .select(InboxState.conversations)
-      .subscribe((x) => {
-        this.conversations = x;
-        console.log(this.conversations, 'zzzzzzzzzzzzzzzz');
-      });
+    // this.conversationSubscribtion = this.store
+    // .select(InboxState.conversations)
+    // .subscribe((x) => {
+    //   // console.log(x, 'ssssssssssssssssssssss');
+    //   // this.conversations = x;
+    // });
+    // this.conversationSubscribtion.unsubscribe();
+    this.store.select(InboxState.conversations).subscribe((x) => {
+      this.conversations = x;
+    });
+    // this.conversations
   }
   setUserId() {
     this.store.dispatch(new GetUserId());
