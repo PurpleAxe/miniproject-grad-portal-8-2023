@@ -1,39 +1,55 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { Select, Store} from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { Logout } from '@mp/app/auth/util';
-
 
 @Component({
   selector: 'ms-home-page',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
 
   iconColor: any;
-  timestr : any;
+  timestr: any;
 
-  constructor(private router: Router, private renderer: Renderer2,private readonly store: Store, private menuCtrl?: MenuController) {
+  time: number;
 
+  hoursString = '';
+  minutesString = '';
+  secondsString = '';
+
+  constructor(
+    private router: Router,
+    private renderer: Renderer2,
+    private readonly store: Store,
+    private menuCtrl?: MenuController
+  ) {
+    this.profile$.subscribe((profile) => {
+      console.log(profile);
+    });
+
+    const referenceDate = Date.parse('04/24/2023 22:59:30') / 1000;
+
+
+    this.time = Math.floor(Date.now() / 1000) - referenceDate;
+    console.log(this.time);
+    this.timeUpdateContinuously();
   }
-
-  
 
   ngOnInit() {
     const colorTheme = localStorage.getItem('color-theme');
-  
+
     if (colorTheme) {
       this.renderer.setAttribute(document.body, 'color-theme', colorTheme);
     }
 
     const activityStatusValue = localStorage.getItem('activityStatus');
-
 
     if (activityStatusValue === 'true') {
       this.iconColor = 'tertiary';
@@ -41,48 +57,28 @@ export class HomePage {
       this.iconColor = 'danger';
     }
 
-    this.timestr = localStorage.getItem('time')
-    this.decreaseTime();
+    // this.time = parseInt(localStorage.getItem('time') || '0', 10);
+    // console.log(this.time);
+
+    // this.timestr = localStorage.getItem('time');
+    // this.decreaseTime();
   }
 
-  
+  timeUpdateContinuously() {
+    setInterval(() => {
+      this.time--;
 
-  decreaseTime(): void {
-  setTimeout(() => {
-    let time = parseInt(localStorage.getItem('time') || '0', 10);
-    time--;
-    time++;
-    localStorage.setItem('time', time.toString());
+      const hours = Math.floor(this.time / 3600);
+      const minutes = Math.floor((this.time % 3600) / 60);
+      const seconds = Math.floor(this.time % 60);
 
-    // console.log(time);
+      this.hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
+      this.minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
+      this.secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
+    }, 1000);
+  }
 
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = Math.floor(time % 60);
-    const hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
-    const minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
-    const secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
-
-    const HElement = document.getElementById('hoursM');
-    if (HElement) {
-      HElement.textContent = `${hoursString}`;
-    }
-
-    const MElement = document.getElementById('minutesM');
-    if (MElement) {
-      MElement.textContent = `${minutesString}`;
-    }
-
-    const SElement = document.getElementById('sesM');
-    if (SElement) {
-      SElement.textContent = `${secondsString}`;
-    }
-
-    this.decreaseTime();
-  }, 1000);
-}
-
-  checkStatus(){
+  checkStatus() {
     console.log('checkStatus');
     const activityStatusValue = localStorage.getItem('activityStatus');
     if (activityStatusValue === 'true') {
@@ -91,7 +87,6 @@ export class HomePage {
       this.iconColor = 'danger';
     }
   }
-
 
   logout() {
     // this.popover.dismiss();
@@ -125,14 +120,14 @@ export class HomePage {
   goToSettings() {
     if (this.menuCtrl) {
       this.menuCtrl.close();
-  }
+    }
     this.router.navigate(['/home/settings']);
   }
 
   goToProfile() {
     if (this.menuCtrl) {
       this.menuCtrl.close();
-  }
+    }
     this.router.navigate(['/home/profile']);
   }
 
@@ -150,9 +145,7 @@ export class HomePage {
   goToMyProfile() {
     if (this.menuCtrl) {
       this.menuCtrl.close();
-  }
+    }
     this.router.navigate(['/home/userprofile']);
   }
-
-
 }
