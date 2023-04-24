@@ -33,7 +33,7 @@ jobs:
           projectId: timehive-29588
           
       - name: Build API
-        run: yarn build:api:prod
+        run: yarn build:api:dev
         
       - name: Deploy API Firebase
         uses: w9jds/firebase-action@master
