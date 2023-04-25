@@ -126,7 +126,9 @@ export class InboxState {
     // bb.subscribe((x) => {
     ctx.setState(
       produce((draft) => {
+        draft.conversation = [];
         draft.conversations = [];
+        draft.currentConversation = null;
       })
     );
     this.conversations$.subscribe((x: any) => {

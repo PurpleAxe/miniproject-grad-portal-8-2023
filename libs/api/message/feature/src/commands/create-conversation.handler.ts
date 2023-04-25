@@ -25,6 +25,7 @@ export class CreateConversationHandler
     const request = command.request.conversation;
 
     // Checks
+
     if (request.conversationID) {
       throw new Error(
         'Cannot create a conversation with existing ConversationID'

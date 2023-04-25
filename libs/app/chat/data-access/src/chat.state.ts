@@ -36,16 +36,19 @@ export class ChatState {
   }
 
   @Action(SendMessage)
-  async sendMessage(ctx: StateContext<ChatStateModel>, { messageToAdd }: SendMessage) {
+  async sendMessage(
+    ctx: StateContext<ChatStateModel>,
+    { messageToAdd }: SendMessage
+  ) {
     try {
       const chatState = ctx.getState();
       const conversationID = chatState.currentConversation?.conversationID;
-      console.log("!!!!!!!!!!!!!!!!!"+chatState.currentConversation);
+      console.log('!!!!!!!!!!!!!!!!!', conversationID);
       const members = chatState.currentConversation?.members;
       const messages = chatState.currentConversation?.messages;
-      if (!conversationID) {
-        // this.createConversation(ctx);
-      }
+      // if (!conversationID) {
+      // this.createConversation(ctx);
+      // }
       const request: ISendMessageRequest = {
         //maybe we need to modify send-message.request.ts so that it refers to IMessage instead of IConversation
         conversation: {
@@ -67,10 +70,13 @@ export class ChatState {
   }
 
   @Action(SetChat)
-  async addMessage(ctx: StateContext<ChatStateModel>, { currentConversation }: SetChat) {
+  async addMessage(
+    ctx: StateContext<ChatStateModel>,
+    { currentConversation }: SetChat
+  ) {
     return ctx.setState(
       produce((draft) => {
-        draft.currentConversation=currentConversation;
+        draft.currentConversation = currentConversation;
       })
     );
   }
