@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { IConversation, IMessage, IMessageContent, IMessageMetaData } from '@mp/api/message/util';
-import { InboxState } from '@mp/app/inbox/data-access';
+import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { DeleteMessage, SendMessage } from '@mp/app/chat/util';
-import { Timestamp } from 'firebase-admin/firestore';
+import { DeleteMessage, SendMessage, SetChat } from '@mp/app/chat/util';
+import { Timestamp } from 'firebase/firestore';
 import { IProfile } from "@mp/api/profiles/util";
 import { AuthState } from '@mp/app/auth/data-access';
 import { IUser } from '@mp/api/users/util';
+import { SetcurrentConversation } from '@mp/app/inbox/util';
+import { ChatState } from '../../data-access/src/chat.state';
 
 @Component({
   // selector: 'ms-chat-page',
@@ -24,7 +26,9 @@ export class ChatPage implements OnInit {
   currentUserId = 1;
   chatRoom: any;
   @Select(InboxState.currentConversation)
-  conversation$!: Observable<IConversation | null>;
+  currconversation$!: Observable<IConversation | null>;
+  @Select(ChatState.currentConversation)
+  currconv$!: Observable<IConversation | null>;
   messageContent: IMessageContent = {
     textData: '',
     video: null,
@@ -65,7 +69,7 @@ export class ChatPage implements OnInit {
 
   ngOnInit() {
     console.log('new chat page opened');
-    this.conversation$.subscribe((x) => {
+    this.currconversation$.subscribe((x) => {
       this.chatRoom = x;
     });
     this.store.select(AuthState.user)
@@ -76,6 +80,14 @@ export class ChatPage implements OnInit {
       );
     console.log("conversation!!!!!!!!!!");
     console.log(this.chatRoom);
+    /*const convo: IConversation = {
+      conversationID: string;
+      members: IUser[]; // TODO remove optional for authentication purpouses
+      messages: IMessage[];
+      membersID: string[];
+}
+    }*/
+    this.store.dispatch(new SetChat(this.chatRoom));
     //const myQueryParams = this.route.snapshot.queryParams;
   }
 
@@ -85,12 +97,16 @@ export class ChatPage implements OnInit {
       return;
     }
     this.messageContent.textData=this.newMessage;
-    
-      const member1: IProfile = {
-        userId : this.id
-      };
+    const member1: IProfile = {
+      userId : this.id
+    };
+    const now = new Date();
+    const seconds = now.getTime()/1000;
+    const nanoseconds = now.getMilliseconds()*1000000;
+    const timestamp = new Timestamp( seconds , nanoseconds );
+
     const metadata: IMessageMetaData = {
-      //timePosted: new Date().getTime(),
+      timePosted: timestamp,
       sender: member1
     }
     const message: IMessage = {
@@ -100,6 +116,12 @@ export class ChatPage implements OnInit {
     }
     //this.store.dispatch(new AddMessage(this.)); 
     this.store.dispatch(new SendMessage(message)); // TODO isloading updates
+    this.currconv$.subscribe((x)=>{
+      this.chatRoom=x;
+    })
+    setTimeout(() => {
+      console.log(this.chatRoom);
+    }, 1000);
   }
 
   async deleteMessage(message: IMessage) {

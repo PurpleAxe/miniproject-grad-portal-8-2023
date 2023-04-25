@@ -1,8 +1,8 @@
-<ng-container *ngIf="conversation$ | async as conversation; else loading">
+<ng-container *ngIf="currconversation$ | async as conversation; else loading">
   <ion-header>
     <ion-toolbar color="light">
       <ion-buttons slot="start">
-        <ion-back-button defaultHref="/home"></ion-back-button>
+        <ion-back-button defaultHref="/home/inbox"></ion-back-button>
       </ion-buttons>
       <ion-title slot="end">{{name}}</ion-title>
     </ion-toolbar>
@@ -30,6 +30,27 @@
         </app-chat-box>
       </ion-item-group>
     </ion-list>
+    <ion-toolbar color="light">
+      <ion-textarea
+        autoGrow
+        rows="1"
+        placeholder="Send message"
+        class="ion-text-center"
+        [(ngModel)]="newMessage">
+      </ion-textarea>
+      <ion-buttons slot="end">
+        <ion-fab-button
+          *ngIf="!isLoading"
+          size="small"
+          color="primary"
+          (click)="sendMessage()">
+          <ion-icon name="send"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button *ngIf="isLoading" size="small" color="primary">
+          <ion-spinner name="crescent" color="white"></ion-spinner>
+        </ion-fab-button>
+      </ion-buttons>
+    </ion-toolbar>
   </ion-content>
 </ng-container>
 <ng-template #loading>

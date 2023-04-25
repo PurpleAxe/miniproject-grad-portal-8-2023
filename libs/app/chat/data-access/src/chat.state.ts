@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext, Store } from '@ngxs/store';
-import { DeleteMessage, SendMessage } from '@mp/app/chat/util';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { DeleteMessage, SendMessage, SetChat } from '@mp/app/chat/util';
 import {
   IConversation,
   IDeleteMessageRequest,
@@ -9,6 +9,7 @@ import {
 import { ChatApi } from './chat.api';
 import produce from 'immer';
 import { SetError } from '@mp/app/errors/util';
+import { InboxStateModel } from '@mp/app/inbox/data-access';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ChatStateModel {
@@ -28,11 +29,18 @@ export class ChatState {
     private readonly chatApi: ChatApi,
     private readonly store: Store
   ) {}
+
+  @Selector()
+  static currentConversation(state: ChatStateModel) {
+    return state.currentConversation;
+  }
+
   @Action(SendMessage)
   async sendMessage(ctx: StateContext<ChatStateModel>, { messageToAdd }: SendMessage) {
     try {
       const chatState = ctx.getState();
       const conversationID = chatState.currentConversation?.conversationID;
+      console.log("!!!!!!!!!!!!!!!!!"+chatState.currentConversation);
       const members = chatState.currentConversation?.members;
       const messages = chatState.currentConversation?.messages;
       if (!conversationID) {
@@ -56,6 +64,15 @@ export class ChatState {
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));
     }
+  }
+
+  @Action(SetChat)
+  async addMessage(ctx: StateContext<ChatStateModel>, { currentConversation }: SetChat) {
+    return ctx.setState(
+      produce((draft) => {
+        draft.currentConversation=currentConversation;
+      })
+    );
   }
 
   /*@Action(AddMessage)
