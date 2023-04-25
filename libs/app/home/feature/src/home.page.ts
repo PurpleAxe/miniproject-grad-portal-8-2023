@@ -34,10 +34,10 @@ export class HomePage implements OnInit {
       console.log(profile);
     });
 
-    const referenceDate = Date.parse('04/24/2023 22:59:30') / 1000;
+    const referenceDate = Date.parse('04/25/2023 12:00:30') / 1000;
 
 
-    this.time = Math.floor(Date.now() / 1000) - referenceDate;
+    this.time =referenceDate - Math.floor(Date.now() / 1000) ;
     console.log(this.time);
     this.timeUpdateContinuously();
   }
