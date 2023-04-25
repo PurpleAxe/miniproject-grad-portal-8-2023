@@ -4,7 +4,7 @@ import { IProfile } from "@mp/api/profiles/util";
 
 export interface IFeed {
   user: IProfile,
-  posts: IPost[];
+  posts: IPost[]
 }
 
 export interface IIFeed{ ///for front end don't mind it service engineer ;)
