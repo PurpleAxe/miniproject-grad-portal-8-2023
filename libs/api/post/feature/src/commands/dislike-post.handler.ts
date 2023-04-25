@@ -43,9 +43,9 @@ export class DislikePostHandler
         return false;
       }
       if (userRef.data()?.likedPosts?.find(findPost)?.length! >= 1) {
-        post.dislikePostRemoved(likingUserID!)
+        await post.dislikePostRemoved(likingUserID!)
       } else {
-        post.dislikePost(likingUserID!);
+        await post.dislikePost(likingUserID!);
       }
       post.commit();
       const response: IDislikePostResponse = {"post" : post.toJSON()};

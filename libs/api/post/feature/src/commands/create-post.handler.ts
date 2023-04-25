@@ -12,7 +12,7 @@ export class CreatePostHandler
     constructor(private publisher: EventPublisher) {}
 
     async execute(command: CreatePostCommand) {
-      log(CreatePostHandler);
+      console.log(`${CreatePostHandler.name} - ${command.request}`);
       const request = command.request;
       log(request);
       const userId = request.post.userId;
@@ -34,7 +34,7 @@ export class CreatePostHandler
 
       const post = this.publisher.mergeObjectContext(PostModel.fromData(data));
 
-      post.createPost();
+      await post.createPost();
       post.commit();
       const response: ICreatePostResponse = {"post" : post.toJSON()};
       return response;
