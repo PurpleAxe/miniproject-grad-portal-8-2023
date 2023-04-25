@@ -29,7 +29,7 @@ export class ChatState {
     private readonly store: Store
   ) {}
   @Action(SendMessage)
-  async sendMessage(ctx: StateContext<ChatStateModel>) {
+  async sendMessage(ctx: StateContext<ChatStateModel>, { messageToAdd }: SendMessage) {
     try {
       const chatState = ctx.getState();
       const conversationID = chatState.currentConversation?.conversationID;
@@ -43,7 +43,7 @@ export class ChatState {
         conversation: {
           conversationID,
           members,
-          messages,
+          messages: [messageToAdd],
         },
       };
       const responseRef = await this.chatApi.sendMessage(request);
@@ -57,6 +57,20 @@ export class ChatState {
       return ctx.dispatch(new SetError((error as Error).message));
     }
   }
+
+  /*@Action(AddMessage)
+  async addMessage(ctx: StateContext<ChatStateModel>, { messageToAdd }: AddMessage) {
+    return ctx.setState(
+      produce((draft) => {
+      if(draft.currentConversation.messages){
+        draft.currentConversation.messages.push(messageToAdd);
+      } else {
+        draft.currentConversation.messages=messageToAdd;
+      }
+      })
+    );
+  }*/
+
   @Action(DeleteMessage)
   async deleteMessage(
     ctx: StateContext<ChatStateModel>,
