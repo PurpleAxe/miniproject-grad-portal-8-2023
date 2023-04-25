@@ -11,7 +11,7 @@
     </ion-header>
     <ion-content color="light">
         <ion-list>
-            <ion-item *ngFor="let notification of notifications.inbox; index as i;" detail="true" routerLink="{{notification.url}}">
+            <ion-item *ngFor="let notification of notifications.inbox; index as i;" detail="true" routerLink="{{notification.url}}" (click)="markAsRead(notification)">
                 <ion-avatar slot="start">
                     <img *ngIf="notifications.user.accountDetails?.photoURL; else noProfilePic" [src]="notifications.user.accountDetails?.photoURL"/>
                     <ng-template #noProfilePic>
