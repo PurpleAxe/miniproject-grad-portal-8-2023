@@ -10,7 +10,7 @@ import {
     FetchHomeFeed,
     FetchDiscoveryFeed,
  } from '@mp/app/feed/util';
-import { FeedApi } from './feed.api';
+// import { FeedApi } from './feed.api';
 import {IPost, ILikePostResponse} from '@mp/api/post/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { IIFeed } from '@mp/api/feed/util';
@@ -47,19 +47,10 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
 // need to add: loadFeed, likePost, dislikePost, commentPost,
 
 
-    constructor( //what does this do?
-      private readonly feedApi: FeedApi,
-      private readonly store: Store
-    ) {}
-
-  // @Action(LoadFeed)//dont know how
-  // async LoadFeed(ctx: StateContext<FeedStateModel>, {payload}: LoadFeed) {
-    
-  //   ctx.patchState({
-      
-  //   });
-
-  //   }
+    // constructor( //what does this do?
+    //   // private readonly feedApi: FeedApi,
+    //   // private readonly store: Store
+    // ) {}
 
     @Action(LikePost)
     async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
@@ -76,7 +67,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
         post:myPost
       }
       console.log("PostId (state):" + payload.postId);
-      this.feedApi.LikePost(myLikePostResponse);
+      // this.feedApi.LikePost(myLikePostResponse);
       ctx.patchState({
         
       });
