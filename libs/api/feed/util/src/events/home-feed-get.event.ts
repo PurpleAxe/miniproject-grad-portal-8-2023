@@ -1,5 +1,5 @@
 import { IFeed } from '../interfaces';
 
-export class GetFeedEvent {
+export class GetHomeFeedEvent {
   constructor(public readonly feed: IFeed) {}
 }
