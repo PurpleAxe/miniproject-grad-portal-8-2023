@@ -36,7 +36,7 @@ export class Message extends AggregateRoot implements IConversation {
 
   sendMessage() {
     this.messages!.at(0)!.id = (
-      this.messages!.at(0)!.metaData.timePosted.seconds + randomInt(10000)
+      this.messages!.at(0)!.metaData.timePosted!.seconds + randomInt(10000)
     ).toString();
     this.apply(new MessageSentEvent(this.toJSON()));
   }
@@ -47,6 +47,7 @@ export class Message extends AggregateRoot implements IConversation {
 
   async createConversation() {
     this.conversationID = randomUUID() + Date.now();
+    this.messages = [];
     this.apply(new ConversationCreatedEvent(this.toJSON()));
   }
 
