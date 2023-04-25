@@ -57,7 +57,7 @@ export class FeedRepository {
   }
 
   async getOwnFeed(feed: IFeed): Promise<IPost[]> {
-    var data = null
+    var postIds = []
     const f = await admin
     .firestore()
     .collection('profiles')
@@ -66,10 +66,25 @@ export class FeedRepository {
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
           // console.log(doc.data().posts);
-          data = doc.data().posts;
+          postIds = doc.data().posts;
       });
     });
-    return data;
+
+    var posts = [];
+    for(var postId of postIds) {
+      const g = await admin
+      .firestore()
+      .collection('posts')
+      .where("postId", "==", postId)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          posts.push(doc.data());
+        });
+      });
+    }
+    
+    return posts;
   }
 
   async getDiscoveryFeed(feed: IFeed): Promise<IPost[]> {
