@@ -81,7 +81,6 @@ export class FeedRepository {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(doc.data())
         userPosts[doc.data().userId] = doc.data().posts;
       });
     });
@@ -91,19 +90,25 @@ export class FeedRepository {
     //remove duplicates in postId array
     var postIds = []
     for(var p of Object.keys(userPosts))
-      postIds = postIds.concat(userPosts[p])
+    postIds = postIds.concat(userPosts[p])
     
     //get post objects
     var posts = [];
-    const g = await admin
-    .firestore()
-    .collection('posts')
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        posts.push(doc.data());
+    for(var postId of postIds) {
+      const g = await admin
+      .firestore()
+      .collection('posts')
+      .where("postId", "==", postId)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          posts.push(doc.data());
+        });
       });
-    });
+    }
+    // console.log("postIds")
+    // console.log(postIds)
+    // console.log(posts)
     return posts;
   }
 
