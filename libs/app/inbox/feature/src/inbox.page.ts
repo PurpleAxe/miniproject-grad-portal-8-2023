@@ -250,6 +250,7 @@ export class InboxPageComponent implements OnInit {
     console.log(this.chatRoom);
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
     this.router.navigate(['/', 'home' , 'inbox' , 'chats', this.chatRoom.conversationID]);
+    this.cancel();
     /*this.store.select(InboxState.currentConversation).subscribe((x) => {
       console.log("should print current conversation");
       console.log(x);
@@ -279,6 +280,7 @@ export class InboxPageComponent implements OnInit {
     this.chatRoom=item;
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
     this.router.navigate(['/', 'home' , 'inbox' , 'chats', this.chatRoom.conversationID]);
+    this.cancel();
     //this.router.navigate(['/', 'inbox', 'chats', item?.id]);
     //TODO make the conversation the current conversation and display all prev texts
     // this.router.navigate(['/home/inbox']);
