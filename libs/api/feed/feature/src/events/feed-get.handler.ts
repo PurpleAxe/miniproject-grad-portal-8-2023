@@ -1,13 +1,13 @@
 import { FeedRepository } from '@mp/api/feed/data-access';
-import { GetFeedEvent } from '@mp/api/feed/util';
+import { GetOwnFeedEvent } from '@mp/api/feed/util';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
-@EventsHandler(GetFeedEvent)
-export class GetFeedEventHandler
-  implements IEventHandler<GetFeedEvent>
+@EventsHandler(GetOwnFeedEvent)
+export class GetOwnFeedEventHandler
+  implements IEventHandler<GetOwnFeedEvent>
 {
   constructor(private readonly repository: FeedRepository) {}
-  async handle(event: GetFeedEvent) {
-    await this.repository.getFeed(event.feed);
+  async handle(event: GetOwnFeedEvent) {
+    // await this.repository.getFeed(event.feed);
   }
 }
