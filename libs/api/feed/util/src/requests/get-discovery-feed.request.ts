@@ -1,5 +1,5 @@
 import { IFeed } from '../interfaces';
 
-export interface IGetFeedRequest {
+export interface IGetDiscoveryFeedRequest {
     feed: IFeed
 }
