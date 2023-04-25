@@ -1,6 +1,7 @@
 import { CreatePostCommand, ICreatePostResponse } from "@mp/api/post/util";
 import { IPost } from '@mp/api/post/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import {log} from "console";
 import { Timestamp } from 'firebase-admin/firestore';
 import { PostModel } from "../models";
 
@@ -11,7 +12,9 @@ export class CreatePostHandler
     constructor(private publisher: EventPublisher) {}
 
     async execute(command: CreatePostCommand) {
+      log(CreatePostHandler);
       const request = command.request;
+      log(request);
       const userId = request.post.userId;
       const likes = 1;
       const dislikes = 0;
