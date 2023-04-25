@@ -7,6 +7,7 @@ import {
   NotificationsCreatedEvent,
   NotificationsReadEvent,
 } from '@mp/api/notifications/util';
+import { Timestamp } from 'firebase-admin/firestore';
 export class Notifications extends AggregateRoot implements INotificationBox {
   constructor(
     public user: IProfile,
@@ -33,6 +34,7 @@ export class Notifications extends AggregateRoot implements INotificationBox {
       message: 'Welcome to TimeHive',
       url: null,
       notificationID: "1",
+      notificationTime: Timestamp.now()
     });
     this.apply(new InboxCreatedEvent(this.toJSON()));
   }
