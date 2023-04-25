@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-import { Timestamp } from 'firebase-admin/firestore';
+//import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed } from '@mp/api/feed/util';
 import {
     IPost,
@@ -12,12 +12,17 @@ import {
     ICreateCommentRequest,
     ICreatePostRequest,
     IDislikePostRequest,
-    ILikePostRequest
+    ILikePostRequest,
+
 
 } from '@mp/api/post/util';
 import {
   IGetHomeFeedRequest,
-  IGetHomeFeedResponse      
+  IGetHomeFeedResponse,
+  IGetOwnFeedRequest,    
+  IGetOwnFeedResponse,
+  IGetDiscoveryFeedRequest,
+  IGetDiscoveryFeedResponse,
 } from '@mp/api/feed/util';
 
 @Injectable()
@@ -62,13 +67,32 @@ export class FeedApi {
   )(request);
   }
 
-  async FetchHomeFeed(request: IGetHomeFeedRequest){
+  async GetHomeFeed(request: IGetHomeFeedRequest){
     return await httpsCallable<
     IGetHomeFeedRequest,
     IGetHomeFeedResponse
       >(
     this.functions,
-    'fetchHomeFeed'
+    'getHomeFeed'
   )(request);
   }
+
+  async GetDiscoveryFeed(request: IGetDiscoveryFeedRequest){
+    return await httpsCallable<
+    IGetDiscoveryFeedRequest,
+    IGetDiscoveryFeedResponse 
+      >(
+    this.functions,
+    'getDiscoveryFeed'
+  )(request);
   }
+  async GetOwnFeed(request: IGetOwnFeedRequest){
+    return await httpsCallable<
+    IGetOwnFeedRequest,
+    IGetOwnFeedResponse
+      >(
+    this.functions,
+    'getOwnFeed'
+  )(request);
+  }
+}

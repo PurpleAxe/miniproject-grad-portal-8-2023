@@ -33,7 +33,7 @@ export class CreatePostHandler
 
       post.createPost();
       post.commit();
-      const response: ICreatePostResponse = {"Onpost" : post.toJSON()};
+      const response: ICreatePostResponse = {"post" : post.toJSON()};
       return response;
   }
 

@@ -1,4 +1,4 @@
-import { Timestamp } from 'firebase-admin/firestore';
+import { Timestamp } from '@angular/fire/firestore';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FeedState } from '@mp/app/feed/data-access';
@@ -22,6 +22,7 @@ export class FeedPage implements OnInit {
   profileUrl="https://ionicframework.com/docs/img/demos/avatar.svg";
   date!:any;
   userName!:string;
+  now:Timestamp = Timestamp.now();
 
   @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
   feed$:IPost[]=[];
@@ -43,7 +44,7 @@ export class FeedPage implements OnInit {
     console.log("Discovery");
     this.store.dispatch(new FetchDiscoveryFeed());
     this.displayFeed();
-    console.log(this.post$);
+    //console.log(this.post$);
     console.log("Discover");
     // this.contentArr.push("the_element");
 

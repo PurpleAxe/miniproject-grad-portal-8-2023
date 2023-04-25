@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {MyPayload} from  '@mp/app/post/util';
 import { CreatePost} from '@mp/app/post/util';
 import { Select, Store } from '@ngxs/store';
-//import { firestore } from 'firebase-admin';
+import { Timestamp } from '@angular/fire/firestore';
 
 
 
@@ -28,7 +28,7 @@ export class PostPageComponent {
 
   uploadPost(){
 
-    if(this.body=="")
+    if(this.body=="" || this.challenge=="" || this.department=="")
       return; //should challenge and department be optional?
 
 
@@ -40,6 +40,6 @@ export class PostPageComponent {
     }
     this.store.dispatch(new CreatePost(payload));
 
-    //this.router.navigate(['/home/userprofile']); //need to change to profile one day
+    this.router.navigate(['/home/userprofile']);
   }
 }

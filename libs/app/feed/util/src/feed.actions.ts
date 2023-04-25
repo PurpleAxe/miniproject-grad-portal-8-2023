@@ -1,8 +1,3 @@
-// export class LoadFeed{
-//     static readonly type = '[Feed] LoadFeed';
-//     constructor(public payload: { uid: string }) {} /**********NOTE ADDED LOAD HOME FEED AND LOAD DISCOVERY FEED ACTIONS**********/
-// }
-
 export class LikePost{
     static readonly type = '[Feed] LikePost';
     constructor(public payload: { 

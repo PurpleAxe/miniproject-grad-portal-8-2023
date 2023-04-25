@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { UserProfilePageRoutingModule } from './user-profile-routing.module';
 import { UserProfilePageComponent } from './user-profile.page';
-import { CFeedModule } from '@mp/app/feed/ui';
+import { FeedModule } from '@mp/app/feed/ui';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, CFeedModule, UserProfilePageRoutingModule],
+  imports: [CommonModule, FormsModule, IonicModule, FeedModule, UserProfilePageRoutingModule],
   declarations: [UserProfilePageComponent],
   exports: [UserProfilePageComponent],
 })

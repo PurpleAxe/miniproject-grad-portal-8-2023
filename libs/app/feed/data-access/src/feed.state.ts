@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-// import { Register as AuthRegister } from '@mp/app/auth/util';
-// import { SetError } from '@mp/app/errors/util';
-// import { Register } from '@mp/app/register/util';
+import { Register as AuthRegister } from '@mp/app/auth/util';
+import { SetError } from '@mp/app/errors/util';
+import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector, Store } from '@ngxs/store';
 import { 
     /*LoadFeed,*/
@@ -12,8 +12,9 @@ import {
     FetchOwnPosts
  } from '@mp/app/feed/util';
 import { FeedApi } from './feed.api';
-import {IPost, ILikePostResponse, IComment} from '@mp/api/post/util';
-import { Timestamp } from 'firebase-admin/firestore';
+import {IPost, ILikePostResponse, IComment, IDislikePostResponse} from '@mp/api/post/util';
+import { Timestamp } from '@angular/fire/firestore';
+//import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed } from '@mp/api/feed/util';
 
 export interface FeedStateModel{
@@ -21,13 +22,13 @@ export interface FeedStateModel{
   feed:{
     model:{
       users: any[] | null;
+      feedPosts: IFeed | null;
+      postComments: IComment[] | null;
     };
     dirty: false;
     status: string;
     errors: object;
-  },
-  feedPosts: IFeed;
-  postComments: IComment[];
+  }
 }
 
 @State<FeedStateModel>({
@@ -36,57 +37,46 @@ export interface FeedStateModel{
       feed:{
         model:{
           users: null,
+          feedPosts:null,
+          postComments: null
         },
         dirty: false,
         status: '',
         errors: {}
       },
-      feedPosts: {
-        user:{
-          userId:"",
-        },
-        posts:[]
-      },
-      postComments:[]
     }
 })
 @Injectable()
-export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
-// need to add: loadFeed, likePost, dislikePost, commentPost,
+export class FeedState {
+  constructor( 
+    private readonly feedApi: FeedApi,
+    private readonly store: Store
+  ) {}
 
-
-    constructor( //what does this do?
-      private readonly feedApi: FeedApi,
-      private readonly store: Store
-    ) {}
-
-    @Action(LikePost)
-    async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
-      const myPost: IPost = {//delete
-        postId: '1234',
-        userId: 'user123',
-        likes: 10,
-        dislikes: 2,
-        message: 'This is a post message',
-        comments: [],
-        created: null
-      };
-      const myLikePostResponse: ILikePostResponse ={
-        post:myPost
-      }
-      console.log("PostId (state):" + payload.postId);
-      // this.feedApi.LikePost(myLikePostResponse);
-      ctx.patchState({
-        
-      });
+  @Action(LikePost)
+  async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
+    const myPost: IPost = {
+      postId: payload.postId,
+      userId: payload.userId,
+    };
+    const post = myPost;
+    const myLikePostResponse: ILikePostResponse ={
+      post
+    }
+    console.log("PostId (state):" + payload.postId);
   }
 
   @Action(DislikePost)
   async DislikePost(ctx: StateContext<FeedStateModel>, {payload}: DislikePost) {
-    console.log("PostId dislike (state):" + payload.postId);
-    ctx.patchState({
-      
-    });
+    const myPost: IPost = {
+      postId: payload.postId,
+      userId: payload.userId,
+    };
+    const post = myPost;
+    const myDislikePostResponse: IDislikePostResponse ={
+      post
+    }
+    console.log("PostId (state) dislike:" + payload.postId);
 }
 
   @Selector()
@@ -95,48 +85,68 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
     return state.feed.model;
   }
 
-
-  /***********SELECTOR FOR FEED POSTS**********/
   @Selector()
     static getFeedPosts(FeedStateModel:FeedStateModel){ 
-        return FeedStateModel.feedPosts.posts;
+        return FeedStateModel.feed.model.feedPosts?.posts;
     }
 
 
-
-    /*************FETCH HOME FEED*************/
-  @Action(FetchHomeFeed)//dont know how
+  @Action(FetchHomeFeed)
   async FetchHomeFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchHomeFeed();
     const response=this.getMock();
       ctx.patchState({
-        feedPosts:response
+        feed:{
+          model:{
+            users: null,
+            feedPosts: response,
+            postComments: null
+          },
+          dirty: false,
+          status: '',
+          errors: {}
+        }
       });
 
     }
 
-
-       /*************FETCH DISCOVERY FEED*************/
-  @Action(FetchDiscoveryFeed)//dont know how
+  @Action(FetchDiscoveryFeed)
   async FetchDiscoveryFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchDiscoveryFeed();
       const response=this.getMock();
       ctx.patchState({
-        feedPosts:response
+        feed:{
+          model:{
+            users: null,
+            feedPosts: response,
+            postComments: null
+          },
+          dirty: false,
+          status: '',
+          errors: {}
+        }
       });
 
     }
 
 
-    @Action(FetchOwnPosts)//dont know how
-  async FetchOwnPosts(ctx: StateContext<FeedStateModel>) {
-    // const response = await this.feedApi.fetchDiscoveryFeed();
-      const response=this.getMock();
-      ctx.patchState({
-        feedPosts:response
-      });
-
-    }
+  // @Action(FetchOwnPosts)
+  // async FetchOwnPosts(ctx: StateContext<FeedStateModel>) {
+  //   const response = await this.feedApi.GetDiscoveryFeed();
+  //     // const response=this.getMock();
+  //     ctx.patchState({
+  //       feed:{
+  //         model:{
+  //           users: null,
+  //           feedPosts: response,
+  //           postComments: null
+  //         },
+  //         dirty: false,
+  //         status: '',
+  //         errors: {}
+  //       }
+  //     });
+  //   }
 
 
     getMock(){
@@ -150,7 +160,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
           likes: 10,
           dislikes: 2,
           message: "WPM : 45, Road to 50",
-          //created: Timestamp.fromDate(new Date()),
+          created: Timestamp.now(),
           challenge: "",
           department: ""
         },
@@ -160,7 +170,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
           likes: 10,
           dislikes: 2,
           message: "WPM : 45, Road to 50",
-          //created: Timestamp.fromDate(new Date("April, 2023")),
+          created: Timestamp.now(),
           challenge: "WPM",
           department: "EMS DEPARTMENT"
         },
@@ -170,7 +180,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
           likes: 10,
           dislikes: 2,
           message: "WPM : 90, NEW LEAD SCORE",
-          //created: Timestamp.fromDate(new Date("March, 2023")),
+          created: Timestamp.now(),
           challenge: "WPM",
           department: "CIVIL ENGINEERING DEPARTMENT"
         },
@@ -180,7 +190,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
           likes: 10,
           dislikes: 2,
           message: "WPM : 15, STILL LEARNING HOW TO TOUCH TYPE",
-          created: Timestamp.fromDate(new Date('February, 2023')),
+          created: Timestamp.now(),
           challenge: "WPM",
           department: "CS DEPARTMENT"
         }
