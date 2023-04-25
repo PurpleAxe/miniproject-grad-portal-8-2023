@@ -15,7 +15,7 @@
         *ngFor="let chat of conversation.messages">
         <app-chat-box
           [chat]="chat"
-          [current_user_id]="currentUserId"
+          [current_user_id]="id"
           (click)="onMessagePress(chat)">
           <!-- Inside app-chat-box component
         <div class="chat-bubble" *ngIf="!chat.deleted"> Add this condition to show/hide the bubble based on deleted flag

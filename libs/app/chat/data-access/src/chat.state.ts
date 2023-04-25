@@ -62,10 +62,12 @@ export class ChatState {
       const response = responseRef.data;
       return ctx.setState(
         produce((draft) => {
-          if (draft.currentConversation.messages) {
-            draft.currentConversation.messages.push(response);
-          } else {
-            draft.currentConversation.messages = response;
+          if (draft.currentConversation) {
+            if (draft.currentConversation.messages) {
+              draft.currentConversation.messages.push(response);
+            } else {
+              draft.currentConversation.messages = response;
+            }
           }
         })
       );
