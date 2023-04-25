@@ -4,6 +4,7 @@ import { DeleteMessage, SendMessage, SetChat } from '@mp/app/chat/util';
 import {
   IConversation,
   IDeleteMessageRequest,
+  IMessage,
   ISendMessageRequest,
 } from '@mp/api/message/util';
 import { ChatApi } from './chat.api';
@@ -61,7 +62,11 @@ export class ChatState {
       const response = responseRef.data;
       return ctx.setState(
         produce((draft) => {
-          draft.currentConversation.messages = response as IConversation;
+          if (draft.currentConversation.messages) {
+            draft.currentConversation.messages.push(response);
+          } else {
+            draft.currentConversation.messages = response;
+          }
         })
       );
     } catch (error) {

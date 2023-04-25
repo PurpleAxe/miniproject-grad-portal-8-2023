@@ -187,17 +187,20 @@ export class InboxPageComponent implements OnInit {
     //console.log(this.chatRooms.map((room) => room.participants));
     // console.log(this.chatRooms);
     let noConversation = true;
-    for (let i = 0; i < this.chatRooms.length; i++) {
-      if (
-        item.id == this.chatRooms[i].membersID[0] ||
-        item.id == this.chatRooms[i].membersID[1]
-      ) {
-        this.chatRoom = this.chatRooms[i];
-        noConversation = false;
-        // console.log('found the conversation!!!!!!!!!!!!!!');
-        break;
+    if(this.chatRooms) {
+      for (let i = 0; i < this.chatRooms.length; i++) {
+        if (
+          item.id == this.chatRooms[i].membersID[0] ||
+          item.id == this.chatRooms[i].membersID[1]
+        ) {
+          this.chatRoom = this.chatRooms[i];
+          noConversation = false;
+          // console.log('found the conversation!!!!!!!!!!!!!!');
+          break;
+        }
       }
     }
+    
     if (noConversation) {
       this.chatRoom = null;
       let displayName = '';
