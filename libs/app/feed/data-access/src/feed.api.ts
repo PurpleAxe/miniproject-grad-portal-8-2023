@@ -15,6 +15,10 @@ import {
     ILikePostRequest
 
 } from '@mp/api/post/util';
+import {
+  IGetHomeFeedRequest,
+  IGetHomeFeedResponse      
+} from '@mp/api/feed/util';
 
 @Injectable()
 export class FeedApi {
@@ -55,6 +59,16 @@ export class FeedApi {
   >(
     this.functions,
     'dislikePost'
+  )(request);
+  }
+
+  async FetchHomeFeed(request: IGetHomeFeedRequest){
+    return await httpsCallable<
+    IGetHomeFeedRequest,
+    IGetHomeFeedResponse
+      >(
+    this.functions,
+    'fetchHomeFeed'
   )(request);
   }
   }
