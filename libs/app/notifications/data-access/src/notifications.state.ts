@@ -72,18 +72,32 @@ export class NotificationsState {
 
     //ask if cloud functions are going to be used
     @Action(MarkAsReadNotification)
-    async markAsRead(ctx: StateContext<NotificationsStateModel>) {
+    async markAsRead(ctx: StateContext<NotificationsStateModel>, {notification}: MarkAsReadNotification) {
         try {
             const state = ctx.getState();
             const currNotificationsBox = state.notificationsBox;
             const request:IReadNotificationsRequest = {
-                notificationBox:currNotificationsBox,
+                // notificationBox:currNotificationsBox
+                notificationBox:{
+                    user:currNotificationsBox?.user,
+                    inbox:[]
+                },
             };
-
+            console.log(notification);
+            console.log(notification?.notificationID);
+            console.log("in state ts");
+            if (currNotificationsBox!=undefined){
+                for(let i=0; i<currNotificationsBox?.inbox.length; i++){
+                    if (currNotificationsBox?.inbox[i].notificationID==notification?.notificationID){
+                        request.notificationBox?.inbox.push(currNotificationsBox?.inbox[i]);
+                    }
+                }
+            }
+            console.log(request);
 
             const responseRef = await this.notificationsApi.markNotificationsAsRead(request);
             const response = responseRef.data;
-            return ctx.dispatch(new MarkAsReadNotification(response));
+            return ctx.dispatch(new SetNotifications(response.notificationBox));
         } catch (error) {
             return ctx.dispatch(new SetError((error as Error).message))
         }

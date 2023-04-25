@@ -10,7 +10,7 @@ export class SubscribeToNotifications {
 
 export class SetNotifications {
   static readonly type = '[Notifications] SetNotifications';
-  constructor(public readonly notifications: INotificationBox | null) {}
+  constructor(public readonly notifications: INotificationBox | null|undefined) {}
 }
 
 export class DeleteNotification {
@@ -20,7 +20,7 @@ export class DeleteNotification {
 
 export class MarkAsReadNotification {
   static readonly type = '[Notifications] MarkAsReadNotification';
-  constructor(public readonly notificationResponse: IReadNotificationsResponse | null) {}
+  constructor(public readonly notification: INotifications | null) {} //string|undefined|null  notificationResponse: IReadNotificationsResponse | null, 
 }
 
 export class AddNotification {
