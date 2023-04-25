@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { IPost } from '@mp/api/post/util';
 import { IFeed } from '@mp/api/feed/util'; 
-import { GetFeedEvent } from '@mp/api/feed/util';
+import { GetOwnFeedEvent, GetDiscoveryFeedEvent, GetHomeFeedEvent } from '@mp/api/feed/util';
 import { IProfile } from '@mp/api/profiles/util';
 
 export class Feed extends AggregateRoot implements IFeed {
@@ -11,18 +11,6 @@ export class Feed extends AggregateRoot implements IFeed {
     ) {
     super();
   }
-
-    fetchHomeFeed() {
-      this.apply(new GetFeedEvent(this.toJSON()));
-    }
-
-    // fetchDiscoryFeed() {
-    //   this.apply(new GetFeedEvent(this.toJSON()));
-    // }
-
-    // fetchOwnFeed() {
-    //   this.apply(new GetFeedEvent(this.toJSON()));
-    // }
 
     static fromData(feed: IFeed): Feed {
       const instance = new Feed(
