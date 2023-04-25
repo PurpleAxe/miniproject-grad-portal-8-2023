@@ -1,16 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { IConversation, IMessage, IMessageContent, IMessageMetaData } from '@mp/api/message/util';
+import {
+  IConversation,
+  IMessage,
+  IMessageContent,
+  IMessageMetaData,
+} from '@mp/api/message/util';
 import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { DeleteMessage, SendMessage, SetChat } from '@mp/app/chat/util';
 import { Timestamp } from 'firebase/firestore';
-import { IProfile } from "@mp/api/profiles/util";
+import { IProfile } from '@mp/api/profiles/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { IUser } from '@mp/api/users/util';
 import { SetcurrentConversation } from '@mp/app/inbox/util';
-import { ChatState } from '../../data-access/src/chat.state';
+import { ChatState } from '@mp/app/chat/data-access';
 
 @Component({
   // selector: 'ms-chat-page',
@@ -33,9 +38,8 @@ export class ChatPage implements OnInit {
     textData: '',
     video: null,
     photo: null,
-  }
+  };
   id = '';
-  
 
   constructor(
     private alertController: AlertController,
@@ -70,16 +74,15 @@ export class ChatPage implements OnInit {
   ngOnInit() {
     console.log('new chat page opened');
     this.currconversation$.subscribe((x) => {
+      // console.log(
+      //   x?.conversationID,
+      //   ' xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaaaaaaaaaaaaaa'
+      // );
       this.chatRoom = x;
     });
-    this.store.select(AuthState.user)
-    .subscribe(
-        (x: any) => (
-          (this.id = x?.uid)
-        )
-      );
-    console.log("conversation!!!!!!!!!!");
-    console.log(this.chatRoom);
+    this.store.select(AuthState.user).subscribe((x: any) => (this.id = x?.uid));
+    // console.log('conversation!!!!!!!!!!');
+    // console.log(this.chatRoom);
     /*const convo: IConversation = {
       conversationID: string;
       members: IUser[]; // TODO remove optional for authentication purpouses
@@ -96,29 +99,32 @@ export class ChatPage implements OnInit {
       //If there is a blank message or  a message that is just white space, it is not a valid message so  don't send it
       return;
     }
-    this.messageContent.textData=this.newMessage;
+    this.messageContent.textData = this.newMessage;
     const member1: IProfile = {
-      userId : this.id
+      userId: this.id,
     };
     const now = new Date();
-    const seconds = now.getTime()/1000;
-    const nanoseconds = now.getMilliseconds()*1000000;
-    const timestamp = new Timestamp( seconds , nanoseconds );
+    const seconds = now.getTime() / 1000;
+    const nanoseconds = now.getMilliseconds() * 1000000;
+    const timestamp = new Timestamp(seconds, nanoseconds);
 
     const metadata: IMessageMetaData = {
       timePosted: timestamp,
-      sender: member1
-    }
+      sender: member1,
+    };
     const message: IMessage = {
-      id : null,
-      content : this.messageContent,
-      metaData : metadata
-    }
-    //this.store.dispatch(new AddMessage(this.)); 
+      id: null,
+      content: this.messageContent,
+      metaData: metadata,
+    };
+    //this.store.dispatch(new AddMessage(this.));
+    // console.log()
     this.store.dispatch(new SendMessage(message)); // TODO isloading updates
-    this.currconv$.subscribe((x)=>{
-      this.chatRoom=x;
-    })
+    // this.currconv$
+    //   .subscribe((x) => {
+    //     this.chatRoom = x;
+    //   })
+    //   .unsubscribe();
     setTimeout(() => {
       console.log(this.chatRoom);
     }, 1000);

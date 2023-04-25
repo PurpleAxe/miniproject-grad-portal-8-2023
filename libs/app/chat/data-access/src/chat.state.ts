@@ -61,7 +61,7 @@ export class ChatState {
       const response = responseRef.data;
       return ctx.setState(
         produce((draft) => {
-          draft.currentConversation = response as IConversation;
+          draft.currentConversation.messages = response as IConversation;
         })
       );
     } catch (error) {
