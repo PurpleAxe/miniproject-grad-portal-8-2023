@@ -1,5 +1,5 @@
 import { INotificationBox } from "../interfaces";
 
 export interface IReadNotificationsResponse {
-    notificationBox?: INotificationBox;
+    notificationBox?: INotificationBox|null|undefined;
 }
