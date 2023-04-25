@@ -1,11 +1,3 @@
-import { IIFeed } from '@mp/api/feed/util';
-
-
-// export class LoadFeed{
-//     static readonly type = '[Feed] LoadFeed';
-//     constructor(public payload: { uid: string }) {} /**********NOTE ADDED LOAD HOME FEED AND LOAD DISCOVERY FEED ACTIONS**********/
-// }
-
 export class LikePost{
     static readonly type = '[Feed] LikePost';
     constructor(public payload: { 
@@ -18,7 +10,12 @@ export class LikePost{
 
 export class RemoveLike{
     static readonly type = '[Feed] RemoveLike';
-    constructor(public payload: { uid: string }) {}
+    constructor(public payload: { 
+        postId: string; 
+        userId: string;
+    }) {
+        console.log("post.actions Like postId:" + payload.postId);
+    }
 }
 
 export class DislikePost{

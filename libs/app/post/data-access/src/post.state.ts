@@ -46,7 +46,7 @@ export class PostState{
     @Action(CreatePost)
     async CreatePost(ctx: StateContext<PostStateModel>, {payload}: CreatePost) {
         const myPost: IPost = {
-            postId:null,
+            postId: "testPostId",
             userId: "testUsserId",
             message: payload.body,
           };
@@ -70,5 +70,4 @@ export class PostState{
   static getPost(state: PostStateModel) {
     return state.Document.posts.model;
   }
-  
 }

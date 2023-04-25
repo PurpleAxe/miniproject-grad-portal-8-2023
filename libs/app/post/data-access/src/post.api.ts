@@ -19,7 +19,7 @@ export class PostApi {
   post$(id: string) {
     const docRef = doc(
       this.firestore,
-      `profiles/${id}`
+      `post/${id}`
     ).withConverter<IPost>({
       fromFirestore: (snapshot) => {
         return snapshot.data() as IPost;

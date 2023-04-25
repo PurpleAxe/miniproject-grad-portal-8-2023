@@ -11,9 +11,6 @@ import {
     FetchDiscoveryFeed,
  } from '@mp/app/feed/util';
 import { FeedApi } from './feed.api';
-<<<<<<< Updated upstream
-import {IPost, ILikePostResponse} from '@mp/api/post/util';
-=======
 import { Timestamp } from 'firebase-admin/firestore';
 import { IIFeed } from '@mp/api/feed/util';
 import {
@@ -21,7 +18,6 @@ import {
   ILikePostResponse,
   IDislikePostResponse
 } from '@mp/api/post/util';
->>>>>>> Stashed changes
 
 export interface FeedStateModel{
 
@@ -33,12 +29,7 @@ export interface FeedStateModel{
     status: string;
     errors: object;
   },
-<<<<<<< Updated upstream
   feedPosts: IPost[];      /*****ADDED FEED POST FIELD ON THE STATE MODEL INTERFACE*****/
-=======
-  feedPosts: IIFeed[];      /*****ADDED FEED POST FIELD ON THE STATE MODEL INTERFACE*****/
-  // feedPosts: IPost[];     
->>>>>>> Stashed changes
 }
 
 @State<FeedStateModel>({
@@ -74,9 +65,6 @@ export class FeedState {
       }
       console.log("PostId (state):" + payload.postId);
       this.feedApi.LikePost(myLikePostResponse);
-      ctx.patchState({
-        
-      });
   }
 
   @Action(DislikePost)

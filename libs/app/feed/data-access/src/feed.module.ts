@@ -6,7 +6,7 @@ import { FeedState } from './feed.state';
 import { FeedApi } from './feed.api';
 
 @NgModule({
-  imports: [CommonModule, NgxsModule, AuthModule],
+  imports: [CommonModule, NgxsModule.forFeature([FeedState]), AuthModule],
   providers: [FeedApi],
 })
 export class FeedModule {}
