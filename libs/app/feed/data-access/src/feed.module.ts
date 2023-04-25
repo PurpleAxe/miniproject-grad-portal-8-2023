@@ -9,4 +9,4 @@ import { FeedState } from './feed.state';
   imports: [CommonModule, NgxsModule.forFeature([FeedState]), AuthModule],
   providers: [FeedApi],
 })
-export class FFeedModule {}
+export class FeedModule {}
