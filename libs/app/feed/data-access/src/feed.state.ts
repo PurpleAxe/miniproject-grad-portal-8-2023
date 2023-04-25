@@ -11,7 +11,17 @@ import {
     FetchDiscoveryFeed,
  } from '@mp/app/feed/util';
 import { FeedApi } from './feed.api';
+<<<<<<< Updated upstream
 import {IPost, ILikePostResponse} from '@mp/api/post/util';
+=======
+import { Timestamp } from 'firebase-admin/firestore';
+import { IIFeed } from '@mp/api/feed/util';
+import {
+  IPost, 
+  ILikePostResponse,
+  IDislikePostResponse
+} from '@mp/api/post/util';
+>>>>>>> Stashed changes
 
 export interface FeedStateModel{
 
@@ -23,7 +33,12 @@ export interface FeedStateModel{
     status: string;
     errors: object;
   },
+<<<<<<< Updated upstream
   feedPosts: IPost[];      /*****ADDED FEED POST FIELD ON THE STATE MODEL INTERFACE*****/
+=======
+  feedPosts: IIFeed[];      /*****ADDED FEED POST FIELD ON THE STATE MODEL INTERFACE*****/
+  // feedPosts: IPost[];     
+>>>>>>> Stashed changes
 }
 
 @State<FeedStateModel>({
@@ -37,41 +52,25 @@ export interface FeedStateModel{
         status: '',
         errors: {}
       },
-      feedPosts: [],   /*****ADDED FEED POST FIELD ON THE STATE MODEL*****/
+      feedPosts: [],  
     }
 })
 @Injectable()
-export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
-// need to add: loadFeed, likePost, dislikePost, commentPost,
-
-
-    constructor( //what does this do?
+export class FeedState {
+    constructor(
       private readonly feedApi: FeedApi,
       private readonly store: Store
     ) {}
 
-  // @Action(LoadFeed)//dont know how
-  // async LoadFeed(ctx: StateContext<FeedStateModel>, {payload}: LoadFeed) {
-    
-  //   ctx.patchState({
-      
-  //   });
-
-  //   }
-
     @Action(LikePost)
     async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
-      const myPost: IPost = {//delete
-        postId: '1234',
-        userId: 'user123',
-        likes: 10,
-        dislikes: 2,
-        message: 'This is a post message',
-        comments: [],
-        created: null
+      const myPost: IPost = {
+        postId: payload.postId,
+        userId: payload.userId,
       };
+      const post = myPost;
       const myLikePostResponse: ILikePostResponse ={
-        post:myPost
+        post
       }
       console.log("PostId (state):" + payload.postId);
       this.feedApi.LikePost(myLikePostResponse);
@@ -82,10 +81,16 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
 
   @Action(DislikePost)
   async DislikePost(ctx: StateContext<FeedStateModel>, {payload}: DislikePost) {
-    console.log("PostId dislike (state):" + payload.postId);
-    ctx.patchState({
-      
-    });
+    const myPost: IPost = {
+      postId: payload.postId,
+      userId: payload.userId,
+    };
+    const post = myPost;
+    const myDislikePostResponse: IDislikePostResponse ={
+      post
+    }
+    console.log("PostId (state) dislike:" + payload.postId);
+    this.feedApi.DislikePost(myDislikePostResponse);
 }
 
   @Selector()
@@ -94,8 +99,6 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
     return state.feed.model;
   }
 
-
-  /***********SELECTOR FOR FEED POSTS**********/
   @Selector()
     static getFeedPosts(FeedStateModel:FeedStateModel){ 
         return FeedStateModel.feedPosts;

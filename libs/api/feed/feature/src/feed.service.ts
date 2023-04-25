@@ -6,6 +6,7 @@ import { GetFeedCommand } from '@mp/api/feed/util';
 @Injectable()
 export class FeedService {
   constructor(private commandBus: CommandBus) {}
+
   async fetchHomeFeed(
     request: IGetFeedRequest
   ): Promise<IGetFeedResponse> {

@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-import { IIPost } from '@mp/api/post/util';
 import { Timestamp } from 'firebase-admin/firestore';
-import { IIFeed } from '@mp/api/feed/util';
 import {
     IPost,
     ICreateCommentResponse,
-    ICreatePostResponse,
     IDislikePostResponse,
     ILikePostResponse,
     ICreateCommentRequest,
-    ICreatePostRequest,
     IDislikePostRequest,
     ILikePostRequest
 
 } from '@mp/api/post/util';
+
+import {
+  IGetFeedRequest,
+  IGetFeedResponse      
+} from '@mp/api/feed/util';
 
 @Injectable()
 export class FeedApi {
@@ -36,9 +37,9 @@ export class FeedApi {
     });
     return docData(docRef, { idField: 'id' });
   }
-    
+  
   async LikePost(request: ILikePostRequest){
-    await console.log("feed.api LikePost working");
+    console.log("feed.api LikePost working: " + request.post.postId + " " + request.post.userId);
     return await httpsCallable<
     ILikePostResponse,
     ILikePostRequest
@@ -49,13 +50,23 @@ export class FeedApi {
   }
 
   async DislikePost(request: IDislikePostRequest){
-    console.log("feed.api LikePost working");
+    console.log("feed.api DislikePost working");
     return await httpsCallable<
     IDislikePostResponse,
     IDislikePostRequest
   >(
     this.functions,
     'dislikePost'
+  )(request);
+  }
+
+  async FetchHomeFeed(request: IGetFeedRequest){
+    return await httpsCallable<
+    IGetFeedRequest,
+    IGetFeedResponse
+      >(
+    this.functions,
+    'fetchHomeFeed'
   )(request);
   }
   }
