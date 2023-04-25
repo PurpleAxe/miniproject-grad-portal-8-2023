@@ -73,7 +73,8 @@ export class FeedRepository {
   }
 
   async getDiscoveryFeed(feed: IFeed): Promise<IPost[]> {
-    var posts = {};
+    //get user postId arrays
+    var userPosts = {};
     const f = await admin
     .firestore()
     .collection('profiles')
@@ -81,21 +82,29 @@ export class FeedRepository {
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         console.log(doc.data())
-        posts[doc.data().userId] = doc.data().posts;
+        userPosts[doc.data().userId] = doc.data().posts;
       });
     });
 
-    delete posts[feed.user.userId]
+    delete userPosts[feed.user.userId]
     
-    console.log(posts)
-    var response = []
-    for(var p of Object.keys(posts))
-      response = response.concat(posts[p])
-      console.log(response)
-    return response;
+    //remove duplicates in postId array
+    var postIds = []
+    for(var p of Object.keys(userPosts))
+      postIds = postIds.concat(userPosts[p])
+    
+    //get post objects
+    var posts = [];
+    const g = await admin
+    .firestore()
+    .collection('posts')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        posts.push(doc.data());
+      });
+    });
+    return posts;
   }
-
-
-
 
 }
