@@ -21,23 +21,24 @@ export const fetchHomeFeed = functions.https.onCall(
     }
 );
 
-export const fetchOwnFeed = functions.https.onCall(
-    async (
-        request: IGetDiscoveryFeedRequest
-    ): Promise<IGetDiscoveryFeedResponse> => {
-        const app = await NestFactory.createApplicationContext(CoreModule);
-        const service = app.get(FeedService);
-        return service.getDiscoveryFeed(request);
-    }
-);
-
 export const fetchDiscoveryFeed = functions.https.onCall(
     async (
         request: IGetHomeFeedRequest
     ): Promise<IGetHomeFeedResponse> => {
         const app = await NestFactory.createApplicationContext(CoreModule);
         const service = app.get(FeedService);
+        return service.getDiscoveryFeed(request);
+    }
+);
+
+export const fetchOwnFeed = functions.https.onCall(
+    async (
+        request: IGetDiscoveryFeedRequest
+    ): Promise<IGetDiscoveryFeedResponse> => {
+        const app = await NestFactory.createApplicationContext(CoreModule);
+        const service = app.get(FeedService);
         return service.getOwnFeed(request);
     }
 );
+
   
