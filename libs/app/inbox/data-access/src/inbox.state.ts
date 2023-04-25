@@ -132,10 +132,21 @@ export class InboxState {
     this.conversations$.subscribe((x: any) => {
       ctx.setState(
         produce((draft) => {
+          // console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxxxx');
           if (x.length > 1) {
             draft.conversations = x;
+          } else if (x.length == 1) {
+            if (
+              !draft.conversations.some(
+                (e: any) => e.conversationID === x[0].conversationID
+              )
+            ) {
+              // console.log('does it push');
+
+              draft.conversations.push(x[0]);
+            }
           } else {
-            draft.conversations.push(x[0]);
+            draft.conversations = null;
           }
         })
       );
@@ -144,12 +155,16 @@ export class InboxState {
   }
 
   @Action(SetcurrentConversation) //createconversation only called to add new conversation
-  async setcurrentConversation( ctx: StateContext<InboxStateModel>, { currentConversation }: SetcurrentConversation) {
-      return ctx.setState(
-        produce((draft) => {
-            draft.currentConversation = currentConversation;
-        }))
-    };
+  async setcurrentConversation(
+    ctx: StateContext<InboxStateModel>,
+    { currentConversation }: SetcurrentConversation
+  ) {
+    return ctx.setState(
+      produce((draft) => {
+        draft.currentConversation = currentConversation;
+      })
+    );
+  }
 
   @Action(CreateConversation) //createconversation only called to add new conversation
   async createConversation(
@@ -206,9 +221,10 @@ export class InboxState {
       //     })
       //   );
       ctx.setState(
-        produce((draft) => { 
+        produce((draft) => {
           draft.currentConversation = response as IConversation;
-        }));
+        })
+      );
       return response;
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));

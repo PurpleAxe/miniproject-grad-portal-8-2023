@@ -24,7 +24,7 @@ import {
 import { Subject } from 'rxjs';
 import { tap } from 'rxjs';
 import { Observable } from 'rxjs';
-import { GetConversation } from '../../util/src/inbox.actions';
+import { GetConversation } from '@mp/app/inbox/util';
 @Injectable()
 export class InboxApi {
   constructor(
@@ -94,17 +94,22 @@ export class InboxApi {
         snapshot.docChanges().map((change) => {
           // if (change.type === 'added') {
           // console.log(this.conversations$);
-          console.log('added conversation');
-          const members = this.swap(change.doc.data()['members'], userId);
-          const membersID = this.swap(change.doc.data()['membersID'], userId);
+          console.log(change.type, 'change type!!!!!!!!!!');
+          if (change.type == 'added') {
+            console.log('added conversation');
+            const members = this.swap(change.doc.data()['members'], userId);
+            const membersID = this.swap(change.doc.data()['membersID'], userId);
 
-          const conversation = {
-            conversationID: change.doc.data()['conversationID'],
-            messages: change.doc.data()['messages'],
-            members: members,
-            membersID: membersID,
-          };
-          return conversation;
+            const conversation = {
+              conversationID: change.doc.data()['conversationID'],
+              messages: change.doc.data()['messages'],
+              members: members,
+              membersID: membersID,
+            };
+            return conversation;
+          }
+
+          return;
           // this.conversations$.pipe(
           //   tap((x: any) => {
           //     console.log(x, 'xxxxxxxxxxxxxxxxxxxx');
