@@ -12,4 +12,4 @@ import { CardComponent, CardModule } from './card';
   declarations: [],
   exports: [CardModule]
 })
-export class FeedModule {}
+export class CFeedModule {}

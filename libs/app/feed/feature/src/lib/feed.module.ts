@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FeedPage } from './feed.page';
 import { IonicModule } from '@ionic/angular';
 import { FeedRouting } from './feed.routing';
-import { CardComponent, FeedModule as CardModule } from '@mp/app/feed/ui';
+import { CardComponent, CFeedModule as CardModule } from '@mp/app/feed/ui';
 import { NgxsModule } from '@ngxs/store';
 import { FeedState } from '@mp/app/feed/data-access';
 

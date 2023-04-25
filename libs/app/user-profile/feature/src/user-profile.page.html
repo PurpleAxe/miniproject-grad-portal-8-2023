@@ -62,9 +62,20 @@
   </ion-segment>
 </ion-toolbar>
 
+<card *ngFor="let feed of ownPost$" 
+    [userName] = "feed.userId!"
+    [postId] = "feed.postId!"
+    [text] = "feed.message!"
+    [profileUrl] = "getProfileUrl(feed.userId)"
+    [date] = "toDate(feed.created)"
+    [likeNum] = "feed.likes!"
+    [dislikeNum]="feed.dislikes!" >
+</card>
+
+
 
 <!-- if this gets impelmented let Julianna know to change the post structure -->
-<ion-card>
+<!-- <ion-card>
   <ion-item>
     <ion-avatar slot="start" style="width: 70px; height: auto;">
       <img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
@@ -149,5 +160,5 @@
     </ion-buttons>
   </ion-item>
 </ion-card-content>
-</ion-card>
+</ion-card> -->
 

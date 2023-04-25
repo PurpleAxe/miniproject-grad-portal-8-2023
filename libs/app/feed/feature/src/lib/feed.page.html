@@ -18,13 +18,13 @@
     <!-- <card id="posts" *ngFor="let i of contentArr" [content]="i"></card> -->
     
     <card *ngFor="let feed of feed$" 
-    [userName] = "feed.UserId"
-    [postId] = "feed.Post.postId"
-    [text] = "feed.Post.contents.text"
-    [profileUrl] = "getProfileUrl(feed.UserId)"
-    [date] = "toDate(feed.Post.timestamp)"
-    [likeNum] = "feed.Post.likedProfileIds.length"
-    [dislikeNum]="feed.Post.dislikedProfileIds.length" >
+    [userName] = "feed.userId!"
+    [postId] = "feed.postId!"
+    [text] = "feed.message!"
+    [profileUrl] = "getProfileUrl(feed.userId)"
+    [date] = "toDate(feed.created)"
+    [likeNum] = "feed.likes!"
+    [dislikeNum]="feed.dislikes!" >
     </card>
 
 </ion-content>

@@ -30,8 +30,8 @@ const routes: Routes = [
   // },
   {
     path: 'home',
-    canActivate: [AuthGuard],
-    data: { authGuardPipe: redirectLoggedOut },
+    // canActivate: [AuthGuard],
+    // data: { authGuardPipe: redirectLoggedOut },
     loadChildren: () =>
       import('@mp/app/home/feature').then((m) => m.HomeModule),
   },

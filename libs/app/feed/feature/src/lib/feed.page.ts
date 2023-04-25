@@ -1,11 +1,11 @@
 import { Timestamp } from 'firebase-admin/firestore';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IIFeed } from '@mp/api/feed/util';
 import { FeedState } from '@mp/app/feed/data-access';
 import { FetchHomeFeed, FetchDiscoveryFeed} from '@mp/app/feed/util';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { IPost } from '@mp/api/post/util';
 
 
 @Component({
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./feed.page.scss'],
 })
 export class FeedPage implements OnInit {
-  contentArr: string[] = ["PostId1", "PostId2", "PostId3"];
+  // contentArr: string[] = ["PostId1", "PostId2", "PostId3"];
   LHome!: boolean;
   LDiscovery!: boolean;
 
@@ -23,8 +23,8 @@ export class FeedPage implements OnInit {
   date!:any;
   userName!:string;
 
-  @Select(FeedState.getFeedPosts) post$! :Observable<IIFeed[]>;
-  feed$:IIFeed[]=[];
+  @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
+  feed$:IPost[]=[];
 
   constructor(private router: Router,private readonly store: Store){
     this.LHome = true;
@@ -45,7 +45,7 @@ export class FeedPage implements OnInit {
     this.displayFeed();
     console.log(this.post$);
     console.log("Discover");
-    this.contentArr.push("the_element");
+    // this.contentArr.push("the_element");
 
   }
 
@@ -55,7 +55,7 @@ export class FeedPage implements OnInit {
     this.LDiscovery = false;
     this.store.dispatch(new FetchHomeFeed());
     this.displayFeed();
-    console.log(this.post$);
+    //console.log(this.post$);
 
   }
 
@@ -66,13 +66,13 @@ export class FeedPage implements OnInit {
     })
   }
 
-  toDate(date:Timestamp | string | undefined){
+  toDate(date:Timestamp | null | undefined){
     console.log(date);
     return "24 April";
   }
 
   getProfileUrl(userId:string){
-    console.log(userId);
+    //console.log(userId);
     return this.profileUrl;
   }
 

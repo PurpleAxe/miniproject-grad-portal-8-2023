@@ -16,7 +16,6 @@ export class CardComponent {
   @Input() date!:any;
   @Input() userName!:string;
 
-
   constructor(private router: Router, private readonly store: Store) { }
 
   @Input() postId = "POST ID"; //would I store the postId here so I know what post was liked?

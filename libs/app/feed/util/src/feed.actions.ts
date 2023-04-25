@@ -1,6 +1,3 @@
-import { IIFeed } from '@mp/api/feed/util';
-
-
 // export class LoadFeed{
 //     static readonly type = '[Feed] LoadFeed';
 //     constructor(public payload: { uid: string }) {} /**********NOTE ADDED LOAD HOME FEED AND LOAD DISCOVERY FEED ACTIONS**********/
@@ -47,4 +44,8 @@ export class FetchHomeFeed{
 
 export class FetchDiscoveryFeed{
     static readonly type ="[Feed] load discovery feed";
+}
+
+export class FetchOwnPosts{
+    static readonly type ="[Profile] load own Posts";
 }

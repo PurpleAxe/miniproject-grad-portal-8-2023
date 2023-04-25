@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Register as AuthRegister } from '@mp/app/auth/util';
-import { SetError } from '@mp/app/errors/util';
-import { Register } from '@mp/app/register/util';
+// import { Register as AuthRegister } from '@mp/app/auth/util';
+// import { SetError } from '@mp/app/errors/util';
+// import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector, Store } from '@ngxs/store';
 import { 
     /*LoadFeed,*/
@@ -9,11 +9,12 @@ import {
     DislikePost,
     FetchHomeFeed,
     FetchDiscoveryFeed,
+    FetchOwnPosts
  } from '@mp/app/feed/util';
-// import { FeedApi } from './feed.api';
-import {IPost, ILikePostResponse} from '@mp/api/post/util';
+import { FeedApi } from './feed.api';
+import {IPost, ILikePostResponse, IComment} from '@mp/api/post/util';
 import { Timestamp } from 'firebase-admin/firestore';
-import { IIFeed } from '@mp/api/feed/util';
+import { IFeed } from '@mp/api/feed/util';
 
 export interface FeedStateModel{
 
@@ -25,7 +26,8 @@ export interface FeedStateModel{
     status: string;
     errors: object;
   },
-  feedPosts: IIFeed[];      /*****ADDED FEED POST FIELD ON THE STATE MODEL INTERFACE*****/
+  feedPosts: IFeed;
+  postComments: IComment[];
 }
 
 @State<FeedStateModel>({
@@ -39,7 +41,13 @@ export interface FeedStateModel{
         status: '',
         errors: {}
       },
-      feedPosts: [],   /*****ADDED FEED POST FIELD ON THE STATE MODEL*****/
+      feedPosts: {
+        user:{
+          userId:"",
+        },
+        posts:[]
+      },
+      postComments:[]
     }
 })
 @Injectable()
@@ -47,10 +55,10 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
 // need to add: loadFeed, likePost, dislikePost, commentPost,
 
 
-    // constructor( //what does this do?
-    //   // private readonly feedApi: FeedApi,
-    //   // private readonly store: Store
-    // ) {}
+    constructor( //what does this do?
+      private readonly feedApi: FeedApi,
+      private readonly store: Store
+    ) {}
 
     @Action(LikePost)
     async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
@@ -91,7 +99,7 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
   /***********SELECTOR FOR FEED POSTS**********/
   @Selector()
     static getFeedPosts(FeedStateModel:FeedStateModel){ 
-        return FeedStateModel.feedPosts;
+        return FeedStateModel.feedPosts.posts;
     }
 
 
@@ -120,36 +128,64 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
     }
 
 
+    @Action(FetchOwnPosts)//dont know how
+  async FetchOwnPosts(ctx: StateContext<FeedStateModel>) {
+    // const response = await this.feedApi.fetchDiscoveryFeed();
+      const response=this.getMock();
+      ctx.patchState({
+        feedPosts:response
+      });
+
+    }
+
+
     getMock(){
-      const p1 : IIFeed={
-        UserId: "test",
-        Post : {
-            postId: "test-p1",
-            contents:{
-                text: "new post created",
-                challenge: "test challenge",
-                department: "test department",
-            },
-            likedProfileIds: ["id-1","id-2","id-3","id-1","id-1","id-1","id-1","id-2","id-3","id-1","id-1","id-1"],
-            dislikedProfileIds: ["id-1","id-2","id-3","id-1","id-1","id-1"],
-            //timestamp: Timestamp.now(),
+      const feed={
+        user:{
+          userId:"Testing",
+        },
+        posts:[{
+          postId: "kdjfldksjfofjiejodghghklfjdksjfkdj",
+          userId: "Test 0",
+          likes: 10,
+          dislikes: 2,
+          message: "WPM : 45, Road to 50",
+          //created: Timestamp.fromDate(new Date()),
+          challenge: "",
+          department: ""
+        },
+        {
+          postId: "kdjfldksjfofjiejodklfjdksjfkdj",
+          userId: "Test 1",
+          likes: 10,
+          dislikes: 2,
+          message: "WPM : 45, Road to 50",
+          //created: Timestamp.fromDate(new Date("April, 2023")),
+          challenge: "WPM",
+          department: "EMS DEPARTMENT"
+        },
+        {
+          postId: "kdjfldksjfofkfljdkejodklfjdksjfkdj",
+          userId: "Test 2",
+          likes: 10,
+          dislikes: 2,
+          message: "WPM : 90, NEW LEAD SCORE",
+          //created: Timestamp.fromDate(new Date("March, 2023")),
+          challenge: "WPM",
+          department: "CIVIL ENGINEERING DEPARTMENT"
+        },
+        {
+          postId: "kdjfldksjfofjiejodklfjdksjfkkdjfj",
+          userId: "Test 3",
+          likes: 10,
+          dislikes: 2,
+          message: "WPM : 15, STILL LEARNING HOW TO TOUCH TYPE",
+          created: Timestamp.fromDate(new Date('February, 2023')),
+          challenge: "WPM",
+          department: "CS DEPARTMENT"
         }
-      };
-      const p2:IIFeed={
-          UserId: "test-2",
-          Post : {
-          postId: "test-2-p1",
-          contents:{
-              text: "new post created",
-              challenge: "test-1 challenge",
-              department: "test-1 department",
-          },
-          likedProfileIds: ["id-1","id-2","id-3","id-1","id-1","id-1","id-1","id-2","id-3","id-1","id-1","id-1","id-1","id-2","id-3","id-1","id-1","id-1"],
-          dislikedProfileIds: ["id-1"],
-          //timestamp: Timestamp.now(),
-          }
+        ]
       }
-      const MockFeedPosts:IIFeed[]=new Array<IIFeed>(p1,p2);
-      return MockFeedPosts;
+      return feed;
     }
 }

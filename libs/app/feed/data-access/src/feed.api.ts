@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-import { IIPost } from '@mp/api/post/util';
 import { Timestamp } from 'firebase-admin/firestore';
-import { IIFeed } from '@mp/api/feed/util';
+import { IFeed } from '@mp/api/feed/util';
 import {
     IPost,
     ICreateCommentResponse,
