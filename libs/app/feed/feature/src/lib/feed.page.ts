@@ -41,12 +41,17 @@ export class FeedPage implements OnInit {
     this.profile$.subscribe((profile) => {
       if(profile != null)
         this.uid = profile.userId;
+        const payload={
+          uid:this.uid
+        };
+
+        this.store.dispatch(new FetchHomeFeed(payload));
+        this.post$.subscribe((posts) => {
+          if(posts != null)
+            this.feedPost = posts;
     });
     
-    this.store.dispatch(new FetchHomeFeed());
-    this.post$.subscribe((posts) => {
-      if(posts != null)
-        this.feedPost = posts;
+
     });
   }
 
@@ -59,17 +64,46 @@ export class FeedPage implements OnInit {
     this.LHome = false;
     this.LDiscovery = true;
     console.log("Discovery");
-    this.store.dispatch(new FetchDiscoveryFeed());
-    this.displayFeed();
-    console.log("Discover");
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile != null)
+        this.uid = profile.userId;
+        const payload={
+          uid:this.uid
+        };
+      
 
+        this.store.dispatch(new FetchDiscoveryFeed(payload));
+        this.post$.subscribe((posts) => {
+          if(posts != null)
+            this.feedPost = posts;
+    });
+    
+
+    });
+    this.displayFeed();
   }
 
   homet(){
     console.log("Home");
     this.LHome = true;
     this.LDiscovery = false;
-    this.store.dispatch(new FetchHomeFeed());
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile != null)
+        this.uid = profile.userId;
+        const payload={
+          uid:this.uid
+        };
+
+        this.store.dispatch(new FetchHomeFeed(payload));
+        this.post$.subscribe((posts) => {
+          if(posts != null)
+            this.feedPost = posts;
+    });
+    
+
+    });
     this.displayFeed();
 
   }

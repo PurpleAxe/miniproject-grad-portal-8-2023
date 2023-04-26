@@ -40,12 +40,15 @@ export class PostComment{
 
 export class FetchHomeFeed{
     static readonly type ="[Feed] fetch home feed";
+    constructor(public payload: { uid: string }) {}
 }
 
 export class FetchDiscoveryFeed{
     static readonly type ="[Feed] load discovery feed";
+    constructor(public payload: { uid: string }) {}
 }
 
 export class FetchOwnPosts{
     static readonly type ="[Profile] load own Posts";
+    constructor(public payload: { uid: string }) {}
 }

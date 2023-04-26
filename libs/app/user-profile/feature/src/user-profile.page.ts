@@ -7,6 +7,11 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Timestamp } from 'firebase-admin/firestore';
 
+import { IProfile } from '@mp/api/profiles/util';
+import { ProfileState } from '@mp/app/profile/data-access';
+import { SubscribeToProfile } from '@mp/app/profile/util';
+
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.page.html',
@@ -18,7 +23,8 @@ export class UserProfilePageComponent implements OnInit {
   @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
   ownPost$:IPost[]=[];
   profileUrl="https://ionicframework.com/docs/img/demos/avatar.svg";
-  
+  @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  uid!:string;
 
   ngOnInit(): void {
     this.ownPosts();
@@ -38,7 +44,20 @@ export class UserProfilePageComponent implements OnInit {
   }
 
   ownPosts(){
-    this.store.dispatch(new FetchOwnPosts());
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile != null)
+        this.uid = profile.userId;
+        const payload={
+          uid:this.uid
+        };
+
+        this.store.dispatch(new FetchOwnPosts(payload));
+        this.post$.subscribe((posts) => {
+          if(posts != null)
+            this.ownPost$ = posts;
+    });
+  });
     this.displayOwnPosts();
   }
 

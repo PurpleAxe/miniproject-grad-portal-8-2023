@@ -46,9 +46,11 @@ export class PostState{
     @Action(CreatePost)
     async CreatePost(ctx: StateContext<PostStateModel>, {payload}: CreatePost) {
         const myPost: IPost = {
-            postId: "testPostId",
-            userId: "testUsserId",
+            postId: null,
+            userId: payload.userId,
             message: payload.body,
+            challenge: payload.challenge,
+            department: payload.department
           };
           const post = myPost;
           const myCreatePostRequest: ICreatePostRequest ={
