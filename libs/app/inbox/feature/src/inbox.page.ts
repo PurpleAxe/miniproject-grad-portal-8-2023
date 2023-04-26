@@ -182,12 +182,13 @@ export class InboxPageComponent implements OnInit {
           this.chatRooms = x;
         }
         // console.log('define chatRooms');
-      });
+      })
+      .unsubscribe();
     // console.log('should print conversations app user is in');
     //console.log(this.chatRooms.map((room) => room.participants));
     // console.log(this.chatRooms);
     let noConversation = true;
-    if(this.chatRooms) {
+    if (this.chatRooms) {
       for (let i = 0; i < this.chatRooms.length; i++) {
         if (
           item.id == this.chatRooms[i].membersID[0] ||
@@ -200,7 +201,7 @@ export class InboxPageComponent implements OnInit {
         }
       }
     }
-    
+
     if (noConversation) {
       this.chatRoom = null;
       let displayName = '';
@@ -214,7 +215,8 @@ export class InboxPageComponent implements OnInit {
             (displayName = x?.displayName),
             (photoURL = x?.photoURL)
           )
-        );
+        )
+        .unsubscribe();
       //get members action
       //
       //create a new chatroom to store to firebase
@@ -245,20 +247,23 @@ export class InboxPageComponent implements OnInit {
         .select(InboxState.currentConversation)
         .subscribe((x) => {
           this.chatRoom = x;
-        });
+        })
+        .unsubscribe();
     }
     // console.log(
     //   'should print conversation clicked user and current user is in'
     // );
-    console.log(this.chatRoom);
+    console.log(this.chatRoom, ' this.chatroom');
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
-    this.router.navigate([
-      '/',
-      'home',
-      'inbox',
-      'chats',
-      this.chatRoom.conversationID,
-    ]);
+    if (this.chatRoom) {
+      this.router.navigate([
+        '/',
+        'home',
+        'inbox',
+        'chats',
+        this.chatRoom.conversationID,
+      ]);
+    }
     this.cancel();
     /*this.store.select(InboxState.currentConversation).subscribe((x) => {
       console.log("should print current conversation");

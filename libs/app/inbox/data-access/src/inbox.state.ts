@@ -120,10 +120,6 @@ export class InboxState {
   @Action(SubscribeToInbox)
   async subscribeToInbox(ctx: StateContext<InboxStateModel>) {
     await this.getUserId();
-    // await this.inboxApi.inbox(this.userId);
-    await this.inboxApi.inbox(this.userId, this.conversations$);
-    // const bb = this.inboxApi.getConversationObs();
-    // bb.subscribe((x) => {
     ctx.setState(
       produce((draft) => {
         draft.conversation = [];
@@ -131,24 +127,56 @@ export class InboxState {
         draft.currentConversation = null;
       })
     );
-    this.conversations$.subscribe((x: any) => {
+    // await this.inboxApi.inbox(this.userId);
+    await this.inboxApi.inbox(this.userId, this.conversations$);
+    // const bb = this.inboxApi.getConversationObs();
+    // bb.subscribe((x) => {
+
+    this.conversations$.subscribe((a: any) => {
       ctx.setState(
         produce((draft) => {
-          // console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxxxx');
-          if (x.length > 1) {
-            draft.conversations = x;
-          } else if (x.length == 1) {
-            if (
-              !draft.conversations.some(
-                (e: any) => e.conversationID === x[0].conversationID
-              )
-            ) {
-              // console.log('does it push');
+          const x = a;
+          console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxxxx');
+          if (x[0]) {
+            if (x[0].type === 'added') {
+              if (x[0].conversations.length > 1) {
+                draft.conversations = x[0].conversations;
+              } else if (
+                x[0].conversations &&
+                x[0].conversations.conversationID
+              ) {
+                if (
+                  !draft.conversations.some(
+                    (e: any) =>
+                      e.conversationID === x[0].conversations.conversationID
+                  )
+                ) {
+                  // console.log('does it push');
 
-              draft.conversations.push(x[0]);
+                  draft.conversations.push(x[0].conversations);
+                }
+              } else {
+                draft.conversations = [];
+              }
+            } else if (x[0].type === 'modified') {
+              const index = draft.conversations.findIndex(
+                (e: any) =>
+                  e.conversationID === x[0].conversations.conversationID
+              );
+
+              if (index > -1) {
+                draft.conversations[index] = x[0].conversations;
+              }
+            } else if (x[0].type === 'removed') {
+              const index = draft.conversations.findIndex(
+                (e: any) =>
+                  e.conversationID === x[0].conversations.conversationID
+              );
+              draft.conversations.splice(index, 1);
+            } else {
+              console.log('inbox.state.subscribeToInbox undefined');
+              draft.conversations = [];
             }
-          } else {
-            draft.conversations = null;
           }
         })
       );

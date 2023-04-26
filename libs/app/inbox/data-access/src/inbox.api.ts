@@ -80,8 +80,6 @@ export class InboxApi {
       where('membersID', 'array-contains-any', [userId])
     ); //TODO: change id to userId according to db document,//TODO change this to query Profile/conversationIDs
 
-    // this.conversations$ = new Observable<any>((observer) => {
-    // this.conversations$ = new Observable<any>((observer) => {
     onSnapshot(queryConversationList, (snapshot) => {
       // let tmp;
       // const unsubscribe = this.conversations$.subscribe((x: any) => {
@@ -95,21 +93,21 @@ export class InboxApi {
           // if (change.type === 'added') {
           // console.log(this.conversations$);
           console.log(change.type, 'change type!!!!!!!!!!');
-          if (change.type == 'added') {
-            console.log('added conversation');
-            const members = this.swap(change.doc.data()['members'], userId);
-            const membersID = this.swap(change.doc.data()['membersID'], userId);
+          // if (change.type == 'added' || change.type == 'modified') {
+          console.log('added conversation');
+          const members = this.swap(change.doc.data()['members'], userId);
+          const membersID = this.swap(change.doc.data()['membersID'], userId);
 
-            const conversation = {
-              conversationID: change.doc.data()['conversationID'],
-              messages: change.doc.data()['messages'],
-              members: members,
-              membersID: membersID,
-            };
-            return conversation;
-          }
+          const conversation = {
+            conversationID: change.doc.data()['conversationID'],
+            messages: change.doc.data()['messages'],
+            members: members,
+            membersID: membersID,
+          };
+          return { type: change.type, conversations: conversation };
+          // }
 
-          return;
+          // return;
           // this.conversations$.pipe(
           //   tap((x: any) => {
           //     console.log(x, 'xxxxxxxxxxxxxxxxxxxx');
