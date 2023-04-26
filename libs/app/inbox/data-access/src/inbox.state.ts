@@ -132,9 +132,9 @@ export class InboxState {
     // const bb = this.inboxApi.getConversationObs();
     // bb.subscribe((x) => {
 
-    this.conversations$.subscribe((a: any) => {
-      ctx.setState(
-        produce((draft) => {
+    this.conversations$.subscribe(async (a: any) => {
+      await ctx.setState(
+        await produce((draft) => {
           const x = a;
           console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxxxx');
           if (x[0]) {

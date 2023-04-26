@@ -42,7 +42,7 @@ export class MessageRepository {
       .collection('conversations')
       .doc(message.conversationID!)
       .update({
-        messages: FieldValue.arrayRemove(message.messages),
+        messages: FieldValue.arrayRemove(message.messages?.at(0)),
       });
   }
 
