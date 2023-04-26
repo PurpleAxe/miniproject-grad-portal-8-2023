@@ -27,7 +27,7 @@ export class FeedPage implements OnInit {
   now:Timestamp | null | undefined;
   challenge!:string;
   department!:string;
-  uid!:string;
+  profile!:IProfile;
 
   @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
@@ -39,9 +39,9 @@ export class FeedPage implements OnInit {
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
       if(profile){
-        this.uid = profile.userId;
+        this.profile = profile;
         const payload={
-          uid:this.uid
+          uid:this.profile.userId
         };
         this.store.dispatch(new FetchHomeFeed(payload));
         this.post$.subscribe((posts) => {
@@ -66,20 +66,16 @@ export class FeedPage implements OnInit {
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
       if(profile){
-        this.uid = profile.userId;
+        this.profile = profile;
         const payload={
-          uid:this.uid
+          uid:this.profile.userId
         };
-      
-
         this.store.dispatch(new FetchDiscoveryFeed(payload));
         this.post$.subscribe((posts) => {
           if(posts != null)
             this.feedPost = posts;
-    });
-  }
-    
-
+        });
+      }
     });
     this.displayFeed();
   }
@@ -91,9 +87,9 @@ export class FeedPage implements OnInit {
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
       if(profile){
-        this.uid = profile.userId;
+        this.profile = profile;
         const payload={
-          uid:this.uid
+          uid:this.profile.userId
         };
 
         this.store.dispatch(new FetchHomeFeed(payload));
@@ -104,7 +100,6 @@ export class FeedPage implements OnInit {
       }
     });
     this.displayFeed();
-
   }
 
   displayFeed(){
