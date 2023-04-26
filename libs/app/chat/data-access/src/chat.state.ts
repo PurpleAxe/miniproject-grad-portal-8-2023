@@ -1,6 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { DeleteMessage, SendMessage, SetChat } from '@mp/app/chat/util';
+import {
+  DeleteMessage,
+  GetCurrentChat,
+  SendMessage,
+  SetChat,
+  SubscribeToChat,
+} from '@mp/app/chat/util';
 import {
   IConversation,
   IDeleteMessageRequest,
@@ -11,6 +17,8 @@ import { ChatApi } from './chat.api';
 import produce from 'immer';
 import { SetError } from '@mp/app/errors/util';
 import { InboxStateModel } from '@mp/app/inbox/data-access';
+import { Subject } from 'rxjs';
+import { InboxState } from '@mp/app/inbox/data-access';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ChatStateModel {
@@ -30,10 +38,113 @@ export class ChatState {
     private readonly chatApi: ChatApi,
     private readonly store: Store
   ) {}
-
+  public chat$ = new Subject();
+  public subscription: any;
+  public cid: any;
   @Selector()
   static currentConversation(state: ChatStateModel) {
     return state.currentConversation;
+  }
+  OnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  @Action(GetCurrentChat)
+  GetCurrentChat() {
+    return this.chat$;
+  }
+  @Action(SubscribeToChat)
+  async subscribeToChat(ctx: StateContext<InboxStateModel>) {
+    // this.cid = ctx.getState().currentConversation?.conversationID;
+    // if (!this.cid) {
+    await this.store.select(InboxState.currentConversation).subscribe((x) => {
+      if (x) {
+        this.cid = x.conversationID;
+        // console.log(x, 'xxxxxxxxlllllllllllllll');
+      }
+    });
+    // }
+    // ctx.setState(
+    //   await produce((draft) => {
+    //     draft.conversation = [];
+    //     // draft.conversations = [];
+    //     draft.currentConversation = null;
+    //   })
+    // );
+    // await this.inboxApi.inbox(this.userId);
+    console.log('in subscribe to chat ');
+    await this.chatApi.chat(this.cid, this.chat$);
+    console.log('return from chatAPI ');
+
+    // const bb = this.inboxApi.getConversationObs();
+    // bb.subscribe((x) => {
+    if (this.subscription) this.subscription.unsubscribe();
+
+    this.subscription = this.chat$.subscribe(async (a: any) => {
+      ctx.setState(
+        await produce((draft) => {
+          const x = a;
+          console.log(x, 'chat chat xxxxxxxxxxxxxxxxxxxxxxxxx');
+          if (x[0]) {
+            // if (x[0].type === 'added') {
+            //   if (x[0].messages.length > 1) {
+            //     draft.currentConversation.messages = x[0].messages;
+            //   } else if (x[0].messages) {
+            //     if (
+            //       !draft.currentConversation.messages.some(
+            //         (e: any) =>
+            //           e.id === x[0].messages.id
+            //       )
+            //     ) {
+            //       // console.log('does it push');
+            //       draft.currentConversation.messages.push(x[0].messages);
+            //     }
+            //   } else {
+            //     draft.currentConversation.messages = [];
+            //   }
+            // } else if (x[0].type === 'modified') {
+            if (x[0].type === 'modified') {
+              if (
+                draft.currentConversation &&
+                draft.currentConversation.messages
+              ) {
+                // const index = draft.currentConversation?.messages?.findIndex(
+                // (e: any) => e.id === x[0].messages.id
+                // );
+                // console.log(index, 'kk#############');
+                // console.log(
+                // draft.currentConversation.messages[index],
+                // '@@@@@@@@@@@@@@@@@@@@@@@@@@'
+                // );
+                // if (index > -1) {
+                console.log(x[0].messages, ' modifying chat to draft');
+                draft.currentConversation.messages = x[0].messages;
+                // return;
+                // } else {
+                //deleted message
+                // console.log('implement delteed: ', index);
+                // }
+              }
+
+              // } else if (x[0].type === 'removed') {
+              //   const index = draft.conversations.findIndex(
+              //     (e: any) =>
+              //       e.conversationID === x[0].conversations.conversationID
+              //   );
+              //   draft.conversations.splice(index, 1);
+            }
+            // else {
+            //   console.log('inbox.state.subscribeToInbox undefined');
+            //   draft.conversations = [];
+            // }
+          }
+          // else {
+          //   draft.conversations = [];
+          // }
+        })
+      );
+    });
+    // return bb;
   }
 
   @Action(SendMessage)

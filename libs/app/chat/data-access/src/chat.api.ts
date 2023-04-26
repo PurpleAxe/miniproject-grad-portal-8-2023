@@ -7,9 +7,11 @@ import {
   query,
   where,
   getDocs,
+  onSnapshot,
 } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 // import { getAuth } from '@angular/fire/auth';
+import { Subject } from 'rxjs';
 import {
   IMessage,
   IConversation,
@@ -18,8 +20,6 @@ import {
   ISendMessageRequest,
   ISendMessageResponse,
 } from '@mp/api/message/util';
-
-
 
 @Injectable()
 export class ChatApi {
@@ -41,8 +41,67 @@ export class ChatApi {
     return docData(docRef, { idField: 'id' });
   }
 
-  //should we setConversation, setMessage and addMessage to conversation?
+  async chat(
+    conversationID: string | undefined | null,
+    observer: Subject<any>
+  ) {
+    // if (userId) {
+    // const queryConversationList = query(
+    //   collection(this.firestore, 'conversations'),
+    //   where('membersID', 'array-contains-any', [userId])
+    // ); //TODO: change id to userId according to db document,//TODO change this to query Profile/conversationIDs
+    console.log(conversationID, 'conversationID!!!!!!!!!!!!!!asdas');
+    // if (conversationID) {
+    const queryConversationList = query(
+      collection(this.firestore, 'conversations'),
+      where('conversationID', '==', conversationID)
+    );
+    onSnapshot(queryConversationList, (doc) => {
+      observer.next(
+        doc.docChanges().map((change) => {
+          console.log(change.type, 'change messages type!!!!!!!!!!');
+          // if (change.type == 'added' || change.type == 'modified') {
+          console.log(change.doc.data()['messages'], ' added messages');
+          // const message=
 
+          return {
+            type: change.type,
+            messages: change.doc.data()['messages'],
+          };
+        })
+      );
+    });
+    // }
+    // let tmp;
+    // const unsubscribe = this.conversations$.subscribe((x: any) => {
+    //   tmp = x;
+    // });
+
+    // console.log(tmp);
+    // unsubscribe.ubsubscribe();
+    //   observer.next(
+    //     snapshot.docChanges().map((change) => {
+    //       // if (change.type === 'added') {
+    //       // console.log(this.conversations$);
+    //       console.log(change.type, 'change type!!!!!!!!!!');
+    //       // if (change.type == 'added' || change.type == 'modified') {
+    //       console.log('added conversation');
+    //       const members = this.swap(change.doc.data()['members'], userId);
+    //       const membersID = this.swap(change.doc.data()['membersID'], userId);
+
+    //       const conversation = {
+    //         conversationID: change.doc.data()['conversationID'],
+    //         messages: change.doc.data()['messages'],
+    //         members: members,
+    //         membersID: membersID,
+    //       };
+
+    //       return { type: change.type, conversations: conversation };
+    //     })
+    //   );
+
+    // });
+  }
   async sendMessage(request: ISendMessageRequest) {
     return await httpsCallable<ISendMessageRequest, ISendMessageResponse>(
       this.functions,

@@ -92,9 +92,9 @@ export class InboxApi {
         snapshot.docChanges().map((change) => {
           // if (change.type === 'added') {
           // console.log(this.conversations$);
-          console.log(change.type, 'change type!!!!!!!!!!');
+          // console.log(change.type, 'change type!!!!!!!!!!');
           // if (change.type == 'added' || change.type == 'modified') {
-          console.log('added conversation');
+          // console.log('added conversation');
           const members = this.swap(change.doc.data()['members'], userId);
           const membersID = this.swap(change.doc.data()['membersID'], userId);
 

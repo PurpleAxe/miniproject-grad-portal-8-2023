@@ -19,3 +19,10 @@ export class DeleteMessage {
   static readonly type = '[Chat] DeleteMessage';
   constructor(public readonly messageToDelete: IMessage | null) {}
 }
+
+export class GetCurrentChat {
+  static readonly type = '[Chat] GetCurrentChat';
+}
+export class SubscribeToChat {
+  static readonly type = '[Chat] SubscribeToChat';
+}

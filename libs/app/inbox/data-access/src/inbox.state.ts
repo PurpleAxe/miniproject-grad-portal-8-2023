@@ -144,7 +144,7 @@ export class InboxState {
       ctx.setState(
         await produce((draft) => {
           const x = a;
-          console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxxxx');
+          // console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxxxx');
           if (x[0]) {
             if (x[0].type === 'added') {
               if (x[0].conversations.length > 1) {
@@ -170,17 +170,17 @@ export class InboxState {
                 (e: any) =>
                   e.conversationID === x[0].conversations.conversationID
               );
-              console.log(index, 'indexxxxxxxxxxxxxxxxxxxxxxxx');
-              console.log(
-                draft.conversations[index],
-                'ddddddddddddddddddddddddddd'
-              );
+              // console.log(index, 'indexxxxxxxxxxxxxxxxxxxxxxxx');
+              // console.log(
+              // draft.conversations[index],
+              // 'ddddddddddddddddddddddddddd'
+              // );
               if (index > -1) {
-                console.log(x[0].conversations, ' modifying to draft');
+                // console.log(x[0].conversations, ' modifying to draft');
                 draft.conversations[index] = x[0].conversations;
                 return;
               } else {
-                console.log('index not found: ', index);
+                // console.log('index not found: ', index);
               }
             } else if (x[0].type === 'removed') {
               const index = draft.conversations.findIndex(
@@ -189,7 +189,7 @@ export class InboxState {
               );
               draft.conversations.splice(index, 1);
             } else {
-              console.log('inbox.state.subscribeToInbox undefined');
+              // console.log('inbox.state.subscribeToInbox undefined');
               draft.conversations = [];
             }
           } else {

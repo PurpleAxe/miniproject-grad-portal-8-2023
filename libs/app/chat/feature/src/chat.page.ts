@@ -16,6 +16,7 @@ import { AuthState } from '@mp/app/auth/data-access';
 import { IUser } from '@mp/api/users/util';
 import { SetcurrentConversation } from '@mp/app/inbox/util';
 import { ChatState } from '@mp/app/chat/data-access';
+import { SubscribeToChat } from '@mp/app/chat/util';
 
 @Component({
   // selector: 'ms-chat-page',
@@ -40,6 +41,8 @@ export class ChatPage implements OnInit {
     photo: null,
   };
   id = '';
+  userSubscribtion: any;
+  conversationSubscribtion: any;
 
   constructor(
     private alertController: AlertController,
@@ -82,7 +85,9 @@ export class ChatPage implements OnInit {
       // );
       this.chatRoom = x;
     });
-    this.store.select(AuthState.user).subscribe((x: any) => (this.id = x?.uid));
+    this.userSubscribtion = this.store
+      .select(AuthState.user)
+      .subscribe((x: any) => (this.id = x?.uid));
     // console.log('conversation!!!!!!!!!!');
     // console.log(this.chatRoom);
     /*const convo: IConversation = {
@@ -90,10 +95,28 @@ export class ChatPage implements OnInit {
       members: IUser[]; // TODO remove optional for authentication purpouses
       messages: IMessage[];
       membersID: string[];
+      
 }
     }*/
+
     this.store.dispatch(new SetChat(this.chatRoom));
+    this.getChat();
     //const myQueryParams = this.route.snapshot.queryParams;
+  }
+
+  getChat() {
+    this.store.dispatch(new SubscribeToChat());
+
+    this.conversationSubscribtion = this.store
+      .select(ChatState.currentConversation)
+      .subscribe((x) => {
+        this.chatRoom = x;
+      });
+  }
+  OnDestroy() {
+    console.log('onDestroy called : inbox.page.ts');
+    this.userSubscribtion.unsubscribe();
+    this.conversationSubscribtion.unsubscribe();
   }
 
   async sendMessage() {
@@ -126,9 +149,9 @@ export class ChatPage implements OnInit {
       this.chatRoom = x;
     });
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
-     setTimeout(() => {
-       console.log(this.chatRoom);
-     }, 1000);
+    setTimeout(() => {
+      console.log(this.chatRoom);
+    }, 1000);
   }
 
   async deleteMessage(message: IMessage) {
