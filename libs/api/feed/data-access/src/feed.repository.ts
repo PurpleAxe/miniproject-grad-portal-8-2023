@@ -48,9 +48,10 @@ export class FeedRepository {
     // get posts
     var posts = [];
     for(var userInDepartment of Object.keys(deptUsers)) {
-      if(userInDepartment == user.userId) {
-        continue;
-      }
+      if("userId" in user)
+        if(userInDepartment == user.userId) {
+          continue;
+        }
       const f = await admin
       .firestore()
       .collection('profiles')
