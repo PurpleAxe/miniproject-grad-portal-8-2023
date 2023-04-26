@@ -16,7 +16,7 @@ export class UsersRepository {
     const potentialUser = await admin
       .firestore()
       .collection("users")
-      .where(admin.firestore.FieldPath.documentId(),"==", user.id).get();
+      .where("id","==", user.id).get();
     return !potentialUser.empty
   }
 }

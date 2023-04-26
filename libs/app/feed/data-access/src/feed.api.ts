@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-//import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed } from '@mp/api/feed/util';
+import { Timestamp } from '@angular/fire/firestore';
 import {
     IPost,
     ICreateCommentResponse,
-    ICreatePostResponse,
     IDislikePostResponse,
     ILikePostResponse,
     ICreateCommentRequest,
-    ICreatePostRequest,
     IDislikePostRequest,
     ILikePostRequest,
 
@@ -19,11 +17,12 @@ import {
 import {
   IGetHomeFeedRequest,
   IGetHomeFeedResponse,
-  IGetOwnFeedRequest,    
+  IGetOwnFeedRequest,
   IGetOwnFeedResponse,
   IGetDiscoveryFeedRequest,
   IGetDiscoveryFeedResponse,
 } from '@mp/api/feed/util';
+
 
 @Injectable()
 export class FeedApi {
@@ -44,9 +43,9 @@ export class FeedApi {
     });
     return docData(docRef, { idField: 'id' });
   }
-    
+
   async LikePost(request: ILikePostRequest){
-    await console.log("feed.api LikePost working");
+    console.log("feed.api LikePost working: " + request.post.postId + " " + request.post.userId);
     return await httpsCallable<
     ILikePostResponse,
     ILikePostRequest
@@ -57,7 +56,7 @@ export class FeedApi {
   }
 
   async DislikePost(request: IDislikePostRequest){
-    console.log("feed.api LikePost working");
+    console.log("feed.api DislikePost working");
     return await httpsCallable<
     IDislikePostResponse,
     IDislikePostRequest
@@ -73,7 +72,7 @@ export class FeedApi {
     IGetHomeFeedRequest
       >(
     this.functions,
-    'getHomeFeed'
+    'fetchHomeFeed'
   )(request);
   }
 
@@ -83,7 +82,7 @@ export class FeedApi {
     IGetDiscoveryFeedRequest
       >(
     this.functions,
-    'getDiscoveryFeed'
+    'fetchDiscoveryFeed'
   )(request);
   }
   async GetOwnFeed(request: IGetOwnFeedRequest){
@@ -92,7 +91,7 @@ export class FeedApi {
     IGetOwnFeedRequest
       >(
     this.functions,
-    'getOwnFeed'
+    'fetchOwnFeed'
   )(request);
   }
 }

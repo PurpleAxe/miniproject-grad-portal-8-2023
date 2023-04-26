@@ -10,7 +10,12 @@ export class LikePost{
 
 export class RemoveLike{
     static readonly type = '[Feed] RemoveLike';
-    constructor(public payload: { uid: string }) {}
+    constructor(public payload: { 
+        postId: string; 
+        userId: string;
+    }) {
+        console.log("post.actions Like postId:" + payload.postId);
+    }
 }
 
 export class DislikePost{

@@ -3,7 +3,7 @@ import { Register as AuthRegister } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector, Store } from '@ngxs/store';
-import { 
+import {
     /*LoadFeed,*/
     LikePost,
     DislikePost,
@@ -49,22 +49,23 @@ export interface FeedStateModel{
 })
 @Injectable()
 export class FeedState {
-  constructor( 
-    private readonly feedApi: FeedApi,
-    private readonly store: Store
-  ) {}
+    constructor(
+      private readonly feedApi: FeedApi,
+      private readonly store: Store
+    ) {}
 
-  @Action(LikePost)
-  async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
-    const myPost: IPost = {
-      postId: payload.postId,
-      userId: payload.userId,
-    };
-    const post = myPost;
-    const myLikePostResponse: ILikePostResponse ={
-      post
-    }
-    console.log("PostId (state):" + payload.postId);
+    @Action(LikePost)
+    async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
+      const myPost: IPost = {
+        postId: payload.postId,
+        userId: payload.userId,
+      };
+      const post = myPost;
+      const myLikePostResponse: ILikePostResponse ={
+        post
+      }
+      console.log("PostId (state):" + payload.postId);
+      this.feedApi.LikePost(myLikePostResponse);
   }
 
   @Action(DislikePost)
@@ -78,6 +79,7 @@ export class FeedState {
       post
     }
     console.log("PostId (state) dislike:" + payload.postId);
+    this.feedApi.DislikePost(myDislikePostResponse);
 }
 
   @Selector()
@@ -87,17 +89,16 @@ export class FeedState {
   }
 
   @Selector()
-  static getFeedPosts(FeedStateModel:FeedStateModel){ 
+  static getFeedPosts(FeedStateModel:FeedStateModel){
       return FeedStateModel.feed.model.feedPosts?.posts;
   }
-
 
   @Action(FetchHomeFeed)
   async FetchHomeFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchHomeFeed();
     console.log("FetchHomeFeed");
     const myfeed: IFeed = {
-      user:{    
+      user:{
         userId: "Testing",
       },
       posts:[],
@@ -107,7 +108,7 @@ export class FeedState {
       feed
     }
     const responseRef = await this.feedApi.GetHomeFeed(myFetchHomeRequest);
-    const response = responseRef.data;  
+    const response = responseRef.data;
       ctx.patchState({
         feed:{
           model:{
@@ -126,7 +127,7 @@ export class FeedState {
   async FetchDiscoveryFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchDiscoveryFeed();
     const myfeed: IFeed = {
-      user:{    
+      user:{
         userId: "Testing",
       },
       posts:[],
@@ -136,7 +137,7 @@ export class FeedState {
       feed
     }
     const responseRef = await this.feedApi.GetDiscoveryFeed(myFetchDiscoveryRequest);
-    const response = responseRef.data;  
+    const response = responseRef.data;
       ctx.patchState({
         feed:{
           model:{
@@ -155,7 +156,7 @@ export class FeedState {
   @Action(FetchOwnPosts)
   async FetchOwnPosts(ctx: StateContext<FeedStateModel>) {
     const myfeed: IFeed = {
-      user:{    
+      user:{
         userId: "Testing",
       },
       posts:[],
@@ -165,7 +166,7 @@ export class FeedState {
       feed
     }
     const responseRef = await this.feedApi.GetOwnFeed(myFetchOwnRequest);
-    const response = responseRef.data;  
+    const response = responseRef.data;
       ctx.patchState({
         feed:{
           model:{

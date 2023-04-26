@@ -7,7 +7,7 @@ import {
     IUpdateAccountDetailsResponse,
     IUpdateAddressDetailsRequest,
     IUpdateAddressDetailsResponse,
-    IUpdateContactDetailsRequest,
+    IUpdateContactDetailsRequest, 
     IUpdateContactDetailsResponse,
     IUpdateOccupationDetailsRequest,
     IUpdateOccupationDetailsResponse,
