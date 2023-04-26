@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { 
+import {
   IGetOwnFeedRequest,
   IGetOwnFeedResponse,
   IGetDiscoveryFeedRequest,

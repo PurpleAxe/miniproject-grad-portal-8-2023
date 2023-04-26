@@ -13,12 +13,16 @@ export class CardComponent {
   @Input() content!: any;
   @Input() text!: string;
   @Input() profileUrl!:string;
-  @Input() date!:any;
+  @Input() date!:string;
   @Input() userName!:string;
   @Input() likeNum = 0;
   @Input() dislikeNum = 0;
-  @Input() postId = "POST ID"; //would I store the postId here so I know what post was liked?
-  userId = "USER ID";
+  // @Input() postId = "POST ID"; //would I store the postId here so I know what post was liked?
+  // userId = "USER ID";
+  @Input() challenge!:string;
+  @Input() department!:string;
+  @Input() postId!: string;
+  @Input() userId!: string;
 
   constructor(private router: Router, private readonly store: Store) { }
  

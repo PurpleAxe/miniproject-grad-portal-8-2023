@@ -15,32 +15,43 @@ export class FeedRepository {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        user = doc.data()
+        user = doc.data();
       });
     });
 
+    if(user == null)
+      return [];
+    
+      console.log(user)
+
     //get department users
     var deptUsers = {};
-    for(var deptUser of user.userDepartments) {
-      const f = await admin
-      .firestore()
-      .collection('departments')
-      .where("departmentId", "==", deptUser)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          for(var u of doc.data().users)
-            deptUsers[u] = 0;
+    if("userDepartments" in user)
+      for(var deptUser of user.userDepartments) {
+        const f = await admin
+        .firestore()
+        .collection('departments')
+        .where("departmentId", "==", deptUser)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            if("users" in doc.data() == true)
+              for(var u of doc.data().users)
+                deptUsers[u] = 0;
+          });
         });
-      });
-    }
+      }
+
+    if(Object.keys(deptUsers).length == 0)
+      return []
 
     // get posts
     var posts = [];
     for(var userInDepartment of Object.keys(deptUsers)) {
-      if(userInDepartment == user.userId) {
-        continue;
-      }
+      if("userId" in user)
+        if(userInDepartment == user.userId) {
+          continue;
+        }
       const f = await admin
       .firestore()
       .collection('profiles')
@@ -48,7 +59,8 @@ export class FeedRepository {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          posts = posts.concat(doc.data().posts);
+          if("posts" in doc.data())
+            posts = posts.concat(doc.data().posts);
         });
       });
     }
@@ -66,7 +78,8 @@ export class FeedRepository {
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
           // console.log(doc.data().posts);
-          postIds = doc.data().posts;
+          if("posts" in doc.data() == true)
+            postIds = doc.data().posts;
       });
     });
 
@@ -96,16 +109,20 @@ export class FeedRepository {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        userPosts[doc.data().userId] = doc.data().posts;
+        if("userId" in doc.data() == true && "posts" in doc.data())
+          userPosts[doc.data().userId] = doc.data().posts;
       });
     });
+
+    if(Object.keys(userPosts).length == 0)
+      return [];
 
     delete userPosts[feed.user.userId]
     
     //remove duplicates in postId array
     var postIds = []
     for(var p of Object.keys(userPosts))
-    postIds = postIds.concat(userPosts[p])
+      postIds = postIds.concat(userPosts[p])
     
     //get post objects
     var posts = [];

@@ -17,12 +17,14 @@
 
     <!-- <card id="posts" *ngFor="let i of contentArr" [content]="i"></card> -->
     
-    <card *ngFor="let feed of feed$" 
+    <card *ngFor="let feed of feedPost" 
     [userName] = "feed.userId!"
     [postId] = "feed.postId!"
     [text] = "feed.message!"
     [profileUrl] = "getProfileUrl(feed.userId)"
-    [date] = "toDate(feed.created)"
+    [date] = "feed.created ? formatDateFromNanoseconds(feed.created.seconds, feed.created.nanoseconds) : ''"
+    [department] = "feed.department!"
+    [challenge] = "feed.challenge!"
     [likeNum] = "feed.likes!"
     [dislikeNum]="feed.dislikes!" >
     </card>

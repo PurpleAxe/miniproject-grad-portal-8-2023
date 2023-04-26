@@ -3,6 +3,7 @@ import {AggregateRoot} from "@nestjs/cqrs";
 import {Timestamp} from "firebase-admin/firestore";
 import {UsersRepository} from "@mp/api/users/data-access";
 import {randomUUID} from "crypto";
+import {log} from "console";
 
 export class PostModel extends AggregateRoot implements IPost {
   private readonly repository : UsersRepository = new UsersRepository();
@@ -36,27 +37,28 @@ export class PostModel extends AggregateRoot implements IPost {
       throw Error("User attempting to make a post does not exist");
     }
     this.postId = Timestamp.now().nanoseconds + randomUUID();
-    this.apply(new PostCreatedEvent(this.toJSON()));
+    log("Made it")
+    return this.apply(new PostCreatedEvent(this.toJSON()));
   }
 
   async likePost(user:string) {
     this.likes = this.likes! + 1;
-    this.apply(new PostLikedEvent(this.toJSON(),user));
+    return this.apply(new PostLikedEvent(this.toJSON(),user));
   }
 
   async likePostRemoved(user:string) {
     this.likes = this.likes! - 1;
-    this.apply(new PostLikeRemovedEvent(this.toJSON(),user));
+    return this.apply(new PostLikeRemovedEvent(this.toJSON(),user));
   }
 
   async dislikePost(user:string) {
     this.likes = this.dislikes! + 1;
-    this.apply(new PostDislikedEvent(this.toJSON(),user));
+    return this.apply(new PostDislikedEvent(this.toJSON(),user));
   }
 
   async dislikePostRemoved(user:string) {
     this.likes = this.dislikes! - 1;
-    this.apply(new PostDislikeRemovedEvent(this.toJSON(),user));
+    return this.apply(new PostDislikeRemovedEvent(this.toJSON(),user));
   }
 
   toJSON(): IPost {

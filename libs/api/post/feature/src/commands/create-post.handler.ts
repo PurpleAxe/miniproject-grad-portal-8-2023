@@ -1,6 +1,7 @@
 import { CreatePostCommand, ICreatePostResponse } from "@mp/api/post/util";
 import { IPost } from '@mp/api/post/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import {log} from "console";
 import { Timestamp } from 'firebase-admin/firestore';
 import { PostModel } from "../models";
 
@@ -11,7 +12,9 @@ export class CreatePostHandler
     constructor(private publisher: EventPublisher) {}
 
     async execute(command: CreatePostCommand) {
+      console.log(`${CreatePostHandler.name} - ${command.request}`);
       const request = command.request;
+      log(request);
       const userId = request.post.userId;
       const likes = 1;
       const dislikes = 0;
@@ -20,20 +23,20 @@ export class CreatePostHandler
 
 
       const data: IPost = {
-        postId:null,
-        userId,
-        likes,
-        dislikes,
-        message,
-        comments,
+          postId:null,
+          userId,
+          likes,
+          dislikes,
+          message,
+          comments,
         created: Timestamp.fromDate(new Date()),
       };
 
       const post = this.publisher.mergeObjectContext(PostModel.fromData(data));
 
-      post.createPost();
+      await post.createPost();
       post.commit();
-      const response: ICreatePostResponse = {"Onpost" : post.toJSON()};
+      const response: ICreatePostResponse = {"post" : post.toJSON()};
       return response;
   }
 

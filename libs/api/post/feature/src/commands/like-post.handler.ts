@@ -43,9 +43,9 @@ export class LikePostHandler
         return false;
       }
       if (userRef.data()?.likedPosts?.find(findPost)?.length! >= 1) {
-        post.likePostRemoved(likingUserID!)
+        await post.likePostRemoved(likingUserID!)
       } else {
-        post.likePost(likingUserID!);
+        await post.likePost(likingUserID!);
       }
       post.commit();
       const response: ILikePostResponse = {"post" : post.toJSON()};

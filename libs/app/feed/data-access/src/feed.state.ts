@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-// import { Register as AuthRegister } from '@mp/app/auth/util';
-// import { SetError } from '@mp/app/errors/util';
-// import { Register } from '@mp/app/register/util';
+import { Register as AuthRegister } from '@mp/app/auth/util';
+import { SetError } from '@mp/app/errors/util';
+import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector, Store } from '@ngxs/store';
 import { 
   fetchComments,
@@ -13,15 +13,19 @@ import {
     FetchOwnPosts
  } from '@mp/app/feed/util';
 import { FeedApi } from './feed.api';
-import {IPost, ILikePostResponse, IComment} from '@mp/api/post/util';
-import { Timestamp } from 'firebase-admin/firestore';
-import { IFeed } from '@mp/api/feed/util';
+import {IPost, ILikePostResponse, IComment, IDislikePostResponse} from '@mp/api/post/util';
+import { Timestamp } from '@angular/fire/firestore';
+//import { Timestamp } from 'firebase-admin/firestore';
+import { IFeed, IGetDiscoveryFeedRequest, IGetHomeFeedRequest, IGetOwnFeedRequest } from '@mp/api/feed/util';
+import { request } from 'http';
 
 export interface FeedStateModel{
 
   feed:{
     model:{
       users: any[] | null;
+      feedPosts: IFeed | null;
+      postComments: IComment[] | null;
     };
     dirty: false;
     status: string;
@@ -38,6 +42,8 @@ export interface FeedStateModel{
       feed:{
         model:{
           users: null,
+          feedPosts:null,
+          postComments: null
         },
         dirty: false,
         status: '',
@@ -54,56 +60,50 @@ export interface FeedStateModel{
     }
 })
 @Injectable()
-export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
-// need to add: loadFeed, likePost, dislikePost, commentPost,
-
-
-    constructor( //what does this do?
+export class FeedState {
+    constructor(
       private readonly feedApi: FeedApi,
       private readonly store: Store
     ) {}
 
     @Action(LikePost)
     async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
-      const myPost: IPost = {//delete
-        postId: '1234',
-        userId: 'user123',
-        likes: 10,
-        dislikes: 2,
-        message: 'This is a post message',
-        comments: [],
-        created: null
+      const myPost: IPost = {
+        postId: payload.postId,
+        userId: payload.userId,
       };
+      const post = myPost;
       const myLikePostResponse: ILikePostResponse ={
-        post:myPost
+        post
       }
       console.log("PostId (state):" + payload.postId);
-      // this.feedApi.LikePost(myLikePostResponse);
-      ctx.patchState({
-        
-      });
+      this.feedApi.LikePost(myLikePostResponse);
   }
 
   @Action(DislikePost)
   async DislikePost(ctx: StateContext<FeedStateModel>, {payload}: DislikePost) {
-    console.log("PostId dislike (state):" + payload.postId);
-    ctx.patchState({
-      
-    });
+    const myPost: IPost = {
+      postId: payload.postId,
+      userId: payload.userId,
+    };
+    const post = myPost;
+    const myDislikePostResponse: IDislikePostResponse ={
+      post
+    }
+    console.log("PostId (state) dislike:" + payload.postId);
+    this.feedApi.DislikePost(myDislikePostResponse);
 }
 
   @Selector()
-  static messages(state: FeedStateModel) 
-  {
+  static messages(state: FeedStateModel) {
     return state.feed.model;
+    //return null;
   }
 
-
-  /***********SELECTOR FOR FEED POSTS**********/
   @Selector()
-    static getFeedPosts(FeedStateModel:FeedStateModel){ 
-        return FeedStateModel.feedPosts.posts;
-    }
+  static getFeedPosts(FeedStateModel:FeedStateModel){
+      return FeedStateModel.feed.model.feedPosts?.posts;
+  }
 
     @Selector()
     static getUserId(FeedStateModel:FeedStateModel){ 
@@ -115,34 +115,89 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
   @Action(FetchHomeFeed)//dont know how
   async FetchHomeFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchHomeFeed();
-    const response=this.getMock();
+    console.log("FetchHomeFeed");
+    const myfeed: IFeed = {
+      user:{
+        userId: "Testing",
+      },
+      posts:[],
+    }
+    const feed = myfeed;
+    const myFetchHomeRequest: IGetHomeFeedRequest ={
+      feed
+    }
+    const responseRef = await this.feedApi.GetHomeFeed(myFetchHomeRequest);
+    const response = responseRef.data;
       ctx.patchState({
-        feedPosts:response
+        feed:{
+          model:{
+            users: null,
+            feedPosts: null,
+            postComments: null
+          },
+          dirty: false,
+          status: '',
+          errors: {}
+        }
       });
-
     }
 
-
-       /*************FETCH DISCOVERY FEED*************/
-  @Action(FetchDiscoveryFeed)//dont know how
+  @Action(FetchDiscoveryFeed)
   async FetchDiscoveryFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchDiscoveryFeed();
-      const response=this.getMock();
+    const myfeed: IFeed = {
+      user:{
+        userId: "Testing",
+      },
+      posts:[],
+    }
+    const feed = myfeed;
+    const myFetchDiscoveryRequest: IGetDiscoveryFeedRequest ={
+      feed
+    }
+    const responseRef = await this.feedApi.GetDiscoveryFeed(myFetchDiscoveryRequest);
+    const response = responseRef.data;
       ctx.patchState({
-        feedPosts:response
+        feed:{
+          model:{
+            users: null,
+            feedPosts: null,
+            postComments: null
+          },
+          dirty: false,
+          status: '',
+          errors: {}
+        }
       });
-
     }
 
 
-    @Action(FetchOwnPosts)//dont know how
+  @Action(FetchOwnPosts)
   async FetchOwnPosts(ctx: StateContext<FeedStateModel>) {
-    // const response = await this.feedApi.fetchDiscoveryFeed();
-      const response=this.getMock();
+    const myfeed: IFeed = {
+      user:{
+        userId: "Testing",
+      },
+      posts:[],
+    }
+    const feed = myfeed;
+    const myFetchOwnRequest: IGetOwnFeedRequest ={
+      feed
+    }
+    const responseRef = await this.feedApi.GetOwnFeed(myFetchOwnRequest);
+    const response = responseRef.data;
       ctx.patchState({
-        feedPosts:response
+        feed:{
+          model:{
+            users: null,
+            feedPosts: null,
+            postComments: null
+          },
+          dirty: false,
+          status: '',
+          errors: {}
+        }
       });
-
     }
 
 
@@ -182,13 +237,13 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
       @Action(sendComment)
       async sendComment(ctx: StateContext<FeedStateModel>,{payload}:sendComment) {
         /**SEND THIS INFORMATION TO THE DATABASE......
-         * postId:this.postId,
-          senderId:this.senderId,
-          text:this.text,
-          commentId:"",
-          ownerId:this.ownerId,
-          timestamp:timestamp
-         */
+        *postId:this.postId,
+        senderId:this.senderId,
+        text:this.text,
+        commentId:"",
+        ownerId:this.ownerId,
+        timestamp:timestamp
+        */
         // const response = await this.feedApi.sendComment(payload);
 
 
@@ -201,16 +256,17 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
           postID : payload.postId
         }
 
-         const state=ctx.getState();
-          ctx.setState({...state,
-            postComments:[comment,...state.postComments]
-          });
-    
-        }
-    
+        const state=ctx.getState();
+        ctx.setState({...state,
+          postComments:[comment,...state.postComments]
+        });
   
+      }
 
-    getMock(){
+
+
+
+      getMock(){
       const c1:IComment={
         userID: "TT1",
         text: 'payload.text',
@@ -279,9 +335,16 @@ export class FeedState {//how are we going to do HomeFeed and DiscoveryFeed
           challenge: "WPM",
           department: "CS DEPARTMENT",
            comments:Comments
-        }
-        ]
+        }]
       }
-      return feed;
+
+       return feed;
     }
 }
+
+
+    
+  
+
+    
+        
