@@ -69,8 +69,8 @@ export class FeedApi {
 
   async GetHomeFeed(request: IGetHomeFeedRequest){
     return await httpsCallable<
-    IGetHomeFeedRequest,
-    IGetHomeFeedResponse
+    IGetHomeFeedResponse,
+    IGetHomeFeedRequest
       >(
     this.functions,
     'getHomeFeed'
@@ -79,8 +79,8 @@ export class FeedApi {
 
   async GetDiscoveryFeed(request: IGetDiscoveryFeedRequest){
     return await httpsCallable<
-    IGetDiscoveryFeedRequest,
-    IGetDiscoveryFeedResponse 
+    IGetDiscoveryFeedResponse,
+    IGetDiscoveryFeedRequest
       >(
     this.functions,
     'getDiscoveryFeed'
@@ -88,8 +88,8 @@ export class FeedApi {
   }
   async GetOwnFeed(request: IGetOwnFeedRequest){
     return await httpsCallable<
-    IGetOwnFeedRequest,
-    IGetOwnFeedResponse
+    IGetOwnFeedResponse,
+    IGetOwnFeedRequest
       >(
     this.functions,
     'getOwnFeed'
