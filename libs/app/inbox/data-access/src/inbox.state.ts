@@ -14,6 +14,7 @@ import {
   SetInbox,
   SetcurrentConversation,
   SubscribeToInbox,
+  getCurrentConversation,
   //SetInbox,
 } from '@mp/app/inbox/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
@@ -21,7 +22,7 @@ import produce from 'immer';
 import { InboxApi } from './inbox.api';
 import { Logout as AuthLogout } from '@mp/app/auth/util';
 import { AuthState } from '@mp/app/auth/data-access';
-import { tap } from 'rxjs';
+import { tap, Observable } from 'rxjs';
 import { IProfile } from '@mp/api/profiles/util';
 import { IUser } from '@mp/api/users/util';
 import { Subject } from 'rxjs';
@@ -64,6 +65,7 @@ export class InboxState {
   public userId!: string | undefined;
   public conversations$ = new Subject();
   public subscription: any;
+  public currentConversation$!: Observable<any>;
   // private item$: any;
   @Selector()
   static conversations(state: InboxStateModel) {
@@ -93,6 +95,10 @@ export class InboxState {
   // static members(state: InboxStateModel) {
   //   return state.members;
   // }
+  @Action(getCurrentConversation)
+  getCurrentConversation() {
+    return this.currentConversation$;
+  }
 
   @Action(SetInbox)
   // setConversation(
@@ -122,7 +128,7 @@ export class InboxState {
   async subscribeToInbox(ctx: StateContext<InboxStateModel>) {
     await this.getUserId();
     ctx.setState(
-      produce((draft) => {
+      await produce((draft) => {
         draft.conversation = [];
         // draft.conversations = [];
         draft.currentConversation = null;
@@ -135,7 +141,7 @@ export class InboxState {
     if (this.subscription) this.subscription.unsubscribe();
 
     this.subscription = this.conversations$.subscribe(async (a: any) => {
-      await ctx.setState(
+      ctx.setState(
         await produce((draft) => {
           const x = a;
           console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxxxx');
@@ -154,7 +160,6 @@ export class InboxState {
                   )
                 ) {
                   // console.log('does it push');
-
                   draft.conversations.push(x[0].conversations);
                 }
               } else {
