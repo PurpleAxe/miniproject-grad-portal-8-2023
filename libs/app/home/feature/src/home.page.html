@@ -33,8 +33,8 @@
       </div>
     </ion-button>
     
-      <ion-title color="dark" id="name" style="margin-left: 68px;">James Nolan</ion-title>
-      <ion-title color="medium" id="username" style="margin-top: 5px; margin-bottom: 15px; margin-left: 60px;">@james-nolan</ion-title>
+    <ion-title color="dark" id="name" style="margin-left: 68px;">{{ displayName }}</ion-title>
+    <ion-title color="medium" id="username" style="margin-top: 5px; margin-bottom: 15px; margin-left: 60px;">@{{ displayName }}</ion-title>
 
   </ion-header>
   
@@ -64,6 +64,7 @@
           <div id="hoursM" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{ hoursString }}</div>
           <div id="minutesM" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{ minutesString }}</div>
           <div id="sesM" style="flex: 1; text-align: center; color: black;">{{ secondsString }}</div>
+          
         </div>
       </ion-item>
       

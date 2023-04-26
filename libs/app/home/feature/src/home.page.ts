@@ -5,8 +5,10 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { SubscribeToAuthState } from '@mp/app/auth/util';
+import { AuthState } from '@mp/app/auth/data-access';
+import { User } from '@angular/fire/auth';
 import { Logout } from '@mp/app/auth/util';
-
 @Component({
   selector: 'ms-home-page',
   templateUrl: './home.page.html',
@@ -14,35 +16,54 @@ import { Logout } from '@mp/app/auth/util';
 })
 export class HomePage implements OnInit {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  @Select(AuthState.user) authProfile$!: Observable<User | null>;
 
+  displayName = '';
   iconColor: any;
   timestr: any;
-
   time: number;
+  
 
   hoursString = '';
   minutesString = '';
   secondsString = '';
-
   constructor(
     private router: Router,
-    private renderer: Renderer2,
     private readonly store: Store,
+    private renderer: Renderer2,
     private menuCtrl?: MenuController
   ) {
-    this.profile$.subscribe((profile) => {
+    this.profile$.subscribe((profile)=>{
       console.log(profile);
     });
-
-    const referenceDate = Date.parse('04/25/2023 12:00:30') / 1000;
-
-
-    this.time =referenceDate - Math.floor(Date.now() / 1000) ;
+    this.authProfile$.subscribe((var2) => {
+      if (var2) {
+        if (var2.email) {
+          this.displayName = var2.email?.substring(
+            0,
+            var2.email.indexOf('@')
+          );
+        }
+      }
+    });
+    const referenceDate = Date.parse('05/24/2023 22:59:30')/1000;
+    this.time=referenceDate-Math.floor(Date.now()/1000);
     console.log(this.time);
     this.timeUpdateContinuously();
   }
 
   ngOnInit() {
+    
+    this.store.dispatch(new SubscribeToAuthState()).subscribe((authstate) => {
+      
+      console.log(authstate);
+    });
+
+    console.log('var2');
+    this.profile$.subscribe((user) => {
+      console.log(user);
+    });
+
     const colorTheme = localStorage.getItem('color-theme');
 
     if (colorTheme) {
@@ -77,17 +98,15 @@ export class HomePage implements OnInit {
       this.secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
     }, 1000);
   }
-
-  checkStatus() {
-    console.log('checkStatus');
-    const activityStatusValue = localStorage.getItem('activityStatus');
-    if (activityStatusValue === 'true') {
-      this.iconColor = 'tertiary';
-    } else {
-      this.iconColor = 'danger';
+  checkStatus(){
+      console.log('checkStatus');
+      const activityStatusValue=localStorage.getItem('activityStatus');
+      if(activityStatusValue==='true'){
+        this.iconColor='tertiary';
+      }else{
+        this.iconColor='danger';
+      }
     }
-  }
-
   logout() {
     // this.popover.dismiss();
     this.store.dispatch(new Logout());
@@ -146,6 +165,7 @@ export class HomePage implements OnInit {
     if (this.menuCtrl) {
       this.menuCtrl.close();
     }
+  
     this.router.navigate(['/home/userprofile']);
   }
 }
