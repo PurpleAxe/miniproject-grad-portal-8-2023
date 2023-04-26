@@ -1,9 +1,9 @@
-import { Timestamp } from "firebase-admin/firestore";
+import { Timestamp } from "firebase/firestore";
 
 export interface IComment{
     userID: string;
     text: string;
-    timestamp: Timestamp;
+    timestamp?: Timestamp;
     commentID: string;
     postID :string;
 }

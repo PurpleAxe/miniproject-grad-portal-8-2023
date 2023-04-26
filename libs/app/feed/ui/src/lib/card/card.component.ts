@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { LikePost} from '@mp/app/feed/util';
+import { LikePost, fetchComments} from '@mp/app/feed/util';
 import { DislikePost} from '@mp/app/feed/util';
 import { Router } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'card',
@@ -15,17 +15,16 @@ export class CardComponent {
   @Input() profileUrl!:string;
   @Input() date!:any;
   @Input() userName!:string;
-
-  constructor(private router: Router, private readonly store: Store) { }
-
+  @Input() likeNum = 0;
+  @Input() dislikeNum = 0;
   @Input() postId = "POST ID"; //would I store the postId here so I know what post was liked?
   userId = "USER ID";
 
-  @Input() likeNum = 0;
-  @Input() dislikeNum = 0;
+  constructor(private router: Router, private readonly store: Store) { }
+ 
+  
   isLiked = false;
   isDisliked = false;
-
   commentNum = 0;
 
   Like(){
@@ -78,8 +77,12 @@ export class CardComponent {
   }
   Comment(){
     console.log("Comment button");
+    this.store.dispatch(new fetchComments({postId:this.postId,ownerId:this.userName}));
+    this.router.navigate(["/home/comment"]);
   }
   Share(){
     console.log("Share button");
   }
+
+  
 }

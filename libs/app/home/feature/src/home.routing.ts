@@ -13,6 +13,11 @@ const routes: Routes = [
           import('@mp/app/feed/feature').then((m) => m.FeedModule),
       },
       {
+        path: 'comment',
+        loadChildren: () =>
+          import('@mp/app/comments/feature').then((m) => m.CommentModule),
+      },
+      {
         path: 'inbox',
         loadChildren: () =>
           import('@mp/app/inbox/feature').then((m) => m.InboxModule),

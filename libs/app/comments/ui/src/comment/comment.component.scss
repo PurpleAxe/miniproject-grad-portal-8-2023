@@ -1,0 +1,18 @@
+#post-name {
+    margin-right: 50px;
+  }
+  
+  #post-name ion-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  ion-card.profile {
+    margin: 0;
+    width: 100vw;
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --padding-start: 0px;
+    --padding-end: 0px;;
+  }

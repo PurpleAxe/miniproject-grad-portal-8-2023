@@ -43,8 +43,6 @@ export class FeedPage implements OnInit {
     console.log("Discovery");
     this.store.dispatch(new FetchDiscoveryFeed());
     this.displayFeed();
-    console.log(this.post$);
-    console.log("Discover");
     // this.contentArr.push("the_element");
 
   }
@@ -55,8 +53,6 @@ export class FeedPage implements OnInit {
     this.LDiscovery = false;
     this.store.dispatch(new FetchHomeFeed());
     this.displayFeed();
-    //console.log(this.post$);
-
   }
 
   displayFeed(){
@@ -67,12 +63,11 @@ export class FeedPage implements OnInit {
   }
 
   toDate(date:Timestamp | null | undefined){
-    console.log(date);
+    //console.log(date);
     return "24 April";
   }
 
   getProfileUrl(userId:string){
-    //console.log(userId);
     return this.profileUrl;
   }
 

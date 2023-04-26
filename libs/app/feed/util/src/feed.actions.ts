@@ -3,6 +3,8 @@
 //     constructor(public payload: { uid: string }) {} /**********NOTE ADDED LOAD HOME FEED AND LOAD DISCOVERY FEED ACTIONS**********/
 // }
 
+import { Timestamp } from "@firebase/firestore";
+
 export class LikePost{
     static readonly type = '[Feed] LikePost';
     constructor(public payload: { 
@@ -48,4 +50,21 @@ export class FetchDiscoveryFeed{
 
 export class FetchOwnPosts{
     static readonly type ="[Profile] load own Posts";
+}
+
+export class fetchComments{
+    static readonly type ='[Comments] fetch post comments';
+    constructor(public payload:{postId:string, ownerId:string}) {}
+}
+
+export class sendComment{
+    static readonly type='[Comments] send post comment';
+    constructor(public payload:{
+        postId:string,
+        senderId:string,
+        text:string,
+        commentId:string,
+        ownerId:string,
+        timestamp:Timestamp
+    }) {}
 }

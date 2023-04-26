@@ -1,0 +1,37 @@
+<ion-card>
+  <ion-header>
+    <ion-toolbar>
+      <ion-item>
+        <ion-button (click)="goToFeed()">
+          <ion-icon slot="start" name="arrow-back"></ion-icon>
+        </ion-button>
+        <ion-title>Comment</ion-title>
+      </ion-item>
+    </ion-toolbar>
+  </ion-header>
+
+  <comment *ngFor="let c of comments" 
+    [userId]="c.userID"
+    [profileUrl]="getProfileUrl(c.userID)"
+    [comment]="c.text"
+    [commentId]="c.commentID">
+  </comment>
+  <ion-footer>
+    <ion-toolbar color="light">
+      <ion-textarea
+        autoGrow
+        rows="1"
+        placeholder="Send Comment"
+        class="ion-text-center"
+        [(ngModel)]="text">
+      </ion-textarea>
+      <ion-buttons slot="end" (click)="sendComment()">
+        <ion-icon slot="start" name="send"></ion-icon>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</ion-card>
+
+
+
+<!-- [date]="c.timestamp" -->
