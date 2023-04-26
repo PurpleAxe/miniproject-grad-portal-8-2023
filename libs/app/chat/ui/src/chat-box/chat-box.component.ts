@@ -25,6 +25,6 @@ export class ChatBoxComponent implements OnInit {
   @Input() current_user_id!: any;
 
   ngOnInit() {
-    console.log('');
+    // console.log(this.current_user_id);
   }
 }
