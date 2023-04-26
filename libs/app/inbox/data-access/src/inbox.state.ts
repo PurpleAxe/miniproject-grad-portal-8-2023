@@ -163,9 +163,17 @@ export class InboxState {
                 (e: any) =>
                   e.conversationID === x[0].conversations.conversationID
               );
-
+              console.log(index, 'indexxxxxxxxxxxxxxxxxxxxxxxx');
+              console.log(
+                draft.conversations[index],
+                'ddddddddddddddddddddddddddd'
+              );
               if (index > -1) {
-                draft.conversations[index] = x[0].conversations;
+                console.log(x[0].conversations, ' adding to draft');
+                draft.conversations[index].messages =
+                  x[0].conversations.messages;
+              } else {
+                console.log('index not found: ', index);
               }
             } else if (x[0].type === 'removed') {
               const index = draft.conversations.findIndex(

@@ -120,13 +120,12 @@ export class ChatPage implements OnInit {
     //this.store.dispatch(new AddMessage(this.));
     // console.log()
     this.store.dispatch(new SendMessage(message)); // TODO isloading updates
-     this.currconv$
-       .subscribe((x) => {
-         this.chatRoom = x;
-       })
-    setTimeout(() => {
-      console.log(this.chatRoom);
-    }, 1000);
+    this.currconv$.subscribe((x) => {
+      this.chatRoom = x;
+    });
+    // setTimeout(() => {
+    //   console.log(this.chatRoom);
+    // }, 1000);
   }
 
   async deleteMessage(message: IMessage) {
