@@ -9,7 +9,7 @@
       <ng-container *ngIf="(item&& item.members)">
         <ion-avatar slot="start">
           <img
-            [src]="item?.members[1].photoURL!==''? item?.members[1].photoURL:placeholderImgUrl" />
+            [src]="item?.members[1].photoURL!==''&&item?.members[1].photoURL!==null? item?.members[1].photoURL:placeholderImgUrl" />
         </ion-avatar>
         <ion-label>
           {{item?.members[1].displayName}}

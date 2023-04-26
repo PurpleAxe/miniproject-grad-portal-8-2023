@@ -47,28 +47,30 @@ export class ChatPage implements OnInit {
   ) {}
 
   async onMessagePress(chat: IMessage) {
-    const alert = await this.alertController.create({
-      header: 'Delete Message',
-      message: 'Are you sure you want to delete this message?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
+    if (this.id === chat.metaData.sender.userId) {
+      const alert = await this.alertController.create({
+        header: 'Delete Message',
+        message: 'Are you sure you want to delete this message?',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            },
           },
-        },
-        {
-          text: 'Delete',
-          handler: () => {
-            // Perform deletion logic here
-            console.log('Delete clicked');
-            this.deleteMessage(chat);
+          {
+            text: 'Delete',
+            handler: () => {
+              // Perform deletion logic here
+              console.log('Delete clicked');
+              this.deleteMessage(chat);
+            },
           },
-        },
-      ],
-    });
-    await alert.present();
+        ],
+      });
+      await alert.present();
+    }
   }
 
   ngOnInit() {
@@ -130,6 +132,7 @@ export class ChatPage implements OnInit {
 
   async deleteMessage(message: IMessage) {
     //TODO Remove the message from the list of chats.
+
     this.store.dispatch(new DeleteMessage(message));
   }
 }

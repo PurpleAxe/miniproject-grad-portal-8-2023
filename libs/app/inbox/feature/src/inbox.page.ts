@@ -224,7 +224,7 @@ export class InboxPageComponent implements OnInit {
         id: this.user,
         email: this.email,
         displayName: displayName,
-        photoURL: photoURL,
+        photoURL: photoURL ? photoURL : '',
         phoneNumber: '',
         customClaims: null,
         created: null,
@@ -233,7 +233,7 @@ export class InboxPageComponent implements OnInit {
       this.member2.id = item.id;
       this.member2.email = item.email;
       this.member2.displayName = item.displayName;
-      this.member2.photoURL = item.photoURL;
+      this.member2.photoURL = item.photoURL ? item.photoURL : '';
       this.member2.phoneNumber = item.phoneNumber;
       this.member2.customClaims = item.customClaims;
       this.member2.created = null;

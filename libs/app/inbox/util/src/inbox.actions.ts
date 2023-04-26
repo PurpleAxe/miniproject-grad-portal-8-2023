@@ -8,7 +8,7 @@ import { IUser } from '@mp/api/users/util';
 export class CreateConversation {
   //item is a user to speak to
   static readonly type = '[Inbox] CreateConversation';
-  constructor(public readonly member: IUser [] | null) {}
+  constructor(public readonly member: IUser[] | null) {}
 }
 
 export class SetcurrentConversation {
@@ -32,7 +32,7 @@ export class SubscribeToInbox {
 
 export class GetMembers {
   static readonly type = '[Inbox] GetMembers';
-  constructor(public readonly clickedUser:  | null) {}
+  constructor(public readonly clickedUser: null) {}
 }
 
 export class GetUsers {
@@ -49,6 +49,9 @@ export class GetUserId {
 
 export class Logout {
   static readonly type = '[Inbox] Logout';
+}
+export class getCurrentConversation {
+  static readonly type = '[Inbox] getCurrentConversation';
 }
 // export class setConvoMem {
 //   static readonly type = '[Inbox] setConvoMem';

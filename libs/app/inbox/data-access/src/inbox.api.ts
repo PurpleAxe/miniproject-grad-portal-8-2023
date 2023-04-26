@@ -104,6 +104,7 @@ export class InboxApi {
             members: members,
             membersID: membersID,
           };
+
           return { type: change.type, conversations: conversation };
           // }
 
