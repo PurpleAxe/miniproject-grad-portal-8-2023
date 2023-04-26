@@ -23,10 +23,10 @@ export class FeedPage implements OnInit {
 
   text!: string;
   profileUrl="https://ionicframework.com/docs/img/demos/avatar.svg";
-  date!:any;
   userName!:string;
-  now:Timestamp = Timestamp.now();
-
+  now:Timestamp | null | undefined;
+  challenge!:string;
+  department!:string;
   uid!:string;
 
   @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
@@ -36,22 +36,21 @@ export class FeedPage implements OnInit {
   constructor(private router: Router,private readonly store: Store){
     this.LHome = true;
     this.LDiscovery = false;
-
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
-      if(profile != null)
+      if(profile){
         this.uid = profile.userId;
         const payload={
           uid:this.uid
         };
-
         this.store.dispatch(new FetchHomeFeed(payload));
         this.post$.subscribe((posts) => {
-          if(posts != null)
+          if(posts != null){
             this.feedPost = posts;
-    });
-    
-
+            console.table(this.feedPost);
+          }
+        });
+      }
     });
   }
 
@@ -66,7 +65,7 @@ export class FeedPage implements OnInit {
     console.log("Discovery");
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
-      if(profile != null)
+      if(profile){
         this.uid = profile.userId;
         const payload={
           uid:this.uid
@@ -78,6 +77,7 @@ export class FeedPage implements OnInit {
           if(posts != null)
             this.feedPost = posts;
     });
+  }
     
 
     });
@@ -90,7 +90,7 @@ export class FeedPage implements OnInit {
     this.LDiscovery = false;
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
-      if(profile != null)
+      if(profile){
         this.uid = profile.userId;
         const payload={
           uid:this.uid
@@ -100,9 +100,8 @@ export class FeedPage implements OnInit {
         this.post$.subscribe((posts) => {
           if(posts != null)
             this.feedPost = posts;
-    });
-    
-
+        });
+      }
     });
     this.displayFeed();
 
@@ -118,10 +117,14 @@ export class FeedPage implements OnInit {
         //this.feedPost=res;
     })
   }
-
-  toDate(date:Timestamp | null | undefined){
-    console.log(date);
-    return "24 April";
+  formatDateFromNanoseconds(seconds: number, nanoseconds: number): string {
+    const date = new Date(seconds * 1000 + nanoseconds / 1000000);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
   }
 
   getProfileUrl(userId:string){
