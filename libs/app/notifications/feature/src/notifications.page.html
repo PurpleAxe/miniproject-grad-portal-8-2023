@@ -24,7 +24,7 @@
                 <ion-label class="read-icon-time ion-text-end ion-padding-right" text-right>
                     <ng-container *ngIf="notification.notificationTime; else noTime">
                         <ion-icon *ngIf="notification.read; else elseBlock" class="notification-icon" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>                    
-                        <ion-text class="time ion-text-end ion-padding-top" color="medium">{{notification.notificationTime}}</ion-text>
+                        <ion-text class="time ion-text-end ion-padding-top" color="medium">{{getTime(notification)}}</ion-text>
                         <ng-template #elseBlock>
                             <ion-icon text-right class="notification-icon ion-text-end" style="margin:0px;" color="dark" src="assets/icons/notification-grey.svg"></ion-icon>
                         </ng-template>

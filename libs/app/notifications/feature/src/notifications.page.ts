@@ -13,7 +13,7 @@ import {NotificationsModule} from '@mp/app/notifications/data-access'
 })
 export class NotificationsPageComponent implements OnInit{
   @Select(NotificationsState.notificationBox) notifications$!: Observable<INotificationBox | null>;
-
+  
   // segment = 'notifications';
   // // notificationBox = null;
   // notifications = [
@@ -32,15 +32,16 @@ export class NotificationsPageComponent implements OnInit{
     private readonly store: Store
   ) { }
 
-  // ngOnInit() {
-  //   console.log(5);
-  //   console.log(this.notifications);
-  //   console.log(NotificationsState.notificationBox);
-  //   // this.notifications=NotificationsState.notificationBoxInbox();
-  //   // this.notificationBox=NotificationsState.notificationBox;
-    
-  //   // this.notifications=NotificationsState.notificationBox.inbox;
-  // }
+  getTime(notification: INotifications|null|undefined){
+    console.log(notification);
+    console.log(notification?.notificationTime);
+    if (notification?.notificationTime?.seconds!=undefined){
+      const notificationTime = new Date(notification?.notificationTime?.seconds*1000+notification?.notificationTime?.nanoseconds/1000000);
+      return notificationTime.toString().substring(4,21);
+    }
+    return Date();
+  }
+
   markAsRead(notification: INotifications|null|undefined){
     console.log("in markAsRead page.ts")
     console.log(notification);
