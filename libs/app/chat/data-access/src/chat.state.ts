@@ -11,8 +11,6 @@ import { ChatApi } from './chat.api';
 import produce from 'immer';
 import { SetError } from '@mp/app/errors/util';
 import { InboxStateModel } from '@mp/app/inbox/data-access';
-import { InboxState } from '@mp/app/inbox/data-access';
-import { Observable } from 'rxjs';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ChatStateModel {
@@ -32,7 +30,7 @@ export class ChatState {
     private readonly chatApi: ChatApi,
     private readonly store: Store
   ) {}
-  public conversations: any;
+
   @Selector()
   static currentConversation(state: ChatStateModel) {
     return state.currentConversation;
@@ -62,34 +60,13 @@ export class ChatState {
       };
       const responseRef = await this.chatApi.sendMessage(request);
       const response = responseRef.data;
-      // if (this.conversations == null) {
-      this.conversations = this.store.select(InboxState.conversations);
-
-      if (this.conversations) {
-        this.conversations.subscribe((x: any) => {
-          ctx.setState(
-            produce((draft) => {
-              // if (draft.currentConversation) {
-              console.log('chat.state in produce!!', x);
-              draft.currentConversation = x[0].coversations;
-              // );
-              // } else {
-              // draft.currentConversation.messages = response.message;
-              // }
-              // }
-            })
-          );
-        });
-      }
-      // }
-
       return ctx.setState(
         produce((draft) => {
           if (draft.currentConversation) {
             if (draft.currentConversation.messages) {
               draft.currentConversation.messages.push(response.message);
             } else {
-              draft.currentConversation.messages = response.message;
+              draft.currentConversation.messages = response;
             }
           }
         })
