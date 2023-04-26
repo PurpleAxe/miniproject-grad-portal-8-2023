@@ -7,6 +7,10 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { IPost } from '@mp/api/post/util';
 
+import { IProfile } from '@mp/api/profiles/util';
+import { ProfileState } from '@mp/app/profile/data-access';
+import { SubscribeToProfile } from '@mp/app/profile/util';
+
 
 @Component({
   selector: 'feed',
@@ -14,7 +18,6 @@ import { IPost } from '@mp/api/post/util';
   styleUrls: ['./feed.page.scss'],
 })
 export class FeedPage implements OnInit {
-  // contentArr: string[] = ["PostId1", "PostId2", "PostId3"];
   LHome!: boolean;
   LDiscovery!: boolean;
 
@@ -24,13 +27,27 @@ export class FeedPage implements OnInit {
   userName!:string;
   now:Timestamp = Timestamp.now();
 
+  uid!:string;
+
   @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
-  feed$:IPost[]=[];
+  @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  feedPost:IPost[]=[];
 
   constructor(private router: Router,private readonly store: Store){
     this.LHome = true;
     this.LDiscovery = false;
+
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile != null)
+        this.uid = profile.userId;
+    });
+    
     this.store.dispatch(new FetchHomeFeed());
+    this.post$.subscribe((posts) => {
+      if(posts != null)
+        this.feedPost = posts;
+    });
   }
 
   ngOnInit(): void {
@@ -44,9 +61,7 @@ export class FeedPage implements OnInit {
     console.log("Discovery");
     this.store.dispatch(new FetchDiscoveryFeed());
     this.displayFeed();
-    //console.log(this.post$);
     console.log("Discover");
-    // this.contentArr.push("the_element");
 
   }
 
@@ -56,14 +71,17 @@ export class FeedPage implements OnInit {
     this.LDiscovery = false;
     this.store.dispatch(new FetchHomeFeed());
     this.displayFeed();
-    //console.log(this.post$);
 
   }
 
   displayFeed(){
     console.log("DISPLAY FEED");
     this.post$?.subscribe((res:any)=>{
-      this.feed$=res;
+      if(res!=null){
+        this.feedPost=res;
+        console.table(this.feedPost);
+      }
+        //this.feedPost=res;
     })
   }
 

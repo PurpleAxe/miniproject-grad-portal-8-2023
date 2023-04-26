@@ -17,7 +17,7 @@
 
     <!-- <card id="posts" *ngFor="let i of contentArr" [content]="i"></card> -->
     
-    <card *ngFor="let feed of feed$" 
+    <card *ngFor="let feed of feedPost" 
     [userName] = "feed.userId!"
     [postId] = "feed.postId!"
     [text] = "feed.message!"

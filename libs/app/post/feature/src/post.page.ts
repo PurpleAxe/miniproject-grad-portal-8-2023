@@ -4,6 +4,10 @@ import {MyPayload} from  '@mp/app/post/util';
 import { CreatePost} from '@mp/app/post/util';
 import { Select, Store } from '@ngxs/store';
 import { Timestamp } from '@angular/fire/firestore';
+import { IProfile } from '@mp/api/profiles/util';
+import { ProfileState } from '@mp/app/profile/data-access';
+import { SubscribeToProfile } from '@mp/app/profile/util';
+import { Observable } from 'rxjs';
 
 
 
@@ -19,8 +23,17 @@ export class PostPageComponent {
   body="";
   challenge="";
   department="";
+  uid!:string;
+  @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  
 
-  constructor(private router: Router, private readonly store: Store) { }
+  constructor(private router: Router, private readonly store: Store) { 
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile != null)
+        this.uid = profile.userId;
+    });
+  }
   
   customCounterFormatter(inputLength: number, maxLength: number) {
     return `${maxLength - inputLength} characters remaining`;

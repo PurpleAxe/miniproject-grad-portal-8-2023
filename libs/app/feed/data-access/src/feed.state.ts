@@ -15,7 +15,8 @@ import { FeedApi } from './feed.api';
 import {IPost, ILikePostResponse, IComment, IDislikePostResponse} from '@mp/api/post/util';
 import { Timestamp } from '@angular/fire/firestore';
 //import { Timestamp } from 'firebase-admin/firestore';
-import { IFeed } from '@mp/api/feed/util';
+import { IFeed, IGetDiscoveryFeedRequest, IGetHomeFeedRequest, IGetOwnFeedRequest } from '@mp/api/feed/util';
+import { request } from 'http';
 
 export interface FeedStateModel{
 
@@ -80,26 +81,38 @@ export class FeedState {
 }
 
   @Selector()
-  static messages(state: FeedStateModel) 
-  {
+  static messages(state: FeedStateModel) {
     return state.feed.model;
+    //return null;
   }
 
   @Selector()
-    static getFeedPosts(FeedStateModel:FeedStateModel){ 
-        return FeedStateModel.feed.model.feedPosts?.posts;
-    }
+  static getFeedPosts(FeedStateModel:FeedStateModel){ 
+      return FeedStateModel.feed.model.feedPosts?.posts;
+  }
 
 
   @Action(FetchHomeFeed)
   async FetchHomeFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchHomeFeed();
-    const response=this.getMock();
+    console.log("FetchHomeFeed");
+    const myfeed: IFeed = {
+      user:{    
+        userId: "Testing",
+      },
+      posts:[],
+    }
+    const feed = myfeed;
+    const myFetchHomeRequest: IGetHomeFeedRequest ={
+      feed
+    }
+    const responseRef = await this.feedApi.GetHomeFeed(myFetchHomeRequest);
+    const response = responseRef.data;  
       ctx.patchState({
         feed:{
           model:{
             users: null,
-            feedPosts: response,
+            feedPosts: null,
             postComments: null
           },
           dirty: false,
@@ -107,18 +120,28 @@ export class FeedState {
           errors: {}
         }
       });
-
     }
 
   @Action(FetchDiscoveryFeed)
   async FetchDiscoveryFeed(ctx: StateContext<FeedStateModel>) {
     // const response = await this.feedApi.fetchDiscoveryFeed();
-      const response=this.getMock();
+    const myfeed: IFeed = {
+      user:{    
+        userId: "Testing",
+      },
+      posts:[],
+    }
+    const feed = myfeed;
+    const myFetchDiscoveryRequest: IGetDiscoveryFeedRequest ={
+      feed
+    }
+    const responseRef = await this.feedApi.GetDiscoveryFeed(myFetchDiscoveryRequest);
+    const response = responseRef.data;  
       ctx.patchState({
         feed:{
           model:{
             users: null,
-            feedPosts: response,
+            feedPosts: null,
             postComments: null
           },
           dirty: false,
@@ -126,76 +149,34 @@ export class FeedState {
           errors: {}
         }
       });
-
     }
 
 
-  // @Action(FetchOwnPosts)
-  // async FetchOwnPosts(ctx: StateContext<FeedStateModel>) {
-  //   const response = await this.feedApi.GetDiscoveryFeed();
-  //     // const response=this.getMock();
-  //     ctx.patchState({
-  //       feed:{
-  //         model:{
-  //           users: null,
-  //           feedPosts: response,
-  //           postComments: null
-  //         },
-  //         dirty: false,
-  //         status: '',
-  //         errors: {}
-  //       }
-  //     });
-  //   }
-
-
-    getMock(){
-      const feed={
-        user:{
-          userId:"Testing",
-        },
-        posts:[{
-          postId: "kdjfldksjfofjiejodghghklfjdksjfkdj",
-          userId: "Test 0",
-          likes: 10,
-          dislikes: 2,
-          message: "WPM : 45, Road to 50",
-          created: Timestamp.now(),
-          challenge: "",
-          department: ""
-        },
-        {
-          postId: "kdjfldksjfofjiejodklfjdksjfkdj",
-          userId: "Test 1",
-          likes: 10,
-          dislikes: 2,
-          message: "WPM : 45, Road to 50",
-          created: Timestamp.now(),
-          challenge: "WPM",
-          department: "EMS DEPARTMENT"
-        },
-        {
-          postId: "kdjfldksjfofkfljdkejodklfjdksjfkdj",
-          userId: "Test 2",
-          likes: 10,
-          dislikes: 2,
-          message: "WPM : 90, NEW LEAD SCORE",
-          created: Timestamp.now(),
-          challenge: "WPM",
-          department: "CIVIL ENGINEERING DEPARTMENT"
-        },
-        {
-          postId: "kdjfldksjfofjiejodklfjdksjfkkdjfj",
-          userId: "Test 3",
-          likes: 10,
-          dislikes: 2,
-          message: "WPM : 15, STILL LEARNING HOW TO TOUCH TYPE",
-          created: Timestamp.now(),
-          challenge: "WPM",
-          department: "CS DEPARTMENT"
+  @Action(FetchOwnPosts)
+  async FetchOwnPosts(ctx: StateContext<FeedStateModel>) {
+    const myfeed: IFeed = {
+      user:{    
+        userId: "Testing",
+      },
+      posts:[],
+    }
+    const feed = myfeed;
+    const myFetchOwnRequest: IGetOwnFeedRequest ={
+      feed
+    }
+    const responseRef = await this.feedApi.GetOwnFeed(myFetchOwnRequest);
+    const response = responseRef.data;  
+      ctx.patchState({
+        feed:{
+          model:{
+            users: null,
+            feedPosts: null,
+            postComments: null
+          },
+          dirty: false,
+          status: '',
+          errors: {}
         }
-        ]
-      }
-      return feed;
+      });
     }
 }
