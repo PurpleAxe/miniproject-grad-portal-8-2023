@@ -63,6 +63,7 @@ export class InboxState {
   // public users!: Observable<User[]>;
   public userId!: string | undefined;
   public conversations$ = new Subject();
+  public subscription: any;
   // private item$: any;
   @Selector()
   static conversations(state: InboxStateModel) {
@@ -123,7 +124,7 @@ export class InboxState {
     ctx.setState(
       produce((draft) => {
         draft.conversation = [];
-        draft.conversations = [];
+        // draft.conversations = [];
         draft.currentConversation = null;
       })
     );
@@ -131,8 +132,9 @@ export class InboxState {
     await this.inboxApi.inbox(this.userId, this.conversations$);
     // const bb = this.inboxApi.getConversationObs();
     // bb.subscribe((x) => {
+    if (this.subscription) this.subscription.unsubscribe();
 
-    this.conversations$.subscribe(async (a: any) => {
+    this.subscription = this.conversations$.subscribe(async (a: any) => {
       await ctx.setState(
         await produce((draft) => {
           const x = a;
@@ -169,9 +171,9 @@ export class InboxState {
                 'ddddddddddddddddddddddddddd'
               );
               if (index > -1) {
-                console.log(x[0].conversations, ' adding to draft');
-                draft.conversations[index].messages =
-                  x[0].conversations.messages;
+                console.log(x[0].conversations, ' modifying to draft');
+                draft.conversations[index] = x[0].conversations;
+                return;
               } else {
                 console.log('index not found: ', index);
               }
@@ -185,6 +187,8 @@ export class InboxState {
               console.log('inbox.state.subscribeToInbox undefined');
               draft.conversations = [];
             }
+          } else {
+            draft.conversations = [];
           }
         })
       );
@@ -315,6 +319,7 @@ export class InboxState {
   // }
   OnDestroy() {
     // this.item$.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   // @Action(GetUserId)
