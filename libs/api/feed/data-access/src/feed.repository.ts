@@ -21,23 +21,26 @@ export class FeedRepository {
 
     if(user == null)
       return [];
+    
+      console.log(user)
 
     //get department users
     var deptUsers = {};
-    for(var deptUser of user.userDepartments) {
-      const f = await admin
-      .firestore()
-      .collection('departments')
-      .where("departmentId", "==", deptUser)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          if("users" in doc.data() == true)
-            for(var u of doc.data().users)
-              deptUsers[u] = 0;
+    if("userDepartments" in user)
+      for(var deptUser of user.userDepartments) {
+        const f = await admin
+        .firestore()
+        .collection('departments')
+        .where("departmentId", "==", deptUser)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            if("users" in doc.data() == true)
+              for(var u of doc.data().users)
+                deptUsers[u] = 0;
+          });
         });
-      });
-    }
+      }
 
     if(Object.keys(deptUsers).length == 0)
       return []
