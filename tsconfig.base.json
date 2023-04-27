@@ -111,6 +111,8 @@
       "@mp/app/reset/util": ["libs/app/reset/util/src/index.ts"],
       "@mp/app/search/feature": ["libs/app/search/feature/src/index.ts"],
       "@mp/app/settings/feature": ["libs/app/settings/feature/src/index.ts"],
+      "@mp/app/shared/feature": ["libs/app/shared/feature/src/index.ts"],
+      "@mp/app/shared/ui": ["libs/app/shared/ui/src/index.ts"],
       "@mp/app/tos/feature": ["libs/app/tos/feature/src/index.ts"],
       "@mp/app/updates/data-access": [
         "libs/app/updates/data-access/src/index.ts"

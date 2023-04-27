@@ -4,11 +4,13 @@ import { ProfileState } from '@mp/app/profile/data-access';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { SubscribeToAuthState } from '@mp/app/auth/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Logout } from '@mp/app/auth/util';
+import { SharedPageComponent } from '@mp/app/shared/feature'
+
 @Component({
   selector: 'ms-home-page',
   templateUrl: './home.page.html',
@@ -20,13 +22,8 @@ export class HomePage implements OnInit {
 
   displayName = '';
   iconColor: any;
-  timestr: any;
-  time: number;
-  
+  shared = new SharedPageComponent(new AlertController);
 
-  hoursString = '';
-  minutesString = '';
-  secondsString = '';
   constructor(
     private router: Router,
     private readonly store: Store,
@@ -36,20 +33,6 @@ export class HomePage implements OnInit {
     this.profile$.subscribe((profile)=>{
       console.log(profile);
     });
-    this.authProfile$.subscribe((var2) => {
-      if (var2) {
-        if (var2.email) {
-          this.displayName = var2.email?.substring(
-            0,
-            var2.email.indexOf('@')
-          );
-        }
-      }
-    });
-    const referenceDate = Date.parse('05/24/2023 22:59:30')/1000;
-    this.time=referenceDate-Math.floor(Date.now()/1000);
-    console.log(this.time);
-    this.timeUpdateContinuously();
   }
 
   ngOnInit() {
@@ -77,27 +60,15 @@ export class HomePage implements OnInit {
     } else {
       this.iconColor = 'danger';
     }
+    
+    this.shared.decreaseTime('hoursM', 'minutesM', 'sesM');
+    
 
-    // this.time = parseInt(localStorage.getItem('time') || '0', 10);
-    // console.log(this.time);
 
-    // this.timestr = localStorage.getItem('time');
-    // this.decreaseTime();
   }
 
-  timeUpdateContinuously() {
-    setInterval(() => {
-      this.time--;
+  
 
-      const hours = Math.floor(this.time / 3600);
-      const minutes = Math.floor((this.time % 3600) / 60);
-      const seconds = Math.floor(this.time % 60);
-
-      this.hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
-      this.minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
-      this.secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
-    }, 1000);
-  }
   checkStatus(){
       console.log('checkStatus');
       const activityStatusValue=localStorage.getItem('activityStatus');
@@ -167,5 +138,9 @@ export class HomePage implements OnInit {
     }
   
     this.router.navigate(['/home/userprofile']);
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.shared.timeoutId);
   }
 }

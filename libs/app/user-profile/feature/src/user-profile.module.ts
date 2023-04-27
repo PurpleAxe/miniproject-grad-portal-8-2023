@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { UserProfilePageRoutingModule } from './user-profile-routing.module';
 import { UserProfilePageComponent } from './user-profile.page';
+import { SharedModule } from '@mp/app/shared/feature'
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, UserProfilePageRoutingModule],
+  imports: [CommonModule, FormsModule, IonicModule, UserProfilePageRoutingModule, SharedModule],
   declarations: [UserProfilePageComponent],
   exports: [UserProfilePageComponent],
 })
