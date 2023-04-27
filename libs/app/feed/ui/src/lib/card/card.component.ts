@@ -53,12 +53,14 @@ export class CardComponent {
           this.isDisliked = !this.isDisliked;
           this.dislikeNum--;
         }
+        this.isLiked = !this.isLiked;
         if (this.isLiked){
-          this.isLiked = !this.isLiked;
           this.likeNum--;
         }
-        this.isLiked = !this.isLiked;
-        this.likeNum++;
+        else {
+          this.likeNum++;
+        }
+
         //add like
     
         this.store.dispatch(new LikePost(payload));
@@ -69,29 +71,37 @@ export class CardComponent {
     
   }
   Dislike(){
-    const payload={
-      postId: this.postId,
-      userId: this.userId
-    }
-    if (this.isLiked){
-      //remove like
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile){
+      this.profile = profile;
+      const payload={
+        postId: this.postId,
+        userId: this.profile.userId
+      }
+      if (this.isLiked){
+        //remove like
 
-      this.store.dispatch(new LikePost(payload));
-      this.isLiked = !this.isLiked;
-      this.likeNum--;
-    }
-    if (this.isDisliked){
+        this.store.dispatch(new LikePost(payload));
+        this.isLiked = !this.isLiked;
+        this.likeNum--;
+      }
       this.isDisliked = !this.isDisliked;
-      this.dislikeNum--;
-      return;
-    }
-    this.isDisliked = !this.isDisliked;
-    this.dislikeNum++;
-    //add dislike
+      if (this.isDisliked){
+        this.dislikeNum--;
+      }
+      else {
+        this.dislikeNum++;
+      }
 
-    this.store.dispatch(new DislikePost(payload));
-    console.log("Dislike button: " + this.likeNum);
-  }
+      //add dislike
+
+      this.store.dispatch(new DislikePost(payload));
+      console.log("Dislike button: " + this.likeNum);
+      
+    }
+  });
+}
   Comment(){
     console.log("Comment button");
   }
