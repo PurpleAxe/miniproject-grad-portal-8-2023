@@ -8,10 +8,9 @@ const timeActions = {
   messageSent: 2 * 60,
 };
 
-// 1.when a post is made time is added,
-//2. when a post has a challenge # it gets the time associated with that challenge
-//3.and when someone sends a message via chat they get time
+//TODO when a post has a challenge # it gets the time associated with that challenge
 
+// example
 // export const OnUserCollectionChange = functions.firestore
 //   .document('/users/{userId}')
 //   .onWrite(async (change, context) => {
@@ -22,6 +21,7 @@ const timeActions = {
 //     if (change.before.exists && change.after.exists)
 //       console.log('Updated node: ' + JSON.stringify(change.after.data()));
 //   });
+
 export const OnPostCreate = functions.firestore
   .document('/posts/{postId}')
   .onCreate(async (change, context) => {
@@ -52,6 +52,10 @@ export const OnConversationUpdate = functions.firestore
       }
     }
   });
+
+///////////////////
+///helper functions
+///////////////////
 const onlyInLeft = (left: any, right: any, compareFunction: any) =>
   left.filter(
     (leftValue: any) =>
