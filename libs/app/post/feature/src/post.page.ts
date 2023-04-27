@@ -42,7 +42,7 @@ export class PostPageComponent {
   uploadPost(){
 
     if(this.body=="" || this.challenge=="" || this.department=="")
-      return; //should challenge and department be optional?
+      return; 
 
 
       

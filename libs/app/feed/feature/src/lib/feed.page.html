@@ -3,14 +3,14 @@
     
     <div class="navbar">
         
-            <ion-segment class="topnav" value="button1">
-                <ion-segment-button value="button1" (click)="homet()">
-                  <ion-label>Home</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="button2" (click)="Discoveryt()">
-                  <ion-label>Discovery</ion-label>
-                </ion-segment-button>
-              </ion-segment>
+      <ion-segment class="topnav" value="button1">
+          <ion-segment-button value="button1" (click)="homet()">
+            <ion-label>Home</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="button2" (click)="Discoveryt()">
+            <ion-label>Discovery</ion-label>
+          </ion-segment-button>
+        </ion-segment>
       
     </div>
 
@@ -28,5 +28,7 @@
     [likeNum] = "feed.likes!"
     [dislikeNum]="feed.dislikes!" >
     </card>
+    
+
 
 </ion-content>
