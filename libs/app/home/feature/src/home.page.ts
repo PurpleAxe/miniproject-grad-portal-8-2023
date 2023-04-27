@@ -9,7 +9,8 @@ import { SubscribeToAuthState } from '@mp/app/auth/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Logout } from '@mp/app/auth/util';
-import { SharedPageComponent } from '@mp/app/shared/feature'
+import { SharedPageComponent } from '@mp/app/shared/feature';
+import { SubscribeToUserProfile } from '@mp/app/user-profile/util';//'../../util/src/user-profile.actions';
 
 @Component({
   selector: 'ms-home-page',
@@ -45,8 +46,8 @@ export class HomePage implements OnInit {
     this.shared = new SharedPageComponent(new AlertController, store);
 
     this.shared.calculateTimeDifference();
-    this.shared.decreaseTime('hours', 'minutes', 'ses');
-    this.shared.decreaseTime('hoursM', 'minutesM', 'sesM');
+    // this.shared.decreaseTime('hours', 'minutes', 'ses'); //It is no longer necessary to decrease the time since we have a due date from firestore.
+    // this.shared.decreaseTime('hoursM', 'minutesM', 'sesM');
     
 
     this.authProfile$.subscribe((var2) => {
@@ -120,7 +121,6 @@ export class HomePage implements OnInit {
     
 
   }
-
   
 
   checkStatus(){
