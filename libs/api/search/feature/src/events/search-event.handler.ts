@@ -8,6 +8,6 @@ export class SearchEventHandler implements IEventHandler<SearchEvent> {
 
   async handle(event: SearchEvent) {
     // return await this.repository.getSearchRequest(event.search);
-    this.repository.getSearchRequest(event.search);
+    // this.repository.getSearchRequest(event.search);
   }
 }

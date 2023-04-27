@@ -1,11 +1,13 @@
 import { SearchEvent, ISearch } from '@mp/api/search/util';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { IProfile } from '@mp/api/profiles/util';
+import { IPost } from '@mp/api/post/util';
 
 export class Search extends AggregateRoot implements ISearch {
   constructor(
     public keyword: string,
     public field: string,
-    public searchResults?: object[] | null
+    public searchResults?: IProfile[] | IPost[]
   ) {
     super();
   }
