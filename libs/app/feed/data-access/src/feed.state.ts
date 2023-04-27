@@ -15,7 +15,7 @@ import {
  } from '@mp/app/feed/util';
 import { FeedApi } from './feed.api';
 import {IPost, ILikePostResponse, IDislikePostResponse} from '@mp/api/post/util';
-import { IComment } from '@mp/api/comments/util';
+import { IComment, IUpdateCommentsRequest } from '@mp/api/comments/util';
 import { Timestamp } from '@angular/fire/firestore';
 //import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed, IGetDiscoveryFeedRequest, IGetHomeFeedRequest, IGetOwnFeedRequest } from '@mp/api/feed/util';
@@ -254,7 +254,7 @@ export class FeedState {
         ownerId:this.ownerId,
         timestamp:timestamp
         */
-        const req = {
+        const req: IUpdateCommentsRequest = {
           comment: {
             userID: payload.senderId,
             text: payload.text,
