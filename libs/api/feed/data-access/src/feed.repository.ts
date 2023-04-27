@@ -7,63 +7,74 @@ import * as admin from 'firebase-admin';
 export class FeedRepository {
 
   async getHomeFeed(feed: IFeed): Promise<IPost[]> {
-    // get user
-    var user = await this.search(feed.user.userId, "profiles");
+    var user = await this.get_document(feed.user.userId, "profiles");
+    var users = await this.get_collection("profiles");
     var posts = [];
+    var postIds = [];
 
-    if("posts" in user)
-      posts = user.posts;
-    
-    console.log(await this.get_all("profiles"));
-    
-      
-    console.log("getHomeFeed")
-    console.log(user);
-    return [];
-  }
+    if("userDepartment" in user && "challenges" in user)
+      for(var otherUser of users) {
+        if(user.userId != otherUser.userId)
+          if("userDepartment" in otherUser && "challenges" in otherUser)
+            if(user.userDepartment == otherUser.userDepartment || user.challenges == otherUser.challenges)
+              if("posts" in otherUser)
+                postIds = postIds.concat(otherUser.posts);
+      }
 
-  async get_all(collection) {
-    // get user
-    var response = null;
-    const f = await admin
-    .firestore()
-    .collection(collection)
-    .get()
-
-    console.log("get_all")
-    console.log(response);
-    return response;
+      for(var postId of postIds) {
+        var postObject = await this.get_document(postId, "post");
+        if(postObject != null)
+          posts.push(postObject);
+      }
+      return posts;
   }
 
   async getDiscoveryFeed(feed: IFeed): Promise<IPost[]> {
-    var user = await this.search(feed.user.userId, "profiles");
+    var user = await this.get_document(feed.user.userId, "profiles");
+    var users = await this.get_collection("profiles");
     var posts = [];
+    var postIds = [];
 
-    return posts;
+      for(var otherUser of users) {
+        if(user.userId != otherUser.userId)
+          if("posts" in otherUser)
+            postIds = postIds.concat(otherUser.posts);
+      }
+
+      this.shuffleArray(postIds);
+
+      for(var postId of postIds) {
+        var postObject = await this.get_document(postId, "post");
+        if(postObject != null)
+          posts.push(postObject);
+      }
+      
+      return posts;
   }
 
   async getOwnFeed(feed: IFeed): Promise<IPost[]> {
-    // console.log("feed")
-    // console.log(feed)
-    // console.log()
-    var user = await this.search(feed.user.userId, "profiles");
-    // console.log("user")
-    // console.log(user)
-    // console.log()
+    var user = await this.get_document(feed.user.userId, "profiles");
     var posts = [];
     if(user != null && "posts" in user)
     for(var postId of user.posts) {
-      const post = await this.search(postId, "post");
+      const post = await this.get_document(postId, "post");
       if(post != null)
       posts.push(post);
     }
-    // console.log("getOwnFeed")
-    // console.log(posts)
     
     return posts;
   }
 
-  async search(id: string, collection: string) {
+  async shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+  }
+
+  async get_document(id: string, collection: string) {
     var response = null;
     const f = await admin
     .firestore()
@@ -74,70 +85,40 @@ export class FeedRepository {
     return response;
   }
 
-  // async getHomeFeed(feed: IFeed): Promise<IPost[]> {
-  //   // get user
-  //   var user = null;
-  //   const f = await admin
-  //   .firestore()
-  //   .collection('profiles')
-  //   .where("userId", "==", feed.user.userId)
-  //   .get()
-  //   .then((querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       user = doc.data();
-  //     });
-  //   });
+  async get_collection(collection) {
+    const snapshot = await admin.firestore().collection(collection).get()
+    return snapshot.docs.map(doc => doc.data());
+  }
 
-  //   if(user == null)
-  //     return [];
-    
-  //     //get department users
-  //     var deptUsers = {};
-  //     if("userDepartments" in user) {
-  //       for(var deptUser of user.userDepartments) {
-  //         const f = await admin
-  //         .firestore()
-  //         .collection('departments')
-  //         .where("departmentId", "==", deptUser)
-  //         .get()
-  //         .then((querySnapshot) => {
-  //           querySnapshot.forEach((doc) => {
-  //             if("users" in doc.data() == true)
-  //               for(var u of doc.data().users)
-  //               deptUsers[u] = 0;
-  //           });
-  //         });
-  //       }
-  //     }
-  //     console.log(deptUsers)
+  async search_for(key: string, value: any, collection: string) {
+    var response = null;
+    const f = await admin
+    .firestore()
+    .collection(collection)
+    .where(key, "==", value)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        response = doc.data();
+      });
+    });
+    return response;
+  }
 
-  //   if(Object.keys(deptUsers).length == 0)
-  //     return []
-
-  //   // get posts
-  //   var posts = [];
-  //   for(var userInDepartment of Object.keys(deptUsers)) {
-  //     if("userId" in user)
-  //       if(userInDepartment == user.userId) {
-  //         continue;
-  //       }
-  //     console.log(userInDepartment)
-  //     const f = await admin
-  //     .firestore()
-  //     .collection('profiles')
-  //     .where("userId", "==", userInDepartment)
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         console.log(doc.data())
-  //         if("posts" in doc.data())
-  //           posts = posts.concat(doc.data().posts);
-  //       });
-  //     });
-  //   }
-  //   console.log(posts)
-  //   return posts
-  // }
+  async get(key: string, value: any, collection: string) {
+    var response = null;
+    const f = await admin
+    .firestore()
+    .collection(collection)
+    .where(key, "==", value)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        response = doc.data();
+      });
+    });
+    return response;
+  }
 
 }
 
