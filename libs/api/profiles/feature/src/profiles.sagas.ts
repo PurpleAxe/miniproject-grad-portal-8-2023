@@ -8,6 +8,7 @@ import {
     UpdateProfileStatusCommand,
     ProfileLikedPostUpdatedEvent,
     ProfileDislikedPostsUpdatedEvent,
+    ProfilePostAddedEvent,
 } from '@mp/api/profiles/util';
 
 import {
@@ -15,14 +16,16 @@ import {
   PostDislikedEvent,
   PostDislikeRemovedEvent,
   PostLikeRemovedEvent,
+  PostCreatedEvent,
 } from '@mp/api/post/util';
 import { UserCreatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
-import { ICommand, IEvent, ofType, Saga } from '@nestjs/cqrs';
+import { EventBus, ICommand, IEvent, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class ProfilesSagas {
+  constructor(private readonly eventBus: EventBus) {};
   @Saga()
   onUserCreated = (events$: Observable<any>): Observable<ICommand> => {
     return events$.pipe(
@@ -99,6 +102,21 @@ export class ProfilesSagas {
     );
   };
   @Saga()
+  onPostCreated = (
+    events$: Observable<any>
+  ): Observable<IEvent> => {
+    return events$.pipe(
+      ofType(PostCreatedEvent),
+      map(
+        (event: PostCreatedEvent) =>
+          this.eventBus.publish(new ProfilePostAddedEvent(
+            event.post.postId!,
+            event.post.userId!,)
+          )
+      )
+    );
+  };
+  @Saga()
   onPostDisliked = (
     events$: Observable<any>
   ): Observable<IEvent> => {
@@ -106,10 +124,10 @@ export class ProfilesSagas {
       ofType(PostDislikedEvent),
       map(
         (event: PostDislikedEvent) =>
-          new ProfileDislikedPostsUpdatedEvent(
+          this.eventBus.publish(new ProfileDislikedPostsUpdatedEvent(
             event.user,
-            event.Onpost.postId,
-            false
+            event.Onpost.postId!,
+            false)
           )
       )
     );
@@ -123,10 +141,10 @@ export class ProfilesSagas {
       ofType(PostDislikeRemovedEvent),
       map(
         (event: PostDislikeRemovedEvent) =>
-          new ProfileDislikedPostsUpdatedEvent(
+          this.eventBus.publish(new ProfileDislikedPostsUpdatedEvent(
             event.user,
-            event.Onpost.postId,
-            true
+            event.Onpost.postId!,
+            true)
           )
       )
     );
@@ -140,10 +158,10 @@ export class ProfilesSagas {
       ofType(PostLikedEvent),
       map(
         (event: PostLikedEvent) =>
-          new ProfileLikedPostUpdatedEvent(
+          this.eventBus.publish(new ProfileLikedPostUpdatedEvent(
             event.user,
-            event.Onpost.postId,
-            false
+            event.Onpost.postId!,
+            false)
           )
       )
     );
@@ -157,10 +175,10 @@ export class ProfilesSagas {
       ofType(PostLikeRemovedEvent),
       map(
         (event: PostLikeRemovedEvent) =>
-          new ProfileLikedPostUpdatedEvent(
+          this.eventBus.publish(new ProfileLikedPostUpdatedEvent(
             event.user,
-            event.Onpost.postId,
-            true
+            event.Onpost.postId!,
+            true)
           )
       )
     );

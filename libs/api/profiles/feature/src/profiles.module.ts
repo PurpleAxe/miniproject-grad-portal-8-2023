@@ -1,6 +1,7 @@
 import { ProfilesModule as ProfilesDataAccessModule } from '@mp/api/profiles/data-access';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import {ProfilePostAddedEvent} from '../../util/src/events';
 import {
     CreateProfileHandler,
     UpdateAccountDetailsHandler,
@@ -17,8 +18,11 @@ import {
     OccupationDetailsUpdatedHandler,
     PersonalDetailsUpdatedHandler,
     ProfileCreatedHandler,
+    ProfileDislikedPostHandler,
+    ProfilePostAddedHandler,
     ProfileStatusUpdatedHandler
 } from './events';
+import {ProfileLikedPostUpdatedHandler} from './events/profile-liked-posts-updated.handler';
 import { ProfilesSagas } from './profiles.sagas';
 import { ProfilesService } from './profiles.service';
 export const CommandHandlers = [
@@ -38,6 +42,9 @@ export const EventHandlers = [
   OccupationDetailsUpdatedHandler,
   AccountDetailsUpdatedHandler,
   ProfileStatusUpdatedHandler,
+  ProfilePostAddedHandler,
+  ProfileDislikedPostHandler,
+  ProfileLikedPostUpdatedHandler
 ];
 
 @Module({

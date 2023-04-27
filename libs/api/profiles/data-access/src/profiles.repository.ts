@@ -72,4 +72,12 @@ export class ProfilesRepository {
       .collection("dislikedPosts")
       .doc(post).delete();
   }
+  async addPost(profile:string, post:string) {
+    admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("posts")
+      .doc(post).create({});
+  }
 }
