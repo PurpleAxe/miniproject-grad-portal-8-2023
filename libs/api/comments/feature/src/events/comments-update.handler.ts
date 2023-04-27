@@ -1,4 +1,4 @@
-import { CommentsRepository } from '@mp/api/comments/data-access';
+import { PostsRepository } from '@mp/api/post/data-access';
 import { UpdateCommentsEvent } from '@mp/api/comments/util';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
@@ -6,8 +6,8 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 export class UpdateCommentsEventHandler
   implements IEventHandler<UpdateCommentsEvent>
 {
-  constructor(private readonly repository: CommentsRepository) {}
+  constructor(private readonly repository: PostsRepository) {}
   async handle(event: UpdateCommentsEvent) {
-    // await this.repository.getFeed(event.feed);
+    await this.repository.postComment(event.comment);
   }
 }
