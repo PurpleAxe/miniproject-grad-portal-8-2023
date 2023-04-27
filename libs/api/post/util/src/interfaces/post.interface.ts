@@ -1,5 +1,5 @@
-import { Timestamp } from "firebase/firestore";
-import { IComment } from "./comment.interface"
+import {Timestamp} from "firebase-admin/firestore";
+import { IComment } from "@mp/api/comments/util"
 
 export interface IPost{
     postId: string |null | undefined;

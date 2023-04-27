@@ -1,6 +1,7 @@
-import { IComment } from '@mp/api/post/util';
+import { IComment } from '@mp/api/comments/util';
 import { IPost } from '@mp/api/post/util';
 import { Injectable } from '@nestjs/common';
+import {Timestamp} from "firebase-admin/firestore";
 import * as admin from 'firebase-admin';
 
 @Injectable()

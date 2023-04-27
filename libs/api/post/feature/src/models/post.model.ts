@@ -1,4 +1,5 @@
-import {IComment, IPost, PostCreatedEvent, PostDislikedEvent, PostDislikeRemovedEvent, PostLikedEvent, PostLikeRemovedEvent} from "@mp/api/post/util";
+import {IPost, PostCreatedEvent, PostDislikedEvent, PostDislikeRemovedEvent, PostLikedEvent, PostLikeRemovedEvent} from "@mp/api/post/util";
+import { IComment } from "@mp/api/comments/util";
 import {AggregateRoot} from "@nestjs/cqrs";
 import {Timestamp} from "firebase-admin/firestore";
 import {UsersRepository} from "@mp/api/users/data-access";
@@ -14,7 +15,9 @@ export class PostModel extends AggregateRoot implements IPost {
     public dislikes?: number | null | undefined,
     public message?: string | null | undefined,
     public comments?: IComment[] | null | undefined,
-    public created?: Timestamp | null | undefined
+    public created?: Timestamp | null | undefined,
+    public challenge?: string,
+    public department?: string
     ) {
     super();
   }
@@ -26,7 +29,9 @@ export class PostModel extends AggregateRoot implements IPost {
       post.dislikes,
       post.message,
       post.comments,
-      post.created
+      post.created,
+      post.challenge,
+      post.department
     );
 
     return instance;
@@ -69,7 +74,9 @@ export class PostModel extends AggregateRoot implements IPost {
       dislikes: this.dislikes,
       message: this.message,
       comments: this.comments,
-      created: this.created
+      created: this.created,
+      challenge: this.challenge,
+      department: this.department
     };
   }
 
