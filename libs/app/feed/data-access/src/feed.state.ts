@@ -142,8 +142,8 @@ export class FeedState {
         //   status: '',
         //   errors: {}
         // }
-        //feedPosts: response.feed
-        feedPosts:this.getMock()
+        feedPosts: response.feed
+        //feedPosts:this.getMock()
       });
     }
 
@@ -173,8 +173,8 @@ export class FeedState {
         //   status: '',
         //   errors: {}
         // }
-        //feedPosts: response.feed
-        feedPosts:this.getMock()
+        feedPosts: response.feed
+        //feedPosts:this.getMock()
       });
     }
 
@@ -278,8 +278,8 @@ export class FeedState {
 
         const state=ctx.getState();
         ctx.setState({...state,
-          postComments:[comment,...state.postComments]
-          //postComments: response
+          //postComments:[comment,...state.postComments]
+          postComments: response.comments
         });
   
       }
