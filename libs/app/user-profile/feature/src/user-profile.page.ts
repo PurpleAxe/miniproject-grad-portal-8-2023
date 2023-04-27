@@ -48,7 +48,7 @@ export class UserProfilePageComponent implements OnInit {
     this.profile$.subscribe((profile) => {
       if(profile != null){
         this.uid = profile.userId;
-        this.uid = "1";
+        // this.uid = "1";
         const payload={
           uid:this.uid
         };

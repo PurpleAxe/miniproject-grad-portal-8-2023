@@ -14,7 +14,8 @@ import {
     FetchOwnPosts
  } from '@mp/app/feed/util';
 import { FeedApi } from './feed.api';
-import {IPost, ILikePostResponse, IComment, IDislikePostResponse} from '@mp/api/post/util';
+import {IPost, ILikePostResponse, IDislikePostResponse} from '@mp/api/post/util';
+import { IComment } from '@mp/api/comments/util';
 import { Timestamp } from '@angular/fire/firestore';
 //import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed, IGetDiscoveryFeedRequest, IGetHomeFeedRequest, IGetOwnFeedRequest } from '@mp/api/feed/util';
@@ -135,6 +136,7 @@ export class FeedState {
           model:{
             users: null,
             feedPosts: response.feed,
+            // feedPosts: this.getMock(),
             postComments: null
           },
           dirty: false,
@@ -246,8 +248,18 @@ export class FeedState {
         ownerId:this.ownerId,
         timestamp:timestamp
         */
-        // const response = await this.feedApi.sendComment(payload);
-
+        var req = {
+          comment: {
+            userID: payload.senderId,
+            text: payload.text,
+            timestamp: payload.timestamp,
+            commentID: payload.commentId,
+            postID: payload.postId,
+          }
+        }
+        const response = await this.feedApi.SendComment(req);
+        console.log("response-SendComment")
+        console.log(response)
 
         //RETURN THIS AS THE RESPONSE.....AND UPDATE THE STATE
         const comment:IComment={

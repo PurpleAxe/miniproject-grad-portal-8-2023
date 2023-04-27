@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IComment } from '@mp/api/post/util';
+import { IComment } from '@mp/api/comments/util';
 import { FeedState } from '@mp/app/feed/data-access';
 import { sendComment } from '@mp/app/feed/util';
 import { Select, Store } from '@ngxs/store';

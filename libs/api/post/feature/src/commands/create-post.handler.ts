@@ -16,7 +16,7 @@ export class CreatePostHandler
       const request = command.request;
       log(request);
       const userId = request.post.userId;
-      const likes = 1;
+      const likes = 0;
       const dislikes = 0;
       const comments = request.post.comments;
       const message = request.post.message;
