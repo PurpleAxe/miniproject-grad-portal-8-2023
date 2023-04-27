@@ -19,5 +19,22 @@ export class CommentsRepository {
     });
     return response;
   }
+
+  async get_comments(commentIds: IComment[]): Promise<IComment[]> {
+    var commentCollection = await this.get_collection("comment");
+    var comments = [];
+    for(var commentId of commentIds) {
+      for(var commentObject of commentCollection) {
+        if(commentId == commentObject.commentId)
+          comments.push(commentObject);
+      }
+    }
+    return comments;
+  }
+
+  async get_collection(collection) {
+    const snapshot = await admin.firestore().collection(collection).get()
+    return snapshot.docs.map(doc => doc.data());
+  }
   
 }
