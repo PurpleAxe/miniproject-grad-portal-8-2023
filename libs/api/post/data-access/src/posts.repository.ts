@@ -29,6 +29,8 @@ export class PostsRepository {
   }
 
   async postComment(comment : IComment):Promise<IComment>{
+    console.log("comment.postID")
+    console.log(comment.postID)
     const postRef = admin
       .firestore()
       .collection("post")

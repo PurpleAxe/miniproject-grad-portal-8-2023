@@ -22,6 +22,7 @@ import {
   IGetDiscoveryFeedRequest,
   IGetDiscoveryFeedResponse,
 } from '@mp/api/feed/util';
+import { IUpdateCommentsRequest, IUpdateCommentsResponse } from '@mp/api/comments/util';
 
 
 @Injectable()
@@ -92,6 +93,17 @@ export class FeedApi {
       >(
     this.functions,
     'fetchOwnFeed'
+  )(request);
+  }
+
+  async SendComment(request: IUpdateCommentsRequest){
+    // console.log("feed.api LikePost working: " + request.post.postId + " " + request.post.userId);
+    return await httpsCallable<
+    IUpdateCommentsRequest,
+    IUpdateCommentsResponse
+  >(
+    this.functions,
+    'updateComments'
   )(request);
   }
 }

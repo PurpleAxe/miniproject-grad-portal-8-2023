@@ -50,7 +50,8 @@ export class PostState{
             userId: payload.userId,
             message: payload.body,
             challenge: payload.challenge,
-            department: payload.department
+            department: payload.department,
+            comments: []
           };
           const post = myPost;
           const myCreatePostRequest: ICreatePostRequest ={

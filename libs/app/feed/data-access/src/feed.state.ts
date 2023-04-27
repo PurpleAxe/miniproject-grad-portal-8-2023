@@ -254,8 +254,18 @@ export class FeedState {
         ownerId:this.ownerId,
         timestamp:timestamp
         */
-        // const response = await this.feedApi.sendComment(payload);
-
+        const req = {
+          comment: {
+            userID: payload.senderId,
+            text: payload.text,
+            timestamp: payload.timestamp,
+            commentID: payload.commentId,
+            postID: payload.postId,
+          }
+        }
+        const responseRef = await this.feedApi.SendComment(req);
+        console.log("response-SendComment")
+        const response=responseRef.data;
 
         //RETURN THIS AS THE RESPONSE.....AND UPDATE THE STATE
         const comment:IComment={
@@ -269,6 +279,7 @@ export class FeedState {
         const state=ctx.getState();
         ctx.setState({...state,
           postComments:[comment,...state.postComments]
+          //postComments: response
         });
   
       }
