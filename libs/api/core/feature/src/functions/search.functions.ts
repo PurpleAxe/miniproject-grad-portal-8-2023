@@ -4,14 +4,20 @@ import { NestFactory } from '@nestjs/core';
 import * as functions from 'firebase-functions';
 import { CoreModule } from '../core.module';
 
-export const search = functions.https.onCall(
+export const searchUsers = functions.https.onCall(
   async (request: ISearchRequest): Promise<ISearchResponse> => {
-    console.log('search nestjs');
-
     const app = await NestFactory.createApplicationContext(CoreModule);
     const service = app.get(SearchService);
-    const value = service.getSearchRequest(request);
-    console.log(value, 'in functions value console');
+    const value = service.searchUsers(request);
+    return value;
+  }
+);
+
+export const searchPosts = functions.https.onCall(
+  async (request: ISearchRequest): Promise<ISearchResponse> => {
+    const app = await NestFactory.createApplicationContext(CoreModule);
+    const service = app.get(SearchService);
+    const value = service.searchPosts(request);
     return value;
   }
 );
