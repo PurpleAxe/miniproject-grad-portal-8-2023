@@ -44,10 +44,10 @@ export class UserProfilePageComponent implements OnInit {
   }
 
   ownPosts(){
-    // this.store.dispatch(new SubscribeToProfile());
-    // this.profile$.subscribe((profile) => {
-      // if(profile != null){
-        // this.uid = profile.userId;
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile != null){
+        this.uid = profile.userId;
         this.uid = "1";
         const payload={
           uid:this.uid
@@ -58,8 +58,8 @@ export class UserProfilePageComponent implements OnInit {
           if(posts != null)
             this.ownPost$ = posts;
       });
-    // }
-  // });
+    }
+  });
     this.displayOwnPosts();
   }
   formatDateFromNanoseconds(seconds: number, nanoseconds: number): string {
