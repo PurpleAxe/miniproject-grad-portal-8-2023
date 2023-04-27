@@ -14,7 +14,8 @@ import {
     FetchOwnPosts
  } from '@mp/app/feed/util';
 import { FeedApi } from './feed.api';
-import {IPost, ILikePostResponse, IComment, IDislikePostResponse} from '@mp/api/post/util';
+import {IPost, ILikePostResponse, IDislikePostResponse} from '@mp/api/post/util';
+import { IComment } from '@mp/api/comments/util';
 import { Timestamp } from '@angular/fire/firestore';
 //import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed, IGetDiscoveryFeedRequest, IGetHomeFeedRequest, IGetOwnFeedRequest } from '@mp/api/feed/util';
@@ -52,7 +53,7 @@ export interface FeedStateModel{
       },
       feedPosts: {
         user:{
-          userId:"Testing",
+          userId:"",
         },
         posts:[]
       },
@@ -131,16 +132,18 @@ export class FeedState {
     const responseRef = await this.feedApi.GetHomeFeed(myFetchHomeRequest);
     const response = responseRef.data;  
       ctx.patchState({
-        feed:{
-          model:{
-            users: null,
-            feedPosts: response.feed,
-            postComments: null
-          },
-          dirty: false,
-          status: '',
-          errors: {}
-        }
+        // feed:{
+        //   model:{
+        //     users: null,
+        //     feedPosts: response.feed,
+        //     postComments: null
+        //   },
+        //   dirty: false,
+        //   status: '',
+        //   errors: {}
+        // }
+        //feedPosts: response.feed
+        feedPosts:this.getMock()
       });
     }
 
@@ -160,16 +163,18 @@ export class FeedState {
     const responseRef = await this.feedApi.GetDiscoveryFeed(myFetchDiscoveryRequest);
     const response = responseRef.data;  
       ctx.patchState({
-        feed:{
-          model:{
-            users: null,
-            feedPosts: response.feed,
-            postComments: null
-          },
-          dirty: false,
-          status: '',
-          errors: {}
-        }
+        // feed:{
+        //   model:{
+        //     users: null,
+        //     feedPosts: response.feed,
+        //     postComments: null
+        //   },
+        //   dirty: false,
+        //   status: '',
+        //   errors: {}
+        // }
+        //feedPosts: response.feed
+        feedPosts:this.getMock()
       });
     }
 
@@ -189,16 +194,18 @@ export class FeedState {
     const responseRef = await this.feedApi.GetOwnFeed(myFetchOwnRequest);
     const response = responseRef.data;  
       ctx.patchState({
-        feed:{
-          model:{
-            users: null,
-            feedPosts: response.feed,
-            postComments: null
-          },
-          dirty: false,
-          status: '',
-          errors: {}
-        }
+        // feed:{
+        //   model:{
+        //     users: null,
+        //     feedPosts: response.feed,
+        //     postComments: null
+        //   },
+        //   dirty: false,
+        //   status: '',
+        //   errors: {}
+        // }
+        //feedPosts: response.feed
+        feedPosts:this.getMock()
       });
     }
 
@@ -229,7 +236,8 @@ export class FeedState {
           i++;
         }
         if(found){
-          ctx.setState({...ctx.getState(),
+          const state=ctx.getState();
+          ctx.setState({...state,
             postComments:response,
             postInfo:{postId:payload.postId, ownerId:payload.ownerId}
           });

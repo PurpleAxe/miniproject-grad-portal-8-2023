@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IComment } from '@mp/api/post/util';
+import { IComment } from '@mp/api/comments/util';
 import { FeedState } from '@mp/app/feed/data-access';
 import { sendComment } from '@mp/app/feed/util';
 import { Select, Store } from '@ngxs/store';
@@ -22,9 +22,8 @@ export class CommentPage implements OnInit {
   comments:IComment[]=[];
   postId!:string;
   ownerId!:string;
-  senderId="Testing";
-  text=''
-  comments$=[1,2,3,4,5,6];
+  senderId="";
+  text='';
 
   ngOnInit() {this.displayComments()}
 
@@ -40,9 +39,9 @@ export class CommentPage implements OnInit {
       this.ownerId=res.ownerId;
     });
 
-    // this.userId$.subscribe((res:any)=>{
-    //   this.senderId=res.userId;
-    // })
+    this.userId$.subscribe((res:any)=>{
+      this.senderId=res.userId;
+    })
     // console.log(this.senderId);
   }
 
