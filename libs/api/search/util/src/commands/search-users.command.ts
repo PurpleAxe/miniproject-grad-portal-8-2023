@@ -1,5 +1,5 @@
 import { ISearchRequest } from "../requests";
 
-export class SearchCommand {
+export class SearchUsersCommand {
     constructor(public readonly request: ISearchRequest,) {}
 }
