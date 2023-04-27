@@ -1,7 +1,8 @@
 import {
   ISearchRequest,
   ISearchResponse,
-  SearchCommand
+  SearchUsersCommand,
+  SearchPostsCommand
 } from '@mp/api/search/util';
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -10,12 +11,21 @@ import { CommandBus } from '@nestjs/cqrs';
 export class SearchService {
   constructor(private commandBus: CommandBus) {}
   //TODO your function here
-  async getSearchRequest(
+  async searchUsers(
     request: ISearchRequest
   ): Promise<ISearchResponse> {
     return await this.commandBus.execute<
-      SearchCommand,
+    SearchUsersCommand,
       ISearchResponse
-    >(new SearchCommand(request));
+    >(new SearchUsersCommand(request));
+  }
+
+  async searchPosts(
+    request: ISearchRequest
+  ): Promise<ISearchResponse> {
+    return await this.commandBus.execute<
+    SearchUsersCommand,
+      ISearchResponse
+    >(new SearchPostsCommand(request));
   }
 }
