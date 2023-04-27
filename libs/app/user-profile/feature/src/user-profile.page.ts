@@ -1,21 +1,24 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, Renderer2, OnInit } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { IProfile } from '@mp/api/profiles/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
+import { UserProfileState } from '@mp/app/user-profile/data-access';
 import { SharedPageComponent } from '@mp/app/shared/feature'
-import { SharedModule } from '@mp/app/shared/feature';
+// import { SharedModule } from '@mp/app/shared/feature';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { SubscribeToUserProfile } from '@mp/app/user-profile/util';//'../../util/src/user-profile.actions';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.page.html',
   styleUrls: ['./user-profile.page.scss'],
 })
-export class UserProfilePageComponent { 
+export class UserProfilePageComponent implements OnInit{ 
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<IProfile | null>;
   shared : any;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   @Select(AuthState.user) authProfile$!: Observable<User | null>;
@@ -76,9 +79,13 @@ export class UserProfilePageComponent {
   
 
   ngOnInit() {
+    this.store.dispatch(new SubscribeToUserProfile());
+    console.log("in ngOnInit");
+    console.log(this.userProfile$);
     console.log('UserProfilePageComponent');
     // localStorage.setItem('time', this.time.toString());
-    
+    this.shared.calculateTimeDifference();
+    this.shared.decreaseTime('hours', 'minutes', 'ses');
   }
 
   ngOnDestroy() {
