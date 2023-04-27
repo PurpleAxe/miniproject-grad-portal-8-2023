@@ -21,7 +21,7 @@ export class MessageRepository {
   }
 
   async sendMessage(message: IConversation) {
-    console.log(message, 'lkdasdaskdkddddddddddddddddddddddddddddddddddd');
+    // console.log(message, 'lkdasdaskdkddddddddddddddddddddddddddddddddddd');
     // const arrayToUpdate = admin.firestore.FieldValue.arrayUnion({
     //   messages: message.messages,
     // });

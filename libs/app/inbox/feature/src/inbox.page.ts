@@ -305,4 +305,21 @@ export class InboxPageComponent implements OnInit {
     //TODO make the conversation the current conversation and display all prev texts
     // this.router.navigate(['/home/inbox']);
   }
+  toDateTime(secs: any) {
+    const t = new Date(secs * 1000);
+    const today = new Date();
+    const yesterday = ((d) => new Date(d.setDate(d.getDate() - 1)))(new Date());
+
+    if (t.getDate() == today.getDate())
+      return t.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+    if (t.getDate() == yesterday.getDate()) return 'Yesterday';
+    if (t.getDate() < yesterday.getDate()) return t.toDateString();
+
+    // t.setSeconds(secs * 1000);
+    return t;
+  }
 }

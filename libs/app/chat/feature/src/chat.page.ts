@@ -141,6 +141,7 @@ export class ChatPage implements OnInit {
       id: null,
       content: this.messageContent,
       metaData: metadata,
+      isRead: false,
     };
     //this.store.dispatch(new AddMessage(this.));
     // console.log()

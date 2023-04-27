@@ -6,7 +6,7 @@
     class="ion-text-wrap">
     <ion-text>{{ chat.content.textData }}</ion-text>
     <ion-note>
-      <small>{{ chat.metaData.timePosted! }}</small>
+      <small>{{ toDateTime(chat.metaData.timePosted!.seconds) }}</small>
       <!-- <small>10:06 am</small> -->
       <ion-icon
         [color]="

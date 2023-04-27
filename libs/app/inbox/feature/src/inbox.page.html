@@ -14,10 +14,12 @@
         <ion-label>
           {{item?.members[1].displayName}}
           <p>
-            <ion-text> message </ion-text>
+            <ion-text> {{item?.messages.at(-1).content.textData}} </ion-text>
           </p>
         </ion-label>
-        <ion-text slot="end" color="medium">10:02 am</ion-text>
+        <ion-text slot="end" color="medium">
+          {{toDateTime(item?.messages.at(-1).metaData.timePosted.seconds)}}</ion-text
+        >
       </ng-container>
     </ion-item>
   </ion-list>
