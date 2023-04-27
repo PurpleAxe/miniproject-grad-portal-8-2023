@@ -1,7 +1,8 @@
-import { IUser } from '@mp/api/users/util';
+import { IProfile } from '@mp/api/profiles/util';
+import { IPost } from '@mp/api/post/util';
 
 export interface ISearch {
   keyword?: string;
   field?: string;
-  searchResults?: object[] | IUser[] | null;
+  searchResults?: IProfile[] | IPost[];
 }
