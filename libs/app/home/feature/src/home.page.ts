@@ -20,41 +20,66 @@ export class HomePage implements OnInit {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   @Select(AuthState.user) authProfile$!: Observable<User | null>;
 
-  displayName = '';
+  displayName : any;
+  username : any;
+  email : any;
+  complete : any;
   iconColor: any;
+  route : any;
   shared = new SharedPageComponent(new AlertController);
 
-  timestr: any;
-
-  time: number;
 
   constructor(
     private router: Router,
     private readonly store: Store,
     private renderer: Renderer2,
+    private alertController: AlertController,
     private menuCtrl?: MenuController
   ) {
     this.profile$.subscribe((profile)=>{
       console.log(profile);
     });
 
-    const referenceDate = Date.parse('04/25/2023 12:00:30') / 1000;
-
-
-    this.time =referenceDate - Math.floor(Date.now() / 1000) ;
     this.authProfile$.subscribe((var2) => {
       if (var2) {
         if (var2.email) {
-          this.displayName = var2.email?.substring(
+          this.email = var2.email;
+          this.username = var2.email?.substring(
             0,
             var2.email.indexOf('@')
           );
         }
+
+        if (var2.displayName ) {
+          this.displayName = var2.displayName;
+        }else{
+          this.displayName = "invalid";
+        }
+
       }
+
+      this.profile$.subscribe((profile)=>{
+        if(profile?.accountDetails?.email === this.email && profile?.accountDetails?.email){
+          //something
+        }else{
+          // this.router.navigate(['home/settings/account-settings']);
+          // this.presentAlert();
+        }
+      });
+      
     });
-    // const referenceDate = Date.parse('05/24/2023 22:59:30')/1000;
-    // this.time=referenceDate-Math.floor(Date.now()/1000);
-    // console.log(this.time);
+
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Incomplete Information',
+      subHeader: 'There is missing information in your account.',
+      message: 'Complete the following text to continue.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   ngOnInit() {
@@ -83,9 +108,8 @@ export class HomePage implements OnInit {
       this.iconColor = 'danger';
     }
     
+    this.shared.calculateTimeDifference();
     this.shared.decreaseTime('hoursM', 'minutesM', 'sesM');
-    
-
 
   }
 
