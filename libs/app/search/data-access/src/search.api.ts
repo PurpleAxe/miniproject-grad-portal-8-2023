@@ -77,4 +77,17 @@ export class SearchApi {
       'searchPosts'
     )(request);
   }
+
+  async searchEvents(request: ISearchRequest) {
+    console.log('lets go');
+    console.log(request);
+    return await httpsCallable<
+    ISearchRequest, 
+    ISearchResponse
+    >
+    (
+      this.functions,
+      'searchEvents'
+    )(request);
+  }
 }
