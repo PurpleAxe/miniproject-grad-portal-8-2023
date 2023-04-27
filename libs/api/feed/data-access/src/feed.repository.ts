@@ -16,9 +16,20 @@ export class FeedRepository {
       for(var otherUser of users) {
         if(user.userId != otherUser.userId)
           if("userDepartment" in otherUser && "challenges" in otherUser)
-            if(user.userDepartment == otherUser.userDepartment || user.challenges == otherUser.challenges)
-              if("posts" in otherUser)
-                postIds = postIds.concat(otherUser.posts);
+          for(var a of user.userDepartment) {
+            for(var b of otherUser.userDepartment) {
+              if(a == b)
+                if("posts" in otherUser)
+                  postIds = postIds.concat(otherUser.posts);
+            }
+          }
+            for(var a of user.challenges) {
+              for(var b of otherUser.challenges) {
+                if(a == b)
+                  if("posts" in otherUser)
+                    postIds = postIds.concat(otherUser.posts);
+              }
+          }
       }
 
       for(var postId of postIds) {
