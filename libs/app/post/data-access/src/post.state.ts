@@ -56,6 +56,8 @@ export class PostState{
           const myCreatePostRequest: ICreatePostRequest ={
             post
           }
+        console.log("PostId (state):" + payload.body);
+
         this.postApi.CreatePost(myCreatePostRequest);
     }
   

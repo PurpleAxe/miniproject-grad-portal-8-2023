@@ -67,7 +67,9 @@
     [postId] = "feed.postId!"
     [text] = "feed.message!"
     [profileUrl] = "getProfileUrl(feed.userId)"
-    [date] = "toDate(feed.created)"
+    [date] = "feed.created ? formatDateFromNanoseconds(feed.created.seconds, feed.created.nanoseconds) : ''"
+    [challenge]="feed.challenge!"
+    [department]="feed.department!"
     [likeNum] = "feed.likes!"
     [dislikeNum]="feed.dislikes!" >
 </card>

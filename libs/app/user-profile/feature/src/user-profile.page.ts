@@ -46,8 +46,9 @@ export class UserProfilePageComponent implements OnInit {
   ownPosts(){
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
-      if(profile != null)
+      if(profile != null){
         this.uid = profile.userId;
+        this.uid = "1";
         const payload={
           uid:this.uid
         };
@@ -56,11 +57,20 @@ export class UserProfilePageComponent implements OnInit {
         this.post$.subscribe((posts) => {
           if(posts != null)
             this.ownPost$ = posts;
-    });
+      });
+    }
   });
     this.displayOwnPosts();
   }
-
+  formatDateFromNanoseconds(seconds: number, nanoseconds: number): string {
+    const date = new Date(seconds * 1000 + nanoseconds / 1000000);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  }
   displayOwnPosts(){
     console.log("DISPLAY OWN POSTS");
     this.post$?.subscribe((res:any)=>{
