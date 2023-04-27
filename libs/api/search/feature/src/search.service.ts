@@ -2,7 +2,8 @@ import {
   ISearchRequest,
   ISearchResponse,
   SearchUsersCommand,
-  SearchPostsCommand
+  SearchPostsCommand,
+  SearchEventsCommand
 } from '@mp/api/search/util';
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -27,5 +28,14 @@ export class SearchService {
     SearchUsersCommand,
       ISearchResponse
     >(new SearchPostsCommand(request));
+  }
+
+  async searchEvents(
+    request: ISearchRequest
+  ): Promise<ISearchResponse> {
+    return await this.commandBus.execute<
+    SearchUsersCommand,
+      ISearchResponse
+    >(new SearchEventsCommand(request));
   }
 }

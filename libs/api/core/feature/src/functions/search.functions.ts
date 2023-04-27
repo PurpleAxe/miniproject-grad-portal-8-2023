@@ -21,3 +21,12 @@ export const searchPosts = functions.https.onCall(
     return value;
   }
 );
+
+export const searchEvents = functions.https.onCall(
+  async (request: ISearchRequest): Promise<ISearchResponse> => {
+    const app = await NestFactory.createApplicationContext(CoreModule);
+    const service = app.get(SearchService);
+    const value = service.searchEvents(request);
+    return value;
+  }
+);
