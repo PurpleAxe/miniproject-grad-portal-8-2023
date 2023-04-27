@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Logout } from '@mp/app/auth/util';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-shared',
@@ -10,8 +12,12 @@ export class SharedPageComponent {
   time = 4;
   timeoutId: any;
   alertPresented = false;
+  hoursId:any;
+  minutesId:any;
+  secondsId:any;
 
-  constructor(private alertController: AlertController) { }
+
+  constructor(private alertController: AlertController, private readonly store: Store,) { }
 
   calculateTimeDifference(): void {
     const currentTimestamp = Date.now();
@@ -25,13 +31,17 @@ export class SharedPageComponent {
 
     const timeDifferenceInSeconds = Math.round((futureTimestamp - currentTimestamp) / 1000);
     console.log(timeDifferenceInSeconds);
-    this.time = timeDifferenceInSeconds;
+    // this.time = timeDifferenceInSeconds;
   }
   
   decreaseTime(hoursId: string, minutesId: string, secondsId: string): void {
     this.timeoutId = setTimeout(() => {
   
       this.time--;
+
+      this.hoursId = hoursId;
+      this.minutesId = minutesId;
+      this.secondsId = secondsId;
   
       const hours = Math.floor(this.time / 3600);
       const minutes = Math.floor((this.time % 3600) / 60);
@@ -62,7 +72,7 @@ export class SharedPageComponent {
         this.decreaseTime(hoursId, minutesId, secondsId);
       } else{
         console.log('The time has reached zero!');
-        // this.presentAlert();
+        this.presentAlert();
       }
       
 
@@ -71,28 +81,28 @@ export class SharedPageComponent {
     // since we don't know yet whether the time has reached zero or not
   }
 
-  async presentAlert() {
-    if (!this.alertPresented && this.time === 0) {
-      this.alertPresented = true;
-  
-      const alert = await this.alertController.create({
-        header: 'Time Out!',
-        subHeader: 'Your time has run out.',
-        message: 'Ask a friend to add more time for you.',
-        buttons: [{
-          text: 'Ask a friend',
-          handler: () => {
-            this.alertPresented = false;
-            this.calculateTimeDifference();
-            this.decreaseTime('hours', 'minutes', 'ses');
-          }
-        }],
-        backdropDismiss: false // prevent dismissing by clicking outside of the alert
-      });
-  
-      await alert.present();
-    }
+  logout() {
+    // this.popover.dismiss();
+    this.store.dispatch(new Logout());
   }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+    header: 'Time Out!',
+    subHeader: 'Your time has run out.',
+    message: 'You have run out of time. Your acount is no longer in use.',
+    buttons: [{
+    text: 'LOGOUT',
+    handler: () => {
+    this.logout();
+    }
+    }],
+    backdropDismiss: false // prevent dismissing by clicking outside of the alert
+    });
+
+    await alert.present();
+  }
+  
   
 
   setTime(time: number){

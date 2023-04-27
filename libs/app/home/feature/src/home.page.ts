@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
   complete : any;
   iconColor: any;
   route : any;
-  shared = new SharedPageComponent(new AlertController);
+  shared : any;
 
 
   constructor(
@@ -39,6 +39,15 @@ export class HomePage implements OnInit {
     this.profile$.subscribe((profile)=>{
       console.log(profile);
     });
+
+    
+
+    this.shared = new SharedPageComponent(new AlertController, store);
+
+    this.shared.calculateTimeDifference();
+    this.shared.decreaseTime('hours', 'minutes', 'ses');
+    this.shared.decreaseTime('hoursM', 'minutesM', 'sesM');
+    
 
     this.authProfile$.subscribe((var2) => {
       if (var2) {
@@ -73,10 +82,10 @@ export class HomePage implements OnInit {
 
   async presentAlert() {
     const alert = await this.alertController.create({
-      header: 'Incomplete Information',
-      subHeader: 'There is missing information in your account.',
-      message: 'Complete the following text to continue.',
-      buttons: ['OK'],
+      header: 'Time Out!',
+      subHeader: 'Your time has run out.',
+      message: 'Ask a friend to add more time for you.',
+      buttons: ['Ask a friend'],
     });
 
     await alert.present();
@@ -108,8 +117,7 @@ export class HomePage implements OnInit {
       this.iconColor = 'danger';
     }
     
-    this.shared.calculateTimeDifference();
-    this.shared.decreaseTime('hoursM', 'minutesM', 'sesM');
+    
 
   }
 

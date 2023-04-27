@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./user-profile.page.scss'],
 })
 export class UserProfilePageComponent { 
-  shared = new SharedPageComponent(new AlertController);
+  shared : any;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   @Select(AuthState.user) authProfile$!: Observable<User | null>;
 
@@ -26,6 +26,11 @@ export class UserProfilePageComponent {
   userName : any;
 
   constructor(private router: Router,private readonly store: Store,private renderer: Renderer2,) {
+
+    this.shared = new SharedPageComponent(new AlertController, store);
+
+    // this.shared.calculateTimeDifference();
+    // this.shared.decreaseTime('hours', 'minutes', 'ses');
 
     this.profile$.subscribe((profile)=>{
       console.log(profile);
@@ -73,8 +78,7 @@ export class UserProfilePageComponent {
   ngOnInit() {
     console.log('UserProfilePageComponent');
     // localStorage.setItem('time', this.time.toString());
-    this.shared.calculateTimeDifference();
-    this.shared.decreaseTime('hours', 'minutes', 'ses');
+    
   }
 
   ngOnDestroy() {
