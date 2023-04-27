@@ -7,21 +7,15 @@ import { Select, Store } from '@ngxs/store';
 import { InboxState, InboxStateModel } from '@mp/app/inbox/data-access';
 import {
   CreateConversation,
-  GetConversation,
   GetUserId,
   GetUsers,
   Logout,
   SetcurrentConversation,
   SubscribeToInbox,
 } from '@mp/app/inbox/util';
-import { IConversation } from '@mp/api/message/util';
 import { Observable, tap, map, Timestamp } from 'rxjs';
-import { User } from '@angular/fire/auth';
 import { AuthState } from '@mp/app/auth/data-access';
-import { getCurrentUserId } from '@mp/app/auth/util';
 import { IUser } from '@mp/api/users/util';
-import { isUidIdentifier } from 'firebase-admin/lib/auth/identifier';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-inbox',
@@ -44,46 +38,6 @@ export class InboxPageComponent implements OnInit {
   email: any;
   userNew$: any;
   placeholderImgUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-  //userId: string;
-  /*users = [
-    {
-      id: 1,
-      name: 'Nikhil',
-      photo: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-    },
-    {
-      id: 2,
-      name: 'Serah',
-      photo:
-        'https://i.pinimg.com/564x/a6/58/32/a65832155622ac173337874f02b218fb.jpg',
-    },
-    {
-      id: 3,
-      name: 'Jess',
-      photo:
-        'https://cdn.icon-icons.com/icons2/2643/PNG/512/female_woman_person_people_avatar_icon_159366.png',
-    },
-  ];
-
-  chatRooms = [
-    {
-      id: 1,
-      name: 'Nikhil',
-      photo: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-    },
-    {
-      id: 2,
-      name: 'Serah',
-      photo:
-        'https://i.pinimg.com/564x/a6/58/32/a65832155622ac173337874f02b218fb.jpg',
-    },
-    {
-      id: 3,
-      name: 'Jess',
-      photo:
-        'https://cdn.icon-icons.com/icons2/2643/PNG/512/female_woman_person_people_avatar_icon_159366.png',
-    },
-  ];*/
   users: any;
   conversations: any;
   userSubscribtion: any;
@@ -110,7 +64,6 @@ export class InboxPageComponent implements OnInit {
 
   constructor(private router: Router, private readonly store: Store) {}
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
     console.log('initializing');
     this.getUsers();
@@ -127,17 +80,9 @@ export class InboxPageComponent implements OnInit {
   getConversation() {
     this.setUserId();
     this.store.dispatch(new SubscribeToInbox());
-    // this.conversationSubscribtion = this.store
-    // .select(InboxState.conversations)
-    // .subscribe((x) => {
-    //   // console.log(x, 'ssssssssssssssssssssss');
-    //   // this.conversations = x;
-    // });
-    // this.conversationSubscribtion.unsubscribe();
     this.store.select(InboxState.conversations).subscribe((x) => {
       this.conversations = x;
     });
-    // this.conversations
   }
   setUserId() {
     this.store.dispatch(new GetUserId());
@@ -172,21 +117,14 @@ export class InboxPageComponent implements OnInit {
   }
 
   startChat(item: IUser) {
-    // console.log('user clicked ;)');
-    // console.log(item);
-    // this.store.dispatch(new GetConversation());
     const conversation = this.store
       .select(InboxState.conversations)
       .subscribe((x) => {
         if (x) {
           this.chatRooms = x;
         }
-        // console.log('define chatRooms');
       })
       .unsubscribe();
-    // console.log('should print conversations app user is in');
-    //console.log(this.chatRooms.map((room) => room.participants));
-    // console.log(this.chatRooms);
     let noConversation = true;
     if (this.chatRooms) {
       for (let i = 0; i < this.chatRooms.length; i++) {
@@ -196,7 +134,6 @@ export class InboxPageComponent implements OnInit {
         ) {
           this.chatRoom = this.chatRooms[i];
           noConversation = false;
-          // console.log('found the conversation!!!!!!!!!!!!!!');
           break;
         }
       }
@@ -217,9 +154,6 @@ export class InboxPageComponent implements OnInit {
           )
         )
         .unsubscribe();
-      //get members action
-      //
-      //create a new chatroom to store to firebase
       const member1: IUser = {
         id: this.user,
         email: this.email,
@@ -239,9 +173,6 @@ export class InboxPageComponent implements OnInit {
       this.member2.created = null;
 
       member1.id = this.user;
-      // console.log('give me two users');
-      //console.log([this.member2,member1]);
-
       this.store.dispatch(new CreateConversation([member1, this.member2]));
       const newConversation = this.store
         .select(InboxState.currentConversation)
@@ -250,9 +181,6 @@ export class InboxPageComponent implements OnInit {
         })
         .unsubscribe();
     }
-    // console.log(
-    //   'should print conversation clicked user and current user is in'
-    // );
     console.log(this.chatRoom, ' this.chatroom');
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
     if (this.chatRoom) {
@@ -265,29 +193,6 @@ export class InboxPageComponent implements OnInit {
       ]);
     }
     this.cancel();
-    /*this.store.select(InboxState.currentConversation).subscribe((x) => {
-      console.log("should print current conversation");
-      console.log(x);
-    });*/
-    /*this.store.dispatch(new CreateConversation())
-    const conversations = this.store.select(InboxState.conversation).subscribe((x) => {
-      if (x) {
-        this.chatRooms.push({ id1: x[0].members.id; id2:  ; name:  ; photo: null });
-      }
-      
-    });*/
-    /*if (this.chatRooms) {
-      for (let i = 0; i < this.chatRooms.length; i++) {
-        if (this.chatRooms[i]) {
-          
-        }
-        
-      }
-    }*/
-
-    //this.router.navigate(['/chats']);
-    // console.log(item); // has selected user {id: , displayName: , photoURL}
-    //1. TODO list all users
   }
 
   getChat(item: any) {
@@ -301,9 +206,6 @@ export class InboxPageComponent implements OnInit {
       this.chatRoom.conversationID,
     ]);
     this.cancel();
-    //this.router.navigate(['/', 'inbox', 'chats', item?.id]);
-    //TODO make the conversation the current conversation and display all prev texts
-    // this.router.navigate(['/home/inbox']);
   }
   toDateTime(secs: any) {
     const t = new Date(secs * 1000);
@@ -319,7 +221,6 @@ export class InboxPageComponent implements OnInit {
     if (t.getDate() == yesterday.getDate()) return 'Yesterday';
     if (t.getDate() < yesterday.getDate()) return t.toDateString();
 
-    // t.setSeconds(secs * 1000);
     return t;
   }
 }
