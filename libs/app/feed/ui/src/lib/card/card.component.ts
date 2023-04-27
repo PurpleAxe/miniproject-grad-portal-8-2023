@@ -2,7 +2,13 @@ import { Component, Input } from '@angular/core';
 import { LikePost, fetchComments} from '@mp/app/feed/util';
 import { DislikePost} from '@mp/app/feed/util';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+
+
+import { IProfile } from '@mp/api/profiles/util';
+import { ProfileState } from '@mp/app/profile/data-access';
+import { SubscribeToProfile } from '@mp/app/profile/util';
 
 @Component({
   selector: 'card',
@@ -10,6 +16,8 @@ import { Store } from '@ngxs/store';
   styleUrls: ['./card.component.scss'],
 })
 export class CardComponent {
+  @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  profile!:IProfile;
   @Input() content!: any;
   @Input() text!: string;
   @Input() profileUrl!:string;
@@ -32,53 +40,69 @@ export class CardComponent {
   commentNum = 0;
 
   Like(){
-    const payload={
-      postId: this.postId,
-      userId: this.userId
-    }
-    if (this.isDisliked){
-      //remove dislike
-      this.store.dispatch(new DislikePost(payload));
-      this.isDisliked = !this.isDisliked;
-      this.dislikeNum--;
-    }
-    if (this.isLiked){
-      this.isLiked = !this.isLiked;
-      this.likeNum--;
-      return;
-    }
-    this.isLiked = !this.isLiked;
-    this.likeNum++;
-    //add like
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile){
+        this.profile = profile;
+        const payload={
+          postId: this.postId,
+          userId: this.profile.userId
+        }
+        if (this.isDisliked){
+          //remove dislike
+          this.store.dispatch(new DislikePost(payload));
+          this.isDisliked = !this.isDisliked;
+          this.dislikeNum--;
+        }
+        this.isLiked = !this.isLiked;
+        if (this.isLiked){
+          this.likeNum--;
+        }
+        else {
+          this.likeNum++;
+        }
 
-    this.store.dispatch(new LikePost(payload));
-    console.log("Like button: " + this.likeNum);
-
+        //add like
+    
+        this.store.dispatch(new LikePost(payload));
+        console.log("Like button: " + this.likeNum);
+    
+      }
+    });
+    
   }
   Dislike(){
-    const payload={
-      postId: this.postId,
-      userId: this.userId
-    }
-    if (this.isLiked){
-      //remove like
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile){
+      this.profile = profile;
+      const payload={
+        postId: this.postId,
+        userId: this.profile.userId
+      }
+      if (this.isLiked){
+        //remove like
 
-      this.store.dispatch(new LikePost(payload));
-      this.isLiked = !this.isLiked;
-      this.likeNum--;
-    }
-    if (this.isDisliked){
+        this.store.dispatch(new LikePost(payload));
+        this.isLiked = !this.isLiked;
+        this.likeNum--;
+      }
       this.isDisliked = !this.isDisliked;
-      this.dislikeNum--;
-      return;
-    }
-    this.isDisliked = !this.isDisliked;
-    this.dislikeNum++;
-    //add dislike
+      if (this.isDisliked){
+        this.dislikeNum--;
+      }
+      else {
+        this.dislikeNum++;
+      }
 
-    this.store.dispatch(new DislikePost(payload));
-    console.log("Dislike button: " + this.likeNum);
-  }
+      //add dislike
+
+      this.store.dispatch(new DislikePost(payload));
+      console.log("Dislike button: " + this.likeNum);
+      
+    }
+  });
+}
   Comment(){
     console.log("Comment button");
     this.store.dispatch(new fetchComments({postId:this.postId,ownerId:this.userName}));
