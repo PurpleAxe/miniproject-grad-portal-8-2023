@@ -17,47 +17,64 @@ export class SearchApi {
     private readonly functions: Functions
   ) {}
 
-  async searchOnFront(request: ISearchRequest) {
-    // return collection('User').get().toPromise();
+  // async searchOnFront(request: ISearchRequest) {
+  //   // return collection('User').get().toPromise();
 
-    const db = getFirestore();
+  //   const db = getFirestore();
 
-    console.log('--------------------------------------------');
-    const field = request.search.field;
-    const keyword = request.search.keyword;
-    if (field && keyword) {
-      console.log(field,keyword,' got field and keyword')
-      const testa = await getDocs(
-        query(collection(db, 'users'), where(field, '==', keyword))
-      ).then((snap) => snap.docs.map((doc) => doc.data()));
-      console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-      console.log(testa);
-      const res: ISearchResponse = {
-        search: {
-          field: request.search.field,
-          keyword: request.search.keyword,
-          searchResults: testa,
-        },
-      };
-      return res.search;
-    }
-    console.log('field && keyword empty');
-    const res: ISearchResponse = {
-      search: {
-        field: request.search.field,
-        keyword: request.search.keyword,
-        searchResults: [],
-      },
-    };
-    return res;
-  }
+  //   console.log('--------------------------------------------');
+  //   const field = request.search.field;
+  //   const keyword = request.search.keyword;
+  //   if (field && keyword) {
+  //     console.log(field,keyword,' got field and keyword')
+  //     const testa = await getDocs(
+  //       query(collection(db, 'users'), where(field, '==', keyword))
+  //     ).then((snap) => snap.docs.map((doc) => doc.data()));
+  //     console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+  //     console.log(testa);
+  //     const res: ISearchResponse = {
+  //       search: {
+  //         field: request.search.field,
+  //         keyword: request.search.keyword,
+  //         searchResults: testa,
+  //       },
+  //     };
+  //     return res.search;
+  //   }
+  //   console.log('field && keyword empty');
+  //   const res: ISearchResponse = {
+  //     search: {
+  //       field: request.search.field,
+  //       keyword: request.search.keyword,
+  //       searchResults: [],
+  //     },
+  //   };
+  //   return res;
+  // }
 
-  async search(request: ISearchRequest) {
+  async searchUsers(request: ISearchRequest) {
     console.log('lets go');
     console.log(request);
-    return await httpsCallable<ISearchRequest, ISearchResponse>(
+    return await httpsCallable<
+    ISearchRequest, 
+    ISearchResponse
+    >
+    (
       this.functions,
-      'search'
+      'searchUsers'
+    )(request);
+  }
+
+  async searchPosts(request: ISearchRequest) {
+    console.log('lets go');
+    console.log(request);
+    return await httpsCallable<
+    ISearchRequest, 
+    ISearchResponse
+    >
+    (
+      this.functions,
+      'searchPosts'
     )(request);
   }
 }
