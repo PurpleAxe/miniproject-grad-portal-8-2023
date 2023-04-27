@@ -4,6 +4,7 @@ import {
   UpdateCommentsCommand,
 } from '@mp/api/comments/util';
 import { Comments } from '../models';
+import { PostsRepository } from '@mp/api/post/data-access';
 import { CommentsRepository } from '@mp/api/comments/data-access';
 
 @CommandHandler(UpdateCommentsCommand)
@@ -21,11 +22,12 @@ export class UpdateCommentsHandler
 
   async execute(command: UpdateCommentsCommand) {
     const request = command.request;
-    const postsArray = await this.commentsRepository;
-
-    // const post = this.publisher.mergeObjectContext(Comments.fromData(data));
-    // var response: IUpdateCommentsResponse = {feed: {user: request.feed.user, posts: postsArray}};
-    var response: IUpdateCommentsResponse = {comments: []};
+    const post = this.publisher.mergeObjectContext(Comments.fromData(request.comment));
+    post.updateComment();
+    post.commit();
+    
+    var commentsArray = await this.commentsRepository.search_for("userId", command.request.comment.userID , "comment");
+    var response: IUpdateCommentsResponse = {comments: commentsArray};
     return response;
   }
 }
