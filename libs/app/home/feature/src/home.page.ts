@@ -24,6 +24,10 @@ export class HomePage implements OnInit {
   iconColor: any;
   shared = new SharedPageComponent(new AlertController);
 
+  timestr: any;
+
+  time: number;
+
   constructor(
     private router: Router,
     private readonly store: Store,
@@ -33,6 +37,24 @@ export class HomePage implements OnInit {
     this.profile$.subscribe((profile)=>{
       console.log(profile);
     });
+
+    const referenceDate = Date.parse('04/25/2023 12:00:30') / 1000;
+
+
+    this.time =referenceDate - Math.floor(Date.now() / 1000) ;
+    this.authProfile$.subscribe((var2) => {
+      if (var2) {
+        if (var2.email) {
+          this.displayName = var2.email?.substring(
+            0,
+            var2.email.indexOf('@')
+          );
+        }
+      }
+    });
+    // const referenceDate = Date.parse('05/24/2023 22:59:30')/1000;
+    // this.time=referenceDate-Math.floor(Date.now()/1000);
+    // console.log(this.time);
   }
 
   ngOnInit() {
