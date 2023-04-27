@@ -25,7 +25,10 @@ export class Profile extends AggregateRoot implements IProfile {
     public addressDetails?: IAddressDetails | null | undefined,
     public occupationDetails?: IOccupationDetails | null | undefined,
     public status?: ProfileStatus | null | undefined,
-    public created?: FirebaseFirestore.Timestamp | null | undefined
+    public created?: FirebaseFirestore.Timestamp | null | undefined,
+    public likedPosts?: string[] | null | undefined,
+    public DislikedPosts?: string[] | null | undefined,
+    public posts?: string[] | null | undefined,
   ) {
     super();
   }
@@ -45,6 +48,7 @@ export class Profile extends AggregateRoot implements IProfile {
   }
 
   create() {
+    this.posts = [];
     this.apply(new ProfileCreatedEvent(this.toJSON()));
   }
 
@@ -236,6 +240,9 @@ export class Profile extends AggregateRoot implements IProfile {
       occupationDetails: this.occupationDetails,
       status: this.status,
       created: this.created,
+      likedPosts: this.likedPosts,
+      dislikedPosts: this.DislikedPosts,
+      posts: this.posts
     };
   }
 }

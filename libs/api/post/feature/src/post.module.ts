@@ -1,4 +1,4 @@
-import { ProfilesModule as ProfilesDataAccessModule } from '@mp/api/profiles/data-access';
+import { ProfilesModule as ProfilesDataAccessModule, ProfilesModule } from '@mp/api/profiles/data-access';
 import { UsersModule } from '@mp/api/users/data-access';
 import { PostModule as PostDataAccesModule} from '@mp/api/post/data-access';
 import { Module } from '@nestjs/common';
@@ -31,7 +31,7 @@ export const EventHandlers = [
 ];
 
 @Module({
-  imports: [CqrsModule, PostDataAccesModule, ProfilesDataAccessModule, UsersModule],
+  imports: [CqrsModule, PostDataAccesModule, ProfilesDataAccessModule, UsersModule, ProfilesModule],
   providers: [
     PostService,
     ...CommandHandlers,
