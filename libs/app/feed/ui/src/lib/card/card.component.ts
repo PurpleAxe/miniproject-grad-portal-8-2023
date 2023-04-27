@@ -3,6 +3,12 @@ import { LikePost} from '@mp/app/feed/util';
 import { DislikePost} from '@mp/app/feed/util';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+
+
+import { IProfile } from '@mp/api/profiles/util';
+import { ProfileState } from '@mp/app/profile/data-access';
+import { SubscribeToProfile } from '@mp/app/profile/util';
 
 @Component({
   selector: 'card',
@@ -10,6 +16,8 @@ import { Select, Store } from '@ngxs/store';
   styleUrls: ['./card.component.scss'],
 })
 export class CardComponent {
+  @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  profile!:IProfile;
   @Input() content!: any;
   @Input() text!: string;
   @Input() profileUrl!:string;
@@ -31,28 +39,34 @@ export class CardComponent {
   commentNum = 0;
 
   Like(){
-    const payload={
-      postId: this.postId,
-      userId: this.userId
-    }
-    if (this.isDisliked){
-      //remove dislike
-      this.store.dispatch(new DislikePost(payload));
-      this.isDisliked = !this.isDisliked;
-      this.dislikeNum--;
-    }
-    if (this.isLiked){
-      this.isLiked = !this.isLiked;
-      this.likeNum--;
-      return;
-    }
-    this.isLiked = !this.isLiked;
-    this.likeNum++;
-    //add like
-
-    this.store.dispatch(new LikePost(payload));
-    console.log("Like button: " + this.likeNum);
-
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile){
+        this.profile = profile;
+        const payload={
+          postId: this.postId,
+          userId: this.profile.userId
+        }
+        if (this.isDisliked){
+          //remove dislike
+          this.store.dispatch(new DislikePost(payload));
+          this.isDisliked = !this.isDisliked;
+          this.dislikeNum--;
+        }
+        if (this.isLiked){
+          this.isLiked = !this.isLiked;
+          this.likeNum--;
+        }
+        this.isLiked = !this.isLiked;
+        this.likeNum++;
+        //add like
+    
+        this.store.dispatch(new LikePost(payload));
+        console.log("Like button: " + this.likeNum);
+    
+      }
+    });
+    
   }
   Dislike(){
     const payload={
