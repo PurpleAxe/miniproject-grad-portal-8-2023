@@ -51,9 +51,6 @@ firestore-debug.log
 ui-debug.log
 pubsub-debug.log
 
-# Emulators
-.emulators
-
 # Keys
 .keys/*.json
 
