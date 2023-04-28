@@ -13,7 +13,7 @@ export class SearchPostsCommandHandler
     ) {}
   async execute(command: SearchPostsCommand) {
     const request = command.request.search;
-    var searchResult = await this.searchRepository.search_for(request.field, request.field, "post");
+    var searchResult = await this.searchRepository.search_for(request.field, request.keyword, "post");
     var userObject = null;
     if(searchResult.length < 0) {
       var userQuery = await this.searchRepository.search_for("userId", searchResult[0].userId, "profiles");

@@ -13,7 +13,7 @@ export class SearchUsersCommandHandler
     ) {}
   async execute(command: SearchUsersCommand) {
     const request = command.request.search;
-    var searchResult = await this.searchRepository.search_for(request.field, request.field, "profiles");
+    var searchResult = await this.searchRepository.search_for(request.field, request.keyword, "profiles");
     console.log(searchResult)
     var response: ISearchResponse = {search: {keyword: request.keyword, field: request.field, searchResults: searchResult}}
     return response;
