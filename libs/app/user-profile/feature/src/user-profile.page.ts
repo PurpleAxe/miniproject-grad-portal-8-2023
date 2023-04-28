@@ -135,28 +135,28 @@ export class UserProfilePageComponent implements OnInit{
       // if (profile.timeLeft?.seconds-Timestamp.now().seconds<=0){
       //   this.presentAlert();
       // }
-      this.secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
-      return this.secondsString;
+      // this.secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
+      return seconds;
     }
-    return '00 s';
+    return 0;
    }
 
    getMinutes(profile: IProfile){
     if (profile.timeLeft?.seconds!=undefined){
       const minutes = Math.floor(((profile.timeLeft?.seconds-Timestamp.now().seconds)%3600)/60);
-      this.minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
-      return this.minutesString;
+      // this.minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
+      return minutes;
     }
-    return '00 mins';
+    return 0;
    }
 
    getHours(profile: IProfile){
     if (profile.timeLeft?.seconds!=undefined){
       const hours = Math.floor((profile.timeLeft?.seconds-Timestamp.now().seconds)/3600);
-      this.hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
-      return this.hoursString;
+      // this.hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
+      return hours;
     }
-    return '00 hrs';
+    return 0;
    }
 
   customCounterFormatter(inputLength: number, maxLength: number) {

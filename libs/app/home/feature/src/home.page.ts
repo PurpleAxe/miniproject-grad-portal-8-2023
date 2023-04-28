@@ -51,19 +51,6 @@ export class HomePage implements OnInit {
     });
 
 
-
-    this.userProfile$.subscribe(userProfile => {
-      if (userProfile) {
-        this.hrsTime = this.getHours(userProfile);
-        this.minutesTime = this.getMinutes(userProfile);
-        this.secondsTime = this.getSeconds(userProfile);
-      }
-    });
-
-    this.hoursString = `${this.hrsTime < 10 ? '0' : ''}${this.hrsTime} hrs`;
-    this.minutesString = `${this.minutesTime < 10 ? '0' : ''}${this.minutesTime} mins`;
-    this.secondsString = `${this.secondsTime < 10 ? '0' : ''}${this.secondsTime} s`;
-
     this.authProfile$.subscribe((var2) => {
       if (var2) {
         if (var2.email) {

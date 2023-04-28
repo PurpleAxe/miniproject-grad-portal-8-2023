@@ -1,3 +1,5 @@
+<ng-container *ngIf="$any(userProfile$ | async) as userProfile;">
+
 <ion-header id="navbar">
   <ion-toolbar>
 
@@ -61,9 +63,9 @@
 
       <ion-item style="display: block; margin: 0; padding: 0; ">
         <div style="width: auto; display: flex; border-radius: 24px; border: 1px solid black; padding: 10px; background-color: var(--ion-color-warning-shade); margin-top: 15px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3); width: 500px;" class="ion-text-center">
-          <div id="hoursM" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{ hoursString }}</div>
-          <div id="minutesM" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{ minutesString }}</div>
-          <div id="sesM" style="flex: 1; text-align: center; color: black;">{{ secondsString }}</div>
+          <div id="hoursM" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{getHours(userProfile)}} hrs</div>
+          <div id="minutesM" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{getMinutes(userProfile)}} mins</div>
+          <div id="sesM" style="flex: 1; text-align: center; color: black;">{{getSeconds(userProfile)}} s</div>
         </div>
       </ion-item>
       
@@ -123,3 +125,4 @@
   </ion-segment>
   </ion-toolbar>
 </ion-footer>
+</ng-container>
