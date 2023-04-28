@@ -1,6 +1,7 @@
-import { IComment } from '@mp/api/post/util';
+import { IComment } from '@mp/api/comments/util';
 import { IPost } from '@mp/api/post/util';
 import { Injectable } from '@nestjs/common';
+import {Timestamp} from "firebase-admin/firestore";
 import * as admin from 'firebase-admin';
 
 @Injectable()
@@ -28,6 +29,8 @@ export class PostsRepository {
   }
 
   async postComment(comment : IComment):Promise<IComment>{
+    console.log("comment.postID")
+    console.log(comment.postID)
     const postRef = admin
       .firestore()
       .collection("post")
@@ -40,7 +43,7 @@ export class PostsRepository {
     const commentToInsert : IComment = {
       userID : comment.userID,
       text : comment.text,
-      timestamp : admin.firestore.Timestamp.now(),
+      timestamp : comment.timestamp,
       commentID : docRef.id,
       postID : comment.postID
     }

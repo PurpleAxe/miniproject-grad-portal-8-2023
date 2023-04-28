@@ -25,6 +25,7 @@ export class CardComponent {
   @Input() userName!:string;
   @Input() likeNum = 0;
   @Input() dislikeNum = 0;
+  @Input() commentNum = 0;
   // @Input() postId = "POST ID"; //would I store the postId here so I know what post was liked?
   // userId = "USER ID";
   @Input() challenge!:string;
@@ -37,7 +38,7 @@ export class CardComponent {
   
   isLiked = false;
   isDisliked = false;
-  commentNum = 0;
+ 
 
   Like(){
     this.store.dispatch(new SubscribeToProfile());

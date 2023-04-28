@@ -34,24 +34,25 @@ export class FeedPage implements OnInit {
   feedPost:IPost[]=[];
 
   constructor(private router: Router,private readonly store: Store){
-    this.LHome = true;
-    this.LDiscovery = false;
-    this.store.dispatch(new SubscribeToProfile());
-    this.profile$.subscribe((profile) => {
-      if(profile){
-        this.profile = profile;
-        const payload={
-          uid:this.profile.userId
-        };
-        this.store.dispatch(new FetchHomeFeed(payload));
-        this.post$.subscribe((posts) => {
-          if(posts != null){
-            this.feedPost = posts;
-            console.table(this.feedPost);
-          }
-        });
-      }
-    });
+    // this.LHome = true;
+    // this.LDiscovery = false;
+    // this.store.dispatch(new SubscribeToProfile());
+    // this.profile$.subscribe((profile) => {
+    //   if(profile){
+    //     this.profile = profile;
+    //     const payload={
+    //       uid:this.profile.userId
+    //     };
+    //     this.store.dispatch(new FetchHomeFeed(payload));
+    //     this.post$.subscribe((posts) => {
+    //       if(posts != null){
+    //         this.feedPost = posts;
+    //         console.table(this.feedPost);
+    //       }
+    //     });
+    //   }
+    // });
+    this.homet();
   }
 
   ngOnInit(): void {
@@ -62,7 +63,6 @@ export class FeedPage implements OnInit {
   Discoveryt(){
     this.LHome = false;
     this.LDiscovery = true;
-    console.log("Discovery");
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
       if(profile){
@@ -77,9 +77,8 @@ export class FeedPage implements OnInit {
         });
       }
     });
+    // this.store.dispatch(new FetchDiscoveryFeed({uid:""}));
     this.displayFeed();
-    // this.contentArr.push("the_element");
-
   }
 
   homet(){
@@ -103,6 +102,8 @@ export class FeedPage implements OnInit {
         });
       }
     });
+    // this.store.dispatch(new FetchHomeFeed({uid:""}));
+
     this.displayFeed();
   }
 

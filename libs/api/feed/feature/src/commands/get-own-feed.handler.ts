@@ -23,6 +23,7 @@ export class GetOwnFeedHandler
   async execute(command: GetOwnFeedCommand) {
     const request = command.request;
     // const postsArray = await this.feedRepository.getHomeFeed(request.feed);
+    console.log(request.feed)
     const postsArray = await this.feedRepository.getOwnFeed(request.feed);
 
     var response: IGetOwnFeedResponse = {feed: {user: request.feed.user, posts: postsArray}};

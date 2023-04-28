@@ -59,6 +59,7 @@ export class UserProfilePageComponent implements OnInit {
       });
     }
   });
+    // this.store.dispatch(new FetchOwnPosts({uid:""}));
     this.displayOwnPosts();
   }
   formatDateFromNanoseconds(seconds: number, nanoseconds: number): string {

@@ -50,7 +50,8 @@ export class PostPageComponent {
       body: this.body,
       department:this.department,
       challenge:this.challenge,
-      userId:this.uid
+      userId:this.uid,
+      timestamp:Timestamp.fromDate(new Date())
     }
     this.store.dispatch(new CreatePost(payload));
 
