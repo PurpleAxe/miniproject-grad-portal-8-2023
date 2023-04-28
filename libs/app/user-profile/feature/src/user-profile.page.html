@@ -17,7 +17,7 @@
           </ion-button>
           
         </ion-card-title>
-        <ion-card-subtitle id="prof-usrname" style="font-size: larger;">{{userProfile.accountDetails.displayName}}</ion-card-subtitle>
+        <ion-card-subtitle id="prof-usrname" style="font-size: larger;">@{{userProfile.username}}</ion-card-subtitle>
         <ion-card-subtitle id="uni" color="dark" style="font-size: larger;">{{userProfile.university}}</ion-card-subtitle>
         <ion-card-subtitle id="dept" color="dark" style="font-size: larger;">{{userProfile.department}}</ion-card-subtitle>
       </ion-card-header>
@@ -76,7 +76,7 @@
       <ion-card-header style="padding-left: 5px; padding-bottom: 10px;">
         <ion-card-title id="post-name" style="margin-right: 0;">{{userProfile.accountDetails.displayName}}</ion-card-title>
         <div style="display: inline-block;">
-          <ion-card-subtitle id="post-username" style="font-size: larger;">@{{ userName }}</ion-card-subtitle>
+          <ion-card-subtitle id="post-username" style="font-size: larger;">@{{userProfile.username}}</ion-card-subtitle>
           <ion-card-subtitle id="post-date" style="font-size: small; margin-top: 3px;">5 Mar 23</ion-card-subtitle>
         </div>
       </ion-card-header>
@@ -118,9 +118,9 @@
       </ion-avatar>
       
       <ion-card-header style="padding-left: 5px; padding-bottom: 10px;">
-        <ion-card-title id="post-name" style="margin-right: 0;">{{ displayName }}</ion-card-title>
+        <ion-card-title id="post-name" style="margin-right: 0;">{{userProfile.accountDetails.displayName}}</ion-card-title>
         <div style="display: inline-block;">
-          <ion-card-subtitle id="post-username" style="font-size: larger;">@{{ userName }}</ion-card-subtitle>
+          <ion-card-subtitle id="post-username" style="font-size: larger;">@{{userProfile.username}}</ion-card-subtitle>
           <ion-card-subtitle id="post-date" style="font-size: small; margin-top: 3px;">7 Apr 23</ion-card-subtitle>
         </div>
       </ion-card-header>
