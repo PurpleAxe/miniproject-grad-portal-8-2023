@@ -11,4 +11,5 @@ export interface IPost{
     created?: Timestamp | null | undefined;
     challenge?: string;
     department?: string;
+    userName?: string | null | undefined;
 }

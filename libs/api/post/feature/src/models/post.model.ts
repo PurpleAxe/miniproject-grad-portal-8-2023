@@ -5,9 +5,11 @@ import {Timestamp} from "firebase-admin/firestore";
 import {UsersRepository} from "@mp/api/users/data-access";
 import {randomUUID} from "crypto";
 import {log} from "console";
+import {ProfilesRepository} from "@mp/api/profiles/data-access";
 
 export class PostModel extends AggregateRoot implements IPost {
   private readonly repository : UsersRepository = new UsersRepository();
+  private readonly profilesRepository : ProfilesRepository = new ProfilesRepository();
   constructor(
     public postId: string | null | undefined,
     public userId: string,
@@ -17,7 +19,8 @@ export class PostModel extends AggregateRoot implements IPost {
     public comments?: IComment[] | null | undefined,
     public created?: Timestamp | null | undefined,
     public challenge?: string,
-    public department?: string
+    public department?: string,
+    public userName?:string | null | undefined
     ) {
     super();
   }
@@ -41,6 +44,7 @@ export class PostModel extends AggregateRoot implements IPost {
     if (!(await this.repository.doesUserExist({"id" :this.userId}))) {
       throw Error("User attempting to make a post does not exist");
     }
+    this.userName ? this.userName: this.userName = await this.profilesRepository.findOne({userId:this.userId}).then((profile)=>{return profile.data()?.accountDetails?.displayName})
     this.postId = Timestamp.now().nanoseconds + randomUUID();
     log("Made it")
     return this.apply(new PostCreatedEvent(this.toJSON()));
@@ -76,7 +80,8 @@ export class PostModel extends AggregateRoot implements IPost {
       comments: this.comments,
       created: this.created,
       challenge: this.challenge,
-      department: this.department
+      department: this.department,
+      userName: this.userName
     };
   }
 
