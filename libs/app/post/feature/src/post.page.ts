@@ -8,6 +8,7 @@ import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { SubscribeToProfile } from '@mp/app/profile/util';
 import { Observable } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 
 
 
@@ -27,7 +28,7 @@ export class PostPageComponent {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   
 
-  constructor(private router: Router, private readonly store: Store) { 
+  constructor(private router: Router, private readonly store: Store, public alertController: AlertController) { 
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
       if(profile != null)
@@ -41,8 +42,16 @@ export class PostPageComponent {
 
   uploadPost(){
 
-    if(!/\S/.test(this.body) && !!/\S/.test(this.department) && !/\S/.test(this.challenge))
-      return;//should challenge and department be optional?
+
+    if(this.body == "" || this.department == "" || this.challenge == ""){
+      this.emptyResponseAlert();
+      return;
+    }
+    // if(/\S/.test(this.body) || /\S/.test(this.department)){
+    //   this.whitespaceAlert();
+    //   return;
+    // }
+    
 
 
       
@@ -56,5 +65,25 @@ export class PostPageComponent {
     this.store.dispatch(new CreatePost(payload));
 
     this.router.navigate(['/home/userprofile']);
+  }
+
+  async emptyResponseAlert() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Please fill in all the fields',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+
+  async whitespaceAlert() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Ensure you have no spaces in Challenge or Department fields',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 }
