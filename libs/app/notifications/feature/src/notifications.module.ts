@@ -4,15 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NotificationsPageRoutingModule } from './notifications-routing.module';
 import { NotificationsPageComponent } from './notifications.page';
-import {NotificationsModule as NotificationsDataAccessModule} from '@mp/app/notifications/data-access';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    NotificationsPageRoutingModule,
-    NotificationsDataAccessModule
+    NotificationsPageRoutingModule
   ],
   declarations: [NotificationsPageComponent],
   exports: [NotificationsPageComponent],

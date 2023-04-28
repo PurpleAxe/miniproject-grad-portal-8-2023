@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Input, OnInit } from '@angular/core';
-import { IMessage } from '@mp/api/message/util';
 
 @Component({
   selector: 'app-chat-box',
@@ -9,7 +8,7 @@ import { IMessage } from '@mp/api/message/util';
 })
 export class ChatBoxComponent implements OnInit {
 
-  @Input() chat!: IMessage;
+  @Input() chat!: any;
   @Input() current_user_id!: any;
 
   constructor() {
