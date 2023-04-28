@@ -1,7 +1,0 @@
-{
-  "projects": {
-    "default": "timehive-29588",
-    "production": "timehive-29588",
-    "development": "timehive-29588"
-  }
-}

@@ -69,7 +69,7 @@ yarn nx generate @nrwl/js:library util --unitTestRunner=jest --directory=app/err
 yarn nx generate @nrwl/js:library ui --unitTestRunner=jest --directory=app/copyright --no-interactive
 
 # VERSION
-yarn nx generate @nrwl/js:library ui --unitTestRunner=jest --directory=app/shared --no-interactive
+yarn nx generate @nrwl/js:library ui --unitTestRunner=jest --directory=app/version --no-interactive
 
 # AUTH
 yarn nx generate @nrwl/js:library feature --unitTestRunner=jest --directory=app/auth --no-interactive
