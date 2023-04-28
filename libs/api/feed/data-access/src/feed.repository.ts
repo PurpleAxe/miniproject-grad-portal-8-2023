@@ -1,6 +1,7 @@
 import { IFeed } from '@mp/api/feed/util';
 import { IPost } from '@mp/api/post/util';
 import { Injectable } from '@nestjs/common';
+import {log} from 'console';
 import * as admin from 'firebase-admin';
 
 @Injectable()
@@ -59,21 +60,25 @@ export class FeedRepository {
         if(postObject != null)
           posts.push(postObject);
       }
-      
+
       return posts;
   }
 
   async getOwnFeed(feed: IFeed): Promise<IPost[]> {
-    var user = await this.get_document(feed.user.userId, "profiles");
-    var posts = [];
-    if(user != null && "posts" in user)
-    for(var postId of user.posts) {
-      const post = await this.get_document(postId, "post");
-      if(post != null)
-      posts.push(post);
-    }
-    
-    return posts;
+    return admin
+      .firestore()
+      .collection("post")
+      .where("userId", "==", feed.user.userId)
+      .get().then((Snapshot) => {
+        log("Run")
+        log(feed)
+        const posts: IPost[] = Snapshot.docs.map((docs) => {
+          log(docs.data())
+          return docs.data() as IPost;
+        })
+        log(posts);
+        return posts;
+      })
   }
 
   async shuffleArray(array) {
