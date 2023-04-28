@@ -29,31 +29,13 @@ export class UserProfilePageComponent implements OnInit{
   bannerURL = "assets/images/placeholder.jpg";
   displayName : any;
   userName : any;
-  hrsTime:any;
-  minutesTime:any;
-  secondsTime:any;
-  hoursString:any;
-  minutesString:any;
-  secondsString:any;
 
   constructor(private router: Router,private readonly store: Store,private renderer: Renderer2, private alertController: AlertController) {
 
     this.shared = new SharedPageComponent(new AlertController, store);
 
-    // this.userProfile$.subscribe(userProfile => {
-    //   if (userProfile) {
-    //     this.hrsTime = this.getHours(userProfile);
-    //     this.minutesTime = this.getMinutes(userProfile);
-    //     this.secondsTime = this.getSeconds(userProfile);
-    //   }
-    // });
-  
-
-
-    // this.hoursString = `${this.hrsTime < 10 ? '0' : ''}${this.hrsTime} hrs`;
-    // this.minutesString = `${this.minutesTime < 10 ? '0' : ''}${this.minutesTime} mins`;
-    // this.secondsString = `${this.secondsTime < 10 ? '0' : ''}${this.secondsTime} s`;
-
+    this.shared.calculateTimeDifference();
+    this.shared.decreaseTime('hours', 'minutes', 'ses');
 
     this.profile$.subscribe((profile)=>{
       console.log(profile);
@@ -81,34 +63,12 @@ export class UserProfilePageComponent implements OnInit{
 
       
     });
-
-    // if (this.time <= 0 || isNaN(this.time)) {
-    //   console.log('The time has reached zero!');
-    //   this.presentAlert();
-    // }
    }
 
-   async presentAlert() {
-    const alert = await this.alertController.create({
-    header: 'Time Out!',
-    subHeader: 'Your time has run out.',
-    message: 'You have run out of time. Your account is no longer in use.',
-    buttons: [{
-    text: 'LOGOUT',
-    handler: () => {
-    this.logout();
-    }
-    }],
-    backdropDismiss: false // prevent dismissing by clicking outside of the alert
-    });
-
-    await alert.present();
-  }
-
-   logout() {
-    // this.popover.dismiss();
-    this.store.dispatch(new Logout());
-  }
+  //  logout() {
+  //   // this.popover.dismiss();
+  //   this.store.dispatch(new Logout());
+  // }
 
   //  async presentAlert() {
   //   const alert = await this.alertController.create({
@@ -135,7 +95,6 @@ export class UserProfilePageComponent implements OnInit{
       // if (profile.timeLeft?.seconds-Timestamp.now().seconds<=0){
       //   this.presentAlert();
       // }
-      // this.secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
       return seconds;
     }
     return 0;
@@ -144,7 +103,6 @@ export class UserProfilePageComponent implements OnInit{
    getMinutes(profile: IProfile){
     if (profile.timeLeft?.seconds!=undefined){
       const minutes = Math.floor(((profile.timeLeft?.seconds-Timestamp.now().seconds)%3600)/60);
-      // this.minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
       return minutes;
     }
     return 0;
@@ -153,7 +111,6 @@ export class UserProfilePageComponent implements OnInit{
    getHours(profile: IProfile){
     if (profile.timeLeft?.seconds!=undefined){
       const hours = Math.floor((profile.timeLeft?.seconds-Timestamp.now().seconds)/3600);
-      // this.hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
       return hours;
     }
     return 0;
@@ -179,6 +136,9 @@ export class UserProfilePageComponent implements OnInit{
     console.log("in ngOnInit");
     console.log(this.userProfile$);
     console.log('UserProfilePageComponent');
+    // localStorage.setItem('time', this.time.toString());
+    this.shared.calculateTimeDifference();
+    this.shared.decreaseTime('hours', 'minutes', 'ses');
   }
 
   ngOnDestroy() {
