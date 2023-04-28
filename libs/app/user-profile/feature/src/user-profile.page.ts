@@ -40,19 +40,19 @@ export class UserProfilePageComponent implements OnInit{
 
     this.shared = new SharedPageComponent(new AlertController, store);
 
-    this.userProfile$.subscribe(userProfile => {
-      if (userProfile) {
-        this.hrsTime = this.getHours(userProfile);
-        this.minutesTime = this.getMinutes(userProfile);
-        this.secondsTime = this.getSeconds(userProfile);
-      }
-    });
+    // this.userProfile$.subscribe(userProfile => {
+    //   if (userProfile) {
+    //     this.hrsTime = this.getHours(userProfile);
+    //     this.minutesTime = this.getMinutes(userProfile);
+    //     this.secondsTime = this.getSeconds(userProfile);
+    //   }
+    // });
   
 
 
-    this.hoursString = `${this.hrsTime < 10 ? '0' : ''}${this.hrsTime} hrs`;
-    this.minutesString = `${this.minutesTime < 10 ? '0' : ''}${this.minutesTime} mins`;
-    this.secondsString = `${this.secondsTime < 10 ? '0' : ''}${this.secondsTime} s`;
+    // this.hoursString = `${this.hrsTime < 10 ? '0' : ''}${this.hrsTime} hrs`;
+    // this.minutesString = `${this.minutesTime < 10 ? '0' : ''}${this.minutesTime} mins`;
+    // this.secondsString = `${this.secondsTime < 10 ? '0' : ''}${this.secondsTime} s`;
 
 
     this.profile$.subscribe((profile)=>{
@@ -135,25 +135,28 @@ export class UserProfilePageComponent implements OnInit{
       // if (profile.timeLeft?.seconds-Timestamp.now().seconds<=0){
       //   this.presentAlert();
       // }
-      return seconds;
+      this.secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
+      return this.secondsString;
     }
-    return 0;
+    return '00 s';
    }
 
    getMinutes(profile: IProfile){
     if (profile.timeLeft?.seconds!=undefined){
       const minutes = Math.floor(((profile.timeLeft?.seconds-Timestamp.now().seconds)%3600)/60);
-      return minutes;
+      this.minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
+      return this.minutesString;
     }
-    return 0;
+    return '00 mins';
    }
 
    getHours(profile: IProfile){
     if (profile.timeLeft?.seconds!=undefined){
       const hours = Math.floor((profile.timeLeft?.seconds-Timestamp.now().seconds)/3600);
-      return hours;
+      this.hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
+      return this.hoursString;
     }
-    return 0;
+    return '00 hrs';
    }
 
   customCounterFormatter(inputLength: number, maxLength: number) {
