@@ -25,7 +25,7 @@ export class SearchService {
     request: ISearchRequest
   ): Promise<ISearchResponse> {
     return await this.commandBus.execute<
-    SearchUsersCommand,
+    SearchPostsCommand,
       ISearchResponse
     >(new SearchPostsCommand(request));
   }
@@ -34,7 +34,7 @@ export class SearchService {
     request: ISearchRequest
   ): Promise<ISearchResponse> {
     return await this.commandBus.execute<
-    SearchUsersCommand,
+    SearchEventsCommand,
       ISearchResponse
     >(new SearchEventsCommand(request));
   }

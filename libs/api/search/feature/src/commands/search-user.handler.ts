@@ -18,7 +18,7 @@ export class SearchUsersCommandHandler
   async execute(command: SearchUsersCommand) {
     const request = command.request.search;
     const searchResult = await this.searchRepository.search_for(
-      request.field,
+      "userName",
       request.keyword,
       'profiles'
     );

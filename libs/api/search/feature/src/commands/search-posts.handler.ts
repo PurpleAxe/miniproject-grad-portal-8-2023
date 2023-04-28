@@ -18,7 +18,7 @@ export class SearchPostsCommandHandler
   async execute(command: SearchPostsCommand) {
     const request = command.request.search;
     const searchResult = await this.searchRepository.search_for(
-      request.field,
+      "message",
       request.keyword,
       'post'
     );

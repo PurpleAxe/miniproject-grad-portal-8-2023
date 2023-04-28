@@ -30,7 +30,8 @@ export class SearchRepository {
     const f = await admin
       .firestore()
       .collection(collection)
-      .where(key, '==', value)
+      .where(key, '>=', value)
+      .where(key, '<=', value + "\uf8ff")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
