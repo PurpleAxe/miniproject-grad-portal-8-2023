@@ -8,6 +8,7 @@ import * as admin from 'firebase-admin';
 export class FeedRepository {
 
   async getHomeFeed(feed: IFeed): Promise<IPost[]> {
+    // find where department,
     var user = await this.get_document(feed.user.userId, "profiles");
     var users = await this.get_collection("profiles");
     var posts = [];

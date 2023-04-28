@@ -18,4 +18,6 @@ export interface IProfile {
   likedPosts?: string[] | null | undefined;
   dislikedPosts?: string[] | null | undefined;
   posts?: string[] | null | undefined;
+  userDepartments?: string[];
+  challenges?: string[];
 }

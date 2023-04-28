@@ -29,6 +29,8 @@ export class Profile extends AggregateRoot implements IProfile {
     public likedPosts?: string[] | null | undefined,
     public DislikedPosts?: string[] | null | undefined,
     public posts?: string[] | null | undefined,
+    public userDepartments?: string[],
+    public challenges?: string[]
   ) {
     super();
   }
@@ -42,7 +44,9 @@ export class Profile extends AggregateRoot implements IProfile {
       profile.addressDetails,
       profile.occupationDetails,
       profile.status,
-      profile.created
+      profile.created,
+      profile.userDepartments,
+      profile.challenges
     );
     return instance;
   }
@@ -242,7 +246,9 @@ export class Profile extends AggregateRoot implements IProfile {
       created: this.created,
       likedPosts: this.likedPosts,
       dislikedPosts: this.DislikedPosts,
-      posts: this.posts
+      posts: this.posts,
+      userDepartments: this.userDepartments,
+      challenges: this.challenges
     };
   }
 }
