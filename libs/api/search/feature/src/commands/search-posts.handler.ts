@@ -25,7 +25,7 @@ export class SearchPostsCommandHandler
     let userObject = null;
     if (searchResult.length < 0) {
       const userQuery = await this.searchRepository.search_for(
-        'userId',
+        'message',
         searchResult[0].userId,
         'profiles'
       );
