@@ -3,7 +3,7 @@ import { Register as AuthRegister } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import { Register } from '@mp/app/register/util';
 import { Action, State, StateContext, Selector, Store } from '@ngxs/store';
-import { 
+import {
   fetchComments,
   sendComment,
     /*LoadFeed,*/
@@ -20,6 +20,7 @@ import { Timestamp } from '@angular/fire/firestore';
 //import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed, IGetDiscoveryFeedRequest, IGetHomeFeedRequest, IGetOwnFeedRequest } from '@mp/api/feed/util';
 import { request } from 'http';
+import {log} from 'console';
 
 export interface FeedStateModel{
 
@@ -63,7 +64,7 @@ export interface FeedStateModel{
 })
 @Injectable()
 export class FeedState {
-  constructor( 
+  constructor(
     private readonly feedApi: FeedApi,
     private readonly store: Store
   ) {}
@@ -103,12 +104,12 @@ export class FeedState {
   }
 
   @Selector()
-  static getFeedPosts(FeedStateModel:FeedStateModel){ 
+  static getFeedPosts(FeedStateModel:FeedStateModel){
       return FeedStateModel.feedPosts.posts;
   }
 
     @Selector()
-    static getUserId(FeedStateModel:FeedStateModel){ 
+    static getUserId(FeedStateModel:FeedStateModel){
         return FeedStateModel.feedPosts.user.userId;
     }
 
@@ -120,7 +121,7 @@ export class FeedState {
     // const response = await this.feedApi.fetchHomeFeed();
     console.log("FetchHomeFeed");
     const myfeed: IFeed = {
-      user:{    
+      user:{
         userId: payload.uid,
       },
       posts:[],
@@ -130,7 +131,7 @@ export class FeedState {
       feed
     }
     // const responseRef = await this.feedApi.GetHomeFeed(myFetchHomeRequest);
-    // const response = responseRef.data;  
+    // const response = responseRef.data;
       ctx.patchState({
         // feed:{
         //   model:{
@@ -151,7 +152,7 @@ export class FeedState {
   async FetchDiscoveryFeed(ctx: StateContext<FeedStateModel>, {payload}: FetchHomeFeed) {
     // const response = await this.feedApi.fetchDiscoveryFeed();
     const myfeed: IFeed = {
-      user:{    
+      user:{
         userId: payload.uid,
       },
       posts:[],
@@ -161,7 +162,7 @@ export class FeedState {
       feed
     }
     const responseRef = await this.feedApi.GetDiscoveryFeed(myFetchDiscoveryRequest);
-    const response = responseRef.data;  
+    const response = responseRef.data;
       ctx.patchState({
         // feed:{
         //   model:{
@@ -182,7 +183,7 @@ export class FeedState {
   @Action(FetchOwnPosts)
   async FetchOwnPosts(ctx: StateContext<FeedStateModel>,{payload}: FetchHomeFeed) {
     const myfeed: IFeed = {
-      user:{    
+      user:{
         userId: payload.uid,
       },
       posts:[],
@@ -192,7 +193,8 @@ export class FeedState {
       feed
     }
     const responseRef = await this.feedApi.GetOwnFeed(myFetchOwnRequest);
-    const response = responseRef.data;  
+    log(responseRef)
+    const response = responseRef;
       ctx.patchState({
         // feed:{
         //   model:{
@@ -211,12 +213,12 @@ export class FeedState {
 
 
     @Selector()
-    static getComments(FeedStateModel:FeedStateModel){ 
+    static getComments(FeedStateModel:FeedStateModel){
         return FeedStateModel.postComments;
     }
 
     @Selector()
-    static getPostsInfo(FeedStateModel:FeedStateModel){ 
+    static getPostsInfo(FeedStateModel:FeedStateModel){
         return FeedStateModel.postInfo;
     }
 
@@ -285,7 +287,7 @@ export class FeedState {
           // postComments:[comment,...state.postComments]
           postComments: [response.comments[0],...state.postComments]
         });
-  
+
       }
 
 

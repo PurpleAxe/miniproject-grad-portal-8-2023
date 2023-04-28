@@ -1,5 +1,6 @@
 import { IFeed } from '@mp/api/feed/util';
 import { IPost } from '@mp/api/post/util';
+import {IProfile} from '@mp/api/profiles/util';
 import { Injectable } from '@nestjs/common';
 import {log} from 'console';
 import * as admin from 'firebase-admin';
@@ -8,38 +9,30 @@ import * as admin from 'firebase-admin';
 export class FeedRepository {
 
   async getHomeFeed(feed: IFeed): Promise<IPost[]> {
-    // find where department,
-    var user = await this.get_document(feed.user.userId, "profiles");
-    var users = await this.get_collection("profiles");
-    var posts = [];
-    var postIds = [];
+    // find where department and challenges equal but user different
+    const users: Promise<IProfile[]> = admin
+      .firestore()
+      .collection("profiles")
+      .where("userDepartments", "in", feed.user.userDepartments)
+      .where("challenges", "in", feed.user.challenges)
+      .where("userId", "!=", feed.user.userId)
+      .get().then((Snapshot) => {
+        return Snapshot.docs.map((doc) => {
+          return doc.data() as IProfile;
+        })
+      })
+    return admin
+      .firestore()
+      .collection("posts")
+      .where("userId", "in", (await users).map((profile) => {
+        return profile.userId;
+      }))
+      .get().then((Snapshot) => {
+        return Snapshot.docs.map((doc) => {
+          return doc.data() as IPost;
+        })
+      })
 
-    if("userDepartment" in user && "challenges" in user)
-      for(var otherUser of users) {
-        if(user.userId != otherUser.userId)
-          if("userDepartment" in otherUser && "challenges" in otherUser)
-          for(var a of user.userDepartment) {
-            for(var b of otherUser.userDepartment) {
-              if(a == b)
-                if("posts" in otherUser)
-                  postIds = postIds.concat(otherUser.posts);
-            }
-          }
-            for(var a of user.challenges) {
-              for(var b of otherUser.challenges) {
-                if(a == b)
-                  if("posts" in otherUser)
-                    postIds = postIds.concat(otherUser.posts);
-              }
-          }
-      }
-
-      for(var postId of postIds) {
-        var postObject = await this.get_document(postId, "post");
-        if(postObject != null)
-          posts.push(postObject);
-      }
-      return posts;
   }
 
   async getDiscoveryFeed(feed: IFeed): Promise<IPost[]> {
