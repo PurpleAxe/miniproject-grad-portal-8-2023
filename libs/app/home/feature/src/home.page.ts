@@ -82,34 +82,34 @@ export class HomePage implements OnInit {
 
   }
 
-  getSeconds(profile: IProfile){
-    //SharedModule.se
-    if (profile.timeLeft?.seconds!=undefined){
-      const seconds = (profile.timeLeft?.seconds-Timestamp.now().seconds)%60;
-      // console.log(profile.timeLeft?.seconds-Timestamp.now().seconds);
-      // if (profile.timeLeft?.seconds-Timestamp.now().seconds<=0){
-      //   this.presentAlert();
-      // }
-      return seconds;
-    }
-    return 0;
-   }
+  // getSeconds(profile: IProfile){
+  //   //SharedModule.se
+  //   if (profile.timeLeft?.seconds!=undefined){
+  //     const seconds = (profile.timeLeft?.seconds-Timestamp.now().seconds)%60;
+  //     // console.log(profile.timeLeft?.seconds-Timestamp.now().seconds);
+  //     // if (profile.timeLeft?.seconds-Timestamp.now().seconds<=0){
+  //     //   this.presentAlert();
+  //     // }
+  //     return seconds;
+  //   }
+  //   return 0;
+  //  }
 
-   getMinutes(profile: IProfile){
-    if (profile.timeLeft?.seconds!=undefined){
-      const minutes = Math.floor(((profile.timeLeft?.seconds-Timestamp.now().seconds)%3600)/60);
-      return minutes;
-    }
-    return 0;
-   }
+  //  getMinutes(profile: IProfile){
+  //   if (profile.timeLeft?.seconds!=undefined){
+  //     const minutes = Math.floor(((profile.timeLeft?.seconds-Timestamp.now().seconds)%3600)/60);
+  //     return minutes;
+  //   }
+  //   return 0;
+  //  }
 
-   getHours(profile: IProfile){
-    if (profile.timeLeft?.seconds!=undefined){
-      const hours = Math.floor((profile.timeLeft?.seconds-Timestamp.now().seconds)/3600);
-      return hours;
-    }
-    return 0;
-   }
+  //  getHours(profile: IProfile){
+  //   if (profile.timeLeft?.seconds!=undefined){
+  //     const hours = Math.floor((profile.timeLeft?.seconds-Timestamp.now().seconds)/3600);
+  //     return hours;
+  //   }
+  //   return 0;
+  //  }
 
   async presentAlert() {
     const alert = await this.alertController.create({
