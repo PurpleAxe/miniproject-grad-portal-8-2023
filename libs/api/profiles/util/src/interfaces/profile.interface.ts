@@ -17,4 +17,9 @@ export interface IProfile {
   created?: Timestamp | null | undefined;
   likedPosts?: string[] | null | undefined;
   dislikedPosts?: string[] | null | undefined;
+  timeLeft?: Timestamp | null | undefined;
+  department?: string | null | undefined;
+  banner?: string | null | undefined;
+  bio?: string | null | undefined;
+  university?: string | null | undefined;
 }

@@ -1,0 +1,45 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button color="dark" defaultHref="/home"></ion-back-button>
+          </ion-buttons>
+      <ion-title slot="end" style="font-size: 24px;">Privacy Settings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-list>
+        <ion-item>
+        <ion-label class="ion-text-wrap">
+            <span class="ion-title-text">Activity Status</span>
+            <p>This controls whether or not other users can see your activity status.</p>
+        </ion-label>
+        <ion-toggle #ActivityToggle (ionChange)="onToggleActivity($event)" class="toggle-up"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+        <ion-label class="ion-text-wrap">
+            <span class="ion-title-text">Hide Comments</span>
+            <p>This controls whether or not other users can see comments on your posts.</p>
+        </ion-label>
+        <ion-toggle class="toggle-up" #CommentsToggle (ionChange)="onToggleComments($event)"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+        <ion-label class="ion-text-wrap">
+            <span class="ion-title-text">Hide Likes/Dislikes</span>
+            <p>This controls whether or not other users can see likes and dislikes on your posts</p>
+        </ion-label>
+        <ion-toggle class="toggle-up" #LikesDislikesToggle (ionChange)="onToggleLikesDislikes($event)"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+        <ion-label class="ion-text-wrap">
+            <span class="ion-title-text">Private Account</span>
+            <p>This controls whether or not your account is visible to other users.</p>
+        </ion-label>
+        <ion-toggle #PrivateToggle (ionChange)="onTogglePrivate($event)" class="toggle-up"></ion-toggle>
+        </ion-item>
+    </ion-list>
+  </ion-content>
+  
