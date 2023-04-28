@@ -5,4 +5,5 @@ export interface ISearch {
   keyword?: string;
   field?: string;
   searchResults?: IProfile[] | IPost[];
+  user?: IProfile | null;
 }
