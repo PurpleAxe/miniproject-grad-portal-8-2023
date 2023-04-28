@@ -15,4 +15,9 @@ export interface IProfile {
   occupationDetails?: IOccupationDetails | null | undefined;
   status?: ProfileStatus | null | undefined;
   created?: Timestamp | null | undefined;
+  timeLeft?: Timestamp | null | undefined;
+  department?: string | null | undefined;
+  banner?: string | null | undefined;
+  bio?: string | null | undefined;
+  university?: string | null | undefined;
 }
