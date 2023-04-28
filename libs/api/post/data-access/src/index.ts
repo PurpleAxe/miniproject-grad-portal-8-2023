@@ -1,3 +1,2 @@
-import exp from 'constants';
-
-export * from './tests/api-post-data-access';
+export * from './posts.repository'
+export * from './post.module'

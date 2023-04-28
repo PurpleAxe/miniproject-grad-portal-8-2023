@@ -32,6 +32,23 @@
       ],
       "@mp/api/history/feature": ["libs/api/history/feature/src/index.ts"],
       "@mp/api/history/util": ["libs/api/history/util/src/index.ts"],
+      "@mp/api/notifications/data-access": [
+        "libs/api/notifications/data-access/src/index.ts"
+      ],
+      "@mp/api/notifications/feature": [
+        "libs/api/notifications/feature/src/index.ts"
+      ],
+      "@mp/api/notifications/util": [
+        "libs/api/notifications/util/src/index.ts"
+      ],
+      "@mp/api/post/data-access": ["libs/api/post/data-access/src/index.ts"],
+      "@mp/api/post/feature": ["libs/api/post/feature/src/index.ts"],
+      "@mp/api/post/util": ["libs/api/post/util/src/index.ts"],
+      "@mp/api/message/data-access": [
+        "libs/api/message/data-access/src/index.ts"
+      ],
+      "@mp/api/message/feature": ["libs/api/message/feature/src/index.ts"],
+      "@mp/api/message/util": ["libs/api/message/util/src/index.ts"],
       "@mp/api/post/data-access": ["libs/api/post/data-access/src/index.ts"],
       "@mp/api/post/feature": ["libs/api/post/feature/src/index.ts"],
       "@mp/api/post/util": ["libs/api/post/util/src/index.ts"],
@@ -72,7 +89,9 @@
       "@mp/app/forgot/feature": ["libs/app/forgot/feature/src/index.ts"],
       "@mp/app/forgot/util": ["libs/app/forgot/util/src/index.ts"],
       "@mp/app/home/feature": ["libs/app/home/feature/src/index.ts"],
+      "@mp/app/inbox/data-access": ["libs/app/inbox/data-access/src/index.ts"],
       "@mp/app/inbox/feature": ["libs/app/inbox/feature/src/index.ts"],
+      "@mp/app/inbox/util": ["libs/app/inbox/util/src/index.ts"],
       "@mp/app/login/data-access": ["libs/app/login/data-access/src/index.ts"],
       "@mp/app/login/feature": ["libs/app/login/feature/src/index.ts"],
       "@mp/app/login/util": ["libs/app/login/util/src/index.ts"],

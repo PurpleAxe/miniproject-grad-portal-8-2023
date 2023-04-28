@@ -7,12 +7,12 @@ import { AuthState } from '@mp/app/auth/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { UserProfileState } from '@mp/app/user-profile/data-access';
 import { SharedModule, SharedPageComponent } from '@mp/app/shared/feature'
-// import { SharedModule } from '@mp/app/shared/feature';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Logout, SubscribeToAuthState } from '@mp/app/auth/util';
 import { SubscribeToUserProfile } from '@mp/app/user-profile/util';//'../../util/src/user-profile.actions';
 import { Timestamp } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'ms-home-page',
@@ -226,7 +226,9 @@ export class HomePage implements OnInit {
     this.router.navigate(['/home/userprofile']);
   }
 
+
   ngOnDestroy() {
     clearTimeout(this.shared.timeoutId);
   }
 }
+

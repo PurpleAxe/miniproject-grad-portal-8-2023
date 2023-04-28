@@ -5,8 +5,8 @@
     <ion-buttons slot="start" style="zoom: 1.2; margin-left: 10px;">
       <ion-menu-button (click)="checkStatus()" color="primary" autoHide="false"></ion-menu-button>
     </ion-buttons>
-    
-    
+
+
     <ion-avatar slot="end" style="margin-right: 60px; margin-top: 10px; margin-bottom: 10px;">
       <img
         class="logo logo-light"
@@ -37,8 +37,9 @@
     <ion-title color="dark" id="name" style="margin-left: 68px;">{{userProfile.accountDetails.displayName}}</ion-title>
     <ion-title color="medium" id="username" style="margin-top: 5px; margin-bottom: 15px; margin-left: 60px;">@{{userProfile.username}}</ion-title>
 
+
   </ion-header>
-  
+
   <ion-content>
     <ion-list>
       <ion-item>
@@ -48,7 +49,7 @@
             <ion-text color="dark" style="font-size: 1.5em; margin-left: 10px; text-transform: capitalize; margin-bottom: 10px;">Followers</ion-text>
           </div>
         </ion-button>
-        
+
 
         <ion-button fill="clear" (click)="checkFollowing()" style="height: auto;margin-left: 10px;">
           <div style="display: flex; flex-direction: column; align-items: center;">
@@ -56,7 +57,7 @@
             <ion-text color="dark" style="font-size: 1.5em; margin-left: 10px; text-transform: capitalize; margin-bottom: 10px;">Following</ion-text>
           </div>
         </ion-button>
-        
+
 
       </ion-item>
 
@@ -67,7 +68,7 @@
           <div id="sesM" style="flex: 1; text-align: center; color: black;">{{getSeconds(userProfile)}} s</div>
         </div>
       </ion-item>
-      
+
       <ion-item>
         <ion-button fill="clear" (click)="goToSettings()" style="height: auto;">
           <ion-icon color="dark" name="settings-outline" size="large"></ion-icon>
@@ -81,8 +82,8 @@
         <ion-icon color="dark" name="log-out-outline" size="large" style="margin-bottom: 20px;"></ion-icon>
       </ion-button>
     </ion-fab>
- 
-    
+
+
   </ion-content>
 </ion-menu>
 
@@ -112,7 +113,6 @@
         </ion-content>
       </ng-template>
     </ion-popover>
-    
 
 
     <ion-segment-button value="notiButton" (click)="goToNotifications()">
@@ -124,4 +124,6 @@
   </ion-segment>
   </ion-toolbar>
 </ion-footer>
+
 </ng-container>
+

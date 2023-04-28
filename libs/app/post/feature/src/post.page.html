@@ -9,14 +9,14 @@
   <ion-card-content style="margin-top: 40px;">
     <ion-item >
       <ion-label position="floating">Add to a Department</ion-label>
-      <ion-input fill="outline" placeholder="#Department"></ion-input>
+      <ion-input fill="outline" placeholder="#Department" [(ngModel)]="department"></ion-input>
     </ion-item>
-    
+
     <ion-item>
       <ion-label position="floating">Add to a Challenge</ion-label>
-      <ion-input fill="outline" placeholder="#Challenge"></ion-input>
+      <ion-input fill="outline" placeholder="#Challenge" [(ngModel)]="challenge"></ion-input>
     </ion-item>
-    
+
   </ion-card-content>
 </ion-card>
 
@@ -28,13 +28,13 @@
 
   <ion-card-content>
     <ion-item>
-      <ion-textarea rows="9" maxlength="180"></ion-textarea>
-    </ion-item>    
+      <ion-textarea rows="9" maxlength="180" [(ngModel)]="body"></ion-textarea>
+    </ion-item>
   </ion-card-content>
 </ion-card>
 
 <ion-fab style="position:fixed;" horizontal="end" vertical="bottom">
-  <ion-button>
+  <ion-button (click)="uploadPost()">
     Post
     <ion-icon slot="end" name="paper-plane"></ion-icon>
   </ion-button>
