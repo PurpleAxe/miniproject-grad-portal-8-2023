@@ -101,7 +101,7 @@ export class SearchTestPage {
     private readonly fb: FormBuilder,
     private readonly store: Store
   ) {}
-  searchResult: any;
+  searchResult$: any;
   // searchText!: string;
   // search() {
   //   // if (this.searchForm.valid) {
@@ -112,8 +112,10 @@ export class SearchTestPage {
     const target = e.target as HTMLTextAreaElement;
     // console.log(target.value, 'targeeeeeeeeeeeeeeeeeet');
     this.store.dispatch(new Search(this.segment, target.value));
-    this.searchResult = this.store.select(SearchState.searchResults);
-
+    this.searchResult$ = this.store.select(SearchState.searchResults);
+    this.searchResult$.subscribe((x: any) => {
+      console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxx');
+    });
     // this.store
     // .select(SearchState.searchResults)
     // .subscribe((x) => (this.searchResult = x));

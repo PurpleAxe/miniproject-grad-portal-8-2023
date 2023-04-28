@@ -68,8 +68,8 @@
     <ion-row>
       <ion-col size="12" class="tabs-content">
         <div id="peopleTab" class="tabs-content" style="display: block">
-          <ion-list *ngIf="segment === 'people' && (searchResult) as rooms">
-            <ion-item *ngFor="let item of rooms |async" [detail]="true">
+          <ion-list *ngIf="segment === 'people' && (searchResult$) as rooms">
+            <ion-item *ngFor="let item of rooms" [detail]="true">
               <ion-avatar slot="start">
                 <img [src]="item?.accountDetails.photoURL" />
               </ion-avatar>
@@ -83,7 +83,7 @@
           </ion-list>
         </div>
         <div id="postTab" class="tabs-content" style="display: block">
-          <ion-list *ngIf="segment === 'posts' && (searchResult) as rooms">
+          <ion-list *ngIf="segment === 'posts' && (searchResult$) as rooms">
             <ion-item *ngFor="let item of rooms |async" [detail]="true">
               <!-- <ion-avatar slot="start"> -->
               <!-- <img [src]="item?." /> -->

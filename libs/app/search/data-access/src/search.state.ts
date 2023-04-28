@@ -145,21 +145,23 @@ export class SearchState {
           keyword,
         },
       };
-      let responseRef: any;
-      if (field === 'profiles')
-        responseRef = await this.searchApi.searchUsers(request);
-      if (field === 'posts')
-        responseRef = await this.searchApi.searchPosts(request);
-      if (field === 'events')
-        responseRef = await this.searchApi.searchEvents(request);
-      const response = responseRef!.data;
-      console.log(responseRef, 'sssssssssssssssssssssssssssss');
-      console.log(
-        response!.search!.searchResults,
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxx'
-      );
+      if (keyword !== '') {
+        let responseRef: any;
+        if (field === 'profiles')
+          responseRef = await this.searchApi.searchUsers(request);
+        if (field === 'posts')
+          responseRef = await this.searchApi.searchPosts(request);
+        if (field === 'events')
+          responseRef = await this.searchApi.searchEvents(request);
+        const response = responseRef!.data;
+        console.log(responseRef, 'sssssssssssssssssssssssssssss');
+        console.log(
+          response!.search!.searchResults,
+          'xxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        );
 
-      ctx.setState({ searchResults: response!.search!.searchResults });
+        ctx.setState({ searchResults: response!.search!.searchResults });
+      }
       // return ctx;
       // return ctx.dispatch(new Search(response.search));
       return;
