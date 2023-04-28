@@ -6,7 +6,7 @@ import * as admin from 'firebase-admin';
 export class CommentsRepository {
   //TODO: add your functions here
   async search_for(key: string, value: any, collection: string): Promise<[]> {
-    var response = null;
+    let response = null;
     const f = await admin
     .firestore()
     .collection(collection)
@@ -21,10 +21,10 @@ export class CommentsRepository {
   }
 
   async get_comments(commentIds: IComment[]): Promise<IComment[]> {
-    var commentCollection = await this.get_collection("comment");
-    var comments = [];
-    for(var commentId of commentIds) {
-      for(var commentObject of commentCollection) {
+    const commentCollection = await this.get_collection("comment");
+    const comments = [];
+    for(const commentId of commentIds) {
+      for(const commentObject of commentCollection) {
         if(commentId == commentObject.commentId)
           comments.push(commentObject);
       }

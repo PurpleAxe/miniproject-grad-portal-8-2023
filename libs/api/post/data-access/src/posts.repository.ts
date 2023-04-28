@@ -43,7 +43,7 @@ export class PostsRepository {
     const commentToInsert : IComment = {
       userID : comment.userID,
       text : comment.text,
-      timestamp : admin.firestore.Timestamp.now(),
+      timestamp : comment.timestamp,
       commentID : docRef.id,
       postID : comment.postID
     }

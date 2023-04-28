@@ -5,11 +5,14 @@ import { IonicModule } from '@ionic/angular';
 import { UserProfilePageRoutingModule } from './user-profile-routing.module';
 import { UserProfilePageComponent } from './user-profile.page';
 import { FeedModule, CardComponent } from '@mp/app/feed/ui';
+import { FeedState, FeedApi } from '@mp/app/feed/data-access';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, FeedModule, UserProfilePageRoutingModule],
+  imports: [CommonModule, FormsModule, IonicModule, FeedModule, UserProfilePageRoutingModule,NgxsModule.forFeature([FeedState])],
   declarations: [UserProfilePageComponent],
   exports: [UserProfilePageComponent],
-  bootstrap:[CardComponent]
+  bootstrap:[CardComponent],
+  providers: [FeedApi]
 })
 export class UserProfileModule {}

@@ -1,4 +1,4 @@
-import {Timestamp} from "firebase-admin/firestore";
+import {Timestamp} from "@angular/fire/firestore";
 
 export interface IComment{
     userID: string;

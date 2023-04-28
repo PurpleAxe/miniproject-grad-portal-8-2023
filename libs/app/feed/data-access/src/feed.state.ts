@@ -104,7 +104,7 @@ export class FeedState {
 
   @Selector()
   static getFeedPosts(FeedStateModel:FeedStateModel){ 
-      return FeedStateModel.feed.model.feedPosts?.posts;
+      return FeedStateModel.feedPosts.posts;
   }
 
     @Selector()
@@ -129,8 +129,8 @@ export class FeedState {
     const myFetchHomeRequest: IGetHomeFeedRequest ={
       feed
     }
-    const responseRef = await this.feedApi.GetHomeFeed(myFetchHomeRequest);
-    const response = responseRef.data;  
+    // const responseRef = await this.feedApi.GetHomeFeed(myFetchHomeRequest);
+    // const response = responseRef.data;  
       ctx.patchState({
         // feed:{
         //   model:{
@@ -142,8 +142,8 @@ export class FeedState {
         //   status: '',
         //   errors: {}
         // }
-        feedPosts: response.feed
-        //feedPosts:this.getMock()
+        // feedPosts: response.feed
+        feedPosts:this.getMock()
       });
     }
 
@@ -174,7 +174,7 @@ export class FeedState {
         //   errors: {}
         // }
         feedPosts: response.feed
-        //feedPosts:this.getMock()
+        // feedPosts:this.getMock()
       });
     }
 
@@ -204,8 +204,8 @@ export class FeedState {
         //   status: '',
         //   errors: {}
         // }
-        //feedPosts: response.feed
-        feedPosts:this.getMock()
+        feedPosts: response.feed
+        // feedPosts:this.getMock()
       });
     }
 
@@ -241,6 +241,10 @@ export class FeedState {
             postComments:response,
             postInfo:{postId:payload.postId, ownerId:payload.ownerId}
           });
+        }else{
+          const state=ctx.getState();
+          ctx.setState({...state,
+            postComments:[]})
         }
       }
 
@@ -278,8 +282,8 @@ export class FeedState {
 
         const state=ctx.getState();
         ctx.setState({...state,
-          //postComments:[comment,...state.postComments]
-          postComments: response.comments
+          // postComments:[comment,...state.postComments]
+          postComments: [response.comments[0],...state.postComments]
         });
   
       }
@@ -292,20 +296,23 @@ export class FeedState {
         userID: "TT1",
         text: 'payload.text',
         commentID: 'payload.commentId',
-        postID : 'payload.postId'
+        postID : 'payload.postId',
+        timestamp: Timestamp.fromDate(new Date()),
       }
       const c2:IComment={
         userID: "TT3",
         text: 'payload.text',
         commentID: 'payload.commentId',
-        postID : 'payload.postId'
+        postID : 'payload.postId',
+        timestamp: Timestamp.fromDate(new Date()),
       }
 
       const c3:IComment={
         userID: "TT@",
         text: 'payload.text',
         commentID: 'payload.commentId',
-        postID : 'payload.postId'
+        postID : 'payload.postId',
+        timestamp: Timestamp.fromDate(new Date()),
       }
 
       const Comments:IComment[]=[c1,c2,c3]
@@ -319,7 +326,7 @@ export class FeedState {
           likes: 10,
           dislikes: 2,
           message: "WPM : 45, Road to 50",
-          //created: Timestamp.fromDate(new Date()),
+          created: Timestamp.fromDate(new Date()),
           challenge: "",
           department: "",
           comments:Comments
@@ -330,7 +337,7 @@ export class FeedState {
           likes: 10,
           dislikes: 2,
           message: "WPM : 45, Road to 50",
-          //created: Timestamp.fromDate(new Date("April, 2023")),
+          created: Timestamp.fromDate(new Date()),
           challenge: "WPM",
           department: "EMS DEPARTMENT",
            comments:Comments
@@ -341,7 +348,7 @@ export class FeedState {
           likes: 10,
           dislikes: 2,
           message: "WPM : 90, NEW LEAD SCORE",
-          //created: Timestamp.fromDate(new Date("March, 2023")),
+          created: Timestamp.fromDate(new Date()),
           challenge: "WPM",
           department: "CIVIL ENGINEERING DEPARTMENT",
            comments:Comments
@@ -352,7 +359,7 @@ export class FeedState {
           likes: 10,
           dislikes: 2,
           message: "WPM : 15, STILL LEARNING HOW TO TOUCH TYPE",
-          // created: Timestamp.fromDate(new Date('February, 2023')),
+          created: Timestamp.fromDate(new Date()),
           challenge: "WPM",
           department: "CS DEPARTMENT",
            comments:Comments

@@ -5,17 +5,12 @@
         <ion-button (click)="goToFeed()">
           <ion-icon slot="start" name="arrow-back"></ion-icon>
         </ion-button>
-        <ion-title>Comment</ion-title>
+        <ion-title>Comments</ion-title>
       </ion-item>
     </ion-toolbar>
   </ion-header>
 
-  <comment *ngFor="let c of comments" 
-    [userId]="c.userID"
-    [profileUrl]="getProfileUrl(c.userID)"
-    [comment]="c.text"
-    [commentId]="c.commentID">
-  </comment>
+  
   <ion-footer>
     <ion-toolbar color="light">
       <ion-textarea
@@ -30,6 +25,15 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-footer>
+
+  <comment *ngFor="let c of comments" 
+    [userId]="c.userID"
+    [profileUrl]="getProfileUrl(c.userID)"
+    [comment]="c.text"
+    [commentId]="c.commentID"
+    [date]= "c.timestamp ? formatDateFromNanoseconds(c.timestamp.seconds, c.timestamp.nanoseconds) : ''"
+    >
+  </comment>
 </ion-card>
 
 

@@ -5,7 +5,7 @@ import {
 } from '@mp/api/comments/util';
 import { Comments } from '../models';
 import { PostsRepository } from '@mp/api/post/data-access';
-import { CommentsRepository } from '@mp/api/comments/data-access';
+//import { postRepository } from '@mp/api/postRepository/data-access';
 
 @CommandHandler(UpdateCommentsCommand)
 export class UpdateCommentsHandler 
@@ -17,7 +17,7 @@ export class UpdateCommentsHandler
 {
   constructor(
     private publisher: EventPublisher,
-    private commentsRepository: CommentsRepository
+    private commentsRepository: PostsRepository
     ) {}
 
   async execute(command: UpdateCommentsCommand) {
@@ -26,8 +26,9 @@ export class UpdateCommentsHandler
     post.updateComment();
     post.commit();
     
-    var commentsArray = await this.commentsRepository.search_for("userId", command.request.comment.userID , "comment");
-    var response: IUpdateCommentsResponse = {comments: commentsArray};
+    const comment = await this.commentsRepository.postComment(request.comment);
+    // const commentsArray = await this.commentsRepository.search_for("postId", command.request.comment.userID , "Post");
+    const response: IUpdateCommentsResponse = {comments: [comment]};
     return response;
   }
 }

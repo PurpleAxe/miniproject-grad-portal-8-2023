@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'comment',
@@ -11,7 +11,7 @@ export class CommentComponent {
   @Input() profileUrl!:string;//"https://ionicframework.com/docs/demos/api/avatar/avatar.svg";
   @Input() userId!:string;
   @Input() comment!:string;
-  @Input() date="26 April";
+  @Input() date!:string;
   @Input() commentId!:string;
 
   /**
