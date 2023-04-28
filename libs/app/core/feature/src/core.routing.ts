@@ -97,8 +97,8 @@ const routes: Routes = [
   {
     path: 'search',
     pathMatch: 'full',
-    canActivate: [],
-    data: {},
+    canActivate: [AuthGuard],
+    data: { authGuardPipe: redirectLoggedIn },
     loadChildren: () =>
       import('@mp/app/search-test/feature').then((m) => m.SearchTestModule),
   },

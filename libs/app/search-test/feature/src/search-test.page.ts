@@ -29,6 +29,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Store } from '@ngxs/store';
+import { SearchTest } from '@mp/app/search-test/util';
+import { Search } from '@mp/app/search/util';
+import { ISearch } from '@mp/api/search/util';
+import { Observable } from 'rxjs';
+import { SearchState } from '@mp/app/search/data-access';
+import { IProfile } from '@mp/api/profiles/util';
+import { IPost } from '@mp/api/post/util';
+import { IEventstore } from '@mp/api/eventstore/util';
 // import { Search } from '@mp/app/search/util';
 
 @Component({
@@ -37,7 +45,7 @@ import { Store } from '@ngxs/store';
   styleUrls: ['./search-test.page.scss'],
 })
 export class SearchTestPage {
-  segment = 'people';
+  segment = 'profiles';
 
   chatRooms = [
     {
@@ -93,12 +101,25 @@ export class SearchTestPage {
     private readonly fb: FormBuilder,
     private readonly store: Store
   ) {}
-  searchText!: string;
+  searchResult: any;
+  // searchText!: string;
   // search() {
   //   // if (this.searchForm.valid) {
   //   this.store.dispatch(new Search('dick'));
   //   // }
   // }
+  search(e: any) {
+    const target = e.target as HTMLTextAreaElement;
+    // console.log(target.value, 'targeeeeeeeeeeeeeeeeeet');
+    this.store.dispatch(new Search(this.segment, target.value));
+    this.searchResult = this.store.select(SearchState.searchResults);
+
+    // this.store
+    // .select(SearchState.searchResults)
+    // .subscribe((x) => (this.searchResult = x));
+    // .subscribe((x) => ( = x));
+    // .subscribe((x) => {});
+  }
 
   getdisplay(elem: number) {
     const tabs = ['peopleTab', 'groupsTab', 'postsTab', 'eventsTab'];
@@ -112,7 +133,7 @@ export class SearchTestPage {
     if (tabs[elem - 1] === 'postsTab') {
       this.segment = 'posts';
     } else if (tabs[elem - 1] === 'peopleTab') {
-      this.segment = 'people';
+      this.segment = 'profiles';
     }
 
     if (tab) {

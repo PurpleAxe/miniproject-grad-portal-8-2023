@@ -55,11 +55,7 @@ export class SearchApi {
   async searchUsers(request: ISearchRequest) {
     console.log('lets go');
     console.log(request);
-    return await httpsCallable<
-    ISearchRequest, 
-    ISearchResponse
-    >
-    (
+    return await httpsCallable<ISearchRequest, ISearchResponse>(
       this.functions,
       'searchUsers'
     )(request);
@@ -68,11 +64,7 @@ export class SearchApi {
   async searchPosts(request: ISearchRequest) {
     console.log('lets go');
     console.log(request);
-    return await httpsCallable<
-    ISearchRequest, 
-    ISearchResponse
-    >
-    (
+    return await httpsCallable<ISearchRequest, ISearchResponse>(
       this.functions,
       'searchPosts'
     )(request);
@@ -81,11 +73,7 @@ export class SearchApi {
   async searchEvents(request: ISearchRequest) {
     console.log('lets go');
     console.log(request);
-    return await httpsCallable<
-    ISearchRequest, 
-    ISearchResponse
-    >
-    (
+    return await httpsCallable<ISearchRequest, ISearchResponse>(
       this.functions,
       'searchEvents'
     )(request);

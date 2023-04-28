@@ -10,49 +10,48 @@ import { IPost } from '@mp/api/post/util';
 export class SearchRepository {
   //TODO: add your functions here
   async get_document(id: string, collection: string) {
-    var response = null;
-    const f = await admin
-    .firestore()
-    .collection(collection)
-    .doc(id)
-    .get()
+    let response = null;
+    const f = await admin.firestore().collection(collection).doc(id).get();
     response = f.data();
     return response;
   }
 
   async get_collection(collection) {
-    const snapshot = await admin.firestore().collection(collection).get()
-    return snapshot.docs.map(doc => doc.data());
+    const snapshot = await admin.firestore().collection(collection).get();
+    return snapshot.docs.map((doc) => doc.data());
   }
 
-  async search_for(key: string, value: any, collection: string): Promise<IProfile[] | IPost[]> {
-    var response = [];
+  async search_for(
+    key: string,
+    value: any,
+    collection: string
+  ): Promise<IProfile[] | IPost[]> {
+    const response = [];
     const f = await admin
-    .firestore()
-    .collection(collection)
-    .where(key, "==", value)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        response.push(doc.data());
+      .firestore()
+      .collection(collection)
+      .where(key, '==', value)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          response.push(doc.data());
+        });
       });
-    });
     return response;
   }
 
   async get(key: string, value: any, collection: string) {
-    var response = null;
+    let response = null;
     const f = await admin
-    .firestore()
-    .collection(collection)
-    .where(key, "==", value)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        response = doc.data();
+      .firestore()
+      .collection(collection)
+      .where(key, '==', value)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          response = doc.data();
+        });
       });
-    });
     return response;
   }
-
 }
