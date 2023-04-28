@@ -1,4 +1,3 @@
-<ng-container *ngIf="conversation$ | async as conversation; else loading">
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
@@ -11,17 +10,18 @@
 <ion-content>
 
 
-  <ion-list
-    lines="none">
-    <ion-item-group class="chats-group" *ngFor="let chat of conversation.messages">
+  <ion-list 
+    lines="none" 
+    *ngIf="(chats) as chat$">
+    <ion-item-group class="chats-group" *ngFor="let chat of chat$">
       <app-chat-box [chat]="chat" [current_user_id]="currentUserId" (click)="onMessagePress(chat)">
-        <!-- Inside app-chat-box component
-        <div class="chat-bubble" *ngIf="!chat.deleted"> Add this condition to show/hide the bubble based on deleted flag
-           Render the chat bubble content here
+        <!-- Inside app-chat-box component 
+        <div class="chat-bubble" *ngIf="!chat.deleted"> Add this condition to show/hide the bubble based on deleted flag 
+           Render the chat bubble content here 
           {{ chat.message }}
         </div>
-        <div class="chat-bubble-deleted" *ngIf="chat.deleted">  Add this condition to show/hide the 'message deleted' bubble based on deleted flag
-           Render the 'message deleted' content here
+        <div class="chat-bubble-deleted" *ngIf="chat.deleted">  Add this condition to show/hide the 'message deleted' bubble based on deleted flag 
+           Render the 'message deleted' content here 
           <div class="chat-bubble-deleted-text">message deleted</div>
           <div class="chat-bubble-deleted-icon">X</div>
         </div> -->
@@ -30,17 +30,15 @@
   </ion-list>
 
 </ion-content>
-</ng-container>
-<ng-template #loading>
 
 <ion-footer>
   <ion-toolbar color="light">
-    <ion-textarea
-      autoGrow
-      rows="1"
-      placeholder="Send message"
-      class="ion-text-center"
-      [(ngModel)]="newMessage">
+    <ion-textarea 
+      autoGrow 
+      rows="1" 
+      placeholder="Send message" 
+      class="ion-text-center" 
+      [(ngModel)]="message">
     </ion-textarea>
     <ion-buttons slot="end">
       <ion-fab-button *ngIf="!isLoading" size="small" color="primary" (click)="sendMessage()">

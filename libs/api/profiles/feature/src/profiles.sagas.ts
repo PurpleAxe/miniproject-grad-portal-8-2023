@@ -5,20 +5,11 @@ import {
     CreateProfileCommand,
     OccupationDetailsUpdatedEvent,
     PersonalDetailsUpdatedEvent,
-    UpdateProfileStatusCommand,
-    ProfileLikedPostUpdatedEvent,
-    ProfileDislikedPostsUpdatedEvent,
+    UpdateProfileStatusCommand
 } from '@mp/api/profiles/util';
-
-import {
-  PostLikedEvent,
-  PostDislikedEvent,
-  PostDislikeRemovedEvent,
-  PostLikeRemovedEvent,
-} from '@mp/api/post/util';
 import { UserCreatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
-import { ICommand, IEvent, ofType, Saga } from '@nestjs/cqrs';
+import { ICommand, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';
 
 @Injectable()
@@ -95,73 +86,6 @@ export class ProfilesSagas {
       map(
         (event: OccupationDetailsUpdatedEvent) =>
           new UpdateProfileStatusCommand({ profile: event.profile })
-      )
-    );
-  };
-  @Saga()
-  onPostDisliked = (
-    events$: Observable<any>
-  ): Observable<IEvent> => {
-    return events$.pipe(
-      ofType(PostDislikedEvent),
-      map(
-        (event: PostDislikedEvent) =>
-          new ProfileDislikedPostsUpdatedEvent(
-            event.user,
-            event.Onpost.postId,
-            false
-          )
-      )
-    );
-  };
-
-  @Saga()
-  onPostDislikedRemoved = (
-    events$: Observable<any>
-  ): Observable<IEvent> => {
-    return events$.pipe(
-      ofType(PostDislikeRemovedEvent),
-      map(
-        (event: PostDislikeRemovedEvent) =>
-          new ProfileDislikedPostsUpdatedEvent(
-            event.user,
-            event.Onpost.postId,
-            true
-          )
-      )
-    );
-  };
-
-  @Saga()
-  onPostLiked = (
-    events$: Observable<any>
-  ): Observable<IEvent> => {
-    return events$.pipe(
-      ofType(PostLikedEvent),
-      map(
-        (event: PostLikedEvent) =>
-          new ProfileLikedPostUpdatedEvent(
-            event.user,
-            event.Onpost.postId,
-            false
-          )
-      )
-    );
-  };
-
-  @Saga()
-  onPostLikedRemoved = (
-    events$: Observable<any>
-  ): Observable<IEvent> => {
-    return events$.pipe(
-      ofType(PostLikeRemovedEvent),
-      map(
-        (event: PostLikeRemovedEvent) =>
-          new ProfileLikedPostUpdatedEvent(
-            event.user,
-            event.Onpost.postId,
-            true
-          )
       )
     );
   };

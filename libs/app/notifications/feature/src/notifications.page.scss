@@ -39,15 +39,14 @@
     padding: 10px;
 }
 
-/*
-.notification-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: auto;
-    padding: 10px;
-}
-*/
+// .notification-icon {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     width: auto;
+//     padding: 10px;
+// }
+
 .notification-heading {
     position: absolute;
     top: 0;
@@ -79,28 +78,4 @@
     margin-left: 5px;
     left: 5px;
     float: left;
-}
-
-.no-notification-icon {
-    height: 100px;
-    width: 100px;
-}
-
-ion-grid {
-    height: 50%;
-    display: grid;
-}
-
-.notification-icon {
-    display: block;
-    height: 16px;
-    width: 16px;
-    margin-right: 0px;
-    float: right;
-}
-
-.time {
-    display: block;
-    margin-top: 4px;
-    margin-right: 0px;
 }
