@@ -1,60 +1,92 @@
 <ng-container *ngIf="notifications$ | async as notifications;  else loading">
-    <ion-header [translucent]="true">
-        <ion-toolbar>
-        <ion-title style="align-items: center;">Notifications</ion-title>
-        <ion-buttons slot="end">
-            <ion-button class="settings-button" [routerLink]="['/settings/notifications-settings']" >
-                <ion-icon src="assets/icons/settings.svg" class="settings-button-icon"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-        </ion-toolbar>
-    </ion-header>
-    <ion-content color="light">
-        <ion-list>
-            <ion-item *ngFor="let notification of notifications.inbox; index as i;" detail="true" routerLink="{{notification.url}}" (click)="markAsRead(notification)">
-                <ion-avatar slot="start">
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title style="align-items: center">Notifications</ion-title>
+      <ion-buttons slot="end">
+        <ion-button
+          class="settings-button"
+          [routerLink]="['/settings/notifications-settings']">
+          <ion-icon
+            src="assets/icons/settings.svg"
+            class="settings-button-icon"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content color="light">
+    <ion-list>
+      <ion-item
+        *ngFor="let notification of notifications.inbox; index as i;"
+        detail="true"
+        routerLink="{{notification.url}}"
+        (click)="markAsRead(notification)">
+        <ion-avatar slot="start">
+          <ng-template #noProfilePic>
+            <img src="assets/logos/logo-transp.png" />
+          </ng-template>
+        </ion-avatar>
+        <ion-label>
+          <p>{{notification.message}}</p>
+        </ion-label>
+        <ion-label
+          class="read-icon-time ion-text-end ion-padding-right"
+          text-right>
+          <ng-container *ngIf="notification.notificationTime; else noTime">
+            <ion-icon
+              *ngIf="notification.read; else elseBlock"
+              class="notification-icon"
+              color="dark"
+              src="assets/icons/notification-grey.svg"></ion-icon>
+            <ion-text class="time ion-text-end ion-padding-top" color="medium"
+              >{{getTime(notification)}}</ion-text
+            >
+            <ng-template #elseBlock>
+              <ion-icon
+                text-right
+                class="notification-icon ion-text-end"
+                style="margin: 0px"
+                color="dark"
+                src="assets/icons/notification-orange.svg"></ion-icon>
+            </ng-template>
+          </ng-container>
 
-                    <ng-template #noProfilePic>
-                        <img src="assets/logos/logo-transp.png"/>
-                    </ng-template>
-                </ion-avatar>
-                <ion-label>
-                    <p>{{notification.message}}</p>
-                </ion-label>
-                <ion-label class="read-icon-time ion-text-end ion-padding-right" text-right>
-                    <ng-container *ngIf="notification.notificationTime; else noTime">
-                        <ion-icon *ngIf="notification.read; else elseBlock" class="notification-icon" color="dark" src="assets/icons/notification-grey.svg"></ion-icon>
-                        <ion-text class="time ion-text-end ion-padding-top" color="medium">{{getTime(notification)}}</ion-text>
-                        <ng-template #elseBlock>
-                            <ion-icon text-right class="notification-icon ion-text-end" style="margin:0px;" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>
-                        </ng-template>
-                    </ng-container>
-
-                    <ng-template #noTime>
-                        <ion-icon *ngIf="notification.read; else elseBlock" class="notification-icon ion-padding-bottom" style="margin-bottom: 5px;" color="dark" src="assets/icons/notification-grey.svg"></ion-icon>
-                        <ng-template #elseBlock>
-                            <ion-icon text-right class="notification-icon ion-padding-bottom" style="margin-bottom: 5px;" color="dark" src="assets/icons/notification-orange.svg"></ion-icon>
-                        </ng-template>
-                    </ng-template>
-                </ion-label>
-            </ion-item>
-        </ion-list>
-    </ion-content>
+          <ng-template #noTime>
+            <ion-icon
+              *ngIf="notification.read; else elseBlock"
+              class="notification-icon ion-padding-bottom"
+              style="margin-bottom: 5px"
+              color="dark"
+              src="assets/icons/notification-grey.svg"></ion-icon>
+            <ng-template #elseBlock>
+              <ion-icon
+                text-right
+                class="notification-icon ion-padding-bottom"
+                style="margin-bottom: 5px"
+                color="dark"
+                src="assets/icons/notification-orange.svg"></ion-icon>
+            </ng-template>
+          </ng-template>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ng-container>
 <ng-template #loading>
-    <ion-content color="light">
-        <ion-grid class="ion-align-items-center">
-            <ion-row class="ion-text-center ion-padding-top" >
-                <ion-col size="12">
-                    <ion-icon name="notifications-off-outline" class="no-notification-icon"></ion-icon>
-                </ion-col>
-                <ion-col size="12" style="margin-bottom: 64px;">
-                    <ion-text style="font-size:24px;">No notifications</ion-text>
-                </ion-col>
-                <ion-col size="12">
+  <ion-content color="light">
+    <ion-grid class="ion-align-items-center">
+      <ion-row class="ion-text-center ion-padding-top">
+        <ion-col size="12">
+          <ion-icon
+            name="notifications-off-outline"
+            class="no-notification-icon"></ion-icon>
+        </ion-col>
+        <ion-col size="12" style="margin-bottom: 64px">
+          <ion-text style="font-size: 24px">No notifications</ion-text>
+        </ion-col>
+        <!-- <ion-col size="12">
                     <ion-button [routerLink]="['/', 'home', 'feed']" expand ="block">Go back to Home</ion-button>
-                </ion-col>
-            </ion-row>
+                </ion-col> -->
+      </ion-row>
     </ion-grid>
-    </ion-content>
+  </ion-content>
 </ng-template>

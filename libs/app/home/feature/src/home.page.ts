@@ -22,7 +22,8 @@ import { SubscribeToProfile } from '@mp/app/profile/util';
 })
 export class HomePage implements OnInit {
   // @Select(UserProfileState.userProfile)
-  userProfile: any;
+
+  userProfile$!: Observable<IProfile | null>;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   @Select(AuthState.user) authProfile$!: Observable<User | null>;
 
@@ -62,11 +63,31 @@ export class HomePage implements OnInit {
     //   );
     //   // this.userProfile = profile;
     // });
-    this.store
-      .select(ProfileState.profile)
-      .subscribe((x) => (this.userProfile = x));
+  }
 
-    this.shared = new SharedPageComponent(new AlertController(), store);
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Time Out!',
+      subHeader: 'Your time has run out.',
+      message: 'Ask a friend to add more time for you.',
+      buttons: ['Ask a friend'],
+    });
+
+    await alert.present();
+  }
+
+  ngOnInit() {
+    // console.log('var2');
+    // this.profile$.subscribe((user) => {
+    // console.log(user, ' userrrrrrrrrrrrrrrrrrrrrrr');
+    // });
+    this.userProfile$ = this.store.select(ProfileState.profile);
+    // .subscribe((x) => (this.userProfile = x));
+    // this.store
+    //   .select(ProfileState.profile)
+    //   .subscribe((x) => (this.userProfile = x));
+
+    this.shared = new SharedPageComponent(new AlertController(), this.store);
 
     this.shared.calculateTimeDifference();
     // this.shared.decreaseTime('hours', 'minutes', 'ses'); //It is no longer necessary to decrease the time since we have a due date from firestore.
@@ -103,35 +124,29 @@ export class HomePage implements OnInit {
     //   this.userProfile.timeLeft,
     //   'zllllllllllllllllllllllllllllllllll'
     // );
-    if (!this.userProfile) this.store.dispatch(new SubscribeToAuthState());
-    const tamTime = this.userProfile.timeLeft.seconds;
-    // this.userProfile.timeLeft
-    // : '05/24/2023 22:59:30';
-    // console.log(tamTime, 'taaaaaaaaaaaaaaaaaaaaaaaaaaaaaamTime');
-    const referenceDate: number = tamTime;
-    // console.log(referenceDate, 'refer date ;zzzzzzzzdeeeeeee');
+    // if (!this.userProfile$) {
+    console.log('passing here');
+    this.store
+      .dispatch(new SubscribeToProfile())
+      .pipe(
+        tap(
+          (x: any) =>
+            (this.userProfile$ = this.store.select(ProfileState.profile))
+        )
+      );
 
-    this.time = referenceDate - Math.floor(Date.now() / 1000);
-    // console.log(this.time, 'time after timeeeeeeee');
-    this.timeUpdateContinuously();
-  }
+    this.userProfile$.subscribe((x: any) => {
+      const tamTime = x?.timeLeft.seconds;
+      // this.userProfile.timeLeft
+      // : '05/24/2023 22:59:30';
+      // console.log(tamTime, 'taaaaaaaaaaaaaaaaaaaaaaaaaaaaaamTime');
+      const referenceDate: number = tamTime;
+      // console.log(referenceDate, 'refer date ;zzzzzzzzdeeeeeee');
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Time Out!',
-      subHeader: 'Your time has run out.',
-      message: 'Ask a friend to add more time for you.',
-      buttons: ['Ask a friend'],
+      this.time = referenceDate - Math.floor(Date.now() / 1000);
+      // console.log(this.time, 'time after timeeeeeeee');
+      this.timeUpdateContinuously();
     });
-
-    await alert.present();
-  }
-
-  ngOnInit() {
-    // console.log('var2');
-    // this.profile$.subscribe((user) => {
-    // console.log(user, ' userrrrrrrrrrrrrrrrrrrrrrr');
-    // });
 
     const colorTheme = localStorage.getItem('color-theme');
 
