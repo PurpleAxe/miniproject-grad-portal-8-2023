@@ -27,14 +27,7 @@
 <ion-content [fullscreen]="true">
   <ion-grid class="search-search">
     <ion-row class="ion-align-items-center">
-      <ion-col size="2" style="padding: none">
-        <a routerLink="/home" class="back-button">
-          <ion-buttons slot="start" name="arrowback">
-            <ion-back-button defaultHref="/home"></ion-back-button>
-          </ion-buttons>
-        </a>
-      </ion-col>
-      <ion-col size="8">
+      <ion-col size="10">
         <ion-searchbar
           [debounce]="1000"
           (ionChange)="search($event)"
