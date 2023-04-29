@@ -54,7 +54,7 @@
 
 
 .tabs-content {
-    display: flex;
+    display: block;
     text-align: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.05);
@@ -65,5 +65,10 @@
 }
 
 ion-item {
-    width: 375px;
+    width: 100%;
+    display: block;
+}
+
+ion-list {
+ width: 100%;
 }
