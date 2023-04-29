@@ -1,18 +1,19 @@
 import {
-    AccountDetailsUpdatedEvent,
-    AddressDetailsUpdatedEvent,
-    ContactDetailsUpdatedEvent,
-    IAccountDetails,
-    IAddressDetails,
-    IContactDetails,
-    IOccupationDetails,
-    IPersonalDetails,
-    IProfile,
-    OccupationDetailsUpdatedEvent,
-    PersonalDetailsUpdatedEvent,
-    ProfileCreatedEvent,
-    ProfileStatus,
-    ProfileStatusUpdatedEvent
+  AccountDetailsUpdatedEvent,
+  AddressDetailsUpdatedEvent,
+  ContactDetailsUpdatedEvent,
+  ConversationAddedEvent,
+  IAccountDetails,
+  IAddressDetails,
+  IContactDetails,
+  IOccupationDetails,
+  IPersonalDetails,
+  IProfile,
+  OccupationDetailsUpdatedEvent,
+  PersonalDetailsUpdatedEvent,
+  ProfileCreatedEvent,
+  ProfileStatus,
+  ProfileStatusUpdatedEvent,
 } from '@mp/api/profiles/util';
 import { AggregateRoot } from '@nestjs/cqrs';
 
@@ -25,7 +26,24 @@ export class Profile extends AggregateRoot implements IProfile {
     public addressDetails?: IAddressDetails | null | undefined,
     public occupationDetails?: IOccupationDetails | null | undefined,
     public status?: ProfileStatus | null | undefined,
-    public created?: FirebaseFirestore.Timestamp | null | undefined
+    public created?: FirebaseFirestore.Timestamp | null | undefined,
+    //remove below before merge. this is only for testing purposes TH-0003---Chat
+    public banner?: string,
+    public userName?: string | null | undefined,
+    public location?: string,
+    public groups?: string[],
+    public description?: string,
+    public degree?: string,
+    public university?: string,
+    public userDepartments?: string[],
+    public events?: [],
+    public posts?: [],
+    public rank?: number,
+    public notifications?: [],
+    public timeLeft?: number,
+    public followers?: [],
+    public following?: [],
+    public conversationIDs?: string[]
   ) {
     super();
   }
@@ -39,7 +57,23 @@ export class Profile extends AggregateRoot implements IProfile {
       profile.addressDetails,
       profile.occupationDetails,
       profile.status,
-      profile.created
+      profile.created,
+      profile.banner,
+      profile.userName,
+      profile.location,
+      profile.groups,
+      profile.description,
+      profile.degree,
+      profile.university,
+      profile.userDepartments,
+      profile.events,
+      profile.posts,
+      profile.rank,
+      profile.notifications,
+      profile.timeLeft,
+      profile.followers,
+      profile.following,
+      profile.conversationIDs
     );
     return instance;
   }
@@ -90,6 +124,10 @@ export class Profile extends AggregateRoot implements IProfile {
       ? occupationDetails.occupation
       : this.occupationDetails.occupation;
     this.apply(new OccupationDetailsUpdatedEvent(this.toJSON()));
+  }
+
+  updateConversationList() {
+    this.apply(new ConversationAddedEvent(this.toJSON()));
   }
 
   updateAccountDetails(accountDetails: IAccountDetails) {
@@ -236,6 +274,7 @@ export class Profile extends AggregateRoot implements IProfile {
       occupationDetails: this.occupationDetails,
       status: this.status,
       created: this.created,
+      conversationIDs: this.conversationIDs,
     };
   }
 }

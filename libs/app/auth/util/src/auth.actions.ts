@@ -8,6 +8,9 @@ export class SetUser {
   static readonly type = '[Auth] SetUser';
   constructor(public readonly user: User | null) {}
 }
+export class getCurrentUserId {
+  static readonly type = '[Auth] SetUser';
+}
 
 export class Login {
   static readonly type = '[Auth] Login';

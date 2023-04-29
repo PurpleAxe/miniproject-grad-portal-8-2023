@@ -1,0 +1,15 @@
+import { Component } from '@angular/core';
+import { Store } from '@ngxs/store';
+
+@Component({
+  selector: 'ms-<%=fileName%>-page',
+  templateUrl: './<%=fileName%>.page.html',
+  styleUrls: ['./<%=fileName%>.page.scss'],
+})
+export class <%=className%>Page {
+  constructor(private readonly store: Store) {}
+  //TODO: place something here
+  //continueWithGoogle() {
+  //  this.store.dispatch(new ContinueWithGoogle());
+  //}
+}

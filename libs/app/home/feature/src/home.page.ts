@@ -1,11 +1,12 @@
 import { Component, Renderer2 } from '@angular/core';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { Select} from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
 
+import { MenuController } from '@ionic/angular';
+import { Logout } from '@mp/app/auth/util';
 
 @Component({
   selector: 'ms-home-page',
@@ -15,21 +16,24 @@ import { MenuController } from '@ionic/angular';
 export class HomePage {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
 
-
-  constructor(private router: Router, private renderer: Renderer2, private menuCtrl?: MenuController) {}
-
+  constructor(
+    private router: Router,
+    private renderer: Renderer2,
+    private readonly store: Store,
+    private menuCtrl?: MenuController
+  ) {}
 
   ngOnInit() {
     const colorTheme = localStorage.getItem('color-theme');
-  
+
     if (colorTheme) {
       this.renderer.setAttribute(document.body, 'color-theme', colorTheme);
     }
   }
 
-
   logout() {
     // this.popover.dismiss();
+    this.store.dispatch(new Logout());
   }
 
   goToSearch() {
@@ -59,14 +63,14 @@ export class HomePage {
   goToSettings() {
     if (this.menuCtrl) {
       this.menuCtrl.close();
-  }
+    }
     this.router.navigate(['/home/settings']);
   }
 
   goToProfile() {
     if (this.menuCtrl) {
       this.menuCtrl.close();
-  }
+    }
     this.router.navigate(['/home/profile']);
   }
 
@@ -84,9 +88,7 @@ export class HomePage {
   goToMyProfile() {
     if (this.menuCtrl) {
       this.menuCtrl.close();
-  }
+    }
     this.router.navigate(['/home/userprofile']);
   }
-
-
 }

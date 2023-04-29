@@ -3,30 +3,19 @@ import { Routes, RouterModule } from '@angular/router';
 import { InboxPageComponent } from './inbox.page';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: InboxPageComponent
-    },
-    {
-        path: 'chats/:id',
-        loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatModule)
-    },/*
-  {please
-    path: 'search',
-    loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
+  {
+    path: '',
+    component: InboxPageComponent,
   },
   {
-    path: 'post',
-    loadChildren: () => import('./post/post.module').then( m => m.PostPageModule)
+    path: 'chats/:id',
+    loadChildren: () =>
+      import('@mp/app/chat/feature').then((m) => m.ChatModule),
   },
-  {
-    path: 'notifications',
-    loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
-  }*/
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class InboxPageRoutingModule { }
+export class InboxPageRoutingModule {}

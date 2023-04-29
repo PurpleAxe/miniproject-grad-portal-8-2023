@@ -21,6 +21,7 @@ export class ProfilesRepository {
   async createProfile(profile: IProfile) {
     // Remove password field if present
     delete profile.accountDetails?.password;
+
     return await admin
       .firestore()
       .collection('profiles')
@@ -36,5 +37,23 @@ export class ProfilesRepository {
       .collection('profiles')
       .doc(profile.userId)
       .set(profile, { merge: true });
+  }
+
+  async getProfilesCollection() {
+    const snapshot = await admin.firestore().collection('profiles').get()
+    return snapshot.docs.map(doc => doc.data());
+  }
+
+  async updateConversationList(profile: IProfile) {
+    console.log(profile.conversationIDs?.at(0));
+    const conversationIDs:string = profile.conversationIDs?.at(0)!;
+    return await admin
+      .firestore()
+      .collection('profiles')
+      .doc(profile.userId!)
+      .collection('conversationIDs')
+      .doc(conversationIDs)
+      .create({
+      });
   }
 }
