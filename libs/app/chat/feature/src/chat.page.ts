@@ -150,9 +150,11 @@ export class ChatPage implements OnInit {
       this.chatRoom = x;
     });
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
-    setTimeout(() => {
-      console.log(this.chatRoom);
-    }, 1000);
+    // setTimeout(() => {
+    //   console.log(this.chatRoom);
+    // }, 1000);
+    this.messageContent.textData = '';
+    this.newMessage = '';
   }
 
   async deleteMessage(message: IMessage) {
