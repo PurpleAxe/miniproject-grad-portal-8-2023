@@ -45,7 +45,7 @@ import { IEventstore } from '@mp/api/eventstore/util';
   styleUrls: ['./search-test.page.scss'],
 })
 export class SearchTestPage {
-  segment = 'profiles';
+  segment = 'people';
 
   chatRooms = [
     {
@@ -101,7 +101,8 @@ export class SearchTestPage {
     private readonly fb: FormBuilder,
     private readonly store: Store
   ) {}
-  searchResult$: any;
+  searchResult: any;
+  placeholderImgUrl = 'https://ionicframework.com/docs/img/demos/avatar.svg';
   // searchText!: string;
   // search() {
   //   // if (this.searchForm.valid) {
@@ -109,13 +110,20 @@ export class SearchTestPage {
   //   // }
   // }
   search(e: any) {
-    const target = e.target as HTMLTextAreaElement;
-    // console.log(target.value, 'targeeeeeeeeeeeeeeeeeet');
-    this.store.dispatch(new Search(this.segment, target.value));
-    this.searchResult$ = this.store.select(SearchState.searchResults);
-    this.searchResult$.subscribe((x: any) => {
-      console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxx');
-    });
+    if (e) {
+      const target = e.target as HTMLTextAreaElement;
+      // console.log(target.value, 'targeeeeeeeeeeeeeeeeeet');
+      if (target && target.value) {
+        this.store.dispatch(new Search(this.segment, target.value));
+        this.store
+          .select(SearchState.searchResults)
+          .subscribe((x: any) => (this.searchResult = x));
+      }
+    }
+
+    // this.searchResult.subscribe((x: any) => {
+    // console.log(x, 'xxxxxxxxxxxxxxxxxxxxxxx');
+    // });
     // this.store
     // .select(SearchState.searchResults)
     // .subscribe((x) => (this.searchResult = x));
@@ -125,6 +133,7 @@ export class SearchTestPage {
 
   getdisplay(elem: number) {
     const tabs = ['peopleTab', 'groupsTab', 'postsTab', 'eventsTab'];
+    this.searchResult = [];
     for (let i = 0; i < 4; i++) {
       const tab = document.getElementById(tabs[i]);
       if (tab) {
@@ -135,7 +144,7 @@ export class SearchTestPage {
     if (tabs[elem - 1] === 'postsTab') {
       this.segment = 'posts';
     } else if (tabs[elem - 1] === 'peopleTab') {
-      this.segment = 'profiles';
+      this.segment = 'people';
     }
 
     if (tab) {

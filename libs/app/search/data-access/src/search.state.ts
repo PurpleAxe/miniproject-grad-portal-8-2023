@@ -147,7 +147,7 @@ export class SearchState {
       };
       if (keyword !== '') {
         let responseRef: any;
-        if (field === 'profiles')
+        if (field === 'people')
           responseRef = await this.searchApi.searchUsers(request);
         if (field === 'posts')
           responseRef = await this.searchApi.searchPosts(request);

@@ -61,30 +61,35 @@
           >
           <!-- <ion-col size="3" class="tab-item" (click)="getdisplay(4)"
             >Events</ion-col -->
-          >
+          <!-- > -->
         </ion-col>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12" class="tabs-content">
-        <div id="peopleTab" class="tabs-content" style="display: block">
-          <ion-list *ngIf="segment === 'people' && (searchResult$) as rooms">
-            <ion-item *ngFor="let item of rooms" [detail]="true">
-              <ion-avatar slot="start">
-                <img [src]="item?.accountDetails.photoURL" />
-              </ion-avatar>
-              <ion-label>
-                {{item?.accountDetails.displayName}}
-                <p>
-                  <ion-text> {{item?.accountDetails.displayName}} </ion-text>
-                </p>
-              </ion-label>
-            </ion-item>
-          </ion-list>
-        </div>
+        <!-- <div id="peopleTab" class="tabs-content" style="display: block"> -->
+        <ion-list *ngIf="segment === 'people' && searchResult as rooms">
+          <ion-item *ngFor="let item of rooms" [detail]="true">
+            <ion-avatar slot="start">
+              <img
+                [src]="item?.accountDetails?.photoURL? item?.accountDetails.photoURL: placeholderImgUrl" />
+            </ion-avatar>
+            <ion-label>
+              {{item?.accountDetails?item?.accountDetails.displayName: 'Deleted
+              User'}}
+              <p>
+                <ion-text>
+                  {{item?.accountDetails?item?.accountDetails.displayName:
+                  'Deleted User'}}
+                </ion-text>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <!-- </div> -->
         <div id="postTab" class="tabs-content" style="display: block">
-          <ion-list *ngIf="segment === 'posts' && (searchResult$) as rooms">
-            <ion-item *ngFor="let item of rooms |async" [detail]="true">
+          <ion-list *ngIf="segment === 'posts' && (searchResult) as rooms">
+            <ion-item *ngFor="let item of rooms" [detail]="true">
               <!-- <ion-avatar slot="start"> -->
               <!-- <img [src]="item?." /> -->
               <!-- </ion-avatar> -->
