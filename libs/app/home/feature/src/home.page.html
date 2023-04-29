@@ -1,127 +1,263 @@
-<ng-container *ngIf="$any(userProfile$ | async) as userProfile;">
-<ion-header id="navbar">
-  <ion-toolbar>
+<ng-container *ngIf="(userProfile) as userProfile;">
+  <ion-header id="navbar">
+    <ion-toolbar>
+      <ion-buttons slot="start" style="zoom: 1.2; margin-left: 10px">
+        <ion-menu-button
+          (click)="checkStatus()"
+          color="primary"
+          autoHide="false"></ion-menu-button>
+      </ion-buttons>
 
-    <ion-buttons slot="start" style="zoom: 1.2; margin-left: 10px;">
-      <ion-menu-button (click)="checkStatus()" color="primary" autoHide="false"></ion-menu-button>
-    </ion-buttons>
-    
-    
-    <ion-avatar slot="end" style="margin-right: 60px; margin-top: 10px; margin-bottom: 10px;">
-      <img
-        class="logo logo-light"
-        src="assets/logos/logo-transp.png" />
-    </ion-avatar>
-
-    <ion-button fill="clear" (click)="goToLeaderboard()" slot="end" style="margin-right: 10px;">
-      <ion-avatar >
-        <ion-icon color="primary" name="podium-outline" class="stats" ></ion-icon>
+      <ion-avatar
+        slot="end"
+        style="margin-right: 60px; margin-top: 10px; margin-bottom: 10px">
+        <img class="logo logo-light" src="assets/logos/logo-transp.png" />
       </ion-avatar>
-    </ion-button>
 
-  </ion-toolbar>
-</ion-header>
-
-
-<!-- ===================================menu=========================================== -->
-<ion-menu contentId="main-content" menuId="menu">
-  <ion-header style="height: auto; margin-left: 10px;">
-
-    <ion-button fill="clear" (click)="goToMyProfile()" style="height: auto; margin-left: 0px;">
-      <div style="display: flex; flex-direction: column; align-items: center;">
-        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" style="width: 33%; height: auto; border-radius: 50%; margin-left: 0px; margin-top: 10px; margin-bottom: 10px;" />
-        <ion-icon id="activitystatus" [color]="iconColor" name="ellipse" style="position: absolute; margin-top: 75px; margin-left: 50px; background-color: var(--ion-color-medium-shade); border-radius: 50%; font-size: 30px; padding: 3px;"></ion-icon>
-      </div>
-    </ion-button>
-    
-    <ion-title color="dark" id="name" style="margin-left: 68px;">{{userProfile.accountDetails.displayName}}</ion-title>
-    <ion-title color="medium" id="username" style="margin-top: 5px; margin-bottom: 15px; margin-left: 60px;">@{{userProfile.username}}</ion-title>
-
-  </ion-header>
-  
-  <ion-content>
-    <ion-list>
-      <ion-item>
-        <ion-button fill="clear" (click)="checkFollowers()" style="height: auto; margin-left: 20px;">
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <ion-text color="primary" style="font-size: 1.5em; margin-left: 10px; text-transform: capitalize;">{{userProfile.followerCount}}</ion-text>
-            <ion-text color="dark" style="font-size: 1.5em; margin-left: 10px; text-transform: capitalize; margin-bottom: 10px;">Followers</ion-text>
-          </div>
-        </ion-button>
-        
-
-        <ion-button fill="clear" (click)="checkFollowing()" style="height: auto;margin-left: 10px;">
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <ion-text color="primary" style="font-size: 1.5em; margin-left: 10px; text-transform: capitalize;">{{userProfile.followingCount}}</ion-text>
-            <ion-text color="dark" style="font-size: 1.5em; margin-left: 10px; text-transform: capitalize; margin-bottom: 10px;">Following</ion-text>
-          </div>
-        </ion-button>
-        
-
-      </ion-item>
-
-      <ion-item style="display: block; margin: 0; padding: 0; ">
-        <div style="width: auto; display: flex; border-radius: 24px; border: 1px solid black; padding: 10px; background-color: var(--ion-color-warning-shade); margin-top: 15px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3); width: 500px;" class="ion-text-center">
-          <div id="hoursM" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{getHours(userProfile)}} hrs</div>
-          <div id="minutesM" style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{getMinutes(userProfile)}} mins</div>
-          <div id="sesM" style="flex: 1; text-align: center; color: black;">{{getSeconds(userProfile)}} s</div>
-        </div>
-      </ion-item>
-      
-      <ion-item>
-        <ion-button fill="clear" (click)="goToSettings()" style="height: auto;">
-          <ion-icon color="dark" name="settings-outline" size="large"></ion-icon>
-          <ion-text color="dark" style="font-size: 1.5em; margin-left: 10px; text-transform: capitalize;">Settings</ion-text>
-        </ion-button>
-      </ion-item>
-    </ion-list>
-
-    <ion-fab horizontal="end" vertical="bottom">
-      <ion-button fill="clear" (click)="logout()" size="large">
-        <ion-icon color="dark" name="log-out-outline" size="large" style="margin-bottom: 20px;"></ion-icon>
+      <ion-button
+        fill="clear"
+        (click)="goToLeaderboard()"
+        slot="end"
+        style="margin-right: 10px">
+        <ion-avatar>
+          <ion-icon
+            color="primary"
+            name="podium-outline"
+            class="stats"></ion-icon>
+        </ion-avatar>
       </ion-button>
-    </ion-fab>
- 
-    
+    </ion-toolbar>
+  </ion-header>
+  <!--  ===================================menu=========================================== -->
+  <ion-menu contentId="main-content" menuId="menu">
+    <ion-header style="height: auto; margin-left: 10px">
+      <ion-button
+        fill="clear"
+        (click)="goToMyProfile()"
+        style="height: auto; margin-left: 0px">
+        <div style="display: flex; flex-direction: column; align-items: center">
+          <img
+            alt="Silhouette of a person's head"
+            src="https://ionicframework.com/docs/img/demos/avatar.svg"
+            style="
+              width: 33%;
+              height: auto;
+              border-radius: 50%;
+              margin-left: 0px;
+              margin-top: 10px;
+              margin-bottom: 10px;
+            " />
+          <ion-icon
+            id="activitystatus"
+            [color]="iconColor"
+            name="ellipse"
+            style="
+              position: absolute;
+              margin-top: 75px;
+              margin-left: 50px;
+              background-color: var(--ion-color-medium-shade);
+              border-radius: 50%;
+              font-size: 30px;
+              padding: 3px;
+            "></ion-icon>
+        </div>
+      </ion-button>
+
+      <ion-title color="dark" id="name" style="margin-left: 68px"
+        >{{userProfile.accountDetails? userProfile.accountDetails.displayName:
+        'James' }}</ion-title
+      >
+      <ion-title
+        color="medium"
+        id="username"
+        style="margin-top: 5px; margin-bottom: 15px; margin-left: 60px"
+        >@{{userProfile?.userName}}</ion-title
+      >
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-item>
+          <ion-button
+            fill="clear"
+            (click)="checkFollowers()"
+            style="height: auto; margin-left: 20px">
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+              ">
+              <ion-text
+                color="primary"
+                style="
+                  font-size: 1.5em;
+                  margin-left: 10px;
+                  text-transform: capitalize;
+                "
+                >{{userProfile.followers.length}}</ion-text
+              >
+              <ion-text
+                color="dark"
+                style="
+                  font-size: 1.5em;
+                  margin-left: 10px;
+                  text-transform: capitalize;
+                  margin-bottom: 10px;
+                "
+                >Followers</ion-text
+              >
+            </div>
+          </ion-button>
+
+          <ion-button
+            fill="clear"
+            (click)="checkFollowing()"
+            style="height: auto; margin-left: 10px">
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+              ">
+              <ion-text
+                color="primary"
+                style="
+                  font-size: 1.5em;
+                  margin-left: 10px;
+                  text-transform: capitalize;
+                "
+                >{{userProfile.followers.length}}</ion-text
+              >
+              <ion-text
+                color="dark"
+                style="
+                  font-size: 1.5em;
+                  margin-left: 10px;
+                  text-transform: capitalize;
+                  margin-bottom: 10px;
+                "
+                >Following</ion-text
+              >
+            </div>
+          </ion-button>
+        </ion-item>
+
+        <ion-item style="display: block; margin: 0; padding: 0">
+          <div
+            style="
+              width: auto;
+              display: flex;
+              border-radius: 24px;
+              border: 1px solid black;
+              padding: 10px;
+              background-color: var(--ion-color-warning-shade);
+              margin-top: 15px;
+              box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+              width: 500px;
+            "
+            class="ion-text-center">
+            <div
+              id="hoursM"
+              style="
+                flex: 1;
+                text-align: center;
+                border-right: 1px solid black;
+                color: black;
+              ">
+              {{getHours(userProfile)}} hrs
+            </div>
+            <div
+              id="minutesM"
+              style="
+                flex: 1;
+                text-align: center;
+                border-right: 1px solid black;
+                color: black;
+              ">
+              {{getMinutes(userProfile)}} mins
+            </div>
+            <div id="sesM" style="flex: 1; text-align: center; color: black">
+              {{getSeconds(userProfile)}} s
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-button
+            fill="clear"
+            (click)="goToSettings()"
+            style="height: auto">
+            <ion-icon
+              color="dark"
+              name="settings-outline"
+              size="large"></ion-icon>
+            <ion-text
+              color="dark"
+              style="
+                font-size: 1.5em;
+                margin-left: 10px;
+                text-transform: capitalize;
+              "
+              >Settings</ion-text
+            >
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      <ion-fab horizontal="end" vertical="bottom">
+        <ion-button fill="clear" (click)="logout()" size="large">
+          <ion-icon
+            color="dark"
+            name="log-out-outline"
+            size="large"
+            style="margin-bottom: 20px"></ion-icon>
+        </ion-button>
+      </ion-fab>
+    </ion-content>
+  </ion-menu>
+
+  <ion-content id="main-content">
+    <router-outlet></router-outlet>
   </ion-content>
-</ion-menu>
 
-<ion-content id="main-content">
-  <router-outlet></router-outlet>
-</ion-content>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-segment color="primary" value="homeButton">
+        <ion-segment-button value="homeButton" (click)="goToFeed()">
+          <ion-icon name="home-outline"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="searchButton" (click)="goToSearch()">
+          <ion-icon name="search-outline"></ion-icon>
+        </ion-segment-button>
 
-<ion-footer>
-<ion-toolbar>
-  <ion-segment color="primary" value="homeButton">
-    <ion-segment-button value="homeButton" (click)="goToFeed()">
-      <ion-icon name="home-outline"></ion-icon>
-    </ion-segment-button>
-    <ion-segment-button value="searchButton" (click)="goToSearch()">
-      <ion-icon name="search-outline"></ion-icon>
-    </ion-segment-button>
+        <ion-segment-button id="popover-button" value="addButton">
+          <ion-icon name="duplicate-outline"></ion-icon>
+        </ion-segment-button>
+        <ion-popover
+          trigger="popover-button"
+          side="top"
+          alignment="center"
+          [dismissOnSelect]="true">
+          <ng-template>
+            <ion-content color="light">
+              <ion-button color="light" expand="full" (click)="goToPost()"
+                >Create a Post</ion-button
+              >
+              <ion-button color="light" expand="full" (click)="goToChallenge()"
+                >Create a Challenge</ion-button
+              >
+            </ion-content>
+          </ng-template>
+        </ion-popover>
 
-
-    <ion-segment-button id="popover-button" value="addButton">
-      <ion-icon name="duplicate-outline"></ion-icon>
-    </ion-segment-button>
-    <ion-popover trigger="popover-button" side="top" alignment="center" [dismissOnSelect]="true">
-      <ng-template>
-        <ion-content color="light">
-          <ion-button color="light" expand="full" (click)="goToPost()">Create a Post</ion-button>
-          <ion-button color="light" expand="full" (click)="goToChallenge()">Create a Challenge</ion-button>
-        </ion-content>
-      </ng-template>
-    </ion-popover>
-    
-
-
-    <ion-segment-button value="notiButton" (click)="goToNotifications()">
-      <ion-icon name="notifications-outline"></ion-icon>
-    </ion-segment-button>
-    <ion-segment-button value="chatButton" (click)="goToChat()">
-      <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
-    </ion-segment-button>
-  </ion-segment>
-  </ion-toolbar>
-</ion-footer>
+        <ion-segment-button value="notiButton" (click)="goToNotifications()">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="chatButton" (click)="goToChat()">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-footer>
 </ng-container>

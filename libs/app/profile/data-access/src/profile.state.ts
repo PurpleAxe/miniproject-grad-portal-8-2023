@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 import {
-    AgeGroup,
-    Ethnicity,
-    Gender,
-    HouseholdIncome,
-    IProfile,
-    IUpdateAccountDetailsRequest,
-    IUpdateAddressDetailsRequest,
-    IUpdateContactDetailsRequest,
-    IUpdateOccupationDetailsRequest,
-    IUpdatePersonalDetailsRequest
+  AgeGroup,
+  Ethnicity,
+  Gender,
+  HouseholdIncome,
+  IProfile,
+  IUpdateAccountDetailsRequest,
+  IUpdateAddressDetailsRequest,
+  IUpdateContactDetailsRequest,
+  IUpdateOccupationDetailsRequest,
+  IUpdatePersonalDetailsRequest,
 } from '@mp/api/profiles/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { Logout as AuthLogout } from '@mp/app/auth/util';
 import { SetError } from '@mp/app/errors/util';
 import {
-    Logout,
-    SetProfile,
-    SubscribeToProfile,
-    UpdateAccountDetails,
-    UpdateAddressDetails,
-    UpdateContactDetails,
-    UpdateOccupationDetails,
-    UpdatePersonalDetails
+  Logout,
+  SetProfile,
+  SubscribeToProfile,
+  UpdateAccountDetails,
+  UpdateAddressDetails,
+  UpdateContactDetails,
+  UpdateOccupationDetails,
+  UpdatePersonalDetails,
 } from '@mp/app/profile/util';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import produce from 'immer';
@@ -153,9 +153,9 @@ export class ProfileState {
 
   @Action(SubscribeToProfile)
   subscribeToProfile(ctx: StateContext<ProfileStateModel>) {
+    console.log('apssing subscription to profile');
     const user = this.store.selectSnapshot(AuthState.user);
     if (!user) return ctx.dispatch(new SetError('User not set'));
-
     return this.profileApi
       .profile$(user.uid)
       .pipe(tap((profile: IProfile) => ctx.dispatch(new SetProfile(profile))));
