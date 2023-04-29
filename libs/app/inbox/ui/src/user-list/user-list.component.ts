@@ -8,7 +8,7 @@ export class UserListComponent {
   // constructor() {}
   @Input() item: any;
   @Output() onUserPicked: EventEmitter<any> = new EventEmitter();
-  placeholderImgUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+  placeholderImgUrl = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   select() {
     this.onUserPicked.emit(this.item);

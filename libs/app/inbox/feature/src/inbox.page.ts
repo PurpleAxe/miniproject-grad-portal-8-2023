@@ -37,7 +37,7 @@ export class InboxPageComponent implements OnInit {
   user: any;
   email: any;
   userNew$: any;
-  placeholderImgUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+  placeholderImgUrl = 'https://ionicframework.com/docs/img/demos/avatar.svg';
   users: any;
   conversations: any;
   userSubscribtion: any;

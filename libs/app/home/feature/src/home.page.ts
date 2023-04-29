@@ -33,6 +33,11 @@ export class HomePage implements OnInit {
   iconColor: any;
   route: any;
   shared: any;
+  hoursString = '';
+  minutesString = '';
+  secondsString = '';
+  time: any;
+  timestr: any;
 
   constructor(
     private router: Router,
@@ -47,16 +52,16 @@ export class HomePage implements OnInit {
     // this.userProfile$.subscribe((profile) => {
     //   console.log(profile, '[userProfilezzzzzzzzz');
     // });
-    this.store.dispatch(new SubscribeToAuthState()).subscribe((authstate) => {
-      console.log(authstate, ' auth statettttttt');
-    });
-    this.store.dispatch(new SubscribeToProfile()).subscribe((profile) => {
-      console.log(
-        profile,
-        ' profile gotasdjsajdsadtttttttzzzzzzzzzzzzzzzzzzzzzzz'
-      );
-      // this.userProfile = profile;
-    });
+    // this.store.dispatch(new SubscribeToAuthState()).subscribe((authstate) => {
+    // console.log(authstate, ' auth statettttttt');
+    // });
+    // this.store.dispatch(new SubscribeToProfile()).subscribe((profile) => {
+    //   console.log(
+    //     profile,
+    //     ' profile gotasdjsajdsadtttttttzzzzzzzzzzzzzzzzzzzzzzz'
+    //   );
+    //   // this.userProfile = profile;
+    // });
     this.store
       .select(ProfileState.profile)
       .subscribe((x) => (this.userProfile = x));
@@ -81,18 +86,33 @@ export class HomePage implements OnInit {
         }
       }
 
-      this.profile$.subscribe((profile) => {
-        if (
-          profile?.accountDetails?.email === this.email &&
-          profile?.accountDetails?.email
-        ) {
-          //something
-        } else {
-          // this.router.navigate(['home/settings/account-settings']);
-          // this.presentAlert();
-        }
-      });
+      //   this.profile$.subscribe((profile) => {
+      //     if (
+      //       profile?.accountDetails?.email === this.email &&
+      //       profile?.accountDetails?.email
+      //     ) {
+      //       //something
+      //     } else {
+      //       // this.router.navigate(['home/settings/account-settings']);
+      //       // this.presentAlert();
+      //     }
+      //   });
     });
+    // console.log(
+    //   this.userProfile,
+    //   this.userProfile.timeLeft,
+    //   'zllllllllllllllllllllllllllllllllll'
+    // );
+    const tamTime = this.userProfile.timeLeft.seconds;
+    // this.userProfile.timeLeft
+    // : '05/24/2023 22:59:30';
+    // console.log(tamTime, 'taaaaaaaaaaaaaaaaaaaaaaaaaaaaaamTime');
+    const referenceDate: number = tamTime;
+    // console.log(referenceDate, 'refer date ;zzzzzzzzdeeeeeee');
+
+    this.time = referenceDate - Math.floor(Date.now() / 1000);
+    // console.log(this.time, 'time after timeeeeeeee');
+    this.timeUpdateContinuously();
   }
 
   async presentAlert() {
@@ -107,10 +127,10 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    console.log('var2');
-    this.profile$.subscribe((user) => {
-      console.log(user, ' userrrrrrrrrrrrrrrrrrrrrrr');
-    });
+    // console.log('var2');
+    // this.profile$.subscribe((user) => {
+    // console.log(user, ' userrrrrrrrrrrrrrrrrrrrrrr');
+    // });
 
     const colorTheme = localStorage.getItem('color-theme');
 
@@ -231,7 +251,37 @@ export class HomePage implements OnInit {
 
     this.router.navigate(['/home/userprofile']);
   }
+  timeUpdateContinuously() {
+    //caden
+    setInterval(() => {
+      this.time--;
 
+      const hours = Math.floor(this.time / 3600);
+      const minutes = Math.floor((this.time % 3600) / 60);
+      const seconds = Math.floor(this.time % 60);
+
+      this.hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
+      this.minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
+      this.secondsString = `${seconds < 10 ? '0' : ''}${seconds} s`;
+    }, 1000);
+  }
+
+  // toDateTime(secs: any) {
+  //   const t = new Date(secs * 1000);
+  //   const today = new Date();
+  //   // const yesterday = ((d) => new Date(d.setDate(d.getDate() - 1)))(new Date());
+
+  //   if (t.getDate() == today.getDate())
+  //     return t.toLocaleTimeString([], {
+  //       hour: '2-digit',
+  //       minute: '2-digit',
+  //       hour12: false,
+  //     });
+  //   if (t.getDate() == yesterday.getDate()) return 'Yesterday';
+  //   if (t.getDate() < yesterday.getDate()) return t.toDateString();
+
+  //   return t;
+  // }
   ngOnDestroy() {
     clearTimeout(this.shared.timeoutId);
   }

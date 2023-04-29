@@ -165,7 +165,8 @@
                 border-right: 1px solid black;
                 color: black;
               ">
-              {{getHours(userProfile)}} hrs
+              <!-- {{getHours(userProfile)}} hrs -->
+              {{hoursString }}
             </div>
             <div
               id="minutesM"
@@ -175,10 +176,11 @@
                 border-right: 1px solid black;
                 color: black;
               ">
-              {{getMinutes(userProfile)}} mins
+              <!-- {{getMinutes(userProfile)}} mins -->
+              {{minutesString }}
             </div>
             <div id="sesM" style="flex: 1; text-align: center; color: black">
-              {{getSeconds(userProfile)}} s
+              {{secondsString }}
             </div>
           </div>
         </ion-item>
