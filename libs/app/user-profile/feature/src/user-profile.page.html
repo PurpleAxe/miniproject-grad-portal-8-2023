@@ -27,14 +27,14 @@
   
         <ion-button fill="clear" style="height: auto; margin-left: 50px; margin-top: 20px;" (click)="checkFollowers()">
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <ion-text color="primary" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize;">{{userProfile.followerCount}}</ion-text>
+            <ion-text color="primary" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize;">{{userProfile.followers}}</ion-text>
             <ion-text color="dark" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize; margin-bottom: 10px;">Followers</ion-text>
           </div>
         </ion-button>
   
         <ion-button fill="clear" style="height: auto; margin-left: 20px; margin-top: 20px;" (click)="checkFollowing()">
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <ion-text color="primary" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize;">{{userProfile.followingCount}}</ion-text>
+            <ion-text color="primary" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize;">{{userProfile.following}}</ion-text>
             <ion-text color="dark" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize; margin-bottom: 10px;">Following</ion-text>
           </div>
         </ion-button>
@@ -51,7 +51,7 @@
   </ion-header>
   
   
-  <ion-toolbar>
+  <!-- <ion-toolbar>
     <ion-segment value="all">
       <ion-segment-button value="posts">
         <ion-label>Posts</ion-label>
@@ -63,11 +63,11 @@
         <ion-label>Liked</ion-label>
       </ion-segment-button>
     </ion-segment>
-  </ion-toolbar>
+  </ion-toolbar> -->
   
   
   <!-- if this gets impelmented let Julianna know to change the post structure -->
-  <ion-card>
+  <!-- <ion-card>
     <ion-item>
       <ion-avatar slot="start" style="width: 70px; height: auto;">
         <img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
@@ -108,10 +108,10 @@
       </ion-buttons>
     </ion-item>
   </ion-card-content>
-  </ion-card>
+  </ion-card> -->
   
   
-  <ion-card id="profilePosts" style="display: block;">
+  <!-- <ion-card id="profilePosts" style="display: block;">
     <ion-item>
       <ion-avatar slot="start" style="width: 70px; height: auto;">
         <img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
@@ -152,7 +152,7 @@
       </ion-buttons>
     </ion-item>
   </ion-card-content>
-  </ion-card>
+  </ion-card> -->
   
   <ion-content id="privateProfile" class="ion-padding" style="display: none;">
     <div class="ion-text-center">
