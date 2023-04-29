@@ -1,11 +1,11 @@
-<ng-container *ngIf="(userProfile) as userProfile;">
+<ng-container *ngIf="userProfile as userProfile;">
   <ion-header id="navbar">
     <ion-toolbar>
       <ion-buttons slot="start" style="zoom: 1.2; margin-left: 10px">
         <ion-menu-button
           (click)="checkStatus()"
           color="primary"
-          autoHide="false"></ion-menu-button>
+          autoHide="true"></ion-menu-button>
       </ion-buttons>
 
       <ion-avatar
@@ -71,7 +71,7 @@
         color="medium"
         id="username"
         style="margin-top: 5px; margin-bottom: 15px; margin-left: 60px"
-        >@{{userProfile?.userName}}</ion-title
+        >@{{userProfile? userProfile.userName: 'James' }}</ion-title
       >
     </ion-header>
 
@@ -95,7 +95,7 @@
                   margin-left: 10px;
                   text-transform: capitalize;
                 "
-                >{{userProfile.followers}}</ion-text
+                >{{userProfile? userProfile.followers.length: 0}}</ion-text
               >
               <ion-text
                 color="dark"
@@ -127,7 +127,7 @@
                   margin-left: 10px;
                   text-transform: capitalize;
                 "
-                >{{userProfile.following}}</ion-text
+                >{{userProfile? userProfile.following.length: 0}}</ion-text
               >
               <ion-text
                 color="dark"
@@ -218,48 +218,48 @@
       </ion-fab>
     </ion-content>
   </ion-menu>
-
-  <ion-content id="main-content">
-    <router-outlet></router-outlet>
-  </ion-content>
-
-  <ion-footer>
-    <ion-toolbar>
-      <ion-segment color="primary" value="homeButton">
-        <ion-segment-button value="homeButton" (click)="goToFeed()">
-          <ion-icon name="home-outline"></ion-icon>
-        </ion-segment-button>
-        <ion-segment-button value="searchButton" (click)="goToSearch()">
-          <ion-icon name="search-outline"></ion-icon>
-        </ion-segment-button>
-
-        <ion-segment-button id="popover-button" value="addButton">
-          <ion-icon name="duplicate-outline"></ion-icon>
-        </ion-segment-button>
-        <ion-popover
-          trigger="popover-button"
-          side="top"
-          alignment="center"
-          [dismissOnSelect]="true">
-          <ng-template>
-            <ion-content color="light">
-              <ion-button color="light" expand="full" (click)="goToPost()"
-                >Create a Post</ion-button
-              >
-              <ion-button color="light" expand="full" (click)="goToChallenge()"
-                >Create a Challenge</ion-button
-              >
-            </ion-content>
-          </ng-template>
-        </ion-popover>
-
-        <ion-segment-button value="notiButton" (click)="goToNotifications()">
-          <ion-icon name="notifications-outline"></ion-icon>
-        </ion-segment-button>
-        <ion-segment-button value="chatButton" (click)="goToChat()">
-          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-  </ion-footer>
 </ng-container>
+
+<ion-content id="main-content">
+  <router-outlet></router-outlet>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment color="primary" value="homeButton">
+      <ion-segment-button value="homeButton" (click)="goToFeed()">
+        <ion-icon name="home-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="searchButton" (click)="goToSearch()">
+        <ion-icon name="search-outline"></ion-icon>
+      </ion-segment-button>
+
+      <ion-segment-button id="popover-button" value="addButton">
+        <ion-icon name="duplicate-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-popover
+        trigger="popover-button"
+        side="top"
+        alignment="center"
+        [dismissOnSelect]="true">
+        <ng-template>
+          <ion-content color="light">
+            <ion-button color="light" expand="full" (click)="goToPost()"
+              >Create a Post</ion-button
+            >
+            <ion-button color="light" expand="full" (click)="goToChallenge()"
+              >Create a Challenge</ion-button
+            >
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+
+      <ion-segment-button value="notiButton" (click)="goToNotifications()">
+        <ion-icon name="notifications-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="chatButton" (click)="goToChat()">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

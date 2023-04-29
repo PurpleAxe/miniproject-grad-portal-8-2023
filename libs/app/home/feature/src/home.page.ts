@@ -38,13 +38,13 @@ export class HomePage implements OnInit {
   secondsString = '';
   time: any;
   timestr: any;
-
+  menuOpen = false;
   constructor(
     private router: Router,
     private readonly store: Store,
     private renderer: Renderer2,
     private alertController: AlertController,
-    private menuCtrl?: MenuController
+    public menuCtrl?: MenuController
   ) {
     // this.profile$.subscribe((profile) => {
     //   console.log(profile, '[profileeeeeeeeeeeeeeee');
@@ -103,6 +103,7 @@ export class HomePage implements OnInit {
     //   this.userProfile.timeLeft,
     //   'zllllllllllllllllllllllllllllllllll'
     // );
+    if (!this.userProfile) this.store.dispatch(new SubscribeToAuthState());
     const tamTime = this.userProfile.timeLeft.seconds;
     // this.userProfile.timeLeft
     // : '05/24/2023 22:59:30';
@@ -181,13 +182,18 @@ export class HomePage implements OnInit {
     return 0;
   }
 
-  checkStatus() {
+  async checkStatus() {
     console.log('checkStatus');
-    const activityStatusValue = localStorage.getItem('activityStatus');
-    if (activityStatusValue === 'true') {
-      this.iconColor = 'tertiary';
-    } else {
-      this.iconColor = 'danger';
+    this.store.dispatch(new SubscribeToProfile());
+    // this.menuCtrl?.toggle();
+    // console.log(await this.menuCtrl?.isOpen('menu'), 'is it open');
+    if (await this.menuCtrl?.isOpen('menu')) {
+      const activityStatusValue = localStorage.getItem('activityStatus');
+      if (activityStatusValue === 'true') {
+        this.iconColor = 'tertiary';
+      } else {
+        this.iconColor = 'danger';
+      }
     }
   }
   logout() {
