@@ -16,6 +16,7 @@ import {
   ProfileStatusUpdatedEvent,
 } from '@mp/api/profiles/util';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { Timestamp } from 'firebase-admin/firestore';
 
 export class Profile extends AggregateRoot implements IProfile {
   constructor(
@@ -39,7 +40,7 @@ export class Profile extends AggregateRoot implements IProfile {
     public posts?: [],
     public rank?: number,
     public notifications?: [],
-    public timeLeft?: number,
+    public timeLeft?: Timestamp,
     public followers?: [],
     public following?: [],
     public conversationIDs?: string[]

@@ -6,6 +6,7 @@ import {
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Profile } from '../models';
+import { timeStamp } from 'console';
 
 @CommandHandler(CreateProfileCommand)
 export class CreateProfileHandler
@@ -65,7 +66,7 @@ export class CreateProfileHandler
       posts: [],
       rank: 1,
       notifications: [],
-      timeLeft: 600,
+      timeLeft: Timestamp.fromDate(new Date(Date.now() + 2 * 60 * 60 * 24* 1000)),
       followers: [],
       following: [],
       conversationIDs: [],

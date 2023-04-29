@@ -28,7 +28,7 @@ export interface IProfile {
   posts?: [];
   rank?: number;
   notifications?: [];
-  timeLeft?: number;
+  timeLeft?: Timestamp;
   followers?: [];
   following?: [];
   conversationIDs?: string[];
