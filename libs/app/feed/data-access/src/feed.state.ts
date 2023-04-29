@@ -162,7 +162,7 @@ export class FeedState {
       feed
     }
     const responseRef = await this.feedApi.GetDiscoveryFeed(myFetchDiscoveryRequest);
-    const response = responseRef.data;
+    const response = responseRef;
       ctx.patchState({
         // feed:{
         //   model:{
