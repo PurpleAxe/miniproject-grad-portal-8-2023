@@ -130,8 +130,8 @@ export class FeedState {
     const myFetchHomeRequest: IGetHomeFeedRequest ={
       feed
     }
-    // const responseRef = await this.feedApi.GetHomeFeed(myFetchHomeRequest);
-    // const response = responseRef.data;
+    const responseRef = await this.feedApi.GetHomeFeed$(myFetchHomeRequest);
+    const response = responseRef.feed;
       ctx.patchState({
         // feed:{
         //   model:{
@@ -143,8 +143,8 @@ export class FeedState {
         //   status: '',
         //   errors: {}
         // }
-        // feedPosts: response.feed
-        feedPosts:this.getMock()
+        feedPosts: response
+        // feedPosts:this.getMock()
       });
     }
 
