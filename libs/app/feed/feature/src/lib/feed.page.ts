@@ -17,7 +17,7 @@ import { SubscribeToProfile } from '@mp/app/profile/util';
   templateUrl: './feed.page.html',
   styleUrls: ['./feed.page.scss'],
 })
-export class FeedPage implements OnInit {
+export class FeedPage {
   LHome!: boolean;
   LDiscovery!: boolean;
 
@@ -34,31 +34,25 @@ export class FeedPage implements OnInit {
   feedPost:IPost[]=[];
 
   constructor(private router: Router,private readonly store: Store){
-    // this.LHome = true;
-    // this.LDiscovery = false;
-    // this.store.dispatch(new SubscribeToProfile());
-    // this.profile$.subscribe((profile) => {
-    //   if(profile){
-    //     this.profile = profile;
-    //     const payload={
-    //       uid:this.profile.userId
-    //     };
-    //     this.store.dispatch(new FetchHomeFeed(payload));
-    //     this.post$.subscribe((posts) => {
-    //       if(posts != null){
-    //         this.feedPost = posts;
-    //         console.table(this.feedPost);
-    //       }
-    //     });
-    //   }
-    // });
+    this.LHome = true;
+    this.LDiscovery = false;
+    this.store.dispatch(new SubscribeToProfile());
+    this.profile$.subscribe((profile) => {
+      if(profile){
+        this.profile = profile;
+        const payload={
+          uid:this.profile.userId
+        };
+        this.store.dispatch(new FetchHomeFeed(payload));
+        this.post$.subscribe((posts) => {
+          if(posts){
+            this.feedPost = posts;
+          }
+        });
+      }
+    });
     this.homet();
   }
-
-  ngOnInit(): void {
-    this.homet();
-  }
-
 
   Discoveryt(){
     this.LHome = false;

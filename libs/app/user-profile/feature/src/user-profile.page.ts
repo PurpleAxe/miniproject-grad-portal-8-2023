@@ -17,7 +17,7 @@ import { SubscribeToProfile } from '@mp/app/profile/util';
   templateUrl: './user-profile.page.html',
   styleUrls: ['./user-profile.page.scss'],
 })
-export class UserProfilePageComponent implements OnInit {
+export class UserProfilePageComponent implements OnInit { 
 
   constructor(private router: Router,private readonly store: Store) { }
   @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
@@ -25,6 +25,8 @@ export class UserProfilePageComponent implements OnInit {
   profileUrl="https://ionicframework.com/docs/img/demos/avatar.svg";
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   uid!:string;
+  username!:string;
+  userProfile!:IProfile;
 
   ngOnInit(): void {
     this.ownPosts();
@@ -48,6 +50,12 @@ export class UserProfilePageComponent implements OnInit {
     this.profile$.subscribe((profile) => {
       if(profile != null){
         this.uid = profile.userId;
+        this.userProfile = profile;
+        if(profile.accountDetails){
+          if (profile.accountDetails.displayName)
+            this.username = profile.accountDetails.displayName;
+        }
+
         const payload={
           uid:this.uid
         };
@@ -84,7 +92,9 @@ export class UserProfilePageComponent implements OnInit {
   }
 
   getProfileUrl(userId:string){
-    //console.log(userId);
+    if(this.userProfile?.accountDetails?.photoURL){
+      this.profileUrl = this.userProfile?.accountDetails?.photoURL;
+    }
     return this.profileUrl;
   }
 }

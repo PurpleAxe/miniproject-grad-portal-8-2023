@@ -63,7 +63,7 @@
 </ion-toolbar>
 
 <card *ngFor="let feed of ownPost$" 
-    [userName] = "feed.userId!"
+    [userName] = "username!"
     [postId] = "feed.postId!"
     [text] = "feed.message!"
     [profileUrl] = "getProfileUrl(feed.userId)"
@@ -71,9 +71,7 @@
     [challenge]="feed.challenge!"
     [department]="feed.department!"
     [likeNum] = "feed.likes!"
-    [dislikeNum]="feed.dislikes!" 
-    [commentNum] ="feed.comments!.length"
-    >
+    [dislikeNum]="feed.dislikes!" >
 </card>
 
 
