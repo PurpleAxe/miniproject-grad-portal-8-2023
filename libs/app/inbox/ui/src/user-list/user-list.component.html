@@ -1,6 +1,11 @@
 <ion-item lines="full" detail="true" *ngIf="item" (click)="select()">
   <ion-avatar slot="start">
-    <img [src]="item.photoURL != '' ? item.photoURL : placeholderImgUrl" />
+    <img
+      [src]="
+        item.photoURL !== '' && item.photoURL !== null
+          ? item.photoURL
+          : placeholderImgUrl
+      " />
   </ion-avatar>
   <ion-label>
     {{ item.displayName }}
