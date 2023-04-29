@@ -53,6 +53,8 @@ export class Profile extends AggregateRoot implements IProfile {
 
   create() {
     this.posts = [];
+    this.challenges = ["test"];
+    this.userDepartments =["test"];
     this.apply(new ProfileCreatedEvent(this.toJSON()));
   }
 

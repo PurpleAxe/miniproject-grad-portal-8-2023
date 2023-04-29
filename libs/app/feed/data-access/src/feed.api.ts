@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collection, doc, docData, Firestore, query, where, getDocs, onSnapshot } from '@angular/fire/firestore';
+import { collection, doc, docData, Firestore, query, where, getDocs, onSnapshot, collectionData } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { GetOwnFeedEvent, IFeed } from '@mp/api/feed/util';
 import { Timestamp } from '@angular/fire/firestore';
@@ -25,6 +25,7 @@ import {
 import { IUpdateCommentsRequest, IUpdateCommentsResponse } from '@mp/api/comments/util';
 import {IProfile} from '@mp/api/profiles/util';
 import {log} from 'console';
+import {map, Observable, Observer, Subject, tap} from 'rxjs';
 
 
 @Injectable()
@@ -72,9 +73,14 @@ export class FeedApi {
   async GetHomeFeed$(request: IGetHomeFeedRequest){
     const feed = request.feed; // ease of use
     const allUsers = collection(this.firestore, "profiles"); // find profiles that fit criteria
-    const departmentFilter = query(allUsers, where("userDepartments", "in", feed.user.userDepartments));
-    const challengesAndDepartmentFilter  = query(departmentFilter, where("challenges", "in", feed.user.challenges));
-    const excludeCurrent = query(challengesAndDepartmentFilter, where("userId", "!=", feed.user.userId));
+    log("test");
+    //const departmentFilter = query(allUsers, where("userDepartments", "in", feed.user.userDepartments));
+    log("test");
+    //const challengesAndDepartmentFilter  = query(departmentFilter, where("challenges", "in", feed.user.challenges));
+    log("test");
+    //const excludeCurrent = query(challengesAndDepartmentFilter, where("userId", "!=", feed.user.userId));
+    const excludeCurrent = query(allUsers, where("userId", "!=", feed.user.userId));
+    log("test");
     const querySnapshot = await getDocs(excludeCurrent);
     const profiles: IProfile[] = querySnapshot.docs.map((doc) => {
       return doc.data() as IProfile;
@@ -117,20 +123,12 @@ export class FeedApi {
     };
     return  toReturn;
   }
-  async GetOwnFeed(request: IGetOwnFeedRequest){
+
+  $GetOwnFeed(request: IGetOwnFeedRequest, observer: Subject<IPost[]>): Observable<IPost[]> {
     const posts = collection(this.firestore,"post")
     const filter = query(posts, where("userId", "==", request.feed.user.userId));
-    const querySnapshot = await getDocs(filter);
-    const response =
-      {
-        feed: {
-          user:request.feed.user,
-          posts: querySnapshot.docs.map((doc) => {
-            return doc.data() as IPost;
-          })
-        }
-      };
-    return response;
+    return collectionData(filter)
+      .pipe(map((posts) => posts as IPost[]))
   }
 
   async SendComment(request: IUpdateCommentsRequest){

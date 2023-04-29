@@ -46,7 +46,7 @@ export class PostModel extends AggregateRoot implements IPost {
     }
     this.userName ? this.userName: this.userName = await this.profilesRepository.findOne({userId:this.userId}).then((profile)=>{return profile.data()?.accountDetails?.displayName})
     this.postId = Timestamp.now().nanoseconds + randomUUID();
-    log("Made it")
+    log(this.toJSON());
     return this.apply(new PostCreatedEvent(this.toJSON()));
   }
 

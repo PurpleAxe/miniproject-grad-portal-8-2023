@@ -20,6 +20,8 @@ export class CreatePostHandler
       const dislikes = 0;
       const comments = request.post.comments;
       const message = request.post.message;
+      const challenge = request.post.challenge;
+      const department = request.post.department;
 
 
       const data: IPost = {
@@ -29,6 +31,8 @@ export class CreatePostHandler
           dislikes,
           message,
           comments,
+          challenge,
+          department,
         created: Timestamp.fromDate(new Date()),
       };
 

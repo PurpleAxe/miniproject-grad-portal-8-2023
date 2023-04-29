@@ -1,3 +1,4 @@
+import {IPost} from '@mp/api/post/util';
 import { IProfile } from '@mp/api/profiles/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
@@ -72,12 +73,12 @@ export class ProfilesRepository {
       .collection("dislikedPosts")
       .doc(post).delete();
   }
-  async addPost(profile:string, post:string) {
+  async addPost(profile:string, post:IPost) {
     admin
       .firestore()
       .collection("profiles")
       .doc(profile)
       .collection("posts")
-      .doc(post).create({});
+      .doc(post.postId!).create({});
   }
 }

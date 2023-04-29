@@ -19,8 +19,9 @@ import { IComment, IUpdateCommentsRequest } from '@mp/api/comments/util';
 import { Timestamp } from '@angular/fire/firestore';
 //import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed, IGetDiscoveryFeedRequest, IGetHomeFeedRequest, IGetOwnFeedRequest } from '@mp/api/feed/util';
-import { request } from 'http';
-import {log} from 'console';
+import {Observable, Observer, PartialObserver, Subject, tap} from 'rxjs';
+import produce from 'immer';
+import {AuthState} from '@mp/app/auth/data-access';
 
 export interface FeedStateModel{
 
@@ -66,8 +67,20 @@ export interface FeedStateModel{
 export class FeedState {
   constructor(
     private readonly feedApi: FeedApi,
-    private readonly store: Store
-  ) {}
+    private readonly store: Store,
+  ) {
+
+  }
+
+  public posts$ = new Subject<IPost[]>();
+  public subscriptions: any;
+  public userId: any;
+
+  async getUserId() {
+      this.store
+        .select(AuthState.user)
+        .subscribe((x: any) => (this.userId = x?.uid));
+  }
 
   @Action(LikePost)
   async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
@@ -119,10 +132,11 @@ export class FeedState {
   @Action(FetchHomeFeed)
   async FetchHomeFeed(ctx: StateContext<FeedStateModel>, {payload}: FetchHomeFeed) {
     // const response = await this.feedApi.fetchHomeFeed();
+    await this.getUserId();
     console.log("FetchHomeFeed");
     const myfeed: IFeed = {
       user:{
-        userId: payload.uid,
+        userId: this.userId,
       },
       posts:[],
     }
@@ -151,9 +165,10 @@ export class FeedState {
   @Action(FetchDiscoveryFeed)
   async FetchDiscoveryFeed(ctx: StateContext<FeedStateModel>, {payload}: FetchHomeFeed) {
     // const response = await this.feedApi.fetchDiscoveryFeed();
+    await this.getUserId();
     const myfeed: IFeed = {
       user:{
-        userId: payload.uid,
+        userId: this.userId,
       },
       posts:[],
     }
@@ -161,30 +176,24 @@ export class FeedState {
     const myFetchDiscoveryRequest: IGetDiscoveryFeedRequest ={
       feed
     }
-    const responseRef = await this.feedApi.GetDiscoveryFeed(myFetchDiscoveryRequest);
-    const response = responseRef;
-      ctx.patchState({
-        // feed:{
-        //   model:{
-        //     users: null,
-        //     feedPosts: response.feed,
-        //     postComments: null
-        //   },
-        //   dirty: false,
-        //   status: '',
-        //   errors: {}
-        // }
-        feedPosts: response.feed
-        // feedPosts:this.getMock()
-      });
+    return this.feedApi.$GetOwnFeed(myFetchDiscoveryRequest,this.posts$)
+      .pipe(tap((posts : IPost[]) => {
+        ctx.patchState({
+            feedPosts : {
+              posts:posts,
+              user:ctx.getState().feedPosts.user
+            }
+        });
+      }))
     }
 
 
   @Action(FetchOwnPosts)
   async FetchOwnPosts(ctx: StateContext<FeedStateModel>,{payload}: FetchHomeFeed) {
+    await this.getUserId();
     const myfeed: IFeed = {
       user:{
-        userId: payload.uid,
+        userId: this.userId,
       },
       posts:[],
     }
@@ -192,24 +201,15 @@ export class FeedState {
     const myFetchOwnRequest: IGetOwnFeedRequest ={
       feed
     }
-    const responseRef = await this.feedApi.GetOwnFeed(myFetchOwnRequest);
-    log(responseRef)
-    const response = responseRef;
-      ctx.patchState({
-        // feed:{
-        //   model:{
-        //     users: null,
-        //     feedPosts: response.feed,
-        //     postComments: null
-        //   },
-        //   dirty: false,
-        //   status: '',
-        //   errors: {}
-        // }
-        feedPosts: response.feed
-        // feedPosts:this.getMock()
-      });
-    }
+
+    return this.feedApi.$GetOwnFeed(myFetchOwnRequest,this.posts$)
+      .pipe(tap((posts : IPost[]) => {
+        ctx.setState(
+           produce((draft) =>{
+            draft.feedPosts.posts = posts;
+        }))
+      }))
+  }
 
 
     @Selector()

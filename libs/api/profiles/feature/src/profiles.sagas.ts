@@ -110,7 +110,7 @@ export class ProfilesSagas {
       map(
         (event: PostCreatedEvent) =>
           this.eventBus.publish(new ProfilePostAddedEvent(
-            event.post.postId!,
+            event.post!,
             event.post.userId!,)
           )
       )
