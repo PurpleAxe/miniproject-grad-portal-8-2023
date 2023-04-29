@@ -4,6 +4,7 @@ import { IPost } from '@mp/api/post/util';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { PostModel } from "../models";
 import {ProfilesRepository } from "@mp/api/profiles/data-access";
+import {log} from "console";
 
 @CommandHandler(LikePostCommand)
 export class LikePostHandler
@@ -21,14 +22,8 @@ export class LikePostHandler
       const postUserId = request.post.userId;
       const likingUserID = request.userID;
 
-      if ((await this.repository.getPost(request.post)).data.length == 0) { // check post exists
-        throw Error("Requested Post ID does not exist");
-      }
+      log(command)
       const userRef = (await this.profileRepo.findOne({"userId" : postUserId})); // find user profile
-
-      if (userRef.data.length == 0) { // check user exists
-        throw Error("User attempting to like does not exist.");
-      }
 
       const data: IPost = {
         postId:postID,

@@ -22,6 +22,7 @@ import { UserCreatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
 import { EventBus, ICommand, IEvent, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';
+import {log} from 'console';
 
 @Injectable()
 export class ProfilesSagas {
@@ -154,6 +155,7 @@ export class ProfilesSagas {
   onPostLiked = (
     events$: Observable<any>
   ): Observable<IEvent> => {
+    log(this.onPostLiked)
     return events$.pipe(
       ofType(PostLikedEvent),
       map(

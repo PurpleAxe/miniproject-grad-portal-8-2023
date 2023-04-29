@@ -3,6 +3,8 @@ import { IPost } from '@mp/api/post/util';
 import { Injectable } from '@nestjs/common';
 import {Timestamp} from "firebase-admin/firestore";
 import * as admin from 'firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
+import {log} from 'console';
 
 @Injectable()
 export class PostsRepository {
@@ -58,12 +60,12 @@ export class PostsRepository {
   }
 
   async likePost(post:IPost) {
-    const postRef = admin
+    const postRef = await admin
       .firestore()
       .collection("post")
       .doc(post.postId!)
       .update({
-        likes : admin.firestore.FieldValue.increment(1)
+        likes : FieldValue.increment(1)
       })
   }
 

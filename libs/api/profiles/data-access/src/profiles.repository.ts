@@ -1,6 +1,7 @@
 import {IPost} from '@mp/api/post/util';
 import { IProfile } from '@mp/api/profiles/util';
 import { Injectable } from '@nestjs/common';
+import {log} from 'console';
 import * as admin from 'firebase-admin';
 
 @Injectable()
@@ -57,6 +58,7 @@ export class ProfilesRepository {
       .doc(post).delete();
   }
   async likeListAdd(profile:string, post:string) {
+    log("fuck" + post)
     admin
       .firestore()
       .collection("profiles")

@@ -12,7 +12,7 @@ export class ProfileDislikedPostHandler
     if (event.remove) {
       await this.repository.dislikeListRemove(event.profile, event.post);
     } else {
-      await this.repository.likeListAdd(event.profile, event.post);
+      await this.repository.dislikeListAdd(event.profile, event.post);
     }
   }
 }
