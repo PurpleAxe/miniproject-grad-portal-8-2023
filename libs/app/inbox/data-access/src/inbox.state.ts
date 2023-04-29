@@ -115,12 +115,15 @@ export class InboxState {
                 x[0].conversations.conversationID
               ) {
                 if (
+                  draft.conversations &&
                   !draft.conversations.some(
                     (e: any) =>
                       e.conversationID === x[0].conversations.conversationID
                   )
                 ) {
                   draft.conversations.push(x[0].conversations);
+                } else if (!draft.conversations) {
+                  draft.conversations = [x[0].conversations];
                 }
               } else {
                 draft.conversations = [];

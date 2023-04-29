@@ -12,7 +12,7 @@ import { Module } from '@nestjs/common';
     EventstoreModule,
     ProfilesModule,
     UsersModule,
-    NotificationsModule,
+    // NotificationsModule,
     MessageModule,
   ],
 })

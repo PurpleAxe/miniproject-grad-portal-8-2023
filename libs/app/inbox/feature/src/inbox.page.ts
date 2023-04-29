@@ -103,7 +103,8 @@ export class InboxPageComponent implements OnInit {
     //
   }
 
-  newChatModalOpen() {
+  async newChatModalOpen() {
+    await this.getUsers();
     this.open_new_chat = true;
   }
 

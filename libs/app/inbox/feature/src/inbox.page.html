@@ -14,11 +14,16 @@
         <ion-label>
           {{item?.members[1].displayName}}
           <p>
-            <ion-text> {{item?.messages.at(-1).content.textData}} </ion-text>
+            <ion-text>
+              {{(item?.messages).length>0?
+              item?.messages.at(-1).content.textData: ''}}
+            </ion-text>
           </p>
         </ion-label>
         <ion-text slot="end" color="medium">
-          {{toDateTime(item?.messages.at(-1).metaData.timePosted.seconds)}}</ion-text
+          {{(item?.messages).length>0?
+          toDateTime(item?.messages.at(-1).metaData.timePosted.seconds):
+          ''}}</ion-text
         >
       </ng-container>
     </ion-item>

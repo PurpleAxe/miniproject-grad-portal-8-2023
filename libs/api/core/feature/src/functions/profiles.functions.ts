@@ -1,15 +1,15 @@
 import { ProfilesService } from '@mp/api/profiles/feature';
 import {
-    IUpdateAccountDetailsRequest,
-    IUpdateAccountDetailsResponse,
-    IUpdateAddressDetailsRequest,
-    IUpdateAddressDetailsResponse,
-    IUpdateContactDetailsRequest,
-    IUpdateContactDetailsResponse,
-    IUpdateOccupationDetailsRequest,
-    IUpdateOccupationDetailsResponse,
-    IUpdatePersonalDetailsRequest,
-    IUpdatePersonalDetailsResponse
+  IUpdateAccountDetailsRequest,
+  IUpdateAccountDetailsResponse,
+  IUpdateAddressDetailsRequest,
+  IUpdateAddressDetailsResponse,
+  IUpdateContactDetailsRequest,
+  IUpdateContactDetailsResponse,
+  IUpdateOccupationDetailsRequest,
+  IUpdateOccupationDetailsResponse,
+  IUpdatePersonalDetailsRequest,
+  IUpdatePersonalDetailsResponse,
 } from '@mp/api/profiles/util';
 import { NestFactory } from '@nestjs/core';
 import * as functions from 'firebase-functions';
