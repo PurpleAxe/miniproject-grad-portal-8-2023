@@ -95,13 +95,27 @@ export class FeedApi {
   }
 
   async GetDiscoveryFeed(request: IGetDiscoveryFeedRequest){
-    return await httpsCallable<
-    IGetDiscoveryFeedResponse,
-    IGetDiscoveryFeedRequest
-      >(
-    this.functions,
-    'fetchDiscoveryFeed'
-  )(request);
+    const feed = request.feed; // ease of use
+
+    const allUsers = collection(this.firestore, "profiles"); // find profiles that fit criteria
+    const challengesAndDepartmentFilter  = query(allUsers, where("challenges", "not-in", feed.user.challenges));
+    const excludeCurrent = query(challengesAndDepartmentFilter, where("userId", "!=", feed.user.userId));
+    const querySnapshot = await getDocs(excludeCurrent);
+    const profiles: IProfile[] = querySnapshot.docs.map((doc) => {
+      return doc.data() as IProfile;
+    });
+
+    // Get all our related posts based on the profiles
+    const allPosts = collection(this.firestore, "post");
+    const filter = query(allPosts, where("userId", "in", profiles.map((profile) => {return profile.userId;})));
+    const relatedPosts = await getDocs(filter);
+    const toReturn: IGetHomeFeedResponse = {
+      feed : {
+        user : feed.user,
+        posts : relatedPosts.docs.map((doc) => {return doc.data() as IPost})
+      }
+    };
+    return  toReturn;
   }
   async GetOwnFeed(request: IGetOwnFeedRequest){
     const posts = collection(this.firestore,"post")
