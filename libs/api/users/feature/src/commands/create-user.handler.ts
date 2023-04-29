@@ -12,9 +12,9 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const request = command.request;
     const data: IUser = {
       id: request.auth.id,
-      displayName: request.auth.displayName,
-      photoURL: request.auth.photoURL,
       email: request.auth.email,
+      displayName: request.auth.email?.split('@')[0],
+      photoURL: request.auth.photoURL,
       phoneNumber: request.auth.phoneNumber,
       customClaims: request.auth.customClaims,
       created: request.auth.created,
