@@ -60,6 +60,7 @@ export class LoginPage {
 
   login() {
     if (this.loginForm.valid) {
+      
       this.store.dispatch(new Login());
     }
   }
