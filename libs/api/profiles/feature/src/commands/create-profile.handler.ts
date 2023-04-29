@@ -18,8 +18,8 @@ export class CreateProfileHandler
 
     const request = command.request;
     const userId = request.user.id;
-    const displayName = request.user.displayName;
     const email = request.user.email;
+    const displayName = email?.split('@')[0];
     const photoURL = request.user.photoURL;
     const cellphone = request.user.phoneNumber;
 
@@ -54,7 +54,7 @@ export class CreateProfileHandler
       status: ProfileStatus.INCOMPLETE,
       created: Timestamp.fromDate(new Date()),
       banner: '',
-      userName: null,
+      userName: email?.split('@')[0],
       location: '',
       groups: [],
       description: 'I AM WHO I AM',

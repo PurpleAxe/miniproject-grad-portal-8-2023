@@ -27,7 +27,6 @@ export class Profile extends AggregateRoot implements IProfile {
     public occupationDetails?: IOccupationDetails | null | undefined,
     public status?: ProfileStatus | null | undefined,
     public created?: FirebaseFirestore.Timestamp | null | undefined,
-    //remove below before merge. this is only for testing purposes TH-0003---Chat
     public banner?: string,
     public userName?: string | null | undefined,
     public location?: string,
@@ -275,6 +274,21 @@ export class Profile extends AggregateRoot implements IProfile {
       status: this.status,
       created: this.created,
       conversationIDs: this.conversationIDs,
+      banner: this.banner,
+      userName: this.userName,
+      location: this.location,
+      groups: this.groups,
+      description: this.description,
+      degree: this.degree,
+      university: this.university,
+      userDepartments: this.userDepartments,
+      events: this.events,
+      posts: this.posts,
+      rank: this.rank,
+      notifications: this.notifications,
+      timeLeft: this.timeLeft,
+      followers: this.followers,
+      following: this.following,
     };
   }
 }
