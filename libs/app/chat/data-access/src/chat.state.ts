@@ -117,7 +117,10 @@ export class ChatState {
                 // '@@@@@@@@@@@@@@@@@@@@@@@@@@'
                 // );
                 // if (index > -1) {
-                console.log(x[0].messages, ' modifying chat to draft');
+                console.log(
+                  x[0],
+                  ' modifying chat to draf zzzzzzzzzzzzzzzzzzzzzzt'
+                );
                 draft.currentConversation.messages = x[0].messages;
                 // return;
                 // } else {

@@ -134,21 +134,26 @@ export class SearchTestPage {
   getdisplay(elem: number) {
     const tabs = ['peopleTab', 'groupsTab', 'postsTab', 'eventsTab'];
     this.searchResult = [];
+    const buttonPeople = document.getElementById('PeopleButton');
+    const buttonPosts = document.getElementById('PostButton');
     for (let i = 0; i < 4; i++) {
       const tab = document.getElementById(tabs[i]);
       if (tab) {
         tab.style.display = 'none';
       }
     }
-    const tab = document.getElementById(tabs[elem - 1]);
     if (tabs[elem - 1] === 'postsTab') {
       this.segment = 'posts';
+      if (buttonPeople && buttonPosts) {
+        buttonPosts.style.backgroundColor = 'rgba(255, 255, 0, 0.3)';
+        buttonPeople.style.backgroundColor = 'white';
+      }
     } else if (tabs[elem - 1] === 'peopleTab') {
       this.segment = 'people';
-    }
-
-    if (tab) {
-      tab.style.display = 'block';
+      if (buttonPeople && buttonPosts) {
+        buttonPeople.style.backgroundColor = 'rgba(255, 255, 0, 0.3)';
+        buttonPosts.style.backgroundColor = 'white';
+      }
     }
   }
 }

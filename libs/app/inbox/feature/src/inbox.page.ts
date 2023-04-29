@@ -16,6 +16,7 @@ import {
 import { Observable, tap, map, Timestamp } from 'rxjs';
 import { AuthState } from '@mp/app/auth/data-access';
 import { IUser } from '@mp/api/users/util';
+import { ProfileState } from '@mp/app/profile/data-access';
 
 @Component({
   selector: 'app-inbox',
@@ -146,15 +147,25 @@ export class InboxPageComponent implements OnInit {
       let photoURL = '';
       this.store
         .select(AuthState.user)
-        .subscribe(
-          (x: any) => (
-            (this.user = x?.uid),
-            (this.email = x?.email),
-            (displayName = x?.displayName),
-            (photoURL = x?.photoURL)
-          )
-        )
+        .subscribe((x: any) => {
+          // console.log(x, 'gggggggggggggggggggggggggxx');
+          this.user = x?.uid;
+          this.email = x?.email;
+          displayName = x?.displayName;
+          photoURL = x?.photoURL;
+        })
         .unsubscribe();
+      this.store
+        .select(ProfileState.profile)
+        .subscribe((x: any) => {
+          console.log(x, 'gggggggggggggggggggggggggxx');
+          this.user = x?.userId;
+          this.email = x?.accountDetails.email;
+          displayName = x?.accountDetails.displayName;
+          photoURL = x?.accountDetails.photoURL;
+        })
+        .unsubscribe();
+
       const member1: IUser = {
         id: this.user,
         email: this.email,
@@ -164,6 +175,7 @@ export class InboxPageComponent implements OnInit {
         customClaims: null,
         created: null,
       };
+      console.log(member1, 'member1 ddddddddddzzzzzzzzzzzzzzzzzzz');
 
       this.member2.id = item.id;
       this.member2.email = item.email;

@@ -4,7 +4,7 @@
       <ion-buttons slot="start">
         <ion-back-button defaultHref="/home/inbox"></ion-back-button>
       </ion-buttons>
-      <ion-title slot="end">{{name}}</ion-title>
+      <ion-title>{{chatRoom.members[1]?.displayName}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -54,7 +54,7 @@
   </ion-content>
 </ng-container>
 <ng-template #loading>
-  <ion-footer style="position: fixed;">
+  <ion-footer style="position: fixed">
     <ion-toolbar color="light">
       <ion-textarea
         autoGrow

@@ -27,35 +27,39 @@
 <ion-content [fullscreen]="true">
   <ion-grid class="search-search">
     <ion-row class="ion-align-items-center">
-      <ion-col size="2" style="padding: none">
-        <a routerLink="/home" class="back-button">
-          <ion-buttons slot="start" name="arrowback">
-            <ion-back-button defaultHref="/home"></ion-back-button>
-          </ion-buttons>
-        </a>
-      </ion-col>
-      <ion-col size="8">
+      <ion-col size="10"> </ion-col>
+      <ion-col size="11">
         <ion-searchbar
           [debounce]="1000"
           (ionChange)="search($event)"
           color="light"
           (search)="search($event)"></ion-searchbar>
       </ion-col>
-      <ion-col size="2">
+      <!-- <ion-col size="2">
         <ion-icon
           src="assets/icons/filter.svg"
           style="width: 24px; height: 24px"></ion-icon>
-      </ion-col>
+      </ion-col> -->
     </ion-row>
     <ion-row>
       <ion-col size="12" class="tabs-names">
         <ion-col size="12" class="tab-menu">
-          <ion-col size="6" class="tab-Item" (click)="getdisplay(1)"
-            >People</ion-col>
-          
-          <ion-col size="6" class="tab-Item" (click)="getdisplay(3)"
-            >Posts</ion-col>
-          
+          <ion-col
+            style="background-color: rgba(255, 255, 0, 0.3)"
+            size="6"
+            class="tab-Item"
+            id="PeopleButton"
+            (click)="getdisplay(1)"
+            >People</ion-col
+          >
+
+          <ion-col
+            size="6"
+            class="tab-Item"
+            id="PostButton"
+            (click)="getdisplay(3)"
+            >Posts</ion-col
+          >
         </ion-col>
       </ion-col>
     </ion-row>
