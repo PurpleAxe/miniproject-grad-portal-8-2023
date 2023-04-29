@@ -18,7 +18,7 @@
     <!-- <card id="posts" *ngFor="let i of contentArr" [content]="i"></card> -->
     
   <card *ngFor="let feed of feedPost" 
-    [userName] = "feed.userId!"
+    [userName] = "feed.userName!"
     [postId] = "feed.postId!"
     [text] = "feed.message!"
     [profileUrl] = "getProfileUrl(feed.userId)"
