@@ -30,20 +30,6 @@
       "@mp/api/history/data-access": [
         "libs/api/history/data-access/src/index.ts"
       ],
-      "@mp/api/message/data-access": [
-        "libs/api/message/data-access/src/index.ts"
-      ],
-      "@mp/api/message/feature": ["libs/api/message/feature/src/index.ts"],
-      "@mp/api/message/util": ["libs/api/message/util/src/index.ts"],
-      "@mp/api/notifications/data-access": [
-        "libs/api/notifications/data-access/src/index.ts"
-      ],
-      "@mp/api/notifications/feature": [
-        "libs/api/notifications/feature/src/index.ts"
-      ],
-      "@mp/api/notifications/util": [
-        "libs/api/notifications/util/src/index.ts"
-      ],
       "@mp/api/history/feature": ["libs/api/history/feature/src/index.ts"],
       "@mp/api/history/util": ["libs/api/history/util/src/index.ts"],
       "@mp/api/post/data-access": ["libs/api/post/data-access/src/index.ts"],
@@ -60,15 +46,12 @@
       "@mp/app/auth/data-access": ["libs/app/auth/data-access/src/index.ts"],
       "@mp/app/auth/feature": ["libs/app/auth/feature/src/index.ts"],
       "@mp/app/auth/util": ["libs/app/auth/util/src/index.ts"],
-      "@mp/app/chat/data-access": ["libs/app/chat/data-access/src/index.ts"],
       "@mp/app/challenge/data-access": [
         "libs/app/challenge/data-access/src/index.ts"
       ],
       "@mp/app/challenge/feature": ["libs/app/challenge/feature/src/index.ts"],
       "@mp/app/challenge/util": ["libs/app/challenge/util/src/index.ts"],
       "@mp/app/chat/feature": ["libs/app/chat/feature/src/index.ts"],
-      "@mp/app/chat/ui": ["libs/app/chat/ui/src/index.ts"],
-      "@mp/app/chat/util": ["libs/app/chat/util/src/index.ts"],
       "@mp/app/copyright/ui": ["libs/app/copyright/ui/src/index.ts"],
       "@mp/app/core/feature": ["libs/app/core/feature/src/index.ts"],
       "@mp/app/dashboard/data-access": [
@@ -90,9 +73,6 @@
       "@mp/app/forgot/util": ["libs/app/forgot/util/src/index.ts"],
       "@mp/app/home/feature": ["libs/app/home/feature/src/index.ts"],
       "@mp/app/inbox/feature": ["libs/app/inbox/feature/src/index.ts"],
-      "@mp/app/inbox/data-access": ["libs/app/inbox/data-access/src/index.ts"],
-      "@mp/app/inbox/ui": ["libs/app/inbox/ui/src/index.ts"],
-      "@mp/app/inbox/util": ["libs/app/inbox/util/src/index.ts"],
       "@mp/app/login/data-access": ["libs/app/login/data-access/src/index.ts"],
       "@mp/app/login/feature": ["libs/app/login/feature/src/index.ts"],
       "@mp/app/login/util": ["libs/app/login/util/src/index.ts"],
@@ -131,6 +111,8 @@
       "@mp/app/reset/util": ["libs/app/reset/util/src/index.ts"],
       "@mp/app/search/feature": ["libs/app/search/feature/src/index.ts"],
       "@mp/app/settings/feature": ["libs/app/settings/feature/src/index.ts"],
+      "@mp/app/shared/feature": ["libs/app/shared/feature/src/index.ts"],
+      "@mp/app/shared/ui": ["libs/app/shared/ui/src/index.ts"],
       "@mp/app/tos/feature": ["libs/app/tos/feature/src/index.ts"],
       "@mp/app/updates/data-access": [
         "libs/app/updates/data-access/src/index.ts"
@@ -139,6 +121,12 @@
       "@mp/app/updates/util": ["libs/app/updates/util/src/index.ts"],
       "@mp/app/user-profile/feature": [
         "libs/app/user-profile/feature/src/index.ts"
+      ],
+      "@mp/app/user-profile/data-access": [
+        "libs/app/user-profile/data-access/src/index.ts"
+      ],
+      "@mp/app/user-profile/util": [
+        "libs/app/user-profile/util/src/index.ts"
       ],
       "@mp/app/user/data-access": ["libs/app/user/data-access/src/index.ts"],
       "@mp/app/user/feature": ["libs/app/user/feature/src/index.ts"],
