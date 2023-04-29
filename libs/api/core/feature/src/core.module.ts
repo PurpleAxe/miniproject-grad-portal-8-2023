@@ -5,6 +5,7 @@ import { ProfilesModule } from '@mp/api/profiles/feature';
 import { UsersModule } from '@mp/api/users/feature';
 import { MessageModule } from '@mp/api/message/feature';
 import { Module } from '@nestjs/common';
+import { SearchModule } from '@mp/api/search/feature';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { Module } from '@nestjs/common';
     UsersModule,
     // NotificationsModule,
     MessageModule,
+    SearchModule,
   ],
 })
 export class CoreModule {}

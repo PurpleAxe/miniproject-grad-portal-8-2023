@@ -1,0 +1,124 @@
+<!-- <ion-header [translucent]="true"> </ion-header>
+<ion-content [fullscreen]="true">
+  <form
+    [formGroup]="searchForm"
+    ngxsForm="search.searchForm"
+    (sumbit)="search()">
+    <ion-input
+      type="text"
+      placeholder="Enter field"
+      required="true"
+      autocomplete="text"
+      formControlName="field">
+    </ion-input>
+    <ion-input
+      type="text"
+      placeholder="Enter keyword to search"
+      required="true"
+      autocomplete="text"
+      formControlName="keyword">
+    </ion-input>
+    <button (click)="search()">
+      <span class="login-text labellarge">Search</span>
+    </button>
+  </form>
+</ion-content> -->
+
+<ion-content [fullscreen]="true">
+  <ion-grid class="search-search">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2" style="padding: none">
+        <a routerLink="/home" class="back-button">
+          <ion-buttons slot="start" name="arrowback">
+            <ion-back-button defaultHref="/home"></ion-back-button>
+          </ion-buttons>
+        </a>
+      </ion-col>
+      <ion-col size="8">
+        <ion-searchbar
+          [debounce]="1000"
+          (ionChange)="search($event)"
+          color="light"
+          (search)="search($event)"></ion-searchbar>
+      </ion-col>
+      <ion-col size="2">
+        <ion-icon
+          src="assets/icons/filter.svg"
+          style="width: 24px; height: 24px"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="tabs-names">
+        <ion-col size="12" class="tab-menu">
+          <ion-col size="6" class="tab-Item" (click)="getdisplay(1)"
+            >People</ion-col>
+          
+          <ion-col size="6" class="tab-Item" (click)="getdisplay(3)"
+            >Posts</ion-col>
+          
+        </ion-col>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="tabs-content">
+        <!-- <div id="peopleTab" class="tabs-content" style="display: block"> -->
+        <ion-list *ngIf="segment === 'people' && searchResult as rooms">
+          <ion-item *ngFor="let item of rooms" [detail]="true">
+            <ion-avatar slot="start">
+              <img
+                [src]="item?.accountDetails?.photoURL? item?.accountDetails.photoURL: placeholderImgUrl" />
+            </ion-avatar>
+            <ion-label>
+              {{item?.accountDetails?item?.accountDetails.displayName: 'Deleted
+              User'}}
+              <p>
+                <ion-text>
+                  {{item?.accountDetails?item?.accountDetails.displayName:
+                  'Deleted User'}}
+                </ion-text>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <!-- </div> -->
+        <div id="postTab" class="tabs-content" style="display: block">
+          <ion-list *ngIf="segment === 'posts' && (searchResult) as rooms">
+            <ion-item *ngFor="let item of rooms" [detail]="true">
+              <!-- <ion-avatar slot="start"> -->
+              <!-- <img [src]="item?." /> -->
+              <!-- </ion-avatar> -->
+              <ion-label>
+                <!-- {{item?.accountDetails.displayName}} -->
+                <p>
+                  <ion-text> {{item?.message}} {{item?.created}} </ion-text>
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+        <!-- <div id="groupsTab" class="tabs-content" style="display: none">
+          Groups works!!
+        </div>
+        <div id="postsTab" class="tabs-content" style="display: none">
+          <ion-list *ngIf="segment === 'posts' && (searchResult) as postItems">
+            <ion-item *ngFor="let item of postItems" [detail]="true">
+              <ion-avatar slot="start">
+                <img [src]="item?.photo" />
+              </ion-avatar>
+              <ion-label>
+                {{item?.name}}
+                <p>
+                  <ion-text> {{item?.postInfo}} </ion-text>
+                </p>
+              </ion-label>
+              <ion-text slot="end" color="medium">{{item?.time}}</ion-text>
+            </ion-item>
+          </ion-list>
+        </div> -->
+        <!-- <div id="eventsTab" class="tabs-content" style="display: none">
+          Events works!!
+        </div> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
