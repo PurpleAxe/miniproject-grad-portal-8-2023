@@ -40,6 +40,7 @@ export class HomePage implements OnInit {
   time: any;
   timestr: any;
   menuOpen = false;
+  timer: any;
   constructor(
     private router: Router,
     private readonly store: Store,
@@ -81,6 +82,7 @@ export class HomePage implements OnInit {
     // this.profile$.subscribe((user) => {
     // console.log(user, ' userrrrrrrrrrrrrrrrrrrrrrr');
     // });
+    console.log('home ngOnInit calledddddddddd');
     this.userProfile$ = this.store.select(ProfileState.profile);
     // .subscribe((x) => (this.userProfile = x));
     // this.store
@@ -274,7 +276,8 @@ export class HomePage implements OnInit {
   }
   timeUpdateContinuously() {
     //caden
-    setInterval(() => {
+    if (this.timer) clearInterval(this.timer);
+    this.timer = setInterval(() => {
       this.time--;
 
       const hours = Math.floor(this.time / 3600);
@@ -304,6 +307,6 @@ export class HomePage implements OnInit {
   //   return t;
   // }
   ngOnDestroy() {
-    clearTimeout(this.shared.timeoutId);
+    clearInterval(this.timer);
   }
 }
