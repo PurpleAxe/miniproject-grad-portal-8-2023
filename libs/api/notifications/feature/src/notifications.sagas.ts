@@ -21,14 +21,14 @@ export class NotificationsSagas {
     );
   };
 
-  @Saga()
-  onMessageSent = (events$: Observable<any>): Observable<ICommand> => {
-    return events$.pipe(
-      ofType(MessageSentEvent),
-      map(
-        (event: MessageSentEvent) =>
-          new createMessageNotificationCommand(event.conversation)
-      )
-    );
-  };
+  // @Saga()
+  // onMessageSent = (events$: Observable<any>): Observable<ICommand> => {
+  //   return events$.pipe(
+  //     ofType(MessageSentEvent),
+  //     map(
+  //       (event: MessageSentEvent) =>
+  //         new createMessageNotificationCommand(event.conversation)
+  //     )
+  //   );
+  // };
 }
