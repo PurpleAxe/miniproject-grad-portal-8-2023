@@ -9,22 +9,24 @@
       </ion-buttons>
 
       <ion-avatar
+      [routerLink]="['/home/feed']"
         slot="end"
-        style="margin-right: 60px; margin-top: 10px; margin-bottom: 10px">
+        style="margin-right: 90px; margin-top: 10px; margin-bottom: 10px">
         <img class="logo logo-light" src="assets/logos/logo-transp.png" />
       </ion-avatar>
 
       <ion-button
         fill="clear"
-        (click)="goToLeaderboard()"
+        (click)="goToMyProfile()"
         slot="end"
-        style="margin-right: 10px">
-        <ion-avatar>
+        style="height: auto;">
+
           <ion-icon
             color="primary"
-            name="podium-outline"
+            name="person-outline"
+            style="zoom: 1.2; margin-bottom: 5px;"
             class="stats"></ion-icon>
-        </ion-avatar>
+
       </ion-button>
     </ion-toolbar>
   </ion-header>
@@ -47,19 +49,6 @@
               margin-top: 10px;
               margin-bottom: 10px;
             " />
-          <ion-icon
-            id="activitystatus"
-            [color]="iconColor"
-            name="ellipse"
-            style="
-              position: absolute;
-              margin-top: 75px;
-              margin-left: 50px;
-              background-color: var(--ion-color-medium-shade);
-              border-radius: 50%;
-              font-size: 30px;
-              padding: 3px;
-            "></ion-icon>
         </div>
       </ion-button>
 

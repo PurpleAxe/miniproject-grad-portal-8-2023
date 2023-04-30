@@ -145,14 +145,14 @@ export class SearchTestPage {
     if (tabs[elem - 1] === 'postsTab') {
       this.segment = 'posts';
       if (buttonPeople && buttonPosts) {
-        buttonPosts.style.backgroundColor = 'rgba(255, 255, 0, 0.3)';
-        buttonPeople.style.backgroundColor = 'white';
+        buttonPosts.style.backgroundColor = 'var(--ion-color-warning-shade)';
+        buttonPeople.style.backgroundColor = 'var(--ion-item-background)';
       }
     } else if (tabs[elem - 1] === 'peopleTab') {
       this.segment = 'people';
       if (buttonPeople && buttonPosts) {
-        buttonPeople.style.backgroundColor = 'rgba(255, 255, 0, 0.3)';
-        buttonPosts.style.backgroundColor = 'white';
+        buttonPeople.style.backgroundColor = 'var(--ion-color-warning-shade)';
+        buttonPosts.style.backgroundColor = 'var(--ion-item-background)';
       }
     }
   }

@@ -36,7 +36,7 @@ export class ChatBoxComponent implements OnInit {
     //   });
     // if (t.getDate() == yesterday.getDate()) return 'Yesterday';
     // if (t.getDate() < yesterday.getDate())
-    return `${t.toLocaleDateString()} ${t.toLocaleTimeString()}`;
+    return `${t.toLocaleTimeString()}`; // this is the time
 
     // t.setSeconds(secs * 1000);
     // return t;

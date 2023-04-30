@@ -39,18 +39,15 @@
 .tab-menu ion-col {
     float: left;
     display: block;
-    color: black;
+    color: var(--ion-text-color);
     text-align: center;
     padding: 14px;
     text-decoration: none;
     padding: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid var(--ion-toolbar-background);
 
 }
 
-.tab-menu ion-col:hover {
-    background-color: rgba(255, 255, 0, 0.3);
-}
 
 
 .tabs-content {

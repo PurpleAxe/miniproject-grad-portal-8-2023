@@ -6,7 +6,6 @@ import { IProfile } from '@mp/api/profiles/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { UserProfileState } from '@mp/app/user-profile/data-access';
-import { SharedModule, SharedPageComponent } from '@mp/app/shared/feature';
 // import { SharedModule } from '@mp/app/shared/feature';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -22,7 +21,7 @@ import { Timestamp } from '@angular/fire/firestore';
 export class UserProfilePageComponent implements OnInit {
   @Select(UserProfileState.userProfile)
   userProfile$!: Observable<IProfile | null>;
-  shared: any;
+
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   @Select(AuthState.user) authProfile$!: Observable<User | null>;
 
@@ -37,10 +36,8 @@ export class UserProfilePageComponent implements OnInit {
     private renderer: Renderer2,
     private alertController: AlertController
   ) {
-    this.shared = new SharedPageComponent(new AlertController(), store);
 
-    this.shared.calculateTimeDifference();
-    this.shared.decreaseTime('hours', 'minutes', 'ses');
+
 
     // this.profile$.subscribe((profile)=>{
     //   // console.log(profile);
@@ -139,11 +136,6 @@ export class UserProfilePageComponent implements OnInit {
     // console.log(this.userProfile$);
     // console.log('UserProfilePageComponent');
     // localStorage.setItem('time', this.time.toString());
-    this.shared.calculateTimeDifference();
-    this.shared.decreaseTime('hours', 'minutes', 'ses');
   }
 
-  ngOnDestroy() {
-    clearTimeout(this.shared.timeoutId);
-  }
 }

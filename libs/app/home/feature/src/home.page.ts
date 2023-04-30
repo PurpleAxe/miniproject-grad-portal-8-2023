@@ -6,7 +6,6 @@ import { IProfile } from '@mp/api/profiles/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { UserProfileState } from '@mp/app/user-profile/data-access';
-import { SharedModule, SharedPageComponent } from '@mp/app/shared/feature';
 // import { SharedModule } from '@mp/app/shared/feature';
 import { Select, Store } from '@ngxs/store';
 import { Observable, tap } from 'rxjs';
@@ -22,7 +21,7 @@ import { SubscribeToProfile } from '@mp/app/profile/util';
 })
 export class HomePage implements OnInit {
   // @Select(UserProfileState.userProfile)
-
+  alertTime: any;
   userProfile$!: Observable<IProfile | null>;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   @Select(AuthState.user) authProfile$!: Observable<User | null>;
@@ -33,7 +32,7 @@ export class HomePage implements OnInit {
   complete: any;
   iconColor: any;
   route: any;
-  shared: any;
+
   hoursString = '';
   minutesString = '';
   secondsString = '';
@@ -41,6 +40,7 @@ export class HomePage implements OnInit {
   timestr: any;
   menuOpen = false;
   timer: any;
+  alertTimeout: any;
   constructor(
     private router: Router,
     private readonly store: Store,
@@ -64,20 +64,43 @@ export class HomePage implements OnInit {
     //   );
     //   // this.userProfile = profile;
     // });
+
+    const hours = Math.floor(this.time / 3600);
+    const minutes = Math.floor((this.time % 3600) / 60);
+    const seconds = Math.floor(this.time % 60);
+
+    if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+      this.presentAlert();
+      if (this.timer) clearInterval(this.timer);
+    }
   }
 
   async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Time Out!',
-      subHeader: 'Your time has run out.',
-      message: 'Ask a friend to add more time for you.',
-      buttons: ['Ask a friend'],
-    });
+  const alert = await this.alertController.create({
+    header: 'Your Time is Up!',
+    message: 'This account is now locked. Please logout.',
+    buttons: [
+      {
+        text: 'LOGOUT',
+        handler: () => {
+          this.logout();
+        }
+      }
+    ]
+  });
+  await alert.present();
+}
 
-    await alert.present();
-  }
 
   ngOnInit() {
+    const hours = Math.floor(this.time / 3600);
+    const minutes = Math.floor((this.time % 3600) / 60);
+    const seconds = Math.floor(this.time % 60);
+
+    if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+      this.presentAlert();
+      if (this.timer) clearInterval(this.timer);
+    }
     // console.log('var2');
     // this.profile$.subscribe((user) => {
     // console.log(user, ' userrrrrrrrrrrrrrrrrrrrrrr');
@@ -89,9 +112,9 @@ export class HomePage implements OnInit {
     //   .select(ProfileState.profile)
     //   .subscribe((x) => (this.userProfile = x));
 
-    this.shared = new SharedPageComponent(new AlertController(), this.store);
+ 
 
-    this.shared.calculateTimeDifference();
+  
     // this.shared.decreaseTime('hours', 'minutes', 'ses'); //It is no longer necessary to decrease the time since we have a due date from firestore.
     // this.shared.decreaseTime('hoursM', 'minutesM', 'sesM');
 
@@ -138,6 +161,7 @@ export class HomePage implements OnInit {
       );
 
     this.userProfile$.subscribe((x: any) => {
+
       const tamTime = x?.timeLeft.seconds;
       // this.userProfile.timeLeft
       // : '05/24/2023 22:59:30';
@@ -149,21 +173,16 @@ export class HomePage implements OnInit {
       // console.log(this.time, 'time after timeeeeeeee');
       this.timeUpdateContinuously();
     });
-
+ 
     const colorTheme = localStorage.getItem('color-theme');
 
     if (colorTheme) {
       this.renderer.setAttribute(document.body, 'color-theme', colorTheme);
     }
 
-    const activityStatusValue = localStorage.getItem('activityStatus');
-
-    if (activityStatusValue === 'true') {
-      this.iconColor = 'tertiary';
-    } else {
-      this.iconColor = 'danger';
-    }
   }
+
+
 
   getSeconds(profile: IProfile) {
     //SharedModule.se
@@ -274,6 +293,8 @@ export class HomePage implements OnInit {
 
     this.router.navigate(['/home/userprofile']);
   }
+
+
   timeUpdateContinuously() {
     //caden
     if (this.timer) clearInterval(this.timer);
@@ -283,6 +304,11 @@ export class HomePage implements OnInit {
       const hours = Math.floor(this.time / 3600);
       const minutes = Math.floor((this.time % 3600) / 60);
       const seconds = Math.floor(this.time % 60);
+
+      if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+        this.presentAlert();
+        if (this.timer) clearInterval(this.timer);
+      }
 
       this.hoursString = `${hours < 10 ? '0' : ''}${hours} hrs`;
       this.minutesString = `${minutes < 10 ? '0' : ''}${minutes} mins`;
@@ -306,7 +332,8 @@ export class HomePage implements OnInit {
 
   //   return t;
   // }
-  ngOnDestroy() {
-    clearInterval(this.timer);
+
+  onDestory() {
+    if (this.timer) clearInterval(this.timer);
   }
 }
