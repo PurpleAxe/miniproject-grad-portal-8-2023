@@ -1,16 +1,16 @@
 <ion-item
-  
   lines="none"
   [class]="chat.metaData.sender.userId !== current_user_id ? 'sender' : 'user'">
-  <ion-label 
+  <ion-label
     [slot]="chat.metaData.sender.userId === current_user_id ? 'end' : 'start'"
     class="ion-text-wrap">
     <div>
-    <ion-text >{{ chat.content.textData }}</ion-text>
-    
-      <small color="medium">{{ toDateTime(chat.metaData.timePosted!.seconds) }}</small>
+      <ion-text>{{ chat.content.textData }}</ion-text>
+
       <!-- <small>10:06 am</small> -->
-    
-      </div>
+    </div>
+    <small color="medium">{{
+      toDateTime(chat.metaData.timePosted!.seconds)
+    }}</small>
   </ion-label>
 </ion-item>
