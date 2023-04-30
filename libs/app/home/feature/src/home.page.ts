@@ -5,12 +5,10 @@ import { AlertController, MenuController } from '@ionic/angular';
 import { IProfile } from '@mp/api/profiles/util';
 import { AuthState } from '@mp/app/auth/data-access';
 import { ProfileState } from '@mp/app/profile/data-access';
-import { UserProfileState } from '@mp/app/user-profile/data-access';
 // import { SharedModule } from '@mp/app/shared/feature';
 import { Select, Store } from '@ngxs/store';
 import { Observable, tap } from 'rxjs';
-import { Logout, SubscribeToAuthState } from '@mp/app/auth/util';
-import { SubscribeToUserProfile } from '@mp/app/user-profile/util'; //'../../util/src/user-profile.actions';
+import { Logout } from '@mp/app/auth/util';
 import { Timestamp } from '@angular/fire/firestore';
 import { SubscribeToProfile } from '@mp/app/profile/util';
 
@@ -76,21 +74,20 @@ export class HomePage implements OnInit {
   }
 
   async presentAlert() {
-  const alert = await this.alertController.create({
-    header: 'Your Time is Up!',
-    message: 'This account is now locked. Please logout.',
-    buttons: [
-      {
-        text: 'LOGOUT',
-        handler: () => {
-          this.logout();
-        }
-      }
-    ]
-  });
-  await alert.present();
-}
-
+    const alert = await this.alertController.create({
+      header: 'Your Time is Up!',
+      message: 'This account is now locked. Please logout.',
+      buttons: [
+        {
+          text: 'LOGOUT',
+          handler: () => {
+            this.logout();
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
 
   ngOnInit() {
     const hours = Math.floor(this.time / 3600);
@@ -112,9 +109,6 @@ export class HomePage implements OnInit {
     //   .select(ProfileState.profile)
     //   .subscribe((x) => (this.userProfile = x));
 
- 
-
-  
     // this.shared.decreaseTime('hours', 'minutes', 'ses'); //It is no longer necessary to decrease the time since we have a due date from firestore.
     // this.shared.decreaseTime('hoursM', 'minutesM', 'sesM');
 
@@ -161,7 +155,6 @@ export class HomePage implements OnInit {
       );
 
     this.userProfile$.subscribe((x: any) => {
-
       const tamTime = x?.timeLeft.seconds;
       // this.userProfile.timeLeft
       // : '05/24/2023 22:59:30';
@@ -173,16 +166,13 @@ export class HomePage implements OnInit {
       // console.log(this.time, 'time after timeeeeeeee');
       this.timeUpdateContinuously();
     });
- 
+
     const colorTheme = localStorage.getItem('color-theme');
 
     if (colorTheme) {
       this.renderer.setAttribute(document.body, 'color-theme', colorTheme);
     }
-
   }
-
-
 
   getSeconds(profile: IProfile) {
     //SharedModule.se
@@ -293,7 +283,6 @@ export class HomePage implements OnInit {
 
     this.router.navigate(['/home/userprofile']);
   }
-
 
   timeUpdateContinuously() {
     //caden
