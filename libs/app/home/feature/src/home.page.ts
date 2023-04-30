@@ -82,7 +82,7 @@ export class HomePage implements OnInit {
     // this.profile$.subscribe((user) => {
     // console.log(user, ' userrrrrrrrrrrrrrrrrrrrrrr');
     // });
-    console.log('home ngOnInit calledddddddddd');
+    // console.log('home ngOnInit calledddddddddd');
     this.userProfile$ = this.store.select(ProfileState.profile);
     // .subscribe((x) => (this.userProfile = x));
     // this.store
@@ -127,7 +127,7 @@ export class HomePage implements OnInit {
     //   'zllllllllllllllllllllllllllllllllll'
     // );
     // if (!this.userProfile$) {
-    console.log('passing here');
+    // console.log('passing here');
     this.store
       .dispatch(new SubscribeToProfile())
       .pipe(
@@ -200,7 +200,7 @@ export class HomePage implements OnInit {
   }
 
   async checkStatus() {
-    console.log('checkStatus');
+    // console.log('checkStatus');
     this.store.dispatch(new SubscribeToProfile());
     // this.menuCtrl?.toggle();
     // console.log(await this.menuCtrl?.isOpen('menu'), 'is it open');

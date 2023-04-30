@@ -41,7 +41,7 @@ export class SharedPageComponent {
     const timeDifferenceInSeconds = Math.round(
       (futureTimestamp - currentTimestamp) / 1000
     );
-    console.log(timeDifferenceInSeconds);
+    // console.log(timeDifferenceInSeconds);
     // this.time = timeDifferenceInSeconds;
   }
 
