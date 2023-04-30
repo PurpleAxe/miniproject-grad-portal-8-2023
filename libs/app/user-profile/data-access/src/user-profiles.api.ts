@@ -24,7 +24,7 @@ export class UserProfilesApi {
 
   userProfile$(id: string) {
     // console.log('id');
-    console.log(id, 'dddddddddddddddddddd');
+    // console.log(id, 'dddddddddddddddddddd');
     const docRef = doc(
       this.firestore,
       `profiles/${id}`

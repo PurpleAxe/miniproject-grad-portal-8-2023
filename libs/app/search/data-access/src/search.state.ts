@@ -154,11 +154,11 @@ export class SearchState {
         if (field === 'events')
           responseRef = await this.searchApi.searchEvents(request);
         const response = responseRef!.data;
-        console.log(responseRef, 'sssssssssssssssssssssssssssss');
-        console.log(
-          response!.search!.searchResults,
-          'xxxxxxxxxxxxxxxxxxxxxxxxxxx'
-        );
+        // console.log(responseRef, 'sssssssssssssssssssssssssssss');
+        // console.log(
+        //   response!.search!.searchResults,
+        //   'xxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        // );
 
         ctx.setState({ searchResults: response!.search!.searchResults });
       }

@@ -156,9 +156,9 @@ export class UserProfileState {
   subscribeToUserProfile(ctx: StateContext<UserProfileStateModel>) {
     console.log('in subscribeToUserProfile state');
     const user = this.store.selectSnapshot(AuthState.user);
-    console.log(!user, 'fffffffffffffffffff');
+    // console.log(!user, 'fffffffffffffffffff');
     if (!user) return ctx.dispatch(new SetError('User not set'));
-    console.log(user, 'useeeeeeeeeeeeeeeeeddddddddddr');
+    // console.log(user, 'useeeeeeeeeeeeeeeeeddddddddddr');
     return this.userProfileApi
       .userProfile$(user.uid)
       .pipe(

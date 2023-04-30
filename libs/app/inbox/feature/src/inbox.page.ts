@@ -66,7 +66,7 @@ export class InboxPageComponent implements OnInit {
   constructor(private router: Router, private readonly store: Store) {}
 
   ngOnInit() {
-    console.log('initializing');
+    console.log('initializing inbox');
     this.getUsers();
     this.getConversation();
   }
@@ -158,7 +158,7 @@ export class InboxPageComponent implements OnInit {
       this.store
         .select(ProfileState.profile)
         .subscribe((x: any) => {
-          console.log(x, 'gggggggggggggggggggggggggxx');
+          // console.log(x, 'gggggggggggggggggggggggggxx');
           this.user = x?.userId;
           this.email = x?.accountDetails.email;
           displayName = x?.accountDetails.displayName;
@@ -175,7 +175,7 @@ export class InboxPageComponent implements OnInit {
         customClaims: null,
         created: null,
       };
-      console.log(member1, 'member1 ddddddddddzzzzzzzzzzzzzzzzzzz');
+      // console.log(member1, 'member1 ddddddddddzzzzzzzzzzzzzzzzzzz');
 
       this.member2.id = item.id;
       this.member2.email = item.email;
@@ -194,7 +194,7 @@ export class InboxPageComponent implements OnInit {
         })
         .unsubscribe();
     }
-    console.log(this.chatRoom, ' this.chatroom');
+    // console.log(this.chatRoom, ' this.chatroom');
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
     if (this.chatRoom) {
       this.router.navigate([

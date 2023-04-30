@@ -153,7 +153,7 @@ export class ProfileState {
 
   @Action(SubscribeToProfile)
   subscribeToProfile(ctx: StateContext<ProfileStateModel>) {
-    console.log('a pssing subscription to profile');
+    // console.log('a pssing subscription to profile');
     const user = this.store.selectSnapshot(AuthState.user);
     if (!user) return ctx.dispatch(new SetError('User not set'));
     return this.profileApi

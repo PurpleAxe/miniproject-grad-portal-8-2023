@@ -72,9 +72,9 @@ export class ChatState {
     //   })
     // );
     // await this.inboxApi.inbox(this.userId);
-    console.log('in subscribe to chat ');
+    // console.log('in subscribe to chat ');
     await this.chatApi.chat(this.cid, this.chat$);
-    console.log('return from chatAPI ');
+    // console.log('return from chatAPI ');
 
     // const bb = this.inboxApi.getConversationObs();
     // bb.subscribe((x) => {
@@ -84,7 +84,7 @@ export class ChatState {
       ctx.setState(
         await produce((draft) => {
           const x = a;
-          console.log(x, 'chat chat xxxxxxxxxxxxxxxxxxxxxxxxx');
+          // console.log(x, 'chat chat xxxxxxxxxxxxxxxxxxxxxxxxx');
           if (x[0]) {
             // if (x[0].type === 'added') {
             //   if (x[0].messages.length > 1) {
@@ -158,7 +158,7 @@ export class ChatState {
     try {
       const chatState = ctx.getState();
       const conversationID = chatState.currentConversation?.conversationID;
-      console.log('!!!!!!!!!!!!!!!!!', conversationID);
+      // console.log('!!!!!!!!!!!!!!!!!', conversationID);
       const members = chatState.currentConversation?.members;
       const messages = chatState.currentConversation?.messages;
       // if (!conversationID) {

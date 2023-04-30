@@ -45,7 +45,7 @@ export class ChatApi {
     conversationID: string | undefined | null,
     observer: Subject<any>
   ) {
-    console.log(conversationID, 'conversationID!!!!!!!!!!!!!!asdas');
+    // console.log(conversationID, 'conversationID!!!!!!!!!!!!!!asdas');
     const queryConversationList = query(
       collection(this.firestore, 'conversations'),
       where('conversationID', '==', conversationID)
@@ -53,8 +53,8 @@ export class ChatApi {
     onSnapshot(queryConversationList, (doc) => {
       observer.next(
         doc.docChanges().map((change) => {
-          console.log(change.type, 'change messages type!!!!!!!!!!');
-          console.log(change.doc.data()['messages'], ' added messages');
+          // console.log(change.type, 'change messages type!!!!!!!!!!');
+          // console.log(change.doc.data()['messages'], ' added messages');
           return {
             type: change.type,
             messages: change.doc.data()['messages'],

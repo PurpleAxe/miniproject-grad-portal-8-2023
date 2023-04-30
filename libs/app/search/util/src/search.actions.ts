@@ -15,6 +15,6 @@ export class Search {
   static readonly type = '[Search] Search';
   // constructor(public search: ISearch) {}
   constructor(public readonly field: string, public readonly keyword: string) {
-    console.log('passing here');
+    // console.log('passing here');
   }
 }

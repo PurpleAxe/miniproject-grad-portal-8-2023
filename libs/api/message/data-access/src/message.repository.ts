@@ -47,7 +47,7 @@ export class MessageRepository {
   }
 
   async createConversation(conversation: IConversation) {
-    console.log(conversation);
+    // console.log(conversation);
     return await admin
       .firestore()
       .collection('conversations')

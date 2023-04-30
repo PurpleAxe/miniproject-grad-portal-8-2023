@@ -54,9 +54,9 @@ export class SearchTestState {
       const state = ctx.getState();
       // const keyword = state.searchForm.model.keyword;
       // const field = state.searchForm.model.field;
-      console.log(keyword, field, ' in state');
+      // console.log(keyword, field, ' in state');
       if (field && keyword) {
-        console.log(field, keyword, '!!!!!!!!!!!!!!!!!!');
+        // console.log(field, keyword, '!!!!!!!!!!!!!!!!!!');
         return ctx.dispatch(new SearchOnFront(field, keyword));
       }
       // const request: ISearchRequest = {
