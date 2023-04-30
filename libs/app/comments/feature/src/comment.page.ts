@@ -6,6 +6,7 @@ import { sendComment } from '@mp/app/feed/util';
 import { Select, Store } from '@ngxs/store';
 import { Timestamp } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import {AuthState} from '@mp/app/auth/data-access';
 
 
 
@@ -18,14 +19,23 @@ export class CommentPage implements OnInit {
   constructor(private readonly store: Store,private router: Router) {this.displayComments()}
   @Select(FeedState.getComments) comment$! :Observable<IComment[]>;
   @Select(FeedState.getPostsInfo) postInfo$! :Observable<{postId:string, ownerId:string}>;
-  @Select(FeedState.getUserId) userId$! :Observable<string>;
+  userId! :string;
+
+  async getUserId() {
+      this.store
+        .select(AuthState.user)
+        .subscribe((x: any) => (this.userId = x?.uid));
+  }
   comments:IComment[]=[];
   postId!:string;
   ownerId!:string;
   senderId="";
   text='';
 
-  ngOnInit() {this.displayComments()}
+  ngOnInit() {
+    this.getUserId()
+    this.displayComments()
+  }
 
   displayComments (){
     this.comment$.subscribe((res:IComment[])=>{
@@ -39,9 +49,7 @@ export class CommentPage implements OnInit {
       this.ownerId=res.ownerId;
     });
 
-    this.userId$.subscribe((res:any)=>{
-      this.senderId=res;
-    })
+    this.senderId=this.userId;
     // console.log(this.senderId);
   }
 
@@ -65,7 +73,7 @@ export class CommentPage implements OnInit {
      this.store.dispatch(new sendComment(payload));
       this.text='';
      this.displayComments();
-    
+
   }
 
   getProfileUrl(userId:string){

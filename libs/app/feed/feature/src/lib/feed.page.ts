@@ -1,4 +1,4 @@
-import { Timestamp } from '@angular/fire/firestore';
+import { DocumentReference, Timestamp } from '@angular/fire/firestore';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FeedState } from '@mp/app/feed/data-access';
@@ -22,16 +22,15 @@ export class FeedPage {
   LDiscovery!: boolean;
 
   text!: string;
-  profileUrl="https://ionicframework.com/docs/img/demos/avatar.svg";
   userName!:string;
   now:Timestamp | null | undefined;
   challenge!:string;
   department!:string;
   profile!:IProfile;
 
-  @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
+  @Select(FeedState.getFeedPosts) post$! :Observable<DocumentReference[]>;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
-  feedPost:IPost[]=[];
+  feedPost:DocumentReference[]=[];
 
   constructor(private router: Router,private readonly store: Store){
     this.LHome = true;
@@ -80,7 +79,7 @@ export class FeedPage {
     this.LHome = true;
     this.LDiscovery = false;
     //this.store.dispatch(new FetchHomeFeed());
-    
+
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
       if(profile){
@@ -111,22 +110,4 @@ export class FeedPage {
         //this.feedPost=res;
     })
   }
-
-  // toDate(date:Timestamp | null | undefined){
-  //   //console.log(date);
-  //   return "24 April";
-  formatDateFromNanoseconds(seconds: number, nanoseconds: number): string {
-    const date = new Date(seconds * 1000 + nanoseconds / 1000000);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
-  }
-
-  getProfileUrl(userId:string){
-    return this.profileUrl;
-  }
-
 }

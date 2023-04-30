@@ -10,6 +10,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { SubscribeToProfile } from '@mp/app/profile/util';
+import {DocumentReference} from '@angular/fire/firestore';
 
 
 @Component({
@@ -17,11 +18,11 @@ import { SubscribeToProfile } from '@mp/app/profile/util';
   templateUrl: './user-profile.page.html',
   styleUrls: ['./user-profile.page.scss'],
 })
-export class UserProfilePageComponent implements OnInit { 
+export class UserProfilePageComponent implements OnInit {
 
   constructor(private router: Router,private readonly store: Store) { }
-  @Select(FeedState.getFeedPosts) post$! :Observable<IPost[]>;
-  ownPost$:IPost[]=[];
+  @Select(FeedState.getFeedPosts) post$! :Observable<DocumentReference[]>;
+  ownPost$:DocumentReference[]=[];
   profileUrl="https://ionicframework.com/docs/img/demos/avatar.svg";
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   uid!:string;

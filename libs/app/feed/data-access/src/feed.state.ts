@@ -16,7 +16,7 @@ import {
 import { FeedApi } from './feed.api';
 import {IPost, ILikePostResponse, IDislikePostResponse} from '@mp/api/post/util';
 import { IComment, IUpdateCommentsRequest } from '@mp/api/comments/util';
-import { Timestamp } from '@angular/fire/firestore';
+import { DocumentReference, Timestamp } from '@angular/fire/firestore';
 //import { Timestamp } from 'firebase-admin/firestore';
 import { IFeed, IGetDiscoveryFeedRequest, IGetHomeFeedRequest, IGetOwnFeedRequest } from '@mp/api/feed/util';
 import {Observable, Observer, PartialObserver, Subject, tap} from 'rxjs';
@@ -28,14 +28,14 @@ export interface FeedStateModel{
   feed:{
     model:{
       users: any[] | null;
-      feedPosts: IFeed | null;
+      feedPosts: DocumentReference[] | null;
       postComments: IComment[] | null;
     };
     dirty: false;
     status: string;
     errors: object;
   },
-  feedPosts: IFeed;
+  feedPosts: DocumentReference[];
   postComments: IComment[];
   postInfo:{postId:string, ownerId:string};
 }
@@ -53,12 +53,7 @@ export interface FeedStateModel{
         status: '',
         errors: {}
       },
-      feedPosts: {
-        user:{
-          userId:"",
-        },
-        posts:[]
-      },
+      feedPosts: [],
       postComments:[],
       postInfo:{postId:"", ownerId:""}
     }
@@ -116,14 +111,8 @@ export class FeedState {
 
   @Selector()
   static getFeedPosts(FeedStateModel:FeedStateModel){
-      return FeedStateModel.feedPosts.posts;
+      return FeedStateModel.feedPosts;
   }
-
-    @Selector()
-    static getUserId(FeedStateModel:FeedStateModel){
-        return FeedStateModel.feedPosts.user.userId;
-    }
-
 
     /*************FETCH HOME FEED*************/
 
@@ -143,7 +132,6 @@ export class FeedState {
       feed
     }
     const responseRef = await this.feedApi.GetHomeFeed$(myFetchHomeRequest);
-    const response = responseRef.feed;
       ctx.patchState({
         // feed:{
         //   model:{
@@ -155,7 +143,7 @@ export class FeedState {
         //   status: '',
         //   errors: {}
         // }
-        feedPosts: response
+        //feedPosts: responseRef
         // feedPosts:this.getMock()
       });
     }
@@ -174,15 +162,10 @@ export class FeedState {
     const myFetchDiscoveryRequest: IGetDiscoveryFeedRequest ={
       feed
     }
-    return this.feedApi.$GetOwnFeed(myFetchDiscoveryRequest,this.posts$)
-      .pipe(tap((posts : IPost[]) => {
-        ctx.patchState({
-            feedPosts : {
-              posts:posts,
-              user:ctx.getState().feedPosts.user
-            }
-        });
-      }))
+    const newFeed:DocumentReference[] = await this.feedApi.GetOwnFeed(myFetchDiscoveryRequest,this.posts$);
+    ctx.patchState({
+      feedPosts:newFeed
+    })
     }
 
 
@@ -200,13 +183,10 @@ export class FeedState {
       feed
     }
 
-    return this.feedApi.$GetOwnFeed(myFetchOwnRequest,this.posts$)
-      .pipe(tap((posts : IPost[]) => {
-        ctx.setState(
-           produce((draft) =>{
-            draft.feedPosts.posts = posts;
-        }))
-      }))
+    const newFeed:DocumentReference[] = await this.feedApi.GetOwnFeed(myFetchOwnRequest,this.posts$);
+    ctx.patchState({
+      feedPosts:newFeed
+    })
   }
 
 
@@ -223,29 +203,10 @@ export class FeedState {
     @Action(fetchComments)
     async fetchComments(ctx: StateContext<FeedStateModel>,{payload}:fetchComments) {
         const state=ctx.getState();
-        const posts=state.feedPosts.posts;
-        let i=0;
-        let found=false;
-        let response:IComment[]=[];
-        while(i<posts.length && !found){
-          if(posts[i].postId==payload.postId){
-            response=posts[i].comments!;
-            found=true;
-            break;
-          }
-          i++;
-        }
-        if(found){
-          const state=ctx.getState();
-          ctx.setState({...state,
-            postComments:response,
-            postInfo:{postId:payload.postId, ownerId:payload.ownerId}
-          });
-        }else{
-          const state=ctx.getState();
-          ctx.setState({...state,
-            postComments:[]})
-        }
+        ctx.setState({...state,
+          postComments:payload.comments ? payload.comments : [],
+          postInfo:{postId:payload.postId, ownerId:payload.ownerId}
+        });
       }
 
       @Action(sendComment)

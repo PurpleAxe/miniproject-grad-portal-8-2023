@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collection, doc, docData, Firestore, query, where, getDocs, onSnapshot, collectionData } from '@angular/fire/firestore';
+import { collection, doc, docData, Firestore, query, where, getDocs, onSnapshot, collectionData, QuerySnapshot, DocumentSnapshot, DocumentReference } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { GetOwnFeedEvent, IFeed } from '@mp/api/feed/util';
 import { Timestamp } from '@angular/fire/firestore';
@@ -124,11 +124,18 @@ export class FeedApi {
     return  toReturn;
   }
 
-  $GetOwnFeed(request: IGetOwnFeedRequest, observer: Subject<IPost[]>): Observable<IPost[]> {
+  async GetOwnFeed(request: IGetOwnFeedRequest, observer: Subject<IPost[]>): Promise<DocumentReference[]> {
+    // converted to return references.
     const posts = collection(this.firestore,"post")
     const filter = query(posts, where("userId", "==", request.feed.user.userId));
-    return collectionData(filter)
-      .pipe(map((posts) => posts as IPost[]))
+    const snap:Promise<QuerySnapshot> = getDocs(filter);
+    return snap.then((col) => {
+      const docs:DocumentReference[] = [];
+      col.forEach((doc) => {
+        docs.push(doc.ref);
+      })
+      return docs;
+    })
   }
 
   async SendComment(request: IUpdateCommentsRequest){

@@ -1,4 +1,5 @@
 import { Timestamp } from "@firebase/firestore";
+import { IComment } from '@mp/api/comments/util';
 
 export class LikePost{
     static readonly type = '[Feed] LikePost';
@@ -59,7 +60,11 @@ export class FetchOwnPosts{
 
 export class fetchComments{
     static readonly type ='[Comments] fetch post comments';
-    constructor(public payload:{postId:string, ownerId:string}) {}
+    constructor(public payload:{
+      postId:string,
+      ownerId:string,
+      comments: IComment[] | null | undefined
+    }) {}
 }
 
 export class sendComment{

@@ -10,6 +10,9 @@ import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { SubscribeToProfile } from '@mp/app/profile/util';
 import {AuthState} from '@mp/app/auth/data-access';
+import {DocumentReference, DocumentSnapshot, onSnapshot} from '@angular/fire/firestore';
+import {IPost} from '@mp/api/post/util';
+import {IComment} from '@mp/api/comments/util';
 
 @Component({
   selector: 'card',
@@ -19,20 +22,21 @@ import {AuthState} from '@mp/app/auth/data-access';
 export class CardComponent {
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
   profile!:IProfile;
-  @Input() content!: any;
-  @Input() text!: string;
-  @Input() profileUrl!:string;
-  @Input() date!:string;
-  @Input() userName!:string;
-  @Input() likeNum = 0;
-  @Input() dislikeNum = 0;
-  @Input() commentNum = 0;
+  content!: any;
+  text!: string;
+  profileUrl!:string;
+  date!:string;
+  userName!:string;
+  likeNum = 0;
+  dislikeNum = 0;
+  commentNum = 0;
   // @Input() postId = "POST ID"; //would I store the postId here so I know what post was liked?
   // userId = "USER ID";
-  @Input() challenge!:string;
-  @Input() department!:string;
-  @Input() postId!: string;
-  @Input() userId!: string;
+  challenge!:string;
+  department!:string;
+  postId!: string;
+  userId!: string;
+  comments!: IComment[]|null|undefined;
 
   constructor(private router: Router, private readonly store: Store) { }
 
@@ -41,7 +45,33 @@ export class CardComponent {
   isDisliked = false;
 
   private userID: any;
+  formatDateFromNanoseconds(seconds: number, nanoseconds: number): string {
+    const date = new Date(seconds * 1000 + nanoseconds / 1000000);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  }
 
+  @Input() data!:DocumentReference;
+  ngOnInit() {
+    onSnapshot(this.data, (docSnapshot) => {
+      const docData:IPost = docSnapshot.data() as IPost;
+      this.userName = docData.userName!;
+      this.postId = docData.postId!;
+      this.text = docData.message!;
+      this.profileUrl = "https://ionicframework.com/docs/img/demos/avatar.svg";
+      this.date = docData.created ? this.formatDateFromNanoseconds(docData.created.seconds, docData.created.nanoseconds) : ''
+      this.department = docData.department!
+      this.challenge = docData.challenge!
+      this.likeNum = docData.likes!
+      this.dislikeNum = docData.dislikes!
+      this.commentNum = docData.comments!.length
+      this.comments = docData.comments
+    })
+  }
   async getUserId() {
       this.store
         .select(AuthState.user)
@@ -106,7 +136,7 @@ export class CardComponent {
 
   Comment(){
     console.log("Comment button");
-    this.store.dispatch(new fetchComments({postId:this.postId,ownerId:this.userName}));
+    this.store.dispatch(new fetchComments({postId:this.postId,ownerId:this.userName,comments:this.comments}));
     this.router.navigate(["/home/comment"]);
   }
   Share(){
