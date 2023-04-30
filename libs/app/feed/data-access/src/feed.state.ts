@@ -131,21 +131,10 @@ export class FeedState {
     const myFetchHomeRequest: IGetHomeFeedRequest ={
       feed
     }
-    const responseRef = await this.feedApi.GetHomeFeed$(myFetchHomeRequest);
-      ctx.patchState({
-        // feed:{
-        //   model:{
-        //     users: null,
-        //     feedPosts: response.feed,
-        //     postComments: null
-        //   },
-        //   dirty: false,
-        //   status: '',
-        //   errors: {}
-        // }
-        //feedPosts: responseRef
-        // feedPosts:this.getMock()
-      });
+    const newFeed:DocumentReference[] = await this.feedApi.GetHomeFeed$(myFetchHomeRequest);
+    ctx.patchState({
+      feedPosts:newFeed
+    })
     }
 
   @Action(FetchDiscoveryFeed)
@@ -162,7 +151,7 @@ export class FeedState {
     const myFetchDiscoveryRequest: IGetDiscoveryFeedRequest ={
       feed
     }
-    const newFeed:DocumentReference[] = await this.feedApi.GetOwnFeed(myFetchDiscoveryRequest,this.posts$);
+    const newFeed:DocumentReference[] = await this.feedApi.GetDiscoveryFeed(myFetchDiscoveryRequest);
     ctx.patchState({
       feedPosts:newFeed
     })

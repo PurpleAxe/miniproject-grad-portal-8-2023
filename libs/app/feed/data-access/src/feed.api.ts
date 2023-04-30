@@ -70,7 +70,7 @@ export class FeedApi {
   )(request);
   }
 
-  async GetHomeFeed$(request: IGetHomeFeedRequest){
+  async GetHomeFeed$(request: IGetHomeFeedRequest):Promise<DocumentReference[]>{
     const feed = request.feed; // ease of use
     const allUsers = collection(this.firestore, "profiles"); // find profiles that fit criteria
     log("test");
@@ -89,18 +89,19 @@ export class FeedApi {
     // Get all our related posts based on the profiles
     const allPosts = collection(this.firestore, "post");
     const filter = query(allPosts, where("userId", "in", profiles.map((profile) => {return profile.userId;})));
-    const relatedPosts = await getDocs(filter);
-    const toReturn: IGetHomeFeedResponse = {
-      feed : {
-        user : feed.user,
-        posts : relatedPosts.docs.map((doc) => {return doc.data() as IPost})
-      }
-    };
-    return  toReturn;
+
+    const snap:Promise<QuerySnapshot> = getDocs(filter);
+    return snap.then((col) => {
+      const docs:DocumentReference[] = [];
+      col.forEach((doc) => {
+        docs.push(doc.ref);
+      })
+      return docs;
+    })
 
   }
 
-  async GetDiscoveryFeed(request: IGetDiscoveryFeedRequest){
+  async GetDiscoveryFeed(request: IGetDiscoveryFeedRequest): Promise<DocumentReference[]>{
     const feed = request.feed; // ease of use
 
     const allUsers = collection(this.firestore, "profiles"); // find profiles that fit criteria
@@ -114,14 +115,14 @@ export class FeedApi {
     // Get all our related posts based on the profiles
     const allPosts = collection(this.firestore, "post");
     const filter = query(allPosts, where("userId", "in", profiles.map((profile) => {return profile.userId;})));
-    const relatedPosts = await getDocs(filter);
-    const toReturn: IGetHomeFeedResponse = {
-      feed : {
-        user : feed.user,
-        posts : relatedPosts.docs.map((doc) => {return doc.data() as IPost})
-      }
-    };
-    return  toReturn;
+    const snap:Promise<QuerySnapshot> = getDocs(filter);
+    return snap.then((col) => {
+      const docs:DocumentReference[] = [];
+      col.forEach((doc) => {
+        docs.push(doc.ref);
+      })
+      return docs;
+    })
   }
 
   async GetOwnFeed(request: IGetOwnFeedRequest, observer: Subject<IPost[]>): Promise<DocumentReference[]> {
