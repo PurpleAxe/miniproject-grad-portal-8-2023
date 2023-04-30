@@ -56,6 +56,7 @@ export class ChatApi {
           // console.log(change.type, 'change messages type!!!!!!!!!!');
           // console.log(change.doc.data()['messages'], ' added messages');
           return {
+            conversationID: conversationID,
             type: change.type,
             messages: change.doc.data()['messages'],
           };

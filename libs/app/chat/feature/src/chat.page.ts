@@ -146,9 +146,9 @@ export class ChatPage implements OnInit {
     //this.store.dispatch(new AddMessage(this.));
     // console.log()
     this.store.dispatch(new SendMessage(message)); // TODO isloading updates
-    this.currconv$.subscribe((x) => {
-      this.chatRoom = x;
-    });
+    // this.currconv$.subscribe((x) => {
+    //   this.chatRoom = x;
+    // });
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
     // setTimeout(() => {
     //   console.log(this.chatRoom);

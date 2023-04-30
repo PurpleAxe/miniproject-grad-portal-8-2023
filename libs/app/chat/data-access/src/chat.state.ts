@@ -103,7 +103,10 @@ export class ChatState {
             //     draft.currentConversation.messages = [];
             //   }
             // } else if (x[0].type === 'modified') {
-            if (x[0].type === 'modified') {
+            if (
+              x[0].type === 'modified' &&
+              x[0].conversationID === draft.currentConversation?.conversationID
+            ) {
               if (
                 draft.currentConversation &&
                 draft.currentConversation.messages
