@@ -13,7 +13,7 @@ import { SearchModule } from '@mp/api/search/feature';
     EventstoreModule,
     ProfilesModule,
     UsersModule,
-    // NotificationsModule,
+    NotificationsModule,
     MessageModule,
     SearchModule,
   ],
