@@ -9,6 +9,6 @@ export class PostDislikeRemovedHandler implements IEventHandler<PostDislikeRemov
     constructor(private readonly repository: PostsRepository) {}
     async handle(event: PostDislikeRemovedEvent) {
         console.log(`${PostDislikeRemovedHandler.name} - ${event.Onpost.postId}`);
-        await this.repository.likePost(event.Onpost);
+        await this.repository.removeDislike(event.Onpost);
     }
 }

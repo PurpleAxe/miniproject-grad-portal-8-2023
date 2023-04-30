@@ -97,13 +97,12 @@ export class FeedState {
 
   @Action(DislikePost)
   async DislikePost(ctx: StateContext<FeedStateModel>, {payload}: DislikePost) {
-    const myPost: IPost = {
-      postId: payload.postId,
-      userId: payload.userId,
-    };
-    const post = myPost;
     const myDislikePostResponse: IDislikePostResponse ={
-      post
+      userID : payload.userId,
+      post : {
+        postId : payload.postId,
+        userId : payload.postUserID
+      }
     }
     console.log("PostId (state) dislike:" + payload.postId);
     this.feedApi.DislikePost(myDislikePostResponse);

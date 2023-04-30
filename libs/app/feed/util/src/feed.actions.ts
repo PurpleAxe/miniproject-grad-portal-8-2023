@@ -26,6 +26,7 @@ export class DislikePost{
     constructor(public payload: {
         postId: string;
         userId: string;
+        postUserID: string;
     }) {
         console.log("post.actions Dislike postId:" + payload.postId);
     }

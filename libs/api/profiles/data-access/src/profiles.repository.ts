@@ -21,11 +21,27 @@ export class ProfilesRepository {
   }
 
   async getLiked(profile:string):Promise<string[]> {
+    log(profile);
     return admin
       .firestore()
       .collection("profiles")
       .doc(profile)
       .collection("likedPosts")
+      .get().then((snap) => {
+        const docs:string[] = [];
+        snap.forEach((doc) => {
+          docs.push(doc.id);
+        })
+        return docs;
+      })
+  }
+
+  async getDisliked(profile:string):Promise<string[]> {
+    return admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("dislikedPosts")
       .get().then((snap) => {
         const docs:string[] = [];
         snap.forEach((doc) => {
@@ -56,6 +72,8 @@ export class ProfilesRepository {
   }
 
   async dislikeListAdd(profile:string, post:string) {
+    log(post);
+    log(profile);
     admin
       .firestore()
       .collection("profiles")

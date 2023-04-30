@@ -9,6 +9,6 @@ export class PostDislikedHandler implements IEventHandler<PostDislikedEvent> {
     constructor(private readonly repository: PostsRepository) {}
     async handle(event: PostDislikedEvent) {
         console.log(`${PostDislikedHandler.name} - ${event.Onpost.postId}`);
-        await this.repository.likePost(event.Onpost);
+        await this.repository.dislikePost(event.Onpost);
     }
 }
