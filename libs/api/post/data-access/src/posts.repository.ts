@@ -60,7 +60,7 @@ export class PostsRepository {
   }
 
   async likePost(post:IPost) {
-    const postRef = await admin
+    await admin
       .firestore()
       .collection("post")
       .doc(post.postId!)
@@ -75,7 +75,7 @@ export class PostsRepository {
       .collection("post")
       .doc(post.postId!)
       .update({
-        likes : admin.firestore.FieldValue.increment(-1)
+        likes : FieldValue.increment(-1)
       })
   }
 

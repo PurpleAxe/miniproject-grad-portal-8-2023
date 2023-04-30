@@ -84,13 +84,12 @@ export class FeedState {
 
   @Action(LikePost)
   async LikePost(ctx: StateContext<FeedStateModel>, {payload}: LikePost) {
-    const myPost: IPost = {
-      postId: payload.postId,
-      userId: payload.userId,
-    };
-    const post = myPost;
     const myLikePostResponse: ILikePostResponse ={
-      post
+      userID : payload.userId,
+      post : {
+        postId : payload.postId,
+        userId : payload.postUserID
+      }
     }
     console.log("PostId (state):" + payload.postId);
       this.feedApi.LikePost(myLikePostResponse);

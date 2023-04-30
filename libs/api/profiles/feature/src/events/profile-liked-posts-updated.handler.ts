@@ -10,11 +10,11 @@ export class ProfileLikedPostUpdatedHandler
   constructor(private readonly repository: ProfilesRepository) {}
 
   async handle(event: ProfileLikedPostUpdatedEvent) {
-    log(ProfileLikedPostUpdatedHandler)
+    log(`${ProfileLikedPostUpdatedHandler.name} - ${event.post}`)
     if (event.remove) {
-      await this.repository.likeListRemove(event.profile, event.post);
+      this.repository.likeListRemove(event.profile, event.post);
     } else {
-      await this.repository.likeListAdd(event.profile, event.post);
+      this.repository.likeListAdd(event.profile, event.post);
     }
   }
 }

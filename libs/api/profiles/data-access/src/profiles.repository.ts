@@ -20,6 +20,21 @@ export class ProfilesRepository {
       .get();
   }
 
+  async getLiked(profile:string):Promise<string[]> {
+    return admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("likedPosts")
+      .get().then((snap) => {
+        const docs:string[] = [];
+        snap.forEach((doc) => {
+          docs.push(doc.id);
+        })
+        return docs;
+      })
+  }
+
   async createProfile(profile: IProfile) {
     // Remove password field if present
     delete profile.accountDetails?.password;
@@ -58,21 +73,22 @@ export class ProfilesRepository {
       .doc(post).delete();
   }
   async likeListAdd(profile:string, post:string) {
-    log("fuck" + post)
     admin
       .firestore()
       .collection("profiles")
       .doc(profile)
       .collection("likedPosts")
-      .doc(post).create({});
+      .doc(post).set({post:post});
   }
 
   async likeListRemove(profile:string, post:string) {
+    log(post);
+    log(profile);
     admin
       .firestore()
       .collection("profiles")
       .doc(profile)
-      .collection("dislikedPosts")
+      .collection("likedPosts")
       .doc(post).delete();
   }
   async addPost(profile:string, post:IPost) {

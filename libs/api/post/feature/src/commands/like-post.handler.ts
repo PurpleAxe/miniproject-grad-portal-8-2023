@@ -23,7 +23,8 @@ export class LikePostHandler
       const likingUserID = request.userID;
 
       log(command)
-      const userRef = (await this.profileRepo.findOne({"userId" : postUserId})); // find user profile
+      const userRef = (await this.profileRepo.findOne({"userId" : likingUserID!})); // find user profile
+      const posts = await this.profileRepo.getLiked(request.userID!);
 
       const data: IPost = {
         postId:postID,
@@ -37,7 +38,7 @@ export class LikePostHandler
         }
         return false;
       }
-      if (userRef.data()?.likedPosts?.find(findPost)?.length! >= 1) {
+      if (posts.find(findPost)?.length! >= 1) {
         await post.likePostRemoved(likingUserID!)
       } else {
         await post.likePost(likingUserID!);
