@@ -125,8 +125,7 @@ export class InboxPageComponent implements OnInit {
         if (x) {
           this.chatRooms = x;
         }
-      })
-      .unsubscribe();
+      });
     let noConversation = true;
     if (this.chatRooms) {
       for (let i = 0; i < this.chatRooms.length; i++) {
@@ -196,7 +195,7 @@ export class InboxPageComponent implements OnInit {
     }
     // console.log(this.chatRoom, ' this.chatroom');
     this.store.dispatch(new SetcurrentConversation(this.chatRoom));
-    if (this.chatRoom) {
+    if (this.chatRoom && this.chatRoom.conversationID) {
       this.router.navigate([
         '/',
         'home',
@@ -205,6 +204,7 @@ export class InboxPageComponent implements OnInit {
         this.chatRoom.conversationID,
       ]);
     }
+    conversation.unsubscribe();
     this.cancel();
   }
 
