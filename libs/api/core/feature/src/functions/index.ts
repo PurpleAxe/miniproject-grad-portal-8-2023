@@ -4,3 +4,6 @@ export * from './message.functions';
 export * from './post.functions';
 export * from './feed.functions';
 export * from './comments.functions';
+export * from './notifications.functions';
+export * from './firestore.functions';
+export * from './search.functions';

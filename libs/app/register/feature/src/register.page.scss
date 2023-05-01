@@ -41,7 +41,7 @@
 }
 
 #create-account-button {
-  top: 90px;
+  top: 30px;
   width: 308px;
   height: 56px;
   margin-top: 200px;
@@ -57,8 +57,12 @@
   background-color: rgba(252, 163, 17, 1);
 }
 
+.index-back-button{
+  height: 32px;
+}
+
 .back-to-login-button {
-  top: 98px;
+  top: 38px;
   width: 308px;
   overflow: hidden;
   position: relative;
@@ -73,6 +77,13 @@
   justify-content: center;
   background-color: rgba(255, 255, 255, 1);
   height: 56px;
+  margin-bottom: 90px;
+}
+
+.login-col{
+  line-height: 0;
+  height: 170px;
+  padding: 0;
 }
 
 .createaccount-text {
@@ -107,8 +118,8 @@
   line-height: 36px;
   margin-right: 0;
   margin-bottom: 0;
-  //font-family: Arial, Helvetica, sans-serif;
-  // font-size: xx-large;
+    //font-family: Arial, Helvetica, sans-serif;
+      // font-size: xx-large;
 }
 
 .createaccount-text04 {
@@ -328,11 +339,22 @@ ion-col {
   text-align: center;
 }
 
-logo_heading {
+.logo-heading {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+  top: 0px;
+}
+
+.spacing{
+  height: 200px;
+  text-align:center;
+}
+
+.spacing1{
+  height: 50px;
+  text-align:center;
 }
 
 .logo-section {
@@ -351,4 +373,26 @@ logo_heading {
   position: absolute;
   top:10px;
   left:16px;
+}
+
+.ion-justify-content-center {
+  display: grid;
+}
+
+.error-email {
+  text-align: left;
+  top: 340px;
+  position: absolute;
+}
+
+.error-password {
+  text-align: left;
+  top: 430px;
+  position: absolute;
+}
+
+.error-confirm-password {
+  text-align: left;
+  top: 520px;
+  position: absolute;
 }

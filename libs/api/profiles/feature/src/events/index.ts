@@ -7,3 +7,5 @@ export * from './profile-created.handler';
 export * from './profile-status-updated.handler';
 export * from './profile-disliked-posts-updated.event';
 export * from './profile-post-added.handler';
+export * from './profile-disliked-posts-updated.event';
+export * from './conversation-added.handler';

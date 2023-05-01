@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import {ProfilePostAddedEvent} from '../../util/src/events';
 import {
+  AddConversationToProfileHandler,
     CreateProfileHandler,
     UpdateAccountDetailsHandler,
     UpdateAddressDetailsHandler,
@@ -15,6 +16,7 @@ import {
     AccountDetailsUpdatedHandler,
     AddressDetailsUpdatedHandler,
     ContactDetailsUpdatedHandler,
+    ConversationAddedHandler,
     OccupationDetailsUpdatedHandler,
     PersonalDetailsUpdatedHandler,
     ProfileCreatedHandler,
@@ -33,6 +35,7 @@ export const CommandHandlers = [
   UpdateOccupationDetailsHandler,
   UpdateAccountDetailsHandler,
   UpdateProfileStatusHandler,
+  AddConversationToProfileHandler,
 ];
 export const EventHandlers = [
   ProfileCreatedHandler,
@@ -44,7 +47,8 @@ export const EventHandlers = [
   ProfileStatusUpdatedHandler,
   ProfilePostAddedHandler,
   ProfileDislikedPostHandler,
-  ProfileLikedPostUpdatedHandler
+  ProfileLikedPostUpdatedHandler,
+  ConversationAddedHandler,
 ];
 
 @Module({

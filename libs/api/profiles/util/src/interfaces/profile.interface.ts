@@ -15,9 +15,24 @@ export interface IProfile {
   occupationDetails?: IOccupationDetails | null | undefined;
   status?: ProfileStatus | null | undefined;
   created?: Timestamp | null | undefined;
+  challenges?: string[];
   likedPosts?: string[] | null | undefined;
   dislikedPosts?: string[] | null | undefined;
-  posts?: string[] | null | undefined;
+  // Do not remove
+  banner?: string;
+  userName?: string | null | undefined;
+  location?: string;
+  groups?: string[];
+  description?: string;
+  degree?: string;
+  university?: string;
   userDepartments?: string[];
-  challenges?: string[];
+  events?: [];
+  posts?: [];
+  rank?: number;
+  notifications?: [];
+  timeLeft?: Timestamp;
+  followers?: [];
+  following?: [];
+  conversationIDs?: string[];
 }

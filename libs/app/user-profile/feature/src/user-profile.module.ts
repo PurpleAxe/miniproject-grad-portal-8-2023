@@ -7,9 +7,11 @@ import { UserProfilePageComponent } from './user-profile.page';
 import { FeedModule, CardComponent } from '@mp/app/feed/ui';
 import { FeedState, FeedApi } from '@mp/app/feed/data-access';
 import { NgxsModule } from '@ngxs/store';
+// import { SharedModule } from '@mp/app/shared/feature'
+import { UserProfileModule as UserProfileDataAccessModule} from '@mp/app/user-profile/data-access';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, FeedModule, UserProfilePageRoutingModule,NgxsModule.forFeature([FeedState])],
+  imports: [CommonModule, FormsModule, IonicModule, FeedModule, UserProfilePageRoutingModule, UserProfileDataAccessModule ,NgxsModule.forFeature([FeedState])],
   declarations: [UserProfilePageComponent],
   exports: [UserProfilePageComponent],
   bootstrap:[CardComponent],

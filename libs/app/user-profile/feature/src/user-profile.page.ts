@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Renderer2, OnInit } from '@angular/core';
+import { User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { IPost } from '@mp/api/post/util';
 import { FeedState } from '@mp/app/feed/data-access';
@@ -12,6 +13,11 @@ import { ProfileState } from '@mp/app/profile/data-access';
 import { SubscribeToProfile } from '@mp/app/profile/util';
 import {DocumentReference} from '@angular/fire/firestore';
 
+import { AlertController } from '@ionic/angular';
+import { AuthState } from '@mp/app/auth/data-access';
+import { UserProfileState } from '@mp/app/user-profile/data-access';
+// import { SharedModule } from '@mp/app/shared/feature';
+import { Logout } from '@mp/app/auth/util';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,7 +26,6 @@ import {DocumentReference} from '@angular/fire/firestore';
 })
 export class UserProfilePageComponent implements OnInit {
 
-  constructor(private router: Router,private readonly store: Store) { }
   @Select(FeedState.getFeedPosts) post$! :Observable<DocumentReference[]>;
   ownPost$:DocumentReference[]=[];
   profileUrl="https://ionicframework.com/docs/img/demos/avatar.svg";
@@ -33,6 +38,7 @@ export class UserProfilePageComponent implements OnInit {
   disliked$:string[]=[];
 
   ngOnInit(): void {
+    this.store.dispatch(new SubscribeToProfile());
     this.ownPosts();
     this.likedAndDisliked$.subscribe((update) => {
       const toLiked:string[] = [];
@@ -47,17 +53,113 @@ export class UserProfilePageComponent implements OnInit {
       this.disliked$ = toDisliked;
     });
   }
+  @Select(UserProfileState.userProfile)
+  userProfile$!: Observable<IProfile | null>;
+
+  @Select(AuthState.user) authProfile$!: Observable<User | null>;
+
+  profileURL = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+  bannerURL = 'assets/images/placeholder.jpg';
+  displayName: any;
+  userName: any;
+
+  constructor(
+    private router: Router,
+    private readonly store: Store,
+    private renderer: Renderer2,
+    private alertController: AlertController
+  ) {
+
+
+
+    // this.profile$.subscribe((profile)=>{
+    //   // console.log(profile);
+    // });
+
+    this.authProfile$.subscribe((var2) => {
+      if (var2) {
+        if (var2.email) {
+          this.userName = var2.email?.substring(0, var2.email.indexOf('@'));
+        }
+
+        if (var2.displayName) {
+          this.displayName = var2.displayName;
+        } else {
+          this.displayName = 'invalid';
+        }
+
+        if (var2.photoURL) {
+          this.profileURL = var2.photoURL;
+        }
+      }
+    });
+  }
+
+  //  logout() {
+  //   // this.popover.dismiss();
+  //   this.store.dispatch(new Logout());
+  // }
+
+  //  async presentAlert() {
+  //   const alert = await this.alertController.create({
+  //   header: 'Time Out!',
+  //   subHeader: 'Your time has run out.',
+  //   message: 'You have run out of time. Your account is no longer in use.',
+  //   buttons: [{
+  //   text: 'LOGOUT',
+  //   handler: () => {
+  //   this.logout();
+  //   }
+  //   }],
+  //   backdropDismiss: false // prevent dismissing by clicking outside of the alert
+  //   });
+
+  //   await alert.present();
+  // }
+
+  getSeconds(profile: IProfile) {
+    //SharedModule.se
+    if (profile.timeLeft?.seconds != undefined) {
+      const seconds =
+        (profile.timeLeft?.seconds - Timestamp.now().seconds) % 60;
+      // console.log(profile.timeLeft?.seconds-Timestamp.now().seconds);
+      // if (profile.timeLeft?.seconds-Timestamp.now().seconds<=0){
+      //   this.presentAlert();
+      // }
+      return seconds;
+    }
+    return 0;
+  }
+
+  getMinutes(profile: IProfile) {
+    if (profile.timeLeft?.seconds != undefined) {
+      const minutes = Math.floor(
+        ((profile.timeLeft?.seconds - Timestamp.now().seconds) % 3600) / 60
+      );
+      return minutes;
+    }
+    return 0;
+  }
+
+  getHours(profile: IProfile) {
+    if (profile.timeLeft?.seconds != undefined) {
+      const hours = Math.floor(
+        (profile.timeLeft?.seconds - Timestamp.now().seconds) / 3600
+      );
+      return hours;
+    }
+    return 0;
+  }
 
   customCounterFormatter(inputLength: number, maxLength: number) {
     return `${maxLength - inputLength} characters remaining`;
-
   }
 
-  checkFollowers(){
+  checkFollowers() {
     // this.router.navigate(['followers']);
   }
 
-  checkFollowing(){
+  checkFollowing() {
     // this.router.navigate(['followers']);
   }
 

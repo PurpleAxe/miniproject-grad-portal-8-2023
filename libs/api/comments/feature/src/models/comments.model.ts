@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import {Timestamp} from "firebase/firestore";
+import { Timestamp } from "firebase-admin/firestore";
 import { IComment, UpdateCommentsEvent } from "@mp/api/comments/util";
 
 export class Comments extends AggregateRoot implements IComment {

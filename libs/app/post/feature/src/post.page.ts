@@ -18,7 +18,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './post.page.html',
   styleUrls: ['./post.page.scss'],
 })
-export class PostPageComponent { 
+export class PostPageComponent {
 
   error="";
   body="";
@@ -26,16 +26,16 @@ export class PostPageComponent {
   department="";
   uid!:string;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
-  
 
-  constructor(private router: Router, private readonly store: Store, public alertController: AlertController) { 
+
+  constructor(private router: Router, private readonly store: Store, public alertController: AlertController) {
     this.store.dispatch(new SubscribeToProfile());
     this.profile$.subscribe((profile) => {
       if(profile != null)
         this.uid = profile.userId;
     });
   }
-  
+
   customCounterFormatter(inputLength: number, maxLength: number) {
     return `${maxLength - inputLength} characters remaining`;
   }
@@ -51,10 +51,10 @@ export class PostPageComponent {
     //   this.whitespaceAlert();
     //   return;
     // }
-    
 
 
-      
+
+
     const payload:MyPayload={
       body: this.body,
       department:this.department,
@@ -73,7 +73,7 @@ export class PostPageComponent {
       message: 'Please fill in all the fields',
       buttons: ['OK']
     });
-  
+
     await alert.present();
   }
 
@@ -83,7 +83,7 @@ export class PostPageComponent {
       message: 'Ensure you have no spaces in Challenge or Department fields',
       buttons: ['OK']
     });
-  
+
     await alert.present();
   }
 }

@@ -1,8 +1,8 @@
-import { <%=className%>Module as <%=className%>DataAccessModule } from '@mp/libs/<%=fileName%>/data-access';
+import { <%=className%>Module as <%=className%>DataAccessModule } from '@mp/api/<%=fileName%>/data-access';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { <%=className%>Sagas } from './<%=fileName%>.sagas';
-import { <%=className%>Service } from './<%=fileName%>.service.ts';
+import { <%=className%>Service } from './<%=fileName%>.service';
 
 export const CommandHandlers = [];
 export const EventHandlers = [];

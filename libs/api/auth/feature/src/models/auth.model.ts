@@ -39,9 +39,9 @@ export class Auth extends AggregateRoot implements IAuth {
   toJSON(): IAuth {
     return {
       id: this.id,
-      email: this.email,
       displayName: this.displayName,
       photoURL: this.photoURL,
+      email: this.email,
       phoneNumber: this.phoneNumber,
       customClaims: this.customClaims,
       created: this.created,

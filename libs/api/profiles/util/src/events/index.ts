@@ -8,3 +8,6 @@ export * from './profile-status-updated.event';
 export * from './profile-liked-posts-updated.event';
 export * from './profile-disliked-posts-updated.event';
 export * from './profile-posts-added.event';
+export * from './profile-liked-posts-updated.event';
+export * from './profile-disliked-posts-updated.event';
+export * from './conversation-added.event';

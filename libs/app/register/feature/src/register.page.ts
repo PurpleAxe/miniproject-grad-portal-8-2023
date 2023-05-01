@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { Register } from '@mp/app/register/util';
 import {
     ActionsExecuting,
@@ -7,6 +7,18 @@ import {
 } from '@ngxs-labs/actions-executing';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+
+export const passwordMatchingValidatior: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+  if (!password || !confirmPassword) { // if the password or confirmation has not been inserted ignore
+    return null;
+  }
+  if (password.value !== confirmPassword.value) {
+     confirmPassword.setErrors({notmatched: true}); 
+    };
+  return null;
+};
 
 @Component({
   selector: 'ms-register-page',
@@ -22,15 +34,21 @@ export class RegisterPage {
       [Validators.email, Validators.minLength(6), Validators.maxLength(64)],
     ],
     password: ['', [Validators.minLength(6), Validators.maxLength(64)]],
-  });
-  showPassword = false;
+    confirmPassword: ['', [Validators.minLength(6), Validators.maxLength(64)]],
+  },{ validators: passwordMatchingValidatior });
+
+  // showPassword = false;
+  // showConfirmPassword = false;
 
   get email() {
-    return this.registerForm.get('email');
+    return this.registerForm?.get('email');
   }
 
   get password() {
     return this.registerForm.get('password');
+  }
+  get confirmPassword() {
+    return this.registerForm.get('confirmPassword');
   }
 
   get emailError(): string {
@@ -50,6 +68,17 @@ export class RegisterPage {
       return 'Password should be longer than 6 characters';
     if (this.password?.errors?.['maxlength'])
       return 'Password should be shorter than 64 characters';
+    
+    if( this.confirmPassword?.errors?.['notmatched'])
+      return 'Password does not match, please check the passwords';
+
+    return 'Password is invalid';
+  }
+  get confirmPasswordError(): string {
+    if (this.confirmPassword?.errors?.['required']) return 'Confirm Password is required';
+  
+    if( this.confirmPassword?.errors?.['notmatched'])
+      return 'Password does not match, please check your passwords';
 
     return 'Password is invalid';
   }
@@ -57,15 +86,19 @@ export class RegisterPage {
   constructor(
     private readonly fb: FormBuilder,
     private readonly store: Store
-  ) {}
+  ) {
+  }
 
-  register() {
+  register()
+   {
     if (this.registerForm.valid) {
       this.store.dispatch(new Register());
     }
   }
 
-  toggleShowPassword() {
-    this.showPassword = !this.showPassword;
-  }
+  // toggleShowPassword(passwordType: string) {
+  //   passwordType=='current'? this.showPassword = !this.showPassword: 
+  //   this.showConfirmPassword = !this.showConfirmPassword; 
+  // }
+  
 }

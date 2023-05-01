@@ -1,5 +1,6 @@
 import {
     AccountDetailsUpdatedEvent,
+    AddConversationToProfileCommand,
     AddressDetailsUpdatedEvent,
     ContactDetailsUpdatedEvent,
     CreateProfileCommand,
@@ -10,7 +11,6 @@ import {
     ProfileDislikedPostsUpdatedEvent,
     ProfilePostAddedEvent,
 } from '@mp/api/profiles/util';
-
 import {
   PostLikedEvent,
   PostDislikedEvent,
@@ -18,10 +18,13 @@ import {
   PostLikeRemovedEvent,
   PostCreatedEvent,
 } from '@mp/api/post/util';
+import {
+  ConversationCreatedEvent
+} from "@mp/api/message/util";
 import { UserCreatedEvent } from '@mp/api/users/util';
 import { Injectable } from '@nestjs/common';
-import { EventBus, ICommand, IEvent, ofType, Saga } from '@nestjs/cqrs';
-import { map, Observable } from 'rxjs';
+import { EventBus, ICommand, IEvent, ofType, Saga, } from '@nestjs/cqrs';
+import { map, Observable, pipe } from 'rxjs';
 import {log} from 'console';
 
 @Injectable()
@@ -135,18 +138,14 @@ export class ProfilesSagas {
   };
 
   @Saga()
-  onPostDislikedRemoved = (
+  onConversationCreated = (
     events$: Observable<any>
-  ): Observable<IEvent> => {
+  ): Observable<ICommand> => {
     return events$.pipe(
-      ofType(PostDislikeRemovedEvent),
+      ofType(ConversationCreatedEvent),
       map(
-        (event: PostDislikeRemovedEvent) =>
-          this.eventBus.publish(new ProfileDislikedPostsUpdatedEvent(
-            event.user,
-            event.Onpost.postId!,
-            true)
-          )
+        (event: ConversationCreatedEvent) =>
+          new AddConversationToProfileCommand(event.conversation)
       )
     );
   };
@@ -184,5 +183,22 @@ export class ProfilesSagas {
           )
       )
     );
+  };
+
+  @Saga()
+  onPostDislikeRemoved = (
+    event$:Observable<any>
+  ): Observable<IEvent> => {
+    return event$.pipe(
+      ofType(PostDislikeRemovedEvent),
+        map(
+          (event: PostDislikeRemovedEvent) =>
+          this.eventBus.publish(new ProfileDislikedPostsUpdatedEvent(
+            event.user,
+            event.Onpost.postId!,
+            true)
+          )
+        )
+      )
   };
 }

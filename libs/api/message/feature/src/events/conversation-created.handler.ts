@@ -1,3 +1,4 @@
+import {MessageRepository} from "@mp/api/message/data-access";
 import {ConversationCreatedEvent} from "@mp/api/message/util";
 import {EventsHandler, IEventHandler} from "@nestjs/cqrs";
 
@@ -5,12 +6,8 @@ import {EventsHandler, IEventHandler} from "@nestjs/cqrs";
 export class ConversationCreatedHandler
   implements IEventHandler<ConversationCreatedEvent>
   {
-    //constructor() {};
+    constructor(private readonly repository : MessageRepository) {}
     async handle(event: ConversationCreatedEvent) {
-      event.ref.set(event.conversation).then((docRef) => {
-	console.log(docRef.writeTime);
-      }).catch((error) => {
-	console.log(error);
-      });
+      this.repository.createConversation(event.conversation);
     }
   }

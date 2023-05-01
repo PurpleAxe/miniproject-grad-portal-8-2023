@@ -19,5 +19,6 @@ import { LoginRouting } from './login.routing';
     CopyrightModule,
   ],
   declarations: [LoginPage],
+  exports: [LoginPage],
 })
-export class LoginModule {}
+export class LoginModule { }

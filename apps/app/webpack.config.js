@@ -30,8 +30,7 @@ function getClientEnvironment(configuration) {
 
 module.exports = (config, options, context) => {
   config.plugins.push(
-    new webpack.DefinePlugin(getClientEnvironment(context.configuration)),
-    new NodePolyfillPlugin()
+    new webpack.DefinePlugin(getClientEnvironment(context.configuration))
   );
   config.resolve = {
     ...config.resolve,
@@ -42,7 +41,7 @@ module.exports = (config, options, context) => {
       child_process: false,
     },
   };
-  
+
 
   config.plugins = [
     ...config.plugins,

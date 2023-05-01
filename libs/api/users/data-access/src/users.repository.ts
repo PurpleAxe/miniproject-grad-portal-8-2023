@@ -12,7 +12,7 @@ export class UsersRepository {
       .create(user);
   }
 
-  async doesUserExist(user: IUser):Promise<boolean> {
+  async doesUserExist(user: IUser): Promise<boolean> {
     const potentialUser = await admin
       .firestore()
       .collection("users")

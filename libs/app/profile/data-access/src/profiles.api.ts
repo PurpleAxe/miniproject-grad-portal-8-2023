@@ -7,7 +7,7 @@ import {
     IUpdateAccountDetailsResponse,
     IUpdateAddressDetailsRequest,
     IUpdateAddressDetailsResponse,
-    IUpdateContactDetailsRequest, 
+    IUpdateContactDetailsRequest,
     IUpdateContactDetailsResponse,
     IUpdateOccupationDetailsRequest,
     IUpdateOccupationDetailsResponse,
@@ -23,6 +23,7 @@ export class ProfilesApi {
   ) {}
 
   profile$(id: string) {
+    // console.log(id, 'in profile api aaaaaaaaaaaaaaaaaaaaaaaaaa');
     const docRef = doc(
       this.firestore,
       `profiles/${id}`
@@ -32,7 +33,7 @@ export class ProfilesApi {
       },
       toFirestore: (it: IProfile) => it,
     });
-    return docData(docRef, { idField: 'id' });
+    return docData(docRef, { idField: 'userId' });
   }
 
   async updateAccountDetails(request: IUpdateAccountDetailsRequest) {

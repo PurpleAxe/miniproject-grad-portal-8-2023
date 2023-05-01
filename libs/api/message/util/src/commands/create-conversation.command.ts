@@ -1,5 +1,5 @@
-import { ICreateConversationRequest } from "../requests";
+import { ICreateConversationRequest } from '../requests';
 
 export class CreateConversationCommand {
-  constructor(public readonly request  : ICreateConversationRequest) {};
+  constructor(public readonly request: ICreateConversationRequest) {}
 }

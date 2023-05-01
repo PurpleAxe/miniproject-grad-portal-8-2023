@@ -25,12 +25,14 @@ const routes: Routes = [
       {
         path: 'notifications',
         loadChildren: () =>
-          import('@mp/app/notifications/feature').then((m) => m.NotificationsModule),
+          import('@mp/app/notifications/feature').then(
+            (m) => m.NotificationsModule
+          ),
       },
       {
         path: 'search',
         loadChildren: () =>
-          import('@mp/app/search/feature').then((m) => m.SearchModule),
+          import('@mp/app/search-test/feature').then((m) => m.SearchTestModule),
       },
       {
         path: '',
@@ -50,9 +52,10 @@ const routes: Routes = [
       {
         path: 'userprofile',
         loadChildren: () =>
-          import('@mp/app/user-profile/feature').then((m) => m.UserProfileModule),
+          import('@mp/app/user-profile/feature').then(
+            (m) => m.UserProfileModule
+          ),
       },
-     
     ],
   },
   {
@@ -76,4 +79,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomeRouting { }
+export class HomeRouting {}

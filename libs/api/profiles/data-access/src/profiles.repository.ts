@@ -54,6 +54,7 @@ export class ProfilesRepository {
   async createProfile(profile: IProfile) {
     // Remove password field if present
     delete profile.accountDetails?.password;
+
     return await admin
       .firestore()
       .collection('profiles')
@@ -71,22 +72,21 @@ export class ProfilesRepository {
       .set(profile, { merge: true });
   }
 
-  async dislikeListAdd(profile:string, post:string) {
-    admin
-      .firestore()
-      .collection("profiles")
-      .doc(profile)
-      .collection("dislikedPosts")
-      .doc(post).create({});
+  async getProfilesCollection() {
+    const snapshot = await admin.firestore().collection('profiles').get();
+    return snapshot.docs.map((doc) => doc.data());
   }
 
-  async dislikeListRemove(profile:string, post:string) {
-    admin
+  async updateConversationList(profile: IProfile) {
+    console.log(profile.conversationIDs?.at(0));
+    const conversationIDs = profile.conversationIDs?.at(0);
+    return await admin
       .firestore()
-      .collection("profiles")
-      .doc(profile)
-      .collection("dislikedPosts")
-      .doc(post).delete();
+      .collection('profiles')
+      .doc(profile.userId!)
+      .collection('conversationIDs')
+      .doc(conversationIDs!)
+      .create({});
   }
   async likeListAdd(profile:string, post:string) {
     admin
@@ -107,6 +107,24 @@ export class ProfilesRepository {
       .collection("likedPosts")
       .doc(post).delete();
   }
+  async dislikeListAdd(profile:string, post:string) {
+    admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("dislikedPosts")
+      .doc(post).create({});
+  }
+
+  async dislikeListRemove(profile:string, post:string) {
+    admin
+      .firestore()
+      .collection("profiles")
+      .doc(profile)
+      .collection("dislikedPosts")
+      .doc(post).delete();
+  }
+
   async addPost(profile:string, post:IPost) {
     admin
       .firestore()

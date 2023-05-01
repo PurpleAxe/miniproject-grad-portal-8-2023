@@ -1,16 +1,16 @@
 name: Jest
-on:
+on: 
   push:
   pull_request:
     branches:
       - main
-
+      
 jobs:
-  test:
+  test: 
     name: Run Jest tests
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+    steps: 
+      - uses: actions/checkout@v3 
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
@@ -25,7 +25,11 @@ jobs:
         
       - run: yarn install --frozen-lockfile
 #       - run: firebase emulators:exec --project timehive-29588 'npx jest'
-      - run: npx jest
+      - run: yarn test:ci
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
-
+        with:
+          files: coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+      
