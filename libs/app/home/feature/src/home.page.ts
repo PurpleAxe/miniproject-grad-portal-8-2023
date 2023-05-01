@@ -74,20 +74,22 @@ export class HomePage implements OnInit {
   }
 
   async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Your Time is Up!',
-      message: 'This account is now locked. Please logout.',
-      buttons: [
-        {
-          text: 'LOGOUT',
-          handler: () => {
-            this.logout();
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
+
+  const alert = await this.alertController.create({
+    header: 'Your Time is Up!',
+    message: 'This account is now locked. Please logout.',
+    backdropDismiss: false,
+    buttons: [
+      {
+        text: 'LOGOUT',
+        handler: () => {
+          this.logout();
+        }
+      }
+    ]
+  });
+  await alert.present();
+}
 
   ngOnInit() {
     const hours = Math.floor(this.time / 3600);
@@ -295,6 +297,7 @@ export class HomePage implements OnInit {
       const seconds = Math.floor(this.time % 60);
 
       if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+        console.log('time is up');
         this.presentAlert();
         if (this.timer) clearInterval(this.timer);
       }
