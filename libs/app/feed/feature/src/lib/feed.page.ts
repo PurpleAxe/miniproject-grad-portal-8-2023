@@ -10,6 +10,7 @@ import { IPost } from '@mp/api/post/util';
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { SubscribeToProfile } from '@mp/app/profile/util';
+import {AuthState} from '@mp/app/auth/data-access';
 
 
 @Component({
@@ -18,96 +19,78 @@ import { SubscribeToProfile } from '@mp/app/profile/util';
   styleUrls: ['./feed.page.scss'],
 })
 export class FeedPage {
-  LHome!: boolean;
-  LDiscovery!: boolean;
+  LHome: boolean = true;
+  LDiscovery: boolean = false;
 
   text!: string;
   userName!:string;
   now:Timestamp | null | undefined;
   challenge!:string;
   department!:string;
-  profile!:IProfile;
+  profile!:string;
 
   @Select(FeedState.getFeedPosts) post$! :Observable<DocumentReference[]>;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
-  feedPost:DocumentReference[]=[];
+  feedPost$:DocumentReference[]=[];
+  subscriptions:any;
 
   constructor(private router: Router,private readonly store: Store){
-    this.LHome = true;
-    this.LDiscovery = false;
-    this.store.dispatch(new SubscribeToProfile());
-    this.profile$.subscribe((profile) => {
-      if(profile){
-        this.profile = profile;
-        const payload={
-          uid:this.profile.userId
-        };
-        this.store.dispatch(new FetchHomeFeed(payload));
-        this.post$.subscribe((posts) => {
-          if(posts){
-            this.feedPost = posts;
-          }
-        });
-      }
-    });
-    this.homet();
+  }
+
+  ngOnInit() {
+    this.homet()
+    this.store
+        .select(AuthState.user)
+        .subscribe((x: any) => (this.profile = x?.uid));
   }
 
   Discoveryt(){
+    if (this.subscriptions) {
+      this.subscriptions();
+    }
     this.LHome = false;
     this.LDiscovery = true;
-    this.store.dispatch(new SubscribeToProfile());
-    this.profile$.subscribe((profile) => {
-      if(profile){
-        this.profile = profile;
-        const payload={
-          uid:this.profile.userId
-        };
-        this.store.dispatch(new FetchDiscoveryFeed(payload));
-        this.post$.subscribe((posts) => {
-          if(posts != null)
-            this.feedPost = posts;
-        });
-      }
-    });
+    const payload={
+      uid:this.profile
+    };
+    this.store.dispatch(new FetchDiscoveryFeed(payload));
     // this.store.dispatch(new FetchDiscoveryFeed({uid:""}));
+    this.subscriptions = this.post$.subscribe((posts) =>{
+      if(posts != null)
+        this.feedPost$ = posts;
+    })
     this.displayFeed();
   }
 
+  ngOnDestory() {
+    if (this.subscriptions) {
+      this.subscriptions();
+    }
+  }
+
   homet(){
+    if (this.subscriptions) {
+      this.subscriptions();
+    }
     console.log("Home");
     this.LHome = true;
     this.LDiscovery = false;
     //this.store.dispatch(new FetchHomeFeed());
 
-    this.store.dispatch(new SubscribeToProfile());
-    this.profile$.subscribe((profile) => {
-      if(profile){
-        this.profile = profile;
-        const payload={
-          uid:this.profile.userId
-        };
+    const payload={
+      uid:this.profile
+    };
 
-        this.store.dispatch(new FetchHomeFeed(payload));
-        this.post$.subscribe((posts) => {
-          if(posts != null)
-            this.feedPost = posts;
-        });
-      }
-    });
-    // this.store.dispatch(new FetchHomeFeed({uid:""}));
-
+    this.store.dispatch(new FetchHomeFeed(payload));
+    this.subscriptions = this.post$.subscribe((posts) =>{
+      if(posts != null)
+        this.feedPost$ = posts;
+    })
     this.displayFeed();
   }
 
   displayFeed(){
     console.log("DISPLAY FEED");
-    this.post$?.subscribe((res:any)=>{
-      if(res!=null){
-        this.feedPost=res;
-        console.table(this.feedPost);
-      }
-        //this.feedPost=res;
-    })
+    console.table(this.feedPost$);
   }
 }
