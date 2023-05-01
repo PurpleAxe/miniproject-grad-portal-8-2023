@@ -1,56 +1,152 @@
-
 <ng-container *ngIf="$any(userProfile$ | async) as userProfile;">
-
   <ion-header>
-    <div style="position: relative;">
-      <img src="{{userProfile.banner?userProfile.banner:'assets/images/placeholder.jpg'}}" id="banner" style="width: 100%; height: 220px; object-fit: cover;">
-      <img src="{{userProfile.accountDetails.photoURL?userProfile.accountDetails.photoURL:'https://ionicframework.com/docs/img/demos/avatar.svg'}} "id="profile" style="height: 100px; border-radius: 50%; position: absolute; bottom: 0; left: 0; margin-bottom: 10px; border: 2px solid black; margin-left: 10px;">
+    <div style="position: relative">
+      <img
+        src="{{userProfile.banner?userProfile.banner:'assets/images/placeholder.jpg'}}"
+        id="banner"
+        style="width: 100%; height: 220px; object-fit: cover" />
+      <img
+        src="{{userProfile.accountDetails.photoURL?userProfile.accountDetails.photoURL:'https://ionicframework.com/docs/img/demos/avatar.svg'}} "
+        id="profile"
+        style="
+          height: 100px;
+          border-radius: 50%;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          margin-bottom: 10px;
+          border: 2px solid black;
+          margin-left: 10px;
+        " />
     </div>
-    
+
     <ion-card class="profile">
       <ion-card-header>
         <ion-card-title id="prof-name">
           {{userProfile.accountDetails.displayName}}
-          <ion-button fill="clear" size="medium" color="dark" class="edit-button" style="float: right;" [routerLink]="['/settings/account-settings']">
-            <ion-icon name="pencil" style="margin-right: 10px;"></ion-icon>
+          <ion-button
+            fill="clear"
+            size="medium"
+            color="dark"
+            class="edit-button"
+            style="float: right"
+            [routerLink]="['/settings/account-settings']">
+            <ion-icon name="pencil" style="margin-right: 10px"></ion-icon>
             <ion-label>Edit</ion-label>
           </ion-button>
-          
         </ion-card-title>
-        <ion-card-subtitle id="prof-usrname" style="font-size: larger;">@{{userProfile.username}}</ion-card-subtitle>
-        <ion-card-subtitle id="uni" color="dark" style="font-size: larger;">{{userProfile.university}}</ion-card-subtitle>
-        <ion-card-subtitle id="dept" color="dark" style="font-size: larger;">{{userProfile.department}}</ion-card-subtitle>
+        <ion-card-subtitle id="prof-usrname" style="font-size: larger"
+          >@{{userProfile.userName}}</ion-card-subtitle
+        >
+        <ion-card-subtitle id="uni" color="dark" style="font-size: larger"
+          >{{userProfile.university}}</ion-card-subtitle
+        >
+        <ion-card-subtitle id="dept" color="dark" style="font-size: larger"
+          >{{userProfile.department}}</ion-card-subtitle
+        >
       </ion-card-header>
-      
-      <ion-card-content style="font-size: larger;">
-        <p id="bio" style="font-size: 17px; text-align: center;">{{userProfile.bio}}</p>
-  
-        <ion-button fill="clear" style="height: auto; margin-left: 50px; margin-top: 20px;" (click)="checkFollowers()">
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <ion-text color="primary" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize;">{{userProfile.followers}}</ion-text>
-            <ion-text color="dark" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize; margin-bottom: 10px;">Followers</ion-text>
+
+      <ion-card-content style="font-size: larger">
+        <p id="bio" style="font-size: 17px; text-align: center">
+          {{userProfile.bio}}
+        </p>
+
+        <ion-button
+          fill="clear"
+          style="height: auto; margin-left: 50px; margin-top: 20px"
+          (click)="checkFollowers()">
+          <div
+            style="display: flex; flex-direction: column; align-items: center">
+            <ion-text
+              color="primary"
+              style="
+                font-size: 1.2em;
+                margin-left: 10px;
+                text-transform: capitalize;
+              "
+              >{{userProfile.followers}}</ion-text
+            >
+            <ion-text
+              color="dark"
+              style="
+                font-size: 1.2em;
+                margin-left: 10px;
+                text-transform: capitalize;
+                margin-bottom: 10px;
+              "
+              >Followers</ion-text
+            >
           </div>
         </ion-button>
-  
-        <ion-button fill="clear" style="height: auto; margin-left: 20px; margin-top: 20px;" (click)="checkFollowing()">
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <ion-text color="primary" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize;">{{userProfile.following}}</ion-text>
-            <ion-text color="dark" style="font-size: 1.2em; margin-left: 10px; text-transform: capitalize; margin-bottom: 10px;">Following</ion-text>
+
+        <ion-button
+          fill="clear"
+          style="height: auto; margin-left: 20px; margin-top: 20px"
+          (click)="checkFollowing()">
+          <div
+            style="display: flex; flex-direction: column; align-items: center">
+            <ion-text
+              color="primary"
+              style="
+                font-size: 1.2em;
+                margin-left: 10px;
+                text-transform: capitalize;
+              "
+              >{{userProfile.following}}</ion-text
+            >
+            <ion-text
+              color="dark"
+              style="
+                font-size: 1.2em;
+                margin-left: 10px;
+                text-transform: capitalize;
+                margin-bottom: 10px;
+              "
+              >Following</ion-text
+            >
           </div>
         </ion-button>
-  
-        <div id="timer" style="display: flex; border-radius: 24px; border: 1px solid black; padding: 10px; background-color: var(--ion-color-warning-shade); margin-top: 15px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);" class="ion-text-center">
-          <div id="hours"  style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{getHours(userProfile)}} hrs</div>
-          <div id="minutes"  style="flex: 1; text-align: center; border-right: 1px solid black; color: black;">{{getMinutes(userProfile)}} mins</div>
-          <div id="ses" style="flex: 1; text-align: center; color: black;">{{getSeconds(userProfile)}} s</div>
+
+        <div
+          id="timer"
+          style="
+            display: flex;
+            border-radius: 24px;
+            border: 1px solid black;
+            padding: 10px;
+            background-color: var(--ion-color-warning-shade);
+            margin-top: 15px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+          "
+          class="ion-text-center">
+          <div
+            id="hours"
+            style="
+              flex: 1;
+              text-align: center;
+              border-right: 1px solid black;
+              color: black;
+            ">
+            {{getHours(userProfile)}} hrs
+          </div>
+          <div
+            id="minutes"
+            style="
+              flex: 1;
+              text-align: center;
+              border-right: 1px solid black;
+              color: black;
+            ">
+            {{getMinutes(userProfile)}} mins
+          </div>
+          <div id="ses" style="flex: 1; text-align: center; color: black">
+            {{getSeconds(userProfile)}} s
+          </div>
         </div>
-        
-        
       </ion-card-content>
     </ion-card>
   </ion-header>
-  
-  
+
   <!-- <ion-toolbar>
     <ion-segment value="all">
       <ion-segment-button value="posts">
@@ -64,8 +160,7 @@
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar> -->
-  
-  
+
   <!-- if this gets impelmented let Julianna know to change the post structure -->
   <!-- <ion-card>
     <ion-item>
@@ -109,8 +204,7 @@
     </ion-item>
   </ion-card-content>
   </ion-card> -->
-  
-  
+
   <!-- <ion-card id="profilePosts" style="display: block;">
     <ion-item>
       <ion-avatar slot="start" style="width: 70px; height: auto;">
@@ -153,12 +247,15 @@
     </ion-item>
   </ion-card-content>
   </ion-card> -->
-  
-  <ion-content id="privateProfile" class="ion-padding" style="display: none;">
+
+  <ion-content id="privateProfile" class="ion-padding" style="display: none">
     <div class="ion-text-center">
-      <ion-icon name="lock-closed-outline" size="large" color="primary"></ion-icon>
+      <ion-icon
+        name="lock-closed-outline"
+        size="large"
+        color="primary"></ion-icon>
       <h3>This page is private.</h3>
       <p>Follow this user to see their content.</p>
     </div>
   </ion-content>
-  </ng-container>
+</ng-container>
