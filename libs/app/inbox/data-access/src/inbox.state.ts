@@ -187,11 +187,16 @@ export class InboxState {
       };
       const responseRef = await this.inboxApi.createConversation(request);
       const response = responseRef.data;
-      ctx.setState(
-        produce((draft) => {
-          draft.currentConversation = response as IConversation;
-        })
-      );
+      ctx.dispatch(new SetcurrentConversation(response.conversation));
+      // ctx.setState(
+      // produce((draft) => {
+      // console.log(
+      // response.conversation as IConversation,
+      // 'responsesssssssssssssssssssss'
+      // );
+      // draft.currentConversation = response.conversation as IConversation;
+      // })
+      // );
       return response;
     } catch (error) {
       return ctx.dispatch(new SetError((error as Error).message));

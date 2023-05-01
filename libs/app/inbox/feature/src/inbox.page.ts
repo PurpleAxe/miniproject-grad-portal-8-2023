@@ -138,8 +138,22 @@ export class InboxPageComponent implements OnInit {
           break;
         }
       }
+      this.store.dispatch(new SetcurrentConversation(this.chatRoom));
     }
-
+    if (!noConversation) {
+      console.log(this.chatRoom, 'chatttttttttttroom');
+      if (this.chatRoom && this.chatRoom.conversationID) {
+        this.router.navigate([
+          '/',
+          'home',
+          'inbox',
+          'chats',
+          this.chatRoom.conversationID,
+        ]);
+      }
+      conversation.unsubscribe();
+      this.cancel();
+    }
     if (noConversation) {
       this.chatRoom = null;
       let displayName = '';
@@ -186,26 +200,26 @@ export class InboxPageComponent implements OnInit {
 
       member1.id = this.user;
       this.store.dispatch(new CreateConversation([member1, this.member2]));
-      const newConversation = this.store
-        .select(InboxState.currentConversation)
-        .subscribe((x) => {
-          this.chatRoom = x;
-        })
-        .unsubscribe();
+      this.store.select(InboxState.currentConversation).subscribe((x) => {
+        this.chatRoom = x;
+        console.log(this.chatRoom, 'in no convo chatttttttttttroom');
+
+        if (this.chatRoom && this.chatRoom.conversationID) {
+          this.router.navigate([
+            '/',
+            'home',
+            'inbox',
+            'chats',
+            this.chatRoom.conversationID,
+          ]);
+        }
+        conversation.unsubscribe();
+        this.cancel();
+      });
+      // .unsubscribe();
     }
     // console.log(this.chatRoom, ' this.chatroom');
-    this.store.dispatch(new SetcurrentConversation(this.chatRoom));
-    if (this.chatRoom && this.chatRoom.conversationID) {
-      this.router.navigate([
-        '/',
-        'home',
-        'inbox',
-        'chats',
-        this.chatRoom.conversationID,
-      ]);
-    }
-    conversation.unsubscribe();
-    this.cancel();
+    // this.store.dispatch(new SetcurrentConversation(this.chatRoom));
   }
 
   getChat(item: any) {
