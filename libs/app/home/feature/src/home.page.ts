@@ -105,6 +105,9 @@ export class HomePage implements OnInit {
     // });
     // console.log('home ngOnInit calledddddddddd');
     this.userProfile$ = this.store.select(ProfileState.profile);
+    // this.userProfile$.subscribe((user) => {
+    //   console.log(user, 'userrrrrrrrrrrrrrr');
+    // });
     // .subscribe((x) => (this.userProfile = x));
     // this.store
     //   .select(ProfileState.profile)

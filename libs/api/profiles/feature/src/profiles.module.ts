@@ -1,30 +1,30 @@
 import { ProfilesModule as ProfilesDataAccessModule } from '@mp/api/profiles/data-access';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import {ProfilePostAddedEvent} from '../../util/src/events';
+import { ProfilePostAddedEvent } from '@mp/api/profiles/util';
 import {
   AddConversationToProfileHandler,
-    CreateProfileHandler,
-    UpdateAccountDetailsHandler,
-    UpdateAddressDetailsHandler,
-    UpdateContactDetailsHandler,
-    UpdateOccupationDetailsHandler,
-    UpdatePersonalDetailsHandler,
-    UpdateProfileStatusHandler
+  CreateProfileHandler,
+  UpdateAccountDetailsHandler,
+  UpdateAddressDetailsHandler,
+  UpdateContactDetailsHandler,
+  UpdateOccupationDetailsHandler,
+  UpdatePersonalDetailsHandler,
+  UpdateProfileStatusHandler,
 } from './commands';
 import {
-    AccountDetailsUpdatedHandler,
-    AddressDetailsUpdatedHandler,
-    ContactDetailsUpdatedHandler,
-    ConversationAddedHandler,
-    OccupationDetailsUpdatedHandler,
-    PersonalDetailsUpdatedHandler,
-    ProfileCreatedHandler,
-    ProfileDislikedPostHandler,
-    ProfilePostAddedHandler,
-    ProfileStatusUpdatedHandler
+  AccountDetailsUpdatedHandler,
+  AddressDetailsUpdatedHandler,
+  ContactDetailsUpdatedHandler,
+  ConversationAddedHandler,
+  OccupationDetailsUpdatedHandler,
+  PersonalDetailsUpdatedHandler,
+  ProfileCreatedHandler,
+  ProfileDislikedPostHandler,
+  ProfilePostAddedHandler,
+  ProfileStatusUpdatedHandler,
 } from './events';
-import {ProfileLikedPostUpdatedHandler} from './events/profile-liked-posts-updated.handler';
+import { ProfileLikedPostUpdatedHandler } from './events/profile-liked-posts-updated.handler';
 import { ProfilesSagas } from './profiles.sagas';
 import { ProfilesService } from './profiles.service';
 export const CommandHandlers = [

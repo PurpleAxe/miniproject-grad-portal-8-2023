@@ -11,6 +11,17 @@ import { Module } from '@nestjs/common';
 import { SearchModule } from '@mp/api/search/feature';
 
 @Module({
-  imports: [AuthModule, EventstoreModule, ProfilesModule, UsersModule, PostModule, FeedModule, CommentsModule, NotificationsModule, MessageModule, SearchModule, ],
+  imports: [
+    AuthModule,
+    EventstoreModule,
+    ProfilesModule,
+    UsersModule,
+    PostModule,
+    FeedModule,
+    NotificationsModule,
+    MessageModule,
+    SearchModule,
+    CommentsModule,
+  ],
 })
 export class CoreModule {}

@@ -5,12 +5,13 @@ import { CommentsSagas } from './comments.sagas';
 import { CommentsService } from './comments.service';
 import { UpdateCommentsHandler } from './commands';
 import { UpdateCommentsEventHandler } from './events';
+import { PostModule as PostDataAccesModule } from '@mp/api/post/data-access';
 
 export const CommandHandlers = [UpdateCommentsHandler];
 export const EventHandlers = [UpdateCommentsEventHandler];
 
 @Module({
-  imports: [CqrsModule, CommentsDataAccessModule],
+  imports: [CqrsModule, CommentsDataAccessModule, PostDataAccesModule],
   providers: [
     CommentsService,
     ...CommandHandlers,
