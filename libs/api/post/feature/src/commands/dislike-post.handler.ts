@@ -23,6 +23,7 @@ export class DislikePostHandler
       const likingUserID = request.userID;
 
       const posts = await this.profileRepo.getDisliked(request.userID!);
+      const postsliked = await this.profileRepo.getLiked(request.userID!);
 
       const data: IPost = {
         postId:postID,
@@ -36,10 +37,12 @@ export class DislikePostHandler
         return false;
       }
       if (posts.find(findPost)?.length! >= 1) {
-      log("made it")
         await post.dislikePostRemoved(likingUserID!)
       } else {
         await post.dislikePost(likingUserID!);
+      }
+      if (postsliked.find(findPost)?.length! >= 1) {
+        await post.likePostRemoved(likingUserID!);
       }
       post.commit();
       const response: IDislikePostResponse = {"post" : post.toJSON()};

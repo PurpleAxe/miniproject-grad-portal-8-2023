@@ -95,7 +95,6 @@ export class CardComponent {
 
     if (this.isDisliked){
       //remove dislike
-      this.store.dispatch(new DislikePost(payload));
       this.isDisliked = !this.isDisliked;
       this.dislikeNum--;
     }
@@ -122,7 +121,6 @@ export class CardComponent {
     if (this.isLiked){
       //remove like
 
-      this.store.dispatch(new LikePost(payload));
       this.isLiked = !this.isLiked;
       this.likeNum--;
     }

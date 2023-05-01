@@ -72,8 +72,6 @@ export class ProfilesRepository {
   }
 
   async dislikeListAdd(profile:string, post:string) {
-    log(post);
-    log(profile);
     admin
       .firestore()
       .collection("profiles")

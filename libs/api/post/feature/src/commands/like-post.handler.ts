@@ -25,6 +25,7 @@ export class LikePostHandler
       log(command)
       const userRef = (await this.profileRepo.findOne({"userId" : likingUserID!})); // find user profile
       const posts = await this.profileRepo.getLiked(request.userID!);
+      const postsliked = await this.profileRepo.getDisliked(request.userID!);
 
       const data: IPost = {
         postId:postID,
@@ -42,6 +43,9 @@ export class LikePostHandler
         await post.likePostRemoved(likingUserID!)
       } else {
         await post.likePost(likingUserID!);
+      }
+      if (postsliked.find(findPost)?.length! >= 1) {
+        await post.dislikePostRemoved(likingUserID!);
       }
       post.commit();
       const response: ILikePostResponse = {"post" : post.toJSON()};
