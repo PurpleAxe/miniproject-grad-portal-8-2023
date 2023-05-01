@@ -12,8 +12,11 @@ export class PostSagas {
     return events$.pipe(
       ofType(UserCreatedEvent),
       map(
-        (event: UserCreatedEvent) =>
-          new CreatePostCommand({
+        (event: UserCreatedEvent) => {
+          setTimeout(function() {
+
+          }.bind(this), 5000);
+          return new CreatePostCommand({
             post: {
               userId: event.user.id,
               userName: event.user.displayName,
@@ -23,6 +26,7 @@ export class PostSagas {
               postId:null
             }
           })
+        }
       )
     );
   };
