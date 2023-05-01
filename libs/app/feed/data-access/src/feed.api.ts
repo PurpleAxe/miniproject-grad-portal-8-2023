@@ -72,45 +72,38 @@ export class FeedApi {
   }
 
   async getProfileLikedAndDisliked(userID : string):Promise<ILikedAndDisliked> {
-    const liked = () => {
-      const allUsers = collection(this.firestore, "profiles"); // find profiles that fit criteria
+    const liked = async (): Promise<DocumentReference[]> => {
+      const allUsers = collection(this.firestore, "profiles");
       const filter = query(allUsers, where("userId", "==", userID));
-      return new Promise<DocumentReference[]>((resolve) => {
-        getDocs(filter).then((doc) => {
-          doc.forEach((docRef) => {
-            const liked = collection(docRef.ref,"likedPosts");
-            getDocs(liked).then((doc) => {
-              const toReturn:DocumentReference[] = [];
-              doc.forEach((docRequiredRef) => {
-                toReturn.push(docRequiredRef.ref);
-              })
-              resolve(toReturn);
-            })
-          })
-        })
-      })
+      const doc = await getDocs(filter);
+      const promises = doc.docs.map(async (docRef) => {
+        log ("DocRef");
+        log (docRef);
+        const liked = collection(docRef.ref,"likedPosts");
+        log (liked);
+        const likedDocs = await getDocs(liked);
+        log (likedDocs);
+        return likedDocs.docs.map((doc) => doc.ref);
+      });
+      const results = await Promise.all(promises);
+      return results.flat();
     }
-    const disliked = () => {
-      const allUsers = collection(this.firestore, "profiles"); // find profiles that fit criteria
+    const disliked = async () => {
+      const allUsers = collection(this.firestore, "profiles");
       const filter = query(allUsers, where("userId", "==", userID));
-      return new Promise<DocumentReference[]>((resolve) => {
-        getDocs(filter).then((doc) => {
-          doc.forEach((docRef) => {
-            const liked = collection(docRef.ref,"dislikedPosts");
-            getDocs(liked).then((doc) => {
-              const toReturn:DocumentReference[] = [];
-              doc.forEach((docRequiredRef) => {
-                toReturn.push(docRequiredRef.ref);
-              })
-              resolve(toReturn);
-            })
-          })
-        })
-      })
+      const doc = await getDocs(filter);
+      const promises = doc.docs.map(async (docRef) => {
+        const liked = collection(docRef.ref,"dislikedPosts");
+        const likedDocs = await getDocs(liked);
+        return likedDocs.docs.map((doc) => doc.ref);
+      });
+      const results = await Promise.all(promises);
+      return results.flat();
     };
+
     const toReturn:ILikedAndDisliked = {
-      liked : liked(),
-      disliked : disliked()
+      liked : await liked(),
+      disliked : await disliked()
     }
     return toReturn
   }

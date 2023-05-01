@@ -14,6 +14,15 @@ service cloud.firestore {
       allow read: if true;
       allow list: if true;
     }
+
+    match /profiles/{userId}/likedPosts/{document=**} {
+      allow read: if true;
+      allow list: if true;
+    }
+    match /profiles/{userId}/dislikedPosts/{document=**}{
+      allow read: if true;
+      allow list: if true;
+    }
     match /post/{document=**} {
       allow read: if true;
       allow list: if true;

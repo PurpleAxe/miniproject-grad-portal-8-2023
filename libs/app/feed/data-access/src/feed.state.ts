@@ -60,7 +60,7 @@ export interface FeedStateModel{
       feedPosts: [],
       postComments:[],
       postInfo:{postId:"", ownerId:""},
-      likedAndDisliked : {liked:Promise.resolve([]), disliked:Promise.resolve([])}
+      likedAndDisliked : {liked:[], disliked:[]}
     }
 })
 @Injectable()
@@ -192,11 +192,11 @@ export class FeedState {
   @Action([FetchOwnPosts,FetchHomeFeed, FetchDiscoveryFeed])
   async updateLikedAndDisliked(ctx:StateContext<FeedStateModel>) {
     await this.getUserId();
-    const likedAndDisliked = this.feedApi.getProfileLikedAndDisliked(this.userId);
+    const likedAndDisliked = await this.feedApi.getProfileLikedAndDisliked(this.userId);
     ctx.patchState({
       likedAndDisliked: {
-        liked: (await likedAndDisliked).liked,
-        disliked: (await likedAndDisliked).disliked
+        liked: (likedAndDisliked).liked,
+        disliked: (likedAndDisliked).disliked
       }
     })
   }

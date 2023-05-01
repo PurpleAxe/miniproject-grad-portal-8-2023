@@ -11,6 +11,7 @@ import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
 import { SubscribeToProfile } from '@mp/app/profile/util';
 import {AuthState} from '@mp/app/auth/data-access';
+import {log} from 'console';
 
 
 @Component({
@@ -41,25 +42,24 @@ export class FeedPage {
   }
 
   ngOnInit() {
-    this.likedAndDisliked$.subscribe((update) => {
-      update.liked.then((data) => {
-        const liked: DocumentReference[] = data;
-        liked.forEach((doc) => {
-          this.liked$.push(doc.id)
-        })
-      });
-      update.disliked.then((data) => {
-        const disliked: DocumentReference[] = data;
-        disliked.forEach((doc) => {
-          this.disliked$.push(doc.id);
-        })
-      })
-    });
     this.homet()
     this.store
         .select(AuthState.user)
         .subscribe((x: any) => (this.profile = x?.uid));
 
+    this.likedAndDisliked$.subscribe((update) => {
+      const toLiked:string[] = [];
+      update.liked.forEach((data) => {
+        log("Feed is processing")
+        toLiked.push(data.id)
+      });
+      this.liked$ = toLiked;
+      const toDisliked:string[] = [];
+      update.disliked.forEach((data) => {
+        toDisliked.push(data.id)
+      });
+      this.disliked$ = toDisliked;
+    });
   }
 
   Discoveryt(){
