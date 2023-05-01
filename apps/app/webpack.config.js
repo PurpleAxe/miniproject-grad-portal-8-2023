@@ -30,7 +30,8 @@ function getClientEnvironment(configuration) {
 
 module.exports = (config, options, context) => {
   config.plugins.push(
-    new webpack.DefinePlugin(getClientEnvironment(context.configuration))
+    new webpack.DefinePlugin(getClientEnvironment(context.configuration)),
+    new NodePolyfillPlugin()
   );
   config.resolve = {
     ...config.resolve,
