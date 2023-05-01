@@ -11,7 +11,8 @@ import {
     DislikePost,
     FetchHomeFeed,
     FetchDiscoveryFeed,
-    FetchOwnPosts
+    FetchOwnPosts,
+    ILikedAndDisliked
  } from '@mp/app/feed/util';
 import { FeedApi } from './feed.api';
 import {IPost, ILikePostResponse, IDislikePostResponse} from '@mp/api/post/util';
@@ -30,11 +31,13 @@ export interface FeedStateModel{
       users: any[] | null;
       feedPosts: DocumentReference[] | null;
       postComments: IComment[] | null;
+      likedAndDisliked : ILikedAndDisliked| null;
     };
     dirty: false;
     status: string;
     errors: object;
   },
+  likedAndDisliked : ILikedAndDisliked;
   feedPosts: DocumentReference[];
   postComments: IComment[];
   postInfo:{postId:string, ownerId:string};
@@ -47,7 +50,8 @@ export interface FeedStateModel{
         model:{
           users: null,
           feedPosts:null,
-          postComments: null
+          postComments: null,
+          likedAndDisliked : null
         },
         dirty: false,
         status: '',
@@ -55,7 +59,8 @@ export interface FeedStateModel{
       },
       feedPosts: [],
       postComments:[],
-      postInfo:{postId:"", ownerId:""}
+      postInfo:{postId:"", ownerId:""},
+      likedAndDisliked : {liked:Promise.resolve([]), disliked:Promise.resolve([])}
     }
 })
 @Injectable()
@@ -106,6 +111,12 @@ export class FeedState {
   @Selector()
   static messages(state: FeedStateModel) {
     return state.feed.model;
+    //return null;
+  }
+
+  @Selector()
+  static likedAndDisliked(state: FeedStateModel) {
+    return state.likedAndDisliked;
     //return null;
   }
 
@@ -175,6 +186,18 @@ export class FeedState {
     const newFeed:DocumentReference[] = await this.feedApi.GetOwnFeed(myFetchOwnRequest,this.posts$);
     ctx.patchState({
       feedPosts:newFeed
+    })
+  }
+
+  @Action([FetchOwnPosts,FetchHomeFeed, FetchDiscoveryFeed])
+  async updateLikedAndDisliked(ctx:StateContext<FeedStateModel>) {
+    await this.getUserId();
+    const likedAndDisliked = this.feedApi.getProfileLikedAndDisliked(this.userId);
+    ctx.patchState({
+      likedAndDisliked: {
+        liked: (await likedAndDisliked).liked,
+        disliked: (await likedAndDisliked).disliked
+      }
     })
   }
 

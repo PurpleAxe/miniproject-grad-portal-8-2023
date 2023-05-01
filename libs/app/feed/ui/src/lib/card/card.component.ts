@@ -32,6 +32,7 @@ export class CardComponent {
   commentNum = 0;
   // @Input() postId = "POST ID"; //would I store the postId here so I know what post was liked?
   // userId = "USER ID";
+  @Input() data!:DocumentReference;
   challenge!:string;
   department!:string;
   postId!: string;
@@ -41,8 +42,8 @@ export class CardComponent {
   constructor(private router: Router, private readonly store: Store) { }
 
 
-  isLiked = false;
-  isDisliked = false;
+  @Input() isLiked!:boolean;
+  @Input() isDisliked!:boolean;
 
   private userID: any;
   formatDateFromNanoseconds(seconds: number, nanoseconds: number): string {
@@ -55,7 +56,6 @@ export class CardComponent {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   }
 
-  @Input() data!:DocumentReference;
   ngOnInit() {
     onSnapshot(this.data, (docSnapshot) => {
       const docData:IPost = docSnapshot.data() as IPost;
@@ -85,20 +85,20 @@ export class CardComponent {
       postUserID: this.userId,
       userId: this.userID
     }
-    if (this.isDisliked){
-      //remove dislike
-      this.store.dispatch(new DislikePost(payload));
-      this.isDisliked = !this.isDisliked;
-      this.dislikeNum--;
-    }
-    this.isLiked = !this.isLiked;
     if (this.isLiked){
       this.likeNum--;
     }
     else {
       this.likeNum++;
     }
+    this.isLiked = !this.isLiked;
 
+    if (this.isDisliked){
+      //remove dislike
+      this.store.dispatch(new DislikePost(payload));
+      this.isDisliked = !this.isDisliked;
+      this.dislikeNum--;
+    }
     //add like
     this.store.dispatch(new LikePost(payload));
     console.log("Like button: " + this.likeNum);
@@ -112,6 +112,13 @@ export class CardComponent {
       postUserID: this.userId,
       userId: this.userID
     }
+    if (this.isDisliked){
+      this.dislikeNum--;
+    }
+    else {
+      this.dislikeNum++;
+    }
+
     if (this.isLiked){
       //remove like
 
@@ -120,12 +127,6 @@ export class CardComponent {
       this.likeNum--;
     }
     this.isDisliked = !this.isDisliked;
-    if (this.isDisliked){
-      this.dislikeNum--;
-    }
-    else {
-      this.dislikeNum++;
-    }
 
     //add dislike
 

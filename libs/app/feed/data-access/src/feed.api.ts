@@ -26,6 +26,7 @@ import { IUpdateCommentsRequest, IUpdateCommentsResponse } from '@mp/api/comment
 import {IProfile} from '@mp/api/profiles/util';
 import {log} from 'console';
 import {map, Observable, Observer, Subject, tap} from 'rxjs';
+import {ILikedAndDisliked} from '../../util/src/ILikedAndDisliked.interface';
 
 
 @Injectable()
@@ -68,6 +69,50 @@ export class FeedApi {
     this.functions,
     'dislikePost'
   )(request);
+  }
+
+  async getProfileLikedAndDisliked(userID : string):Promise<ILikedAndDisliked> {
+    const liked = () => {
+      const allUsers = collection(this.firestore, "profiles"); // find profiles that fit criteria
+      const filter = query(allUsers, where("userId", "==", userID));
+      return new Promise<DocumentReference[]>((resolve) => {
+        getDocs(filter).then((doc) => {
+          doc.forEach((docRef) => {
+            const liked = collection(docRef.ref,"likedPosts");
+            getDocs(liked).then((doc) => {
+              const toReturn:DocumentReference[] = [];
+              doc.forEach((docRequiredRef) => {
+                toReturn.push(docRequiredRef.ref);
+              })
+              resolve(toReturn);
+            })
+          })
+        })
+      })
+    }
+    const disliked = () => {
+      const allUsers = collection(this.firestore, "profiles"); // find profiles that fit criteria
+      const filter = query(allUsers, where("userId", "==", userID));
+      return new Promise<DocumentReference[]>((resolve) => {
+        getDocs(filter).then((doc) => {
+          doc.forEach((docRef) => {
+            const liked = collection(docRef.ref,"dislikedPosts");
+            getDocs(liked).then((doc) => {
+              const toReturn:DocumentReference[] = [];
+              doc.forEach((docRequiredRef) => {
+                toReturn.push(docRequiredRef.ref);
+              })
+              resolve(toReturn);
+            })
+          })
+        })
+      })
+    };
+    const toReturn:ILikedAndDisliked = {
+      liked : liked(),
+      disliked : disliked()
+    }
+    return toReturn
   }
 
   async GetHomeFeed$(request: IGetHomeFeedRequest):Promise<DocumentReference[]>{

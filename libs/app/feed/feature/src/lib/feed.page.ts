@@ -2,7 +2,7 @@ import { DocumentReference, Timestamp } from '@angular/fire/firestore';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FeedState } from '@mp/app/feed/data-access';
-import { FetchHomeFeed, FetchDiscoveryFeed} from '@mp/app/feed/util';
+import { FetchHomeFeed, FetchDiscoveryFeed, ILikedAndDisliked} from '@mp/app/feed/util';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { IPost } from '@mp/api/post/util';
@@ -31,17 +31,35 @@ export class FeedPage {
 
   @Select(FeedState.getFeedPosts) post$! :Observable<DocumentReference[]>;
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  @Select(FeedState.likedAndDisliked) likedAndDisliked$!:Observable<ILikedAndDisliked>;
   feedPost$:DocumentReference[]=[];
+  liked$:string[]=[];
+  disliked$:string[]=[];
   subscriptions:any;
 
   constructor(private router: Router,private readonly store: Store){
   }
 
   ngOnInit() {
+    this.likedAndDisliked$.subscribe((update) => {
+      update.liked.then((data) => {
+        const liked: DocumentReference[] = data;
+        liked.forEach((doc) => {
+          this.liked$.push(doc.id)
+        })
+      });
+      update.disliked.then((data) => {
+        const disliked: DocumentReference[] = data;
+        disliked.forEach((doc) => {
+          this.disliked$.push(doc.id);
+        })
+      })
+    });
     this.homet()
     this.store
         .select(AuthState.user)
         .subscribe((x: any) => (this.profile = x?.uid));
+
   }
 
   Discoveryt(){
@@ -56,8 +74,9 @@ export class FeedPage {
     this.store.dispatch(new FetchDiscoveryFeed(payload));
     // this.store.dispatch(new FetchDiscoveryFeed({uid:""}));
     this.subscriptions = this.post$.subscribe((posts) =>{
-      if(posts != null)
+      if(posts != null) {
         this.feedPost$ = posts;
+      }
     })
     this.displayFeed();
   }
@@ -66,6 +85,14 @@ export class FeedPage {
     if (this.subscriptions) {
       this.subscriptions();
     }
+  }
+
+  isLiked(id:string) :boolean{
+    return this.liked$.indexOf(id) !== -1;
+  }
+
+  isDisliked(id:string) :boolean{
+    return this.disliked$.indexOf(id) !== -1;
   }
 
   homet(){
@@ -83,8 +110,9 @@ export class FeedPage {
 
     this.store.dispatch(new FetchHomeFeed(payload));
     this.subscriptions = this.post$.subscribe((posts) =>{
-      if(posts != null)
+      if(posts != null) {
         this.feedPost$ = posts;
+      }
     })
     this.displayFeed();
   }
