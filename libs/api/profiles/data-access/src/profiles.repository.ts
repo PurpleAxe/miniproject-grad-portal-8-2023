@@ -46,13 +46,13 @@ export class ProfilesRepository {
 
   async updateConversationList(profile: IProfile) {
     console.log(profile.conversationIDs?.at(0));
-    const conversationIDs: string = profile.conversationIDs?.at(0);
+    const conversationIDs = profile.conversationIDs?.at(0);
     return await admin
       .firestore()
       .collection('profiles')
       .doc(profile.userId!)
       .collection('conversationIDs')
-      .doc(conversationIDs)
+      .doc(conversationIDs!)
       .create({});
   }
 }

@@ -42,13 +42,18 @@ export const OnConversationUpdate = functions.firestore
       // console.log(prevMessages, 'prev messages\n');
       const afterMessages = change.after.data()?.['messages'];
       // console.log(afterMessages, 'after messages\n');
-
-      if (prevMessages.length < afterMessages.length) {
-        const onlyInA = onlyInLeft(afterMessages, prevMessages, isSameMessage);
-        // console.log(onlyInA, 'only in aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-        onlyInA.forEach((e: any) => {
-          updateTimeLeft(e.metaData.sender.userId, timeActions.messageSent);
-        });
+      if (prevMessages && afterMessages) {
+        if (prevMessages.length < afterMessages.length) {
+          const onlyInA = onlyInLeft(
+            afterMessages,
+            prevMessages,
+            isSameMessage
+          );
+          // console.log(onlyInA, 'only in aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+          onlyInA.forEach((e: any) => {
+            updateTimeLeft(e.metaData.sender.userId, timeActions.messageSent);
+          });
+        }
       }
     }
   });
@@ -63,19 +68,21 @@ const onlyInLeft = (left: any, right: any, compareFunction: any) =>
   );
 const updateTimeLeft = async (uid: string, timeToAdd: any) => {
   const profile = await admin.firestore().collection('profiles').doc(uid).get();
-  const prev = profile.get('timeLeft').toDate();
-  // console.log('prev: ', prev, '\n');
+  if (profile.get('timeLeft')) {
+    const prev = profile.get('timeLeft').toDate();
+    // console.log('prev: ', prev, '\n');
 
-  // const timeChange = timeActions.postCreate * 1000;
-  // num(we want) *sec * min * hour * day* mili to sec = 5 years
+    // const timeChange = timeActions.postCreate * 1000;
+    // num(we want) *sec * min * hour * day* mili to sec = 5 years
 
-  // console.log('timeChange: ', timeChange);
-  let after = new Date(prev.getTime() + timeToAdd * 1000);
+    // console.log('timeChange: ', timeChange);
+    let after = new Date(prev.getTime() + timeToAdd * 1000);
 
-  if (prev.getTime() < Date.now())
-    after = new Date(Date.now() + timeToAdd * 1000);
+    if (prev.getTime() < Date.now())
+      after = new Date(Date.now() + timeToAdd * 1000);
 
-  // console.log('after: ', after, '\n');
+    // console.log('after: ', after, '\n');
 
-  admin.firestore().doc(`profiles/${uid}`).update({ timeLeft: after });
+    admin.firestore().doc(`profiles/${uid}`).update({ timeLeft: after });
+  }
 };
