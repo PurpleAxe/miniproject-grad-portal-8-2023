@@ -13,8 +13,6 @@ export const updateComments = functions.https.onCall(
     ): Promise<IUpdateCommentsResponse> => {
         const app = await NestFactory.createApplicationContext(CoreModule);
         const service = app.get(CommentsService);
-        console.log("req")
-        console.log(req)
         return service.updateComments(req);
     }
 );
