@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPost } from '@mp/api/post/util';
 import { FeedState } from '@mp/app/feed/data-access';
-import { FetchOwnPosts } from '@mp/app/feed/util';
+import { FetchOwnPosts, ILikedAndDisliked } from '@mp/app/feed/util';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Timestamp } from 'firebase-admin/firestore';
@@ -25,12 +25,27 @@ export class UserProfilePageComponent implements OnInit {
   ownPost$:DocumentReference[]=[];
   profileUrl="https://ionicframework.com/docs/img/demos/avatar.svg";
   @Select(ProfileState.profile) profile$!: Observable<IProfile | null>;
+  @Select(FeedState.likedAndDisliked) likedAndDisliked$!:Observable<ILikedAndDisliked>;
   uid!:string;
   username!:string;
   userProfile!:IProfile;
+  liked$:string[]=[];
+  disliked$:string[]=[];
 
   ngOnInit(): void {
     this.ownPosts();
+    this.likedAndDisliked$.subscribe((update) => {
+      const toLiked:string[] = [];
+      update.liked.forEach((data) => {
+        toLiked.push(data.id)
+      });
+      this.liked$ = toLiked;
+      const toDisliked:string[] = [];
+      update.disliked.forEach((data) => {
+        toDisliked.push(data.id)
+      });
+      this.disliked$ = toDisliked;
+    });
   }
 
   customCounterFormatter(inputLength: number, maxLength: number) {
@@ -97,5 +112,12 @@ export class UserProfilePageComponent implements OnInit {
       this.profileUrl = this.userProfile?.accountDetails?.photoURL;
     }
     return this.profileUrl;
+  }
+  isLiked(id:string) :boolean{
+    return this.liked$.indexOf(id) !== -1;
+  }
+
+  isDisliked(id:string) :boolean{
+    return this.disliked$.indexOf(id) !== -1;
   }
 }

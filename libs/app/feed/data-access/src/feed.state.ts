@@ -193,12 +193,9 @@ export class FeedState {
   async updateLikedAndDisliked(ctx:StateContext<FeedStateModel>) {
     await this.getUserId();
     const likedAndDisliked = await this.feedApi.getProfileLikedAndDisliked(this.userId);
-    ctx.patchState({
-      likedAndDisliked: {
-        liked: (likedAndDisliked).liked,
-        disliked: (likedAndDisliked).disliked
-      }
-    })
+    ctx.setState(await produce((draft) => {
+      draft.likedAndDisliked = likedAndDisliked;
+    }))
   }
 
 

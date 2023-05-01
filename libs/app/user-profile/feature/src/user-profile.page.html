@@ -62,11 +62,18 @@
   </ion-segment>
 </ion-toolbar>
 
-<card *ngFor="let feed of ownPost$"
-
-               [data] = "feed"
- >
-</card>
+    <ng-container *ngFor="let feed of ownPost$">
+      <card *ngIf="isLiked(feed.id)"
+               [data]="feed"
+               [isLiked]="true"
+      />
+      <card *ngIf="isDisliked(feed.id)"
+               [data]="feed"
+               [isDisliked]="true"
+      />
+      <card *ngIf="!isDisliked(feed.id) && !isLiked(feed.id)" [data]="feed"></card>
+      <!-- add more ngIf statements as needed -->
+    </ng-container>
 
 
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collection, doc, docData, Firestore, query, where, getDocs, onSnapshot, collectionData, QuerySnapshot, DocumentSnapshot, DocumentReference } from '@angular/fire/firestore';
+import { collection, doc, docData, Firestore, query, where, getDocs, onSnapshot, collectionData, QuerySnapshot, DocumentSnapshot, DocumentReference, getDoc } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { GetOwnFeedEvent, IFeed } from '@mp/api/feed/util';
 import { Timestamp } from '@angular/fire/firestore';
@@ -72,40 +72,64 @@ export class FeedApi {
   }
 
   async getProfileLikedAndDisliked(userID : string):Promise<ILikedAndDisliked> {
-    const liked = async (): Promise<DocumentReference[]> => {
-      const allUsers = collection(this.firestore, "profiles");
-      const filter = query(allUsers, where("userId", "==", userID));
-      const doc = await getDocs(filter);
-      const promises = doc.docs.map(async (docRef) => {
-        log ("DocRef");
-        log (docRef);
-        const liked = collection(docRef.ref,"likedPosts");
-        log (liked);
-        const likedDocs = await getDocs(liked);
-        log (likedDocs);
-        return likedDocs.docs.map((doc) => doc.ref);
-      });
-      const results = await Promise.all(promises);
-      return results.flat();
-    }
-    const disliked = async () => {
-      const allUsers = collection(this.firestore, "profiles");
-      const filter = query(allUsers, where("userId", "==", userID));
-      const doc = await getDocs(filter);
-      const promises = doc.docs.map(async (docRef) => {
-        const liked = collection(docRef.ref,"dislikedPosts");
+  const allUsers = collection(this.firestore, "profiles");
+    const filter = query(allUsers, where("userId", "==", userID));
+
+    const getLikedRefs = async () => {
+      const docs = await getDocs(filter);
+      const likedPromises = docs.docs.map(async (doc) => {
+        const liked = collection(doc.ref, "likedPosts");
         const likedDocs = await getDocs(liked);
         return likedDocs.docs.map((doc) => doc.ref);
       });
-      const results = await Promise.all(promises);
-      return results.flat();
+      const likedResults = await Promise.all(likedPromises);
+      return likedResults.flat();
     };
 
-    const toReturn:ILikedAndDisliked = {
-      liked : await liked(),
-      disliked : await disliked()
-    }
-    return toReturn
+    const getDislikedRefs = async () => {
+      const docs = await getDocs(filter);
+      const dislikedPromises = docs.docs.map(async (doc) => {
+        const disliked = collection(doc.ref, "dislikedPosts");
+        const dislikedDocs = await getDocs(disliked);
+        return dislikedDocs.docs.map((doc) => doc.ref);
+      });
+      const dislikedResults = await Promise.all(dislikedPromises);
+      return dislikedResults.flat();
+    };
+
+    const likedRefs = await getLikedRefs();
+    const dislikedRefs = await getDislikedRefs();
+
+    const existingLikedRefs = await Promise.all(
+      likedRefs.map(async (ref) => {
+        const doc = await getDoc(ref);
+        if (doc.exists()) {
+          return ref;
+        } else {
+          return null;
+        }
+      })
+    );
+
+    const existingDislikedRefs = await Promise.all(
+      dislikedRefs.map(async (ref) => {
+        const doc = await getDoc(ref);
+        if (doc.exists()) {
+          return ref;
+        } else {
+          return null;
+        }
+      })
+    );
+
+    const filteredLikedRefs = existingLikedRefs.filter((ref) => ref !== null) as DocumentReference[];
+    const filteredDislikedRefs = existingDislikedRefs.filter((ref) => ref !== null) as DocumentReference[];
+
+    const toReturn: ILikedAndDisliked = {
+      liked: filteredLikedRefs!,
+      disliked: filteredDislikedRefs!,
+    };
+    return toReturn;
   }
 
   async GetHomeFeed$(request: IGetHomeFeedRequest):Promise<DocumentReference[]>{
