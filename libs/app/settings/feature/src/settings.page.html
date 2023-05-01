@@ -1,0 +1,28 @@
+
+<ion-list>
+    <ion-buttons slot="start">
+        <ion-back-button color="dark" defaultHref="/home"></ion-back-button>
+      </ion-buttons>
+    <ion-item routerLink="account-settings">
+        <ion-icon name="cog" aria-hidden="true" class="ion-padding-end"></ion-icon>
+        <ion-label>Account</ion-label>
+    </ion-item>
+    <ion-item routerLink="security-settings">
+        <ion-icon name="finger-print" aria-hidden="true" class="ion-padding-end"></ion-icon>
+        <ion-label>Security</ion-label>
+    </ion-item>
+    <ion-item routerLink="privacy-settings">
+        <ion-icon name="person" aria-hidden="true" class="ion-padding-end"></ion-icon>
+        <ion-label>Privacy</ion-label>
+    </ion-item>
+    <ion-item routerLink="notifications-settings">
+        <ion-icon name="notifications" aria-hidden="true" class="ion-padding-end"></ion-icon>
+        <ion-label>Notifications</ion-label>
+    </ion-item>
+    <ion-item>
+        <ion-icon name="moon" aria-hidden="true" class="ion-padding-end"></ion-icon>
+        <ion-label>Dark Theme</ion-label>
+        <ion-toggle #myToggle (ionChange)="onToggleColorTheme($event)"></ion-toggle>
+      </ion-item>
+      
+  </ion-list>
