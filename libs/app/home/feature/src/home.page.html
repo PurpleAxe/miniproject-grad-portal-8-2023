@@ -8,7 +8,7 @@
           autoHide="true"></ion-menu-button>
       </ion-buttons>
 
-    <ion-avatar slot="end" style="margin-right: 60px; margin-top: 10px; margin-bottom: 10px;">
+    <ion-avatar slot="end" style="margin-right: 100px; margin-top: 10px; margin-bottom: 10px;">
       <img
         class="logo logo-light"
         src="assets/logos/logo-transp.png" />
@@ -38,7 +38,8 @@
         <div style="display: flex; flex-direction: column; align-items: center">
           <img
             alt="Silhouette of a person's head"
-            src="https://ionicframework.com/docs/img/demos/avatar.svg"
+            src="{{userProfile.accountDetails? userProfile.accountDetails.photoURL:
+              'https://ionicframework.com/docs/img/demos/avatar.svg' }}"
             style="
               width: 33%;
               height: auto;
