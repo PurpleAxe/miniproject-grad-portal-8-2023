@@ -15,14 +15,14 @@ jobs:
       
       - name: Make ENV
         run: |
-          touch .env
-          echo ${{secrets.ENV_FILE}} >> .env
+          touch .env.prod
+          echo ${{secrets.ENV_FILE}} >> .env.prod
           
       - name: Install Dependencies
         run: yarn install --frozen-lockfile 
         
       - name: Build APP
-        run: yarn build:app:dev
+        run: yarn build:app:prod
      
       - name: Deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
@@ -33,7 +33,7 @@ jobs:
           projectId: timehive-29588
           
       - name: Build API
-        run: yarn build:api:dev
+        run: yarn build:api:prod
         
       - name:  Deploy to Firebase
         uses: w9jds/firebase-action@master
