@@ -12,7 +12,7 @@ export class PostSagas {
     return events$.pipe(
       ofType(UserCreatedEvent),
       map((event: UserCreatedEvent) => {
-        setTimeout(function () {}.bind(this), 5000);
+        setTimeout(function () {}.bind(this), 10000);
         return new CreatePostCommand({
           post: {
             userId: event.user.id,
