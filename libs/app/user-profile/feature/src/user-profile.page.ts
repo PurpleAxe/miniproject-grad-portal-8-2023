@@ -6,7 +6,7 @@ import { FeedState } from '@mp/app/feed/data-access';
 import { FetchOwnPosts, ILikedAndDisliked } from '@mp/app/feed/util';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Timestamp } from 'firebase-admin/firestore';
+import { Timestamp } from '@angular/fire/firestore';
 
 import { IProfile } from '@mp/api/profiles/util';
 import { ProfileState } from '@mp/app/profile/data-access';
