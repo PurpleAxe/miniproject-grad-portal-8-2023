@@ -23,7 +23,7 @@ const timeActions = {
 //   });
 
 export const OnPostCreate = functions.firestore
-  .document('/posts/{postId}')
+  .document('/post/{postId}')
   .onCreate(async (change, context) => {
     // console.log('New post: ' + JSON.stringify(change.data()));
     const uid = change.data()?.['userId'];
